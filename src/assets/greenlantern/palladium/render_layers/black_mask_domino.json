@@ -1,0 +1,21 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "greenlantern:player#suit",
+        "slim": "greenlantern:player#suit_slim"
+      },
+      "texture": "greenlantern:textures/models/mask/black_mask_domino.png",
+      "render_type": "solid"
+    },
+    {
+      "model_layer": {
+        "normal": "greenlantern:player#suit",
+        "slim": "greenlantern:player#suit_slim"
+      },
+      "texture": "greenlantern:textures/models/mask/black_mask_domino_glow.png",
+      "render_type": "glow"
+    }
+  ]
+}

@@ -63,7 +63,20 @@
     "uniform_suit": {
       "type": "palladium:render_layer_by_accessory_slot",
       "accessory_slot": "greenlantern:orange_suit",
-      "default_layer": "greenlantern:orange_suit_corps",
+      "default_layer": "greenlantern:orange_suit_armored",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "uniform"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "uniform_mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "accessory_slot": "greenlantern:orange_mask",
+      "default_layer": "greenlantern:orange_mask_domino",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -1587,6 +1600,71 @@
       "hidden_in_bar": false,
       "list_index": 7
     },
+    "skill_greed_arrival": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.orange.skill_greed_arrival"
+      },
+      "description": {
+        "translate": "ability.greenlantern.orange.skill_greed_arrival.description"
+      },
+      "icon": "minecraft:gold_block",
+      "hidden_in_bar": true,
+      "gui_position": [
+        5,
+        5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_life_drain"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "greed_arrival": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:greed/arrival",
+        "playsound minecraft:entity.evoker.prepare_summon player @a[distance=..24] ~ ~ ~ 1 1.2"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_greed_arrival"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 300
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 300
+      },
+      "title": {
+        "translate": "ability.greenlantern.orange.greed_arrival"
+      },
+      "icon": "minecraft:gold_block",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8
+    },
     "skill_consume": {
       "type": "palladium:dummy",
       "title": {
@@ -1599,13 +1677,13 @@
       "hidden_in_bar": true,
       "gui_position": [
         5,
-        5
+        6
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_life_drain"
+            "ability": "skill_greed_arrival"
           },
           {
             "type": "palladium:experience_level_buyable",

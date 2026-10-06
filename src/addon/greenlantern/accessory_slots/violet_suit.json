@@ -1,5 +1,5 @@
 {
-  "icon": "greenlantern:textures/gui/accessory_slots/violet.png",
+  "icon": "greenlantern:textures/gui/accessory_slots/violet_suit.png",
   "menu_visibility": {
     "type": "palladium:has_power",
     "power": "greenlantern:violet_lantern"

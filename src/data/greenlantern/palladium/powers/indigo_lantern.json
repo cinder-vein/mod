@@ -63,7 +63,20 @@
     "uniform_suit": {
       "type": "palladium:render_layer_by_accessory_slot",
       "accessory_slot": "greenlantern:indigo_suit",
-      "default_layer": "greenlantern:indigo_suit_robes",
+      "default_layer": "greenlantern:indigo_suit_armored",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "uniform"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "uniform_mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "accessory_slot": "greenlantern:indigo_mask",
+      "default_layer": "greenlantern:indigo_mask_none",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",

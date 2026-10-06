@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "greenlantern:red_mask",
+  "render_layer": "greenlantern:red_mask_cowl",
+  "disable_rendering": true
+}

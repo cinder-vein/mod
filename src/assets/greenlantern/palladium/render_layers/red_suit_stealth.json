@@ -1,0 +1,27 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "greenlantern:player#suit",
+        "slim": "greenlantern:player#suit_slim"
+      },
+      "texture": {
+        "normal": "greenlantern:textures/models/suit/red_suit_stealth.png",
+        "slim": "greenlantern:textures/models/suit/red_suit_stealth_slim.png"
+      },
+      "render_type": "solid"
+    },
+    {
+      "model_layer": {
+        "normal": "greenlantern:player#suit",
+        "slim": "greenlantern:player#suit_slim"
+      },
+      "texture": {
+        "normal": "greenlantern:textures/models/suit/red_suit_stealth_glow.png",
+        "slim": "greenlantern:textures/models/suit/red_suit_stealth_glow_slim.png"
+      },
+      "render_type": "glow"
+    }
+  ]
+}

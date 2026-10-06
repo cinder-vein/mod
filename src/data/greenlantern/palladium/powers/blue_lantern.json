@@ -63,7 +63,20 @@
     "uniform_suit": {
       "type": "palladium:render_layer_by_accessory_slot",
       "accessory_slot": "greenlantern:blue_suit",
-      "default_layer": "greenlantern:blue_suit_corps",
+      "default_layer": "greenlantern:blue_suit_armored",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "uniform"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "uniform_mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "accessory_slot": "greenlantern:blue_mask",
+      "default_layer": "greenlantern:blue_mask_domino",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -1667,7 +1680,7 @@
       "hidden_in_bar": true,
       "gui_position": [
         5,
-        5
+        4
       ],
       "conditions": {
         "unlocking": [

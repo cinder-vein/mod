@@ -1,0 +1,7 @@
+{
+  "icon": "greenlantern:textures/gui/accessory_slots/orange_mask.png",
+  "menu_visibility": {
+    "type": "palladium:has_power",
+    "power": "greenlantern:orange_lantern"
+  }
+}

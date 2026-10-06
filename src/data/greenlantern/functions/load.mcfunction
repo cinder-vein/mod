@@ -1,1 +1,34 @@
 scoreboard objectives add gl_life dummy
+scoreboard objectives add gl_hoard dummy
+team add gl_greed
+team modify gl_greed displayName {"text":"Greed Constructs","color":"gold"}
+team modify gl_greed color gold
+team modify gl_greed friendlyFire false
+scoreboard objectives add gl_k_zombie minecraft.killed:minecraft.zombie
+scoreboard objectives add gl_s_zombie dummy
+scoreboard objectives add gl_k_husk minecraft.killed:minecraft.husk
+scoreboard objectives add gl_s_husk dummy
+scoreboard objectives add gl_k_drowned minecraft.killed:minecraft.drowned
+scoreboard objectives add gl_s_drowned dummy
+scoreboard objectives add gl_k_skeleton minecraft.killed:minecraft.skeleton
+scoreboard objectives add gl_s_skeleton dummy
+scoreboard objectives add gl_k_stray minecraft.killed:minecraft.stray
+scoreboard objectives add gl_s_stray dummy
+scoreboard objectives add gl_k_wither_skeleton minecraft.killed:minecraft.wither_skeleton
+scoreboard objectives add gl_s_wither_skeleton dummy
+scoreboard objectives add gl_k_spider minecraft.killed:minecraft.spider
+scoreboard objectives add gl_s_spider dummy
+scoreboard objectives add gl_k_cave_spider minecraft.killed:minecraft.cave_spider
+scoreboard objectives add gl_s_cave_spider dummy
+scoreboard objectives add gl_k_enderman minecraft.killed:minecraft.enderman
+scoreboard objectives add gl_s_enderman dummy
+scoreboard objectives add gl_k_pillager minecraft.killed:minecraft.pillager
+scoreboard objectives add gl_s_pillager dummy
+scoreboard objectives add gl_k_vindicator minecraft.killed:minecraft.vindicator
+scoreboard objectives add gl_s_vindicator dummy
+scoreboard objectives add gl_k_blaze minecraft.killed:minecraft.blaze
+scoreboard objectives add gl_s_blaze dummy
+scoreboard objectives add gl_k_zombified_piglin minecraft.killed:minecraft.zombified_piglin
+scoreboard objectives add gl_s_zombified_piglin dummy
+scoreboard objectives add gl_k_piglin_brute minecraft.killed:minecraft.piglin_brute
+scoreboard objectives add gl_s_piglin_brute dummy

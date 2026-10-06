@@ -7,7 +7,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 ## Install
 
 1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
-2. Put `dist/greenlantern-5.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
+2. Put `dist/greenlantern-6.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
 3. Optional: **Curios** to wear rings in a ring slot.
 
 ## The corps
@@ -17,7 +17,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 | Green Lantern | Willpower | Roar | Emerald Nova |
 | Sinestro Corps | Fear | Inflict Fear, Nightmare | Fear Incarnate |
 | Red Lantern | Rage | Napalm, Rage, Roar | Blood Rage |
-| Orange Lantern | Avarice | Avarice (passive), Hoard, Life Drain | Consume |
+| Orange Lantern | Avarice | Avarice (passive), Hoard, Life Drain, Greed Construct Arrival | Consume |
 | Blue Lantern | Hope | Aura of Hope, Rekindle | Hope Burns Bright |
 | Star Sapphire | Love | Crystal Prison, Love's Embrace, Charm | Love Conquers All |
 | Indigo Tribe | Compassion | Phase, Compassion, Healing Touch | Staff of Compassion |
@@ -26,12 +26,17 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 
 ## How it plays
 
-- **Wear a ring** in either hand (or a Curios ring slot). It shows as a small signet ring on your right hand.
+- **Wear a ring** in either hand (or a Curios ring slot). It shows as a small signet plate with the corps
+  logo on the front of your right hand.
 - **All ring powers work with or without the suit.** A charged ring gives **40 hearts** (Red: 30, but more
   strength) and netherite-level armor.
 - **Suit Up** (bottom slot of the first ability page) toggles your suit on and off. Your face stays visible.
-- **Suit designs:** open Palladium's **accessories menu** and pick a design in your corps' *Suit* slot
-  (Corps Uniform, Classic, Armored; plus Sapphire Gown, Tribal Robes and Risen for Violet, Indigo and Black).
+- **Suits and masks:** open Palladium's **accessories menu**. Your corps has a *Suit* slot (Corps Armor,
+  Classic, Stealth) and a *Mask* slot (Domino Mask, Lens Goggles, Gem Cowl, or **No Mask**). Suits are
+  two-layer skins with raised armor; your face always shows.
+- **Greed Constructs (Orange):** every mob you defeat while wearing the Orange ring joins your hoard (up to 10).
+  *Greed Construct Arrival* summons the hoard as orange hard-light constructs that fight for you for 30 seconds.
+  Summoning puts you on the `gl_greed` team so your constructs never target you.
 - **Recharge:** **right-click** with your corps' Power Battery in your main hand, or **right-click a placed one**.
   Either fully charges the ring and recites the oath.
 - **Constructs are 3D:** fists, hammers, cages and walls of hard light appear in the world in your corps'

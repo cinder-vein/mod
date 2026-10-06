@@ -182,7 +182,7 @@ def one(conds):
 class Kit:
     """Builds one corps' power: bar abilities, skill-tree nodes and hidden helpers."""
 
-    SPECIAL_SLOTS = [(5, 2), (5, 3), (5, 4)]
+    SPECIAL_COLUMN = 5
 
     def __init__(self, corps, data):
         self.c = corps
@@ -242,7 +242,7 @@ class Kit:
         """A corps-specific ability: a tree node plus (if index is set) a bar ability."""
         n = len(self.specials)
         parents = ["skill_force_field"] if n == 0 else [self.specials[-1]]
-        self.node(f"skill_{key}", name, desc, icon, self.SPECIAL_SLOTS[n], parents, xp, shared=False)
+        self.node(f"skill_{key}", name, desc, icon, (self.SPECIAL_COLUMN, 2 + n), parents, xp, shared=False)
         self.specials.append(f"skill_{key}")
         if index is None:  # passive: the effect is unlocked by the node alone
             ability["conditions"] = {"unlocking": one([unlocked(f"skill_{key}"), *extra])}
@@ -255,7 +255,8 @@ class Kit:
         self.hidden(key, {**command(first=commands), "conditions": {"enabling": [enabled(source), interval(every)]}})
 
     def ultimate(self, key, name, desc, icon, commands, cost=600, cooldown=1200):
-        self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (5, 5), [self.specials[-1]], 30, shared=False)
+        self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (self.SPECIAL_COLUMN, 2 + len(self.specials)),
+                  [self.specials[-1]], 30, shared=False)
         self.bar(key, {**command(first=commands), "conditions": {"enabling": action(cooldown)}},
                  name, icon, 9, node=f"skill_{key}", cost=cost, shared=False)
 
@@ -271,7 +272,7 @@ def shared_kit(k):
         "type": "palladium:dummy", "bar_color": "white", "list_index": 4,
         "title": k.tr("uniform", "Suit Up", True),
         "description": k.tr("uniform.description",
-                            "Toggle your corps' suit on or off. Pick the suit design in the accessories menu.", True),
+                            "Toggle your corps' suit on or off. Pick the suit and mask in the accessories menu.", True),
         "icon": f"{NS}:{c}_lantern_ring", "gui_position": [0, 0],
         "conditions": {"enabling": toggle()},
     }
@@ -284,6 +285,10 @@ def shared_kit(k):
     k.hidden("uniform_suit", {
         "type": "palladium:render_layer_by_accessory_slot", "accessory_slot": f"{NS}:{c}_suit",
         "default_layer": f"{NS}:{c}_suit_{designs[0][0]}", "conditions": {"enabling": UNIFORM},
+    })
+    k.hidden("uniform_mask", {
+        "type": "palladium:render_layer_by_accessory_slot", "accessory_slot": f"{NS}:{c}_mask",
+        "default_layer": f"{NS}:{c}_mask_{art.DEFAULT_MASK[c]}", "conditions": {"enabling": UNIFORM},
     })
     k.hidden("uniform_hide_layers", {
         "type": "palladium:hide_body_part", "affects_first_person": True,
@@ -556,6 +561,12 @@ def specials_orange(k):
                   "effect give @s minecraft:regeneration 5 1 true",
                   sound("minecraft:entity.evoker.prepare_attack", 1.2)]),
                   "conditions": {"enabling": action(100)}}, cost=120, xp=12, index=7)
+    k.special("greed_arrival", "Greed Construct Arrival",
+              f"Every mob you defeat while wearing the ring joins your hoard (up to {GREED_LIMIT}). "
+              f"Summon the whole hoard as orange constructs that fight for you for {GREED_SECONDS} seconds.",
+              "minecraft:gold_block", {**command(first=[
+                  f"function {NS}:greed/arrival", sound("minecraft:entity.evoker.prepare_summon", 1.2)]),
+                  "conditions": {"enabling": action(1200)}}, cost=300, xp=16, index=8)
     around = OTHERS.format(r=8)
     k.ultimate("consume", "Consume", "devour the life of everything within 8 blocks and keep it as extra hearts.",
                "minecraft:enchanted_golden_apple", [
@@ -567,6 +578,79 @@ def specials_orange(k):
 
 
 WHISPER = json.dumps({"text": "Don't you hear him?", "color": "yellow", "italic": True})
+
+
+# Orange Lantern greed constructs: mobs you kill join your hoard (up to GREED_LIMIT) and
+# can be summoned back as orange hard-light constructs that fight for you.
+GREED_LIMIT = 10
+GREED_SECONDS = 30
+GREED_MOBS = {  # capturable mob -> what it holds when summoned
+    "zombie": None, "husk": None, "drowned": "minecraft:trident", "skeleton": "minecraft:bow",
+    "stray": "minecraft:bow", "wither_skeleton": "minecraft:stone_sword", "spider": None, "cave_spider": None,
+    "enderman": None, "pillager": "minecraft:crossbow", "vindicator": "minecraft:iron_axe", "blaze": None,
+    "zombified_piglin": "minecraft:golden_sword", "piglin_brute": "minecraft:golden_axe",
+}
+GREED_PREY = list(GREED_MOBS) + ["creeper", "witch", "slime", "magma_cube", "phantom", "silverfish", "endermite",
+                                 "ghast", "hoglin", "zoglin", "piglin", "evoker", "ravager", "guardian", "vex",
+                                 "shulker", "warden"]
+
+
+def greed_functions():
+    """Datapack functions for the hoard: load, tick and arrival."""
+    load = [f"scoreboard objectives add gl_hoard dummy", "team add gl_greed",
+            'team modify gl_greed displayName {"text":"Greed Constructs","color":"gold"}',
+            "team modify gl_greed color gold", "team modify gl_greed friendlyFire false"]
+    tick = ["scoreboard players add @a[tag=gl_orange] gl_hoard 0"]
+    arrival = []
+    for mob, held in GREED_MOBS.items():
+        k_obj, s_obj = f"gl_k_{mob}", f"gl_s_{mob}"
+        load += [f"scoreboard objectives add {k_obj} minecraft.killed:minecraft.{mob}",
+                 f"scoreboard objectives add {s_obj} dummy"]
+        new_kill = f"@a[tag=gl_orange,scores={{{k_obj}=1..,gl_hoard=..{GREED_LIMIT - 1}}}]"
+        name = mob.replace("_", " ").title()
+        tick += [
+            f"scoreboard players add @a[tag=gl_orange] {s_obj} 0",
+            f"execute as {new_kill} run title @s actionbar " + json.dumps(
+                {"text": f"Your hoard claims the {name}!", "color": "gold"}),
+            f"scoreboard players add {new_kill} {s_obj} 1",
+            f"scoreboard players add {new_kill} gl_hoard 1",
+            f"scoreboard players set @a[scores={{{k_obj}=1..}}] {k_obj} 0",
+        ]
+        hand = f'HandItems:[{{id:"{held}",Count:1b}},{{}}],HandDropChances:[0f,0f],' if held else ""
+        nbt = ('{Tags:["gl_greed_minion","gl_greed_new"],Team:"gl_greed",PersistenceRequired:1b,'
+               'DeathLootTable:"minecraft:empty",' + hand +
+               "CustomName:'{\"text\":\"Greed Construct\",\"color\":\"gold\"}',"
+               "ActiveEffects:[{Id:14,Amplifier:0b,Duration:999999,ShowParticles:0b},"
+               "{Id:24,Amplifier:0b,Duration:999999,ShowParticles:0b},"
+               "{Id:12,Amplifier:0b,Duration:999999,ShowParticles:0b},"
+               "{Id:5,Amplifier:1b,Duration:999999,ShowParticles:0b}]}")
+        for n in range(1, GREED_LIMIT + 1):
+            arrival.append(f"execute if score @s {s_obj} matches {n}.. run summon minecraft:{mob} ~ ~ ~ {nbt}")
+    arrival = [
+        "team join gl_greed @s",
+        "execute if score @s gl_hoard matches ..0 run tellraw @s " + json.dumps(
+            {"text": "Your hoard is empty. Defeat mobs while wearing the ring to claim them.", "color": "gold"}),
+    ] + arrival + [
+        "spreadplayers ~ ~ 1 3 false @e[tag=gl_greed_new,distance=..4]",
+        f"scoreboard players set @e[tag=gl_greed_new] gl_life {GREED_SECONDS * 20}",
+        "execute at @e[tag=gl_greed_new] run particle minecraft:dust 1 0.55 0.1 2 ~ ~1 ~ 0.4 0.8 0.4 0 40 force",
+        "tag @e[tag=gl_greed_new] remove gl_greed_new",
+    ]
+    prey = f"@e[type=#{NS}:greed_prey,tag=!gl_greed_minion,distance=..16,limit=1,sort=nearest]"
+    tick += [
+        # every second, make each construct go after the nearest hostile mob
+        "scoreboard players add #timer gl_life 1",
+        "execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0",
+        f"execute if score #timer gl_life matches 0 as @e[tag=gl_greed_minion] at @s run damage @s 0.01 "
+        f"minecraft:mob_attack by {prey}",
+        "execute if score #timer gl_life matches 0 at @e[tag=gl_greed_minion] run particle minecraft:dust "
+        "1 0.55 0.1 1.2 ~ ~1 ~ 0.3 0.6 0.3 0 6 force",
+        "scoreboard players remove @e[tag=gl_greed_minion] gl_life 1",
+        "execute at @e[tag=gl_greed_minion,scores={gl_life=..0}] run particle minecraft:dust "
+        "1 0.55 0.1 2 ~ ~1 ~ 0.3 0.6 0.3 0 30 force",
+        "kill @e[tag=gl_greed_minion,scores={gl_life=..0}]",
+    ]
+    return load, tick, arrival
 
 
 def specials_yellow(k):
@@ -764,7 +848,7 @@ def save(img, rel):
 
 GENERATED_DIRS = [
     f"addon/{NS}", f"data/{NS}/palladium", f"data/{NS}/recipes", f"data/{NS}/loot_tables", f"data/{NS}/curios",
-    f"data/{NS}/functions", "data/minecraft/tags/functions",
+    f"data/{NS}/functions", f"data/{NS}/tags", "data/minecraft/tags/functions",
     f"assets/{NS}/models", f"assets/{NS}/blockstates", f"assets/{NS}/textures", f"assets/{NS}/palladium",
 ]
 
@@ -850,13 +934,25 @@ def main():
             write(f"data/{NS}/palladium/item_powers/{ring}_{slot.replace(':', '_')}.json",
                   {"slot": slot, "item": f"{NS}:{ring}", "power": f"{NS}:{c}_lantern"})
 
-        # suit designs: one accessory each in the corps' "Lantern Suit" slot
-        write(f"addon/{NS}/accessory_slots/{c}_suit.json", {
-            "icon": f"{NS}:textures/gui/accessory_slots/{c}.png",
-            "menu_visibility": {"type": "palladium:has_power", "power": f"{NS}:{c}_lantern"},
-        })
-        save(art.slot_icon(c, rgb), f"assets/{NS}/textures/gui/accessory_slots/{c}.png")
-        lang[f"accessory_slot.{NS}.{c}_suit"] = f"{data['name']} Suit"
+        # Suits and masks: one accessory slot each in the accessories menu, shown while you
+        # wear this corps' ring. Both render on the two-layer suit model.
+        def layered(name, folder, both_skins=True):
+            def tex(part):
+                base = f"{NS}:textures/models/{folder}/{name}{part}"
+                return {"normal": base + ".png", "slim": base + "_slim.png"} if both_skins else base + ".png"
+            model = {"normal": f"{NS}:player#suit", "slim": f"{NS}:player#suit_slim"}
+            return {"type": "palladium:compound", "layers": [
+                {"model_layer": model, "texture": tex(""), "render_type": "solid"},
+                {"model_layer": model, "texture": tex("_glow"), "render_type": "glow"},
+            ]}
+
+        for kind, label in (("suit", "Suit"), ("mask", "Mask")):
+            write(f"addon/{NS}/accessory_slots/{c}_{kind}.json", {
+                "icon": f"{NS}:textures/gui/accessory_slots/{c}_{kind}.png",
+                "menu_visibility": {"type": "palladium:has_power", "power": f"{NS}:{c}_lantern"},
+            })
+            save(art.slot_icon(c, rgb, kind), f"assets/{NS}/textures/gui/accessory_slots/{c}_{kind}.png")
+            lang[f"accessory_slot.{NS}.{c}_{kind}"] = f"{data['name']} {label}"
         for design, design_name in art.DESIGNS[c]:
             name = f"{c}_suit_{design}"
             for slim in (False, True):
@@ -864,17 +960,22 @@ def main():
                 sfx = "_slim" if slim else ""
                 save(suit, f"assets/{NS}/textures/models/suit/{name}{sfx}.png")
                 save(glow, f"assets/{NS}/textures/models/suit/{name}_glow{sfx}.png")
-            tex = lambda part: {"normal": f"{NS}:textures/models/suit/{name}{part}.png",  # noqa: E731
-                                "slim": f"{NS}:textures/models/suit/{name}{part}_slim.png"}
-            write(f"assets/{NS}/palladium/render_layers/{name}.json", {"type": "palladium:compound", "layers": [
-                {"type": "palladium:skin_overlay", "texture": tex("")},
-                {"type": "palladium:skin_overlay", "render_type": "glow", "texture": tex("_glow")},
-            ]})
-            write(f"addon/{NS}/accessories/{name}.json", {
-                "type": "palladium:render_layer", "slot": f"{NS}:{c}_suit",
-                "render_layer": f"{NS}:{name}", "disable_rendering": True,
-            })
+            write(f"assets/{NS}/palladium/render_layers/{name}.json", layered(name, "suit"))
+            write(f"addon/{NS}/accessories/{name}.json", {"type": "palladium:render_layer", "slot": f"{NS}:{c}_suit",
+                                                          "render_layer": f"{NS}:{name}", "disable_rendering": True})
             lang[f"accessory.{NS}.{name}"] = design_name
+        for mask_id, mask_name in art.MASKS:
+            name = f"{c}_mask_{mask_id}"
+            if mask_id == "none":
+                write(f"assets/{NS}/palladium/render_layers/{name}.json", {"type": "palladium:compound", "layers": []})
+            else:
+                mask, glow = art.mask(c, rgb, mask_id)
+                save(mask, f"assets/{NS}/textures/models/mask/{name}.png")
+                save(glow, f"assets/{NS}/textures/models/mask/{name}_glow.png")
+                write(f"assets/{NS}/palladium/render_layers/{name}.json", layered(name, "mask", both_skins=False))
+            write(f"addon/{NS}/accessories/{name}.json", {"type": "palladium:render_layer", "slot": f"{NS}:{c}_mask",
+                                                          "render_layer": f"{NS}:{name}", "disable_rendering": True})
+            lang[f"accessory.{NS}.{name}"] = mask_name
         band, gem = art.ring_textures(c, rgb)
         save(band, f"assets/{NS}/textures/models/ring/{c}_band.png")
         save(gem, f"assets/{NS}/textures/models/ring/{c}_gem.png")
@@ -921,6 +1022,8 @@ def main():
     write(f"addon/{NS}/items/_loading_order.json", items)
     write(f"addon/{NS}/creative_mode_tabs/lantern_corps.json", {"icon": f"{NS}:green_lantern_ring", "items": tab})
     write(f"assets/{NS}/palladium/model_layers/lantern_ring/player.json", art.ring_model(False))
+    write(f"assets/{NS}/palladium/model_layers/suit/player.json", art.suit_model(False))
+    write(f"assets/{NS}/palladium/model_layers/suit_slim/player.json", art.suit_model(True))
     write(f"assets/{NS}/palladium/model_layers/lantern_ring_slim/player.json", art.ring_model(True))
     write(f"assets/{NS}/palladium/particle_emitters/ring_hand.json", {
         "body_part": "right_arm", "amount": 1, "offset": [0, -10, 0], "offset_random": [1, 1, 1],
@@ -968,8 +1071,15 @@ def main():
         "kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]",
     ]
     (SRC / f"data/{NS}/functions").mkdir(parents=True, exist_ok=True)
+    g_load, g_tick, g_arrival = greed_functions()
+    tick += g_tick
+    (SRC / f"data/{NS}/functions/greed").mkdir(parents=True, exist_ok=True)
+    (SRC / f"data/{NS}/functions/greed/arrival.mcfunction").write_text("\n".join(g_arrival) + "\n")
     (SRC / f"data/{NS}/functions/tick.mcfunction").write_text("\n".join(tick) + "\n")
-    (SRC / f"data/{NS}/functions/load.mcfunction").write_text("scoreboard objectives add gl_life dummy\n")
+    (SRC / f"data/{NS}/functions/load.mcfunction").write_text(
+        "\n".join(["scoreboard objectives add gl_life dummy"] + g_load) + "\n")
+    write(f"data/{NS}/tags/entity_types/greed_prey.json",
+          {"replace": False, "values": [f"minecraft:{m}" for m in GREED_PREY]})
     write("data/minecraft/tags/functions/tick.json", {"values": [f"{NS}:tick"]})
     write("data/minecraft/tags/functions/load.json", {"values": [f"{NS}:load"]})
     save(art.rage_overlay(), f"assets/{NS}/textures/gui/rage_overlay.png")
