@@ -60,14 +60,10 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "uniform_skin": {
-      "type": "palladium:skin_change",
-      "model_type": "keep",
-      "priority": 60,
-      "texture": {
-        "normal": "greenlantern:textures/models/uniform/black.png",
-        "slim": "greenlantern:textures/models/uniform/black_slim.png"
-      },
+    "uniform_suit": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "accessory_slot": "greenlantern:black_suit",
+      "default_layer": "greenlantern:black_suit_risen",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -77,9 +73,16 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "uniform_glow": {
-      "type": "palladium:render_layer",
-      "render_layer": "greenlantern:black_uniform_glow",
+    "uniform_hide_layers": {
+      "type": "palladium:hide_body_part",
+      "affects_first_person": true,
+      "body_parts": [
+        "chest_overlay",
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay"
+      ],
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -109,17 +112,11 @@
       "particle_type": "minecraft:dust",
       "options": "0.37 0.38 0.43 0.8",
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
-            "type": "palladium:interval",
-            "active_ticks": 1,
-            "disabled_ticks": 3
-          }
-        ]
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 3
+        }
       },
       "hidden": true,
       "hidden_in_bar": true
@@ -188,24 +185,18 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "suit_fists": {
+    "ring_fists": {
       "type": "palladium:attribute_modifier",
       "attribute": "palladium:punch_damage",
       "amount": 4,
       "operation": 0,
       "uuid": "6c7a0008-1a2b-4c3d-8e4f-000000000005",
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 1
-          }
-        ]
+        "unlocking": {
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
+        }
       },
       "hidden": true,
       "hidden_in_bar": true
@@ -219,8 +210,9 @@
       ],
       "conditions": {
         "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
         }
       },
       "hidden": true,
@@ -601,10 +593,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
           },
@@ -626,10 +614,6 @@
       "uuid": "6c7a0008-1a2b-4c3d-8e4f-00000000000d",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
@@ -653,10 +637,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
           },
@@ -675,10 +655,6 @@
       "trail": "greenlantern:black_trail",
       "conditions": {
         "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
@@ -701,10 +677,6 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
           },
@@ -724,10 +696,6 @@
       },
       "conditions": {
         "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_flight"
@@ -756,17 +724,11 @@
         "amount": 3
       },
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 3
-          }
-        ],
+        "unlocking": {
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 3
+        },
         "enabling": {
           "type": "palladium:held"
         }
@@ -911,16 +873,10 @@
         "construct_slam"
       ],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          }
-        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
         "enabling": {
           "type": "palladium:held"
         }
@@ -961,10 +917,6 @@
       },
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_constructs"
@@ -1018,10 +970,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_fist"
           },
@@ -1062,10 +1010,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_cage"
           },
@@ -1104,10 +1048,6 @@
       "last_tick_commands": [],
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_slam"
@@ -1176,10 +1116,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "ability": "skill_force_field"
           },
@@ -1231,17 +1167,101 @@
         },
         "enabling": {
           "type": "palladium:action",
-          "cooldown": 40
+          "key_type": "right_click",
+          "cooldown": 20
         }
       },
-      "title": {
-        "translate": "ability.greenlantern.recharge"
-      },
-      "icon": "greenlantern:black_power_battery",
-      "bar_color": "white",
       "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 3
+      "hidden_in_bar": true
+    },
+    "recharge_at_lantern": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": -1000000
+      },
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "greenlantern:black_power_battery"
+                },
+                "slot": "mainhand"
+              }
+            ]
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:black_power_battery"
+              },
+              {
+                "type": "palladium:command_result",
+                "comparison": "==",
+                "compare_to": 1,
+                "command": "execute anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:black_power_battery"
+              }
+            ]
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "key_type": "right_click",
+          "cooldown": 20
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "oath": {
       "type": "palladium:command",
@@ -1257,8 +1277,17 @@
       "last_tick_commands": [],
       "conditions": {
         "enabling": {
-          "type": "palladium:ability_enabled",
-          "ability": "recharge"
+          "type": "palladium:or",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "recharge"
+            },
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "recharge_at_lantern"
+            }
+          ]
         }
       },
       "hidden": true,
@@ -1274,10 +1303,6 @@
         "effect clear @s minecraft:night_vision"
       ],
       "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
-        },
         "enabling": {
           "type": "palladium:toggle"
         }
@@ -1289,7 +1314,27 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 5
+      "list_index": 3
+    },
+    "corps_tag": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s remove gl_green",
+        "tag @s remove gl_yellow",
+        "tag @s remove gl_red",
+        "tag @s remove gl_orange",
+        "tag @s remove gl_blue",
+        "tag @s remove gl_violet",
+        "tag @s remove gl_indigo",
+        "tag @s remove gl_white",
+        "tag @s add gl_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_black"
+      ],
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "skill_heart_rip": {
       "type": "palladium:dummy",
@@ -1331,10 +1376,6 @@
       "last_tick_commands": [],
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_heart_rip"
@@ -1398,10 +1439,6 @@
       },
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_death_aura"
@@ -1493,10 +1530,6 @@
       "last_tick_commands": [],
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "uniform"
-          },
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_blackest_night"

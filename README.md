@@ -7,7 +7,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 ## Install
 
 1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
-2. Put `dist/greenlantern-3.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
+2. Put `dist/greenlantern-4.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
 3. Optional: **Curios** to wear rings in a ring slot.
 
 ## The corps
@@ -26,16 +26,21 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 
 ## How it plays
 
-- **Wear a ring** in either hand (or a Curios ring slot). It shows on your right hand.
-- **A charged ring** gives you **40 hearts** and netherite-level armor (20 armor, 12 toughness, knockback resistance).
-- **Suit Up** (bottom slot of the first ability page) toggles a full-body uniform on and off. Most powers need it.
-- **Recharge:** hold your corps' **Power Battery** in your main hand and press Recharge to **fully** charge the ring.
-  Batteries are also placeable lantern blocks.
+- **Wear a ring** in either hand (or a Curios ring slot). It shows as a small signet ring on your right hand.
+- **All ring powers work with or without the suit.** A charged ring gives **40 hearts** (Red: 30, but more
+  strength) and netherite-level armor.
+- **Suit Up** (bottom slot of the first ability page) toggles your suit on and off. Your face stays visible.
+- **Suit designs:** open Palladium's **accessories menu** and pick a design in your corps' *Suit* slot
+  (Corps Uniform, Classic, Armored; plus Sapphire Gown, Tribal Robes and Risen for Violet, Indigo and Black).
+- **Recharge:** **right-click** with your corps' Power Battery in your main hand, or **right-click a placed one**.
+  Either fully charges the ring and recites the oath.
+- **Blue and Green** empower each other within 12 blocks (faster recharge, more damage) once the
+  *Hope Amplified* / *Willpower Ignited* upgrade is bought.
 - **Skill tree:** open Palladium's powers menu and spend **XP levels** to unlock upgrades:
 
 | Branch | Upgrades (XP levels) |
 |---|---|
-| Vitality | 50 hearts (5) → 60 hearts (15) |
+| Vitality | +10 hearts (5) → +10 more (15) |
 | Combat | +4 damage (5) → +4 more (15) |
 | Capacity | 1500 charge (5) → 2000 charge (15) |
 | Flight | Flight with trail and aura (5) |
@@ -43,7 +48,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 | Force Field | Projectile, explosion and fire immunity (5) |
 | Corps specials | Each special in order (8, 12, 16), then the Ultimate (30, also needs Combat II) |
 
-Beam, Ring Light and Recharge are available from the start.
+Beam, Ring Light, Suit Up and recharging are available from the start.
 
 ## Crafting
 
@@ -56,5 +61,5 @@ Beam, Ring Light and Recharge are available from the start.
 ## Editing
 
 - `tools/gen_corps.py`: corps table, oaths, the shared kit, the skill tree and each corps' specials.
-- `tools/art.py`: logos, uniforms, rings, the lantern block model.
+- `tools/art.py`: logos, suit designs, the worn ring, ring icons and the lantern block model.
 - Run `python3 tools/gen_corps.py`, then `python3 tools/build.py`, which validates every cross-reference and builds the jar.

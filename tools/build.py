@@ -124,6 +124,12 @@ def validate():
             if ab.get("type") == "palladium:skin_change":
                 for t in ab["texture"].values() if isinstance(ab["texture"], dict) else [ab["texture"]]:
                     check_ref("texture", t, w)
+            if "default_layer" in ab:
+                check_ref("render_layer", ab["default_layer"], w)
+            if "accessory_slot" in ab:
+                ns, _, slot = ab["accessory_slot"].partition(":")
+                if not (SRC / "addon" / ns / "accessory_slots" / f"{slot}.json").exists():
+                    err(f"{w}: unknown accessory slot {ab['accessory_slot']}")
             if "trail" in ab:
                 check_ref("trail", ab["trail"], w)
             if ab.get("type") == "palladium:ability_wheel":
@@ -166,9 +172,23 @@ def validate():
 
     # client resources
     for path in (SRC / "assets" / NS / "palladium" / "render_layers").glob("*.json"):
-        tex = load(path)["texture"]
-        for t in tex.values() if isinstance(tex, dict) else [tex]:
-            check_ref("texture", t, path.name)
+        for layer in walk(load(path)):
+            tex = layer.get("texture")
+            for t in tex.values() if isinstance(tex, dict) else [tex] if tex else []:
+                check_ref("texture", t, path.name)
+
+    for path in (SRC / "addon" / NS / "accessory_slots").glob("*.json"):
+        check_ref("texture", load(path)["icon"], path.name)
+        if f"accessory_slot.{NS}.{path.stem}" not in lang:
+            err(f"accessory slot {path.stem}: missing translation")
+    for path in (SRC / "addon" / NS / "accessories").glob("*.json"):
+        acc = load(path)
+        check_ref("render_layer", acc["render_layer"], path.name)
+        ns, _, slot = acc["slot"].partition(":")
+        if not (SRC / "addon" / ns / "accessory_slots" / f"{slot}.json").exists():
+            err(f"accessory {path.stem}: unknown slot {acc['slot']}")
+        if f"accessory.{NS}.{path.stem}" not in lang:
+            err(f"accessory {path.stem}: missing translation")
 
     for path in (SRC / "assets" / NS / "blockstates").glob("*.json"):
         if not (SRC / "addon" / NS / "blocks" / path.name).exists():

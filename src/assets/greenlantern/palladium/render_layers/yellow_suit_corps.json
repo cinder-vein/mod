@@ -1,0 +1,20 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "normal": "greenlantern:textures/models/suit/yellow_suit_corps.png",
+        "slim": "greenlantern:textures/models/suit/yellow_suit_corps_slim.png"
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "render_type": "glow",
+      "texture": {
+        "normal": "greenlantern:textures/models/suit/yellow_suit_corps_glow.png",
+        "slim": "greenlantern:textures/models/suit/yellow_suit_corps_glow_slim.png"
+      }
+    }
+  ]
+}

@@ -27,6 +27,8 @@ BASE_CHARGE = 1000
 CORPS = {
     "green": {
         "name": "Green Lantern", "emotion": "Willpower", "color": (46, 200, 70),
+        "empowered_by": "blue", "empowered_name": "Hope Amplified",
+        "empowered_desc": "Within 12 blocks of a Blue Lantern your ring recharges fast and you hit harder.",
         "gem": "minecraft:emerald_block", "glass": "minecraft:lime_stained_glass",
         "oath": ["In brightest day, in blackest night,", "No evil shall escape my sight.",
                  "Let those who worship evil's might,", "Beware my power... Green Lantern's light!"],
@@ -39,6 +41,7 @@ CORPS = {
     },
     "red": {
         "name": "Red Lantern", "emotion": "Rage", "color": (220, 30, 35),
+        "health": 40, "bonus_damage": 4,  # rage: fewer hearts, more strength
         "gem": "minecraft:redstone_block", "glass": "minecraft:red_stained_glass",
         "oath": ["With blood and rage of crimson red,", "Ripped from a corpse so freshly dead,",
                  "Together with our hellish hate,", "We'll burn you all... that is your fate!"],
@@ -50,6 +53,8 @@ CORPS = {
     },
     "blue": {
         "name": "Blue Lantern", "emotion": "Hope", "color": (40, 130, 255),
+        "empowered_by": "green", "empowered_name": "Willpower Ignited",
+        "empowered_desc": "Within 12 blocks of a Green Lantern your ring recharges fast and you hit harder.",
         "gem": "minecraft:diamond_block", "glass": "minecraft:light_blue_stained_glass",
         "oath": ["In fearful day, in raging night,", "With strong hearts full, our souls ignite,",
                  "When all seems lost in the War of Light,", "Look to the stars... for hope burns bright!"],
@@ -184,7 +189,7 @@ class Kit:
                                          {"type": "palladium:experience_level_buyable", "xp_level": xp}]},
         }
 
-    def bar(self, key, ability, name, icon, index, node=None, cost=0, suit=True, extra=(), shared=True):
+    def bar(self, key, ability, name, icon, index, node=None, cost=0, suit=False, extra=(), shared=True):
         """An ability on the ability bar (hidden from the skill tree, which shows its node instead)."""
         conds = ability.get("conditions", {})
         unlocking = ([UNIFORM] if suit else []) + ([unlocked(node)] if node else []) + list(extra)
@@ -214,7 +219,7 @@ class Kit:
         self.node(f"skill_{key}", name, desc, icon, self.SPECIAL_SLOTS[n], parents, xp, shared=False)
         self.specials.append(f"skill_{key}")
         if index is None:  # passive: the effect is unlocked by the node alone
-            ability["conditions"] = {"unlocking": one([UNIFORM, unlocked(f"skill_{key}"), *extra])}
+            ability["conditions"] = {"unlocking": one([unlocked(f"skill_{key}"), *extra])}
             self.hidden(key, ability)
         else:
             self.bar(key, ability, name, icon, index, node=f"skill_{key}", cost=cost, extra=extra, shared=False)
@@ -241,46 +246,52 @@ def shared_kit(k):
         "type": "palladium:dummy", "bar_color": "white", "list_index": 4,
         "title": k.tr("uniform", "Suit Up", True),
         "description": k.tr("uniform.description",
-                            "Toggle your corps' uniform on or off. Most of the ring's powers only work while suited up.", True),
+                            "Toggle your corps' suit on or off. Pick the suit design in the accessories menu.", True),
         "icon": f"{NS}:{c}_lantern_ring", "gui_position": [0, 0],
         "conditions": {"enabling": toggle()},
     }
     k.hidden("suit_up_burst", {**command(first=[
         burst(rgb, 2.0, "0.4 1.0 0.4", 120), "particle minecraft:flash ~ ~1 ~ 0 0 0 0 1 force",
         sound("minecraft:block.beacon.activate", 1.4)]), "conditions": {"enabling": UNIFORM}})
-    k.hidden("uniform_skin", {
-        "type": "palladium:skin_change", "model_type": "keep", "priority": 60,
-        "texture": {"normal": f"{NS}:textures/models/uniform/{c}.png",
-                    "slim": f"{NS}:textures/models/uniform/{c}_slim.png"},
+    # The suit design comes from the corps' slot in the accessories menu. The player's own
+    # jacket/sleeve/trouser layers are hidden under it; the head (face, hair, hat) stays visible.
+    designs = art.DESIGNS[c]
+    k.hidden("uniform_suit", {
+        "type": "palladium:render_layer_by_accessory_slot", "accessory_slot": f"{NS}:{c}_suit",
+        "default_layer": f"{NS}:{c}_suit_{designs[0][0]}", "conditions": {"enabling": UNIFORM},
+    })
+    k.hidden("uniform_hide_layers", {
+        "type": "palladium:hide_body_part", "affects_first_person": True,
+        "body_parts": ["chest_overlay", "right_arm_overlay", "left_arm_overlay", "right_leg_overlay", "left_leg_overlay"],
         "conditions": {"enabling": UNIFORM},
     })
-    k.hidden("uniform_glow", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_uniform_glow",
-                              "conditions": {"enabling": UNIFORM}})
     # the ring is always visible on your hand while you wear it
     k.hidden("ring_band", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_band"})
     k.hidden("ring_gem", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_gem"})
     k.hidden("ring_aura", {
         "type": "palladium:particles", "emitter": [f"{NS}:ring_hand"], "particle_type": "minecraft:dust",
-        "options": dust(rgb, 0.8), "conditions": {"enabling": [UNIFORM, interval(4)]},
+        "options": dust(rgb, 0.8), "conditions": {"enabling": interval(4)},
     })
 
     # A charged ring alone makes you far tougher: 40 hearts and netherite-level armor.
     charged = [charge(1)]
-    k.attribute("ring_health", "minecraft:generic.max_health", 60, charged)
+    k.attribute("ring_health", "minecraft:generic.max_health", data.get("health", 60), charged)
     k.attribute("ring_armor", "minecraft:generic.armor", 20, charged)
     k.attribute("ring_toughness", "minecraft:generic.armor_toughness", 12, charged)
     k.attribute("ring_knockback", "minecraft:generic.knockback_resistance", 0.4, charged)
-    k.attribute("suit_fists", "palladium:punch_damage", 4, [UNIFORM, charge(1)])
+    k.attribute("ring_fists", "palladium:punch_damage", 4 + data.get("bonus_damage", 0), charged)
+    if data.get("bonus_damage"):
+        k.attribute("ring_strength", "minecraft:generic.attack_damage", data["bonus_damage"], charged)
     k.hidden("ring_protection", {
         "type": "palladium:damage_immunity",
         "damage_sources": ["minecraft:is_drowning", "minecraft:is_fall", "minecraft:is_freezing"],
-        "conditions": {"unlocking": UNIFORM},
+        "conditions": {"unlocking": charge(1)},
     })
 
     # --- skill tree ---
-    k.node("skill_health_1", "Vitality I", "Ring-charged health increases to 50 hearts.",
+    k.node("skill_health_1", "Vitality I", "+10 hearts while your ring is charged.",
            "minecraft:golden_apple", (-2, 0), ["uniform"], 5)
-    k.node("skill_health_2", "Vitality II", "Ring-charged health increases to 60 hearts.",
+    k.node("skill_health_2", "Vitality II", "Another +10 hearts while your ring is charged.",
            "minecraft:enchanted_golden_apple", (-4, 0), ["skill_health_1"], 15)
     k.attribute("health_1", "minecraft:generic.max_health", 20, [unlocked("skill_health_1"), charge(1)])
     k.attribute("health_2", "minecraft:generic.max_health", 20, [unlocked("skill_health_2"), charge(1)])
@@ -307,11 +318,11 @@ def shared_kit(k):
 
     k.node("skill_flight", "Flight", "Fly on the power of your ring, leaving a trail of light. Flying slowly drains charge.",
            "minecraft:feather", (0, -2), ["uniform"], 5)
-    flight = [UNIFORM, unlocked("skill_flight"), charge(1)]
+    flight = [unlocked("skill_flight"), charge(1)]
     k.attribute("flight", "palladium:flight_speed", 1.0, flight)
     k.attribute("flight_flexibility", "palladium:flight_flexibility", 5, flight)
     k.attribute("heroic_flight", "palladium:heroic_flight_type", 1, flight)
-    flying = [UNIFORM, unlocked("skill_flight"), {"type": "palladium:is_flying"}]
+    flying = [unlocked("skill_flight"), {"type": "palladium:is_flying"}]
     k.hidden("flight_trail", {"type": "palladium:trail", "trail": f"{NS}:{c}_trail", "conditions": {"enabling": flying}})
     k.hidden("flight_aura", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
                              "particle_type": "minecraft:dust", "options": dust(rgb, 1.2),
@@ -319,7 +330,7 @@ def shared_kit(k):
     k.hidden("flight_drain", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
                               "conditions": {"enabling": [*flying, interval(5)]}})
 
-    # --- bar page 1: beam, constructs, force field, recharge, suit up ---
+    # --- bar page 1: beam, constructs, force field, ring light, suit up ---
     k.bar("beam", {
         "type": "palladium:energy_beam", "energy_beam": f"{NS}:{c}_beam", "damage": 2.0, "max_distance": 40.0,
         "speed": 0.6, "energy_bar_usage": usage(3), "conditions": {"enabling": held()},
@@ -389,12 +400,28 @@ def shared_kit(k):
     k.hidden("force_field_glow", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(rgb),
                                   "conditions": {"enabling": enabled("force_field")}})
 
+    # Recharging: right-click while holding your battery, or right-click a placed one.
+    # These only unlock while that's possible, so they never steal ordinary right-clicks.
     battery = f"{NS}:{c}_power_battery"
-    k.bar("recharge", {
+    right_click = {"type": "palladium:action", "key_type": "right_click", "cooldown": 20}
+    looking_at = [
+        {"type": "palladium:command_result", "comparison": "==", "compare_to": 1,
+         "command": f"execute anchored eyes positioned ^ ^ ^{d / 2} if block ~ ~ ~ {battery}"}
+        for d in range(1, 10)
+    ]
+    k.hidden("recharge", {
         "type": "palladium:dummy", "energy_bar_usage": usage(-1_000_000),
-        "conditions": {"enabling": action(40)},
-    }, "Recharge", battery, 3, suit=False,
-        extra=[{"type": "palladium:item_in_slot", "item": {"item": battery}, "slot": "mainhand"}])
+        "conditions": {"unlocking": {"type": "palladium:item_in_slot", "item": {"item": battery}, "slot": "mainhand"},
+                       "enabling": right_click},
+    })
+    k.hidden("recharge_at_lantern", {
+        "type": "palladium:dummy", "energy_bar_usage": usage(-1_000_000),
+        "conditions": {"unlocking": [
+            {"type": "palladium:not", "conditions": [{"type": "palladium:item_in_slot", "item": {"item": battery},
+                                                      "slot": "mainhand"}]},
+            {"type": "palladium:or", "conditions": looking_at}],
+            "enabling": right_click},
+    })
     oath = []
     for i, line in enumerate(data["oath"], 1):
         k.lang[f"oath.{NS}.{c}.{i}"] = line
@@ -403,12 +430,26 @@ def shared_kit(k):
             prefix + [{"translate": f"oath.{NS}.{c}.{i}", "color": hexcolor(rgb), "italic": True}], separators=(",", ":")))
     k.hidden("oath", {**command(first=oath + [
         burst(rgb, 1.5, "0.6 1 0.6", 80), sound("minecraft:block.beacon.power_select", 1.2)]),
-        "conditions": {"enabling": enabled("recharge")}})
+        "conditions": {"enabling": {"type": "palladium:or", "conditions": [
+            enabled("recharge"), enabled("recharge_at_lantern")]}}})
 
-    # --- bar page 2 starts with Ring Light; specials and the ultimate follow ---
     k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision infinite 0 true"],
                                    last=["effect clear @s minecraft:night_vision"]),
-                         "conditions": {"enabling": toggle()}}, "Ring Light", "minecraft:glowstone_dust", 5)
+                         "conditions": {"enabling": toggle()}}, "Ring Light", "minecraft:glowstone_dust", 3)
+
+    # Corps tags let rings react to each other (e.g. Blue Lanterns empower Green ones).
+    k.hidden("corps_tag", {**command(first=[f"tag @s remove gl_{o}" for o in CORPS if o != c] + [f"tag @s add gl_{c}"],
+                                     last=[f"tag @s remove gl_{c}"])})
+    ally = data.get("empowered_by")
+    if ally:
+        near = {"type": "palladium:command_result", "comparison": ">=", "compare_to": 1,
+                "command": f"execute if entity @a[tag=gl_{ally},distance=0.1..12]"}
+        k.node("skill_empowered", data["empowered_name"], data["empowered_desc"], f"{NS}:{ally}_lantern_ring",
+               (-2, 2), ["uniform"], 8)
+        k.hidden("empowered_charge", {"type": "palladium:dummy", "energy_bar_usage": usage(-2),
+                                      "conditions": {"unlocking": [unlocked("skill_empowered"), near]}})
+        k.attribute("empowered_damage", "minecraft:generic.attack_damage", 4, [unlocked("skill_empowered"), near])
+        k.attribute("empowered_armor", "minecraft:generic.armor_toughness", 4, [unlocked("skill_empowered"), near])
 
 
 # --- what makes each corps different ------------------------------------------------
@@ -728,7 +769,7 @@ def main():
         write(f"assets/{NS}/blockstates/{battery}.json", {"variants": {"": {"model": f"{NS}:block/{battery}"}}})
         write(f"assets/{NS}/models/block/{battery}.json", art.battery_model(c))
         write(f"assets/{NS}/models/item/{battery}.json", {"parent": f"{NS}:block/{battery}"})
-        for name, img in zip(("stone", "core", "light"), art.battery_textures(c, rgb)):
+        for name, img in art.battery_textures(c, rgb).items():
             save(img, f"assets/{NS}/textures/block/{c}_battery_{name}.png")
         write(f"data/{NS}/loot_tables/blocks/{battery}.json", {
             "type": "minecraft:block",
@@ -759,16 +800,31 @@ def main():
             write(f"data/{NS}/palladium/item_powers/{ring}_{slot.replace(':', '_')}.json",
                   {"slot": slot, "item": f"{NS}:{ring}", "power": f"{NS}:{c}_lantern"})
 
-        # uniform, ring on the hand, beam, trail
-        for slim in (False, True):
-            suit, glow = art.uniform(c, rgb, slim)
-            sfx = "_slim" if slim else ""
-            save(suit, f"assets/{NS}/textures/models/uniform/{c}{sfx}.png")
-            save(glow, f"assets/{NS}/textures/models/uniform/{c}_glow{sfx}.png")
-        write(f"assets/{NS}/palladium/render_layers/{c}_uniform_glow.json", {
-            "type": "palladium:skin_overlay", "render_type": "glow",
-            "texture": {"normal": f"{NS}:textures/models/uniform/{c}_glow.png",
-                        "slim": f"{NS}:textures/models/uniform/{c}_glow_slim.png"}})
+        # suit designs: one accessory each in the corps' "Lantern Suit" slot
+        write(f"addon/{NS}/accessory_slots/{c}_suit.json", {
+            "icon": f"{NS}:textures/gui/accessory_slots/{c}.png",
+            "menu_visibility": {"type": "palladium:has_power", "power": f"{NS}:{c}_lantern"},
+        })
+        save(art.slot_icon(c, rgb), f"assets/{NS}/textures/gui/accessory_slots/{c}.png")
+        lang[f"accessory_slot.{NS}.{c}_suit"] = f"{data['name']} Suit"
+        for design, design_name in art.DESIGNS[c]:
+            name = f"{c}_suit_{design}"
+            for slim in (False, True):
+                suit, glow = art.suit(c, rgb, design, slim)
+                sfx = "_slim" if slim else ""
+                save(suit, f"assets/{NS}/textures/models/suit/{name}{sfx}.png")
+                save(glow, f"assets/{NS}/textures/models/suit/{name}_glow{sfx}.png")
+            tex = lambda part: {"normal": f"{NS}:textures/models/suit/{name}{part}.png",  # noqa: E731
+                                "slim": f"{NS}:textures/models/suit/{name}{part}_slim.png"}
+            write(f"assets/{NS}/palladium/render_layers/{name}.json", {"type": "palladium:compound", "layers": [
+                {"type": "palladium:skin_overlay", "texture": tex("")},
+                {"type": "palladium:skin_overlay", "render_type": "glow", "texture": tex("_glow")},
+            ]})
+            write(f"addon/{NS}/accessories/{name}.json", {
+                "type": "palladium:render_layer", "slot": f"{NS}:{c}_suit",
+                "render_layer": f"{NS}:{name}", "disable_rendering": True,
+            })
+            lang[f"accessory.{NS}.{name}"] = design_name
         band, gem = art.ring_textures(c, rgb)
         save(band, f"assets/{NS}/textures/models/ring/{c}_band.png")
         save(gem, f"assets/{NS}/textures/models/ring/{c}_gem.png")

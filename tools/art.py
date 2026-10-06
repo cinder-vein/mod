@@ -132,6 +132,7 @@ LOGOS = {
 }
 
 
+
 def shade(rgb, f):
     """f < 1 darkens, f > 1 lightens towards white."""
     if f >= 1:
@@ -139,26 +140,40 @@ def shade(rgb, f):
     return tuple(int(v * f) for v in rgb[:3]) + (255,)
 
 
+GOLD = (222, 178, 76, 255)
+
+
 def palette(corps, rgb):
     p = {
         "main": shade(rgb, 1.0), "light": shade(rgb, 1.3), "dark": shade(rgb, 0.62), "deep": shade(rgb, 0.38),
-        "trim": (22, 24, 27, 255), "trim2": (36, 39, 44, 255), "symbol": WHITE, "glow": shade(rgb, 1.4),
-        "disc": (14, 15, 17, 255),
+        "trim": (22, 24, 27, 255), "trim2": (40, 43, 48, 255), "symbol": WHITE, "glow": shade(rgb, 1.4),
+        "disc": (14, 15, 17, 255), "gold": GOLD, "metal": (110, 114, 122, 255), "metal_dark": (60, 63, 70, 255),
     }
-    if corps == "white":  # white suit, silver trim, glowing white symbol on a dark disc
+    if corps == "white":  # white plates on black, glowing white symbol on a dark disc
         p.update(main=(232, 236, 242, 255), light=(255, 255, 255, 255), dark=(178, 184, 196, 255),
-                 deep=(130, 136, 148, 255), trim=(200, 206, 216, 255), trim2=(188, 194, 206, 255),
-                 symbol=(255, 255, 255, 255), glow=(255, 255, 255, 255), disc=(52, 58, 70, 255))
-    if corps == "black":  # black suit, grey trim, pale glowing symbol
-        p.update(main=(34, 35, 40, 255), light=(70, 72, 80, 255), dark=(22, 22, 26, 255), deep=(12, 12, 14, 255),
-                 trim=(58, 60, 68, 255), trim2=(66, 68, 76, 255), symbol=(225, 230, 240, 255),
-                 glow=(225, 232, 245, 255), disc=(8, 8, 10, 255))
+                 deep=(130, 136, 148, 255), symbol=(255, 255, 255, 255), glow=(255, 255, 255, 255),
+                 disc=(52, 58, 70, 255), metal=(225, 228, 235, 255), metal_dark=(170, 175, 186, 255))
+    if corps == "black":  # black and charcoal, pale glowing symbol and bones
+        p.update(main=(58, 60, 68, 255), light=(92, 95, 105, 255), dark=(36, 37, 42, 255), deep=(16, 16, 18, 255),
+                 trim=(14, 14, 16, 255), trim2=(28, 29, 33, 255), symbol=(225, 230, 240, 255),
+                 glow=(215, 222, 235, 255), disc=(6, 6, 8, 255), metal=(50, 52, 58, 255), metal_dark=(28, 29, 33, 255))
     return p
 
 
-# --- full-body uniform (skin replacement, 128x128 = 2x the vanilla skin layout) --------
+# --- suits ---------------------------------------------------------------------------------
+# A suit is a skin overlay drawn at 2x (128x128). It leaves the head open except for an
+# optional mask or hood, so the wearer's face and hair stay visible. Painters return a
+# palette key; keys in GLOWING are also drawn into a full-bright glow layer.
 
 S = 2  # pixels per skin texel
+GLOWING = {"line", "symbol", "gem"}
+
+# Suit designs per corps: (id, name). The first one is the default.
+STANDARD = [("corps", "Corps Uniform"), ("classic", "Classic"), ("armored", "Armored")]
+DESIGNS = {c: list(STANDARD) for c in LOGOS}
+DESIGNS["violet"] = [("gown", "Sapphire Gown")] + STANDARD
+DESIGNS["indigo"] = [("robes", "Tribal Robes")] + STANDARD
+DESIGNS["black"] = [("risen", "Risen")] + STANDARD
 
 
 def box_faces(u, v, w, h, d):
@@ -168,15 +183,20 @@ def box_faces(u, v, w, h, d):
     }
 
 
-def paint_box(img, u, v, w, h, d, painter):
-    """painter(face, x, y, face_w, face_h) is called per hi-res pixel."""
+def paint_box(imgs, colors, u, v, w, h, d, painter):
+    """painter(face, x, y, face_w, face_h) -> palette key or None, per hi-res pixel."""
+    suit, glow = imgs
     for face, (fx, fy, fw, fh) in box_faces(u, v, w, h, d).items():
         fw, fh = fw * S, fh * S
         for y in range(fh):
             for x in range(fw):
-                col = painter(face, x, y, fw, fh)
-                if col is not None:
-                    img.putpixel((fx * S + x, fy * S + y), col)
+                key = painter(face, x, y, fw, fh)
+                if key is None:
+                    continue
+                pos = (fx * S + x, fy * S + y)
+                suit.putpixel(pos, colors[key])
+                if key in GLOWING:
+                    glow.putpixel(pos, colors["glow"] if key != "symbol" else colors["symbol"])
 
 
 def logo_at(logo, x, y, ox, oy):
@@ -184,110 +204,359 @@ def logo_at(logo, x, y, ox, oy):
     return 0 <= ly < len(logo) and 0 <= lx < len(logo[0]) and logo[ly][lx] == "#"
 
 
-def uniform(corps, rgb, slim):
-    """Returns (suit, glow) textures. The suit replaces the whole skin."""
-    p = palette(corps, rgb)
-    logo = LOGOS[corps]
-    suit = Image.new("RGBA", (64 * S, 64 * S), CLEAR)
-    glow = Image.new("RGBA", (64 * S, 64 * S), CLEAR)
+def chest(logo, x, y):
+    """The logo on a disc in the middle of the chest, or None outside the disc."""
+    if (x - 7.5) ** 2 + (y - 8.5) ** 2 <= 6.4 ** 2:
+        return "symbol" if logo_at(logo, x, y, 2, 3) else "disc"
+    return None
 
-    def head(face, x, y, w, h):
-        if face == "top":
-            return p["main"] if 2 < x < w - 3 else p["dark"]
-        if face == "bottom":
-            return p["dark"]
-        mask = 6 <= y <= 9
-        if face == "front":
-            if mask:
-                return WHITE if y in (7, 8) and (3 <= x <= 5 or 10 <= x <= 12) else p["trim"]
-            if y >= 14:
-                return p["dark"]
-            return p["main"]
-        if face in ("right", "left"):
-            near_face = x >= w - 6 if face == "right" else x <= 5
-            if mask and near_face:
-                return p["trim"]
-            return p["main"] if y < 13 else p["dark"]
-        return p["main"] if 4 < x < w - 5 else p["dark"]  # back
 
-    def body(face, x, y, w, h):
-        if face == "top":
-            return p["main"]
-        if face == "bottom":
-            return p["trim"]
-        if y >= 20:  # belt
-            return p["light"] if face == "front" and 6 <= x <= 9 and y in (21, 22) else p["trim"]
-        if face in ("right", "left"):
-            return p["main"] if 3 <= x <= 4 else p["trim"]
-        if face == "front":
+def mask(face, x, y, w, h, key="main"):
+    """Domino mask with eye holes, so the wearer's eyes show through."""
+    if face == "front" and 6 <= y <= 10:
+        if y in (8, 9) and (2 <= x <= 5 or 10 <= x <= 13):
+            return None
+        return key
+    if face == "right" and 7 <= y <= 9 and x >= w - 4:
+        return key
+    if face == "left" and 7 <= y <= 9 and x <= 3:
+        return key
+    return None
+
+
+def design_corps(logo):
+    """Black suit with glowing corps lines and plates (the corps-standard look)."""
+    def head(f, x, y, w, h):
+        return mask(f, x, y, w, h)
+
+    def body(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom" or y >= 22:
+            return "trim"
+        if 19 <= y <= 21:
+            return "main" if f == "front" and 6 <= x <= 9 else "trim2"  # belt and buckle
+        if f == "front":
+            c = chest(logo, x, y)
+            if c:
+                return c
             if y <= 1:
-                return p["light"]
-            cx, cy = 7.5, 8
-            if (x - cx) ** 2 + (y - cy) ** 2 <= 6.8 ** 2:  # disc behind the logo
-                return p["symbol"] if logo_at(logo, x, y, 2, 3) else p["disc"]
-            return p["main"] if 3 <= x <= 12 else p["trim"]
-        return p["main"] if 3 <= x <= 12 else p["trim"]  # back
+                return "dark"
+            if 2 <= y <= 14 and (x == round(1 + (y - 2) * 0.45) or x == 14 - round((y - 2) * 0.45)):
+                return "line"
+            return "main" if x in (0, 15) and y >= 2 else "trim"
+        if f == "back":
+            return "main" if 2 <= x <= 4 or 11 <= x <= 13 else ("line" if x in (7, 8) and y < 18 else "trim")
+        return "main" if x in (3, 4) else "trim"
 
-    def arm(face, x, y, w, h):
-        if face == "top":
-            return p["main"]
-        if face == "bottom":
-            return p["dark"]
-        if y < 6:
-            return p["main"] if y != 5 else p["dark"]  # shoulder
-        if y >= 17:  # glove
-            return p["dark"] if y == 17 or y == h - 1 else p["main"]
-        return p["trim2"] if (x + y) % 9 == 0 else p["trim"]
+    def arm(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom":
+            return "trim"
+        if y < 5:
+            return "main"
+        if y == 5 or y == 16:
+            return "dark"
+        if y == 11:
+            return "line"
+        if 17 <= y <= 21:
+            return "main"
+        return "trim"
 
-    def leg(face, x, y, w, h):
-        if face == "top":
-            return p["main"]
-        if face == "bottom":
-            return p["deep"]
-        if y >= 16:  # boot
-            return p["dark"] if y == 16 else (p["deep"] if y >= h - 2 else p["main"])
-        if face in ("right", "left"):
-            return p["main"] if 3 <= x <= 4 else p["trim"]
-        return p["main"] if 1 <= x <= w - 2 else p["trim"]
+    def leg(f, x, y, w, h):
+        if f == "top":
+            return "trim2"
+        if f == "bottom" or y >= 22:
+            return "deep"
+        if y >= 17:
+            return "dark" if y == 17 else "main"  # boots
+        if 9 <= y <= 12 and f == "front":
+            return "dark" if y == 9 else "main"  # knee
+        if f == "front" and x in (3, 4) and 2 <= y <= 8:
+            return "line"
+        if f in ("right", "left") and x in (3, 4):
+            return "main"
+        return "trim"
 
-    def eyes(face, x, y, w, h):
-        return WHITE if face == "front" and y in (7, 8) and (3 <= x <= 5 or 10 <= x <= 12) else None
+    return head, body, arm, leg
 
-    def emblem(face, x, y, w, h):
-        return p["glow"] if face == "front" and 2 <= y <= 14 and logo_at(logo, x, y, 2, 3) else None
 
+def design_classic(logo):
+    """Mostly corps color with black sides, like the comics."""
+    def head(f, x, y, w, h):
+        return mask(f, x, y, w, h, "dark")
+
+    def body(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom" or 19 <= y <= 21:
+            return "trim"
+        if f == "front":
+            c = chest(logo, x, y)
+            if c:
+                return c
+            if y <= 1:
+                return "light"
+        if f in ("front", "back"):
+            return "main" if 3 <= x <= 12 else "trim"
+        return "main" if y < 4 else "trim"
+
+    def arm(f, x, y, w, h):
+        if f == "top" or y < 6:
+            return "main"
+        if f == "bottom" or y == 16:
+            return "dark"
+        return "main" if y > 16 else "trim"
+
+    def leg(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom" or y >= 22:
+            return "deep"
+        if y >= 17:
+            return "dark" if y == 17 else "main"
+        if f in ("right", "left"):
+            return "trim"
+        return "trim" if x in (0, w - 1) else "main"
+
+    return head, body, arm, leg
+
+
+def design_armored(logo):
+    """Heavy plates over a black under-suit, no mask."""
+    def head(f, x, y, w, h):
+        return None
+
+    def body(f, x, y, w, h):
+        if f == "top":
+            return "light"
+        if f == "bottom" or y >= 22:
+            return "trim"
+        if 18 <= y <= 21:
+            return "line" if f == "front" and 7 <= x <= 8 and y in (19, 20) else "trim2"
+        if f == "front":
+            c = chest(logo, x, y)
+            if c:
+                return c
+            if 2 <= y <= 17 and 1 <= x <= 14:
+                if x in (1, 14) or y == 17:
+                    return "dark"
+                return "line" if y == 15 and 3 <= x <= 12 else "main"
+            return "trim"
+        if f == "back":
+            if 2 <= y <= 16 and 2 <= x <= 13:
+                return "dark" if x in (2, 13) or y == 16 else "main"
+            return "trim"
+        return "dark" if 2 <= y <= 10 else "trim"
+
+    def arm(f, x, y, w, h):
+        if f == "top" or y < 6:
+            return "light"
+        if y == 6 or y in (13, 21):
+            return "dark"
+        if 14 <= y <= 20:
+            return "line" if y == 17 else "main"
+        if f == "bottom":
+            return "trim"
+        return "trim"
+
+    def leg(f, x, y, w, h):
+        if f == "top":
+            return "trim2"
+        if f == "bottom" or y >= 22:
+            return "deep"
+        if 9 <= y <= 12:
+            return "light" if y == 9 else "main"
+        if y >= 13:
+            return "line" if f == "front" and x in (3, 4) and 14 <= y <= 20 else "main"
+        if f == "front" and 1 <= x <= w - 2:
+            return "dark"
+        return "trim"
+
+    return head, body, arm, leg
+
+
+def design_gown(logo):
+    """Star Sapphire: a flowing gown with gold trim and a jewelled circlet."""
+    def head(f, x, y, w, h):
+        if y in (2, 3) and f in ("front", "left", "right", "back"):
+            return "gem" if f == "front" and 7 <= x <= 8 else "gold"
+        return None
+
+    def body(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom":
+            return "dark"
+        if y in (18, 19):
+            return "gold"
+        if f == "front":
+            c = chest(logo, x, y)
+            if c:
+                return c
+            if y < 14 and (x == round(7.5 - (14 - y) * 0.5) or x == round(7.5 + (14 - y) * 0.5)):
+                return "gold"
+            if x in (0, 15):
+                return "gold"
+        return "main" if y < 18 else "dark"
+
+    def arm(f, x, y, w, h):
+        if f == "top" or y < 3:
+            return "gold" if y == 2 else "main"
+        if y in (19, 20):
+            return "gold"
+        if f == "bottom" or y > 20:
+            return "light"
+        return "main" if (x + y) % 6 else "dark"
+
+    def leg(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom" or y >= 22:
+            return "deep"
+        if y in (20, 21):
+            return "gold"
+        return "dark" if x % 3 == 0 else "main"
+
+    return head, body, arm, leg
+
+
+def design_robes(logo):
+    """Indigo Tribe: hooded robes with a sash. The hood frames the face without covering it."""
+    def head(f, x, y, w, h):
+        if f == "top" or f == "back":
+            return "main" if (x + y) % 5 else "dark"
+        if f == "front":
+            return "gold" if y == 1 else ("main" if y == 0 else None)
+        if f == "right":
+            return "main" if x < w - 3 else None
+        if f == "left":
+            return "main" if x > 2 else None
+        return None
+
+    def body(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom":
+            return "dark"
+        if y in (18, 19):
+            return "gold"
+        if f == "front":
+            c = chest(logo, x, y)
+            if c:
+                return c
+            if abs(x - (y - 2)) <= 1 and y < 18:
+                return "light"
+        if f == "back" and y < 7:
+            return "dark"
+        return "main"
+
+    def arm(f, x, y, w, h):
+        if y in (18, 19):
+            return "gold"
+        if y >= 20:
+            return "trim2"
+        if f == "bottom":
+            return "dark"
+        return "main" if (x + y) % 7 else "dark"
+
+    def leg(f, x, y, w, h):
+        if f == "top":
+            return "main"
+        if f == "bottom" or y >= 22:
+            return "deep"
+        if y in (20, 21):
+            return "gold"
+        return "main" if x % 4 else "dark"
+
+    return head, body, arm, leg
+
+
+def design_risen(logo):
+    """Black Lantern: a dead-black suit with pale glowing bones."""
+    corps_head, corps_body, corps_arm, corps_leg = design_corps(logo)
+
+    def head(f, x, y, w, h):
+        return None
+
+    def body(f, x, y, w, h):
+        if f == "front" and 13 <= y <= 18 and y % 2 == 1 and 2 <= x <= 13 and x not in (7, 8):
+            return "line"  # ribs
+        if f == "front" and x in (7, 8) and 14 <= y <= 18:
+            return "line"  # spine of the ribcage
+        return corps_body(f, x, y, w, h)
+
+    def arm(f, x, y, w, h):
+        if f == "front" and 6 <= y <= 15 and x == w // 2:
+            return "line"
+        return corps_arm(f, x, y, w, h)
+
+    def leg(f, x, y, w, h):
+        if f == "front" and x in (3, 4) and 2 <= y <= 16 and y not in (9, 10, 11, 12):
+            return "line"
+        return corps_leg(f, x, y, w, h)
+
+    return head, body, arm, leg
+
+
+DESIGN_FUNCS = {"corps": design_corps, "classic": design_classic, "armored": design_armored,
+                "gown": design_gown, "robes": design_robes, "risen": design_risen}
+
+
+def suit(corps, rgb, design, slim):
+    """Returns (suit, glow) 128x128 overlay textures."""
+    p = palette(corps, rgb)
+    imgs = (Image.new("RGBA", (64 * S, 64 * S), CLEAR), Image.new("RGBA", (64 * S, 64 * S), CLEAR))
+    colors = {**p, "line": p["glow"], "gem": p["glow"]}
+    head, body, arm, leg = DESIGN_FUNCS[design](LOGOS[corps])
     aw = 3 if slim else 4
-    for img, parts in ((suit, (head, body, arm, leg)), (glow, (eyes, emblem, None, None))):
-        h_, b_, a_, l_ = parts
-        paint_box(img, 0, 0, 8, 8, 8, h_)
-        paint_box(img, 16, 16, 8, 12, 4, b_)
-        if a_:
-            paint_box(img, 40, 16, aw, 12, 4, a_)
-            paint_box(img, 32, 48, aw, 12, 4, a_)
-            paint_box(img, 0, 16, 4, 12, 4, l_)
-            paint_box(img, 16, 48, 4, 12, 4, l_)
-    return suit, glow
+    paint_box(imgs, colors, 0, 0, 8, 8, 8, head)
+    paint_box(imgs, colors, 16, 16, 8, 12, 4, body)
+    paint_box(imgs, colors, 40, 16, aw, 12, 4, arm)
+    paint_box(imgs, colors, 32, 48, aw, 12, 4, arm)
+    paint_box(imgs, colors, 0, 16, 4, 12, 4, leg)
+    paint_box(imgs, colors, 16, 48, 4, 12, 4, leg)
+    return imgs
 
 
-# --- ring worn on the hand (model layer + 32x32 textures) ------------------------------
+def slot_icon(corps, rgb):
+    """16x16 icon for the corps' suit slot in the accessories menu."""
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (16, 16), CLEAR)
+    for y, row in enumerate(LOGOS[corps]):
+        for x, ch in enumerate(row):
+            if ch == "#":
+                img.putpixel((2 + x, 2 + y), p["glow"])
+    return img
+
+
+# --- ring worn on the hand ------------------------------------------------------------------
 
 def ring_model(slim):
-    """A band around the right hand with a face plate on the back of the hand."""
+    """A small signet ring at the knuckles of the right hand (not a bracelet).
+
+    The right arm's outer side is -x; the hand ends at y=10. A thin band shows on
+    the front and back of the hand, with a signet plate and glowing gem on the outside.
+    """
     w = 3 if slim else 4
-    x0 = -2 if slim else -3  # outer edge of the right arm
+    x0 = -2 if slim else -3  # outer side of the right arm
     empty = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {}}
     return {
-        "texture_width": 32,
-        "texture_height": 32,
+        "texture_width": 16,
+        "texture_height": 16,
         "mesh": {
             "head": empty, "hat": empty, "body": empty, "left_arm": empty, "right_leg": empty, "left_leg": empty,
             "right_arm": {
                 "part_pose": {"offset": [-5, 2 if not slim else 2.5, 0], "rotation": [0, 0, 0]},
                 "cubes": [
-                    {"origin": [x0, 7, -2], "dimensions": [w, 1, 4], "texture_offset": [0, 0],
-                     "deformation": [0.35, 0.05, 0.35]},
-                    {"origin": [x0 - 0.9, 6, -1.5], "dimensions": [1, 3, 3], "texture_offset": [0, 8],
-                     "deformation": [0.05, 0.05, 0.05]},
+                    # band across the front and back of the fingers
+                    {"origin": [x0, 8.6, -2.15], "dimensions": [1.4, 0.6, 0.2], "texture_offset": [0, 0]},
+                    {"origin": [x0, 8.6, 1.95], "dimensions": [1.4, 0.6, 0.2], "texture_offset": [0, 0]},
+                    # signet plate on the outside of the hand
+                    {"origin": [x0 - 0.3, 8.2, -1.0], "dimensions": [0.3, 1.4, 2.0], "texture_offset": [0, 4]},
+                    # gem
+                    {"origin": [x0 - 0.5, 8.5, -0.6], "dimensions": [0.2, 0.8, 1.2], "texture_offset": [0, 10]},
                 ],
                 "children": {},
             },
@@ -296,43 +565,27 @@ def ring_model(slim):
 
 
 def ring_textures(corps, rgb):
-    """(band, gem) 32x32 textures for ring_model: band is metal, gem is the glowing face."""
+    """(band, gem) 16x16 textures for ring_model: metal parts and the glowing gem."""
     p = palette(corps, rgb)
-    band = Image.new("RGBA", (32, 32), CLEAR)
-    gem = Image.new("RGBA", (32, 32), CLEAR)
-    metal, metal_dark = (120, 124, 130, 255), (78, 82, 88, 255)
-    if corps == "white":
-        metal, metal_dark = (225, 228, 235, 255), (180, 185, 195, 255)
-    if corps == "black":
-        metal, metal_dark = (50, 52, 58, 255), (30, 31, 35, 255)
-    for x in range(16):  # band box: 4 wide, 1 tall, 4 deep -> region 16x5
-        for y in range(5):
-            band.putpixel((x, y), metal if (x + y) % 3 else metal_dark)
-    for x in range(16):
-        if x % 4 == 1:
-            gem.putpixel((x, 4), p["glow"])  # light strips on the band
-    # face plate box: 1 wide, 3 tall, 3 deep -> its side faces sit at y 11..13
-    for x in range(8):
-        for y in range(8, 14):
-            band.putpixel((x, y), metal_dark)
-    for x in range(8):
-        for y in range(11, 14):
-            gem.putpixel((x, y), WHITE if y == 12 and x in (1, 5) else p["glow"])
+    band = Image.new("RGBA", (16, 16), CLEAR)
+    gem = Image.new("RGBA", (16, 16), CLEAR)
+    for y in range(10):
+        for x in range(16):
+            band.putpixel((x, y), p["metal"] if (x + y) % 3 else p["metal_dark"])
+    for y in range(10, 16):
+        for x in range(16):
+            gem.putpixel((x, y), p["glow"])
     return band, gem
 
 
-# --- items -----------------------------------------------------------------------------
+# --- items ---
 
 def ring_item(corps, rgb):
     """32x32 inventory icon: a chunky band with an octagonal face showing the corps logo."""
     p = palette(corps, rgb)
     img = Image.new("RGBA", (32, 32), CLEAR)
     d = ImageDraw.Draw(img)
-    metal, metal_dark, metal_light = (110, 114, 122, 255), (60, 63, 70, 255), (160, 164, 172, 255)
-    if corps == "white":
-        metal, metal_dark, metal_light = (220, 224, 232, 255), (165, 170, 182, 255), (255, 255, 255, 255)
-    if corps == "black":
-        metal, metal_dark, metal_light = (48, 50, 56, 255), (24, 25, 28, 255), (90, 92, 100, 255)
+    metal, metal_dark, metal_light = p["metal"], p["metal_dark"], shade(p["metal"][:3], 1.3)
     # band (seen at an angle) with light strips
     d.ellipse((3, 14, 28, 30), fill=metal_dark)
     d.ellipse((5, 15, 26, 29), fill=metal)
@@ -352,21 +605,30 @@ def ring_item(corps, rgb):
     return img
 
 
+# --- power battery lantern ---------------------------------------------------------------
+
 def battery_textures(corps, rgb):
-    """16x16 textures for the lantern block: stone, glowing core with logo, light beam."""
+    """16x16 block textures: stone body, metal frame, glowing lens and the logo plate."""
     p = palette(corps, rgb)
+    base = {"white": (206, 210, 218), "black": (30, 31, 36)}.get(corps, tuple(int(36 + v * 0.12) for v in rgb))
     stone = Image.new("RGBA", (16, 16))
-    base = (64, 66, 72) if corps != "white" else (200, 204, 212)
-    if corps == "black":
-        base = (34, 35, 40)
     for y in range(16):
         for x in range(16):
             n = ((x * 7 + y * 13) ^ (x * y)) % 5
-            edge = x in (0, 15) or y in (0, 15)
-            c = tuple(max(0, v - 18) if edge else v - 6 + n * 4 for v in base)
+            seam = y % 8 == 7 or (x + (y // 8) * 4) % 8 == 0  # brick-like blocks
+            c = tuple(max(0, v - 16) if seam else v - 6 + n * 4 for v in base)
             stone.putpixel((x, y), c + (255,))
-    for x in range(2, 14):  # glowing seam
-        stone.putpixel((x, 12), p["glow"])
+    for x in range(16):
+        stone.putpixel((x, 3), p["glow"] if x % 4 else stone.getpixel((x, 3)))  # glowing seam
+    metal = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            metal.putpixel((x, y), p["metal"] if (x + y) % 4 else p["metal_dark"])
+    lens = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            r = ((x - 7.5) ** 2 + (y - 7.5) ** 2) ** 0.5
+            lens.putpixel((x, y), p["glow"] if r < 2.5 else (p["light"] if r < 5 else (p["main"] if r < 7 else p["dark"])))
     core = Image.new("RGBA", (16, 16), p["disc"])
     d = ImageDraw.Draw(core)
     d.ellipse((0, 0, 15, 15), outline=p["main"], width=1)
@@ -374,38 +636,59 @@ def battery_textures(corps, rgb):
         for x, ch in enumerate(row):
             if ch == "#":
                 core.putpixel((2 + x, 2 + y), p["glow"])
-    light = Image.new("RGBA", (16, 16))
-    for y in range(16):
-        for x in range(16):
-            light.putpixel((x, y), p["glow"] if 4 <= x <= 11 else p["main"])
-    return stone, core, light
+    return {"stone": stone, "metal": metal, "lens": lens, "core": core}
 
 
 def battery_model(corps):
-    """A stone shrine with four pillars, a glowing logo core and a beam of light."""
-    ns = "greenlantern"
-    t = lambda name: f"{ns}:block/{corps}_battery_{name}"  # noqa: E731
+    """The lantern from the reference art: a round stone body on a pedestal, a big glowing
+    lens on the front, logo plates on the sides, a carrying arch and a glowing core column."""
+    t = lambda name: f"greenlantern:block/{corps}_battery_{name}"  # noqa: E731
+    bright = {"block_light": 15, "sky_light": 15}
 
-    def cube(frm, to, tex, faces=("north", "south", "east", "west", "up", "down")):
-        return {"from": frm, "to": to, "faces": {f: {"texture": f"#{tex}"} for f in faces}}
+    def cube(frm, to, tex, faces=("north", "south", "east", "west", "up", "down"), glow=False):
+        e = {"from": frm, "to": to, "faces": {f: {"texture": f"#{tex}"} for f in faces}}
+        if tex in ("lens", "core"):  # show the whole picture on each face, not a slice of it
+            for face in e["faces"].values():
+                face["uv"] = [0, 0, 16, 16]
+        if glow:
+            e["shade"] = False
+            e["forge_data"] = bright
+        return e
 
     elements = [
-        cube([1, 0, 1], [15, 3, 15], "stone"),
-        cube([3, 3, 3], [13, 4, 13], "stone"),
-    ]
-    for x, z in ((1, 1), (12, 1), (1, 12), (12, 12)):
-        elements.append(cube([x, 3, z], [x + 3, 13, z + 3], "stone"))
-        elements.append(cube([x + 1, 13, z + 1], [x + 2, 15, z + 2], "light"))
-    elements += [
-        cube([4, 5, 4], [12, 12, 12], "core", ("north", "south", "east", "west")),
-        cube([4, 5, 4], [12, 12, 12], "light", ("up", "down")),
-        cube([7, 4, 7], [9, 5, 9], "light"),
-        cube([7, 12, 7], [9, 16, 9], "light"),
+        # pedestal
+        cube([3, 0, 3], [13, 1, 13], "stone"),
+        cube([4, 1, 4], [12, 2, 12], "stone"),
+        # rounded body: two crossed boxes plus a core
+        cube([3, 2, 4], [13, 11, 12], "stone"),
+        cube([4, 2, 3], [12, 11, 13], "stone"),
+        cube([4, 11, 4], [12, 12, 12], "stone"),
+        # front lens with a metal rim
+        cube([4, 3, 2.5], [12, 10, 3], "metal"),
+        cube([5, 4, 2], [11, 9, 2.5], "lens", glow=True),
+        # back lens
+        cube([5, 4, 13], [11, 9, 13.5], "lens", glow=True),
+        # logo plates on both sides
+        cube([12.8, 4, 5], [13.4, 10, 11], "core", ("east", "west", "north", "south", "up", "down"), glow=True),
+        cube([2.6, 4, 5], [3.2, 10, 11], "core", ("east", "west", "north", "south", "up", "down"), glow=True),
+        # glowing core column and cap
+        cube([7, 12, 7], [9, 14, 9], "lens", glow=True),
+        cube([5.5, 14, 5.5], [10.5, 15, 10.5], "metal"),
+        # carrying arch over the top
+        cube([1.5, 10.5, 7], [2.5, 13, 9], "metal"),
+        cube([2.5, 10.5, 7], [3, 11.5, 9], "metal"),
+        cube([2, 13, 7], [4, 14.5, 9], "metal"),
+        cube([4, 14.5, 7], [12, 15.5, 9], "metal"),
+        cube([12, 13, 7], [14, 14.5, 9], "metal"),
+        cube([13.5, 10.5, 7], [14.5, 13, 9], "metal"),
+        cube([13, 10.5, 7], [13.5, 11.5, 9], "metal"),
+        cube([6.5, 15.5, 6.5], [9.5, 16, 9.5], "stone"),
     ]
     return {
         "parent": "minecraft:block/block",
         "render_type": "minecraft:cutout",
-        "textures": {"particle": t("stone"), "stone": t("stone"), "core": t("core"), "light": t("light")},
+        "textures": {"particle": t("stone"), "stone": t("stone"), "metal": t("metal"), "lens": t("lens"),
+                     "core": t("core")},
         "elements": elements,
     }
 
