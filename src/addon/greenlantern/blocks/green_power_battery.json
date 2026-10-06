@@ -1,0 +1,8 @@
+{
+  "sound_type": "minecraft:lantern",
+  "destroy_time": 2.0,
+  "explosion_resistance": 6.0,
+  "no_occlusion": true,
+  "render_type": "cutout",
+  "register_item": false
+}

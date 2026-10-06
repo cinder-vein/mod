@@ -6,15 +6,15 @@
   "tooltip": [
     {
       "translate": "item.greenlantern.red_lantern_ring.tooltip",
-      "color": "#D71E23",
+      "color": "#DC1E23",
       "italic": true
     },
     {
-      "translate": "power.greenlantern.tooltip.hold",
+      "translate": "tooltip.greenlantern.ring.hold",
       "color": "gray"
     },
     {
-      "translate": "power.greenlantern.tooltip.suit",
+      "translate": "tooltip.greenlantern.ring.tree",
       "color": "gray"
     }
   ]

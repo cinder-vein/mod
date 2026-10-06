@@ -89,10 +89,6 @@ def validate():
         model = SRC / "assets" / NS / "models" / "item" / path.name
         if not model.exists():
             err(f"{path.name}: missing item model")
-        else:
-            for tex in load(model).get("textures", {}).values():
-                ns, _, p = tex.partition(":")
-                check_ref("texture", f"{ns}:textures/{p}.png", model.name)
         tabs = item.get("creative_mode_tab", [])
         for tab in tabs if isinstance(tabs, list) else [tabs]:
             check_ref("creative_tab", tab if isinstance(tab, str) else tab["tab"], rl)
@@ -123,6 +119,11 @@ def validate():
                 check_ref("render_layer", ab["render_layer"], w)
             if "energy_beam" in ab:
                 check_ref("energy_beam", ab["energy_beam"], w)
+            if ab.get("type") == "palladium:command" and "commands" not in ab:
+                err(f"{w}: command ability must set 'commands' (Palladium defaults to 'say Hello World')")
+            if ab.get("type") == "palladium:skin_change":
+                for t in ab["texture"].values() if isinstance(ab["texture"], dict) else [ab["texture"]]:
+                    check_ref("texture", t, w)
             if "trail" in ab:
                 check_ref("trail", ab["trail"], w)
             if ab.get("type") == "palladium:ability_wheel":
@@ -168,6 +169,38 @@ def validate():
         tex = load(path)["texture"]
         for t in tex.values() if isinstance(tex, dict) else [tex]:
             check_ref("texture", t, path.name)
+
+    for path in (SRC / "assets" / NS / "blockstates").glob("*.json"):
+        if not (SRC / "addon" / NS / "blocks" / path.name).exists():
+            err(f"blockstate {path.name}: no matching block")
+        for variant in load(path)["variants"].values():
+            ns, _, p = variant["model"].partition(":")
+            if not (SRC / "assets" / ns / "models" / f"{p}.json").exists():
+                err(f"blockstate {path.name}: missing model {variant['model']}")
+    for path in (SRC / "addon" / NS / "blocks").glob("*.json"):
+        if not (SRC / "assets" / NS / "blockstates" / path.name).exists():
+            err(f"block {path.stem}: missing blockstate")
+        if not (SRC / "data" / NS / "loot_tables" / "blocks" / path.name).exists():
+            err(f"block {path.stem}: missing loot table")
+        if f"block.{NS}.{path.stem}" not in lang:
+            err(f"block {path.stem}: missing translation")
+    for path in (SRC / "assets" / NS / "models").rglob("*.json"):
+        model = load(path)
+        parent = model.get("parent", "")
+        if parent.startswith(NS + ":") and not (SRC / "assets" / NS / "models" / f"{parent.split(':')[1]}.json").exists():
+            err(f"model {path.name}: missing parent {parent}")
+        for tex in model.get("textures", {}).values():
+            if not tex.startswith("#"):
+                ns, _, p = tex.partition(":")
+                check_ref("texture", f"{ns}:textures/{p}.png", path.name)
+    for path in (SRC / "assets" / NS / "palladium" / "render_layers").glob("*.json"):
+        layer = load(path)
+        ml = layer.get("model_layer")
+        for m in (ml.values() if isinstance(ml, dict) else [ml] if ml else []):
+            ns, _, rest = m.partition(":")
+            model, _, layer_name = rest.partition("#")
+            if ns == NS and not (SRC / "assets" / ns / "palladium" / "model_layers" / layer_name / f"{model}.json").exists():
+                err(f"{path.name}: missing model layer {m}")
 
     for path in (SRC / "data" / NS / "recipes").glob("*.json"):
         recipe = load(path)

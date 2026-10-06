@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "greenlantern:item/indigo_power_battery"
-  }
+  "parent": "greenlantern:block/indigo_power_battery"
 }

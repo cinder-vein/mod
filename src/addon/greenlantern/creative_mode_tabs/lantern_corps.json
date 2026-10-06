@@ -11,11 +11,13 @@
     "greenlantern:orange_power_battery",
     "greenlantern:blue_lantern_ring",
     "greenlantern:blue_power_battery",
-    "greenlantern:indigo_lantern_ring",
-    "greenlantern:indigo_power_battery",
     "greenlantern:violet_lantern_ring",
     "greenlantern:violet_power_battery",
+    "greenlantern:indigo_lantern_ring",
+    "greenlantern:indigo_power_battery",
     "greenlantern:white_lantern_ring",
-    "greenlantern:white_power_battery"
+    "greenlantern:white_power_battery",
+    "greenlantern:black_lantern_ring",
+    "greenlantern:black_power_battery"
   ]
 }

@@ -10,11 +10,11 @@
       "italic": true
     },
     {
-      "translate": "power.greenlantern.tooltip.hold",
+      "translate": "tooltip.greenlantern.ring.hold",
       "color": "gray"
     },
     {
-      "translate": "power.greenlantern.tooltip.suit",
+      "translate": "tooltip.greenlantern.ring.tree",
       "color": "gray"
     }
   ]

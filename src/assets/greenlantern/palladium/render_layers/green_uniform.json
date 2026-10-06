@@ -1,7 +1,0 @@
-{
-  "type": "palladium:skin_overlay",
-  "texture": {
-    "normal": "greenlantern:textures/models/green_uniform.png",
-    "slim": "greenlantern:textures/models/green_uniform_slim.png"
-  }
-}

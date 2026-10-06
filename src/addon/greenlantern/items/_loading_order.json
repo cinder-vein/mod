@@ -9,10 +9,12 @@
   "orange_power_battery",
   "blue_lantern_ring",
   "blue_power_battery",
-  "indigo_lantern_ring",
-  "indigo_power_battery",
   "violet_lantern_ring",
   "violet_power_battery",
+  "indigo_lantern_ring",
+  "indigo_power_battery",
   "white_lantern_ring",
-  "white_power_battery"
+  "white_power_battery",
+  "black_lantern_ring",
+  "black_power_battery"
 ]

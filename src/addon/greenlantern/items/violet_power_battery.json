@@ -1,15 +1,16 @@
 {
+  "type": "palladium:block_item",
+  "block": "greenlantern:violet_power_battery",
   "max_stack_size": 1,
   "rarity": "rare",
-  "is_fire_resistant": true,
   "creative_mode_tab": "greenlantern:lantern_corps",
   "tooltip": [
     {
-      "translate": "item.greenlantern.battery.tooltip.1",
+      "translate": "tooltip.greenlantern.battery.1",
       "color": "gray"
     },
     {
-      "translate": "item.greenlantern.battery.tooltip.2",
+      "translate": "tooltip.greenlantern.battery.2",
       "color": "gray"
     }
   ]

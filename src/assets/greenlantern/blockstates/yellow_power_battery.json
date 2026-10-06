@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "greenlantern:block/yellow_power_battery"
+    }
+  }
+}

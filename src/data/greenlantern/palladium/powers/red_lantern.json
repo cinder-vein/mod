@@ -4,40 +4,53 @@
   },
   "icon": "greenlantern:red_lantern_ring",
   "background": "minecraft:textures/block/black_concrete.png",
+  "gui_display_type": "tree",
+  "primary_color": "#DC1E23",
+  "secondary_color": "#580C0E",
+  "persistent_data": true,
   "energy_bars": {
     "ring_charge": {
-      "max": 1000,
+      "max": {
+        "type": "score",
+        "objective": "glmax_red",
+        "fallback": 1000
+      },
       "auto_increase_per_tick": 1,
       "auto_increase_interval": 10,
-      "color": "#D71E23"
+      "color": "#DC1E23"
     }
   },
   "abilities": {
     "uniform": {
-      "title": {
-        "translate": "ability.greenlantern.uniform"
-      },
       "type": "palladium:dummy",
       "bar_color": "white",
-      "conditions": {
-        "enabling": {
-          "type": "palladium:toggle",
-          "cooldown": 20
-        }
+      "list_index": 4,
+      "title": {
+        "translate": "ability.greenlantern.uniform"
       },
       "description": {
         "translate": "ability.greenlantern.uniform.description"
       },
       "icon": "greenlantern:red_lantern_ring",
-      "list_index": 0
+      "gui_position": [
+        0,
+        0
+      ],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
     },
     "suit_up_burst": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "particle minecraft:dust 0.84 0.12 0.14 2.0 ~ ~1 ~ 0.4 1.0 0.4 0 120 force",
+        "particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 0.4 1.0 0.4 0 120 force",
         "particle minecraft:flash ~ ~1 ~ 0 0 0 0 1 force",
         "playsound minecraft:block.beacon.activate player @a[distance=..24] ~ ~ ~ 1 1.4"
       ],
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -47,9 +60,14 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "uniform_layer": {
-      "type": "palladium:render_layer",
-      "render_layer": "greenlantern:red_uniform",
+    "uniform_skin": {
+      "type": "palladium:skin_change",
+      "model_type": "keep",
+      "priority": 60,
+      "texture": {
+        "normal": "greenlantern:textures/models/uniform/red.png",
+        "slim": "greenlantern:textures/models/uniform/red_slim.png"
+      },
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -59,7 +77,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "uniform_glow_layer": {
+    "uniform_glow": {
       "type": "palladium:render_layer",
       "render_layer": "greenlantern:red_uniform_glow",
       "conditions": {
@@ -71,13 +89,25 @@
       "hidden": true,
       "hidden_in_bar": true
     },
+    "ring_band": {
+      "type": "palladium:render_layer",
+      "render_layer": "greenlantern:red_ring_band",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "ring_gem": {
+      "type": "palladium:render_layer",
+      "render_layer": "greenlantern:red_ring_gem",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
     "ring_aura": {
       "type": "palladium:particles",
       "emitter": [
         "greenlantern:ring_hand"
       ],
       "particle_type": "minecraft:dust",
-      "options": "0.84 0.12 0.14 0.8",
+      "options": "0.86 0.12 0.14 0.8",
       "conditions": {
         "enabling": [
           {
@@ -94,89 +124,76 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "ring_protection": {
-      "title": {
-        "translate": "ability.greenlantern.ring_protection"
-      },
-      "type": "palladium:damage_immunity",
-      "hidden_in_bar": true,
-      "damage_sources": [
-        "minecraft:is_drowning",
-        "minecraft:is_fall",
-        "minecraft:is_freezing"
-      ],
+    "ring_health": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 60,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000001",
       "conditions": {
         "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.ring_protection.description"
-      },
-      "icon": "minecraft:turtle_helmet"
+      "hidden": true,
+      "hidden_in_bar": true
     },
-    "construct_armor": {
+    "ring_armor": {
       "type": "palladium:attribute_modifier",
       "attribute": "minecraft:generic.armor",
-      "amount": 8,
+      "amount": 20,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0a11",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000002",
       "conditions": {
         "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
         }
       },
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_toughness": {
+    "ring_toughness": {
       "type": "palladium:attribute_modifier",
       "attribute": "minecraft:generic.armor_toughness",
-      "amount": 4,
+      "amount": 12,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0a22",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000003",
       "conditions": {
         "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
         }
       },
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_fists": {
-      "title": {
-        "translate": "ability.greenlantern.construct_fists"
-      },
+    "ring_knockback": {
       "type": "palladium:attribute_modifier",
-      "hidden_in_bar": true,
-      "attribute": "palladium:punch_damage",
-      "amount": 5,
+      "attribute": "minecraft:generic.knockback_resistance",
+      "amount": 0.4,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0a33",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000004",
       "conditions": {
         "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 1
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.construct_fists.description"
-      },
-      "icon": "minecraft:iron_ingot"
+      "hidden": true,
+      "hidden_in_bar": true
     },
-    "flight": {
-      "title": {
-        "translate": "ability.greenlantern.flight"
-      },
+    "suit_fists": {
       "type": "palladium:attribute_modifier",
-      "hidden_in_bar": true,
-      "attribute": "palladium:flight_speed",
-      "amount": 1.0,
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0b11",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000005",
       "conditions": {
         "unlocking": [
           {
@@ -190,22 +207,439 @@
           }
         ]
       },
-      "description": {
-        "translate": "ability.greenlantern.flight.description"
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "ring_protection": {
+      "type": "palladium:damage_immunity",
+      "damage_sources": [
+        "minecraft:is_drowning",
+        "minecraft:is_fall",
+        "minecraft:is_freezing"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_enabled",
+          "ability": "uniform"
+        }
       },
-      "icon": "minecraft:feather"
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_health_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_health_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_health_1.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        0
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "skill_health_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_health_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_health_2.description"
+      },
+      "icon": "minecraft:enchanted_golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -4,
+        0
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_health_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "health_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000006",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_health_1"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "health_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000007",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_health_2"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_combat_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_combat_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_combat_1.description"
+      },
+      "icon": "minecraft:iron_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        0
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "skill_combat_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_combat_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_combat_2.description"
+      },
+      "icon": "minecraft:netherite_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        0
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "combat_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000008",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_1"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "combat_1_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-000000000009",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_1"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "combat_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-00000000000a",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_2"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "combat_2_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-00000000000b",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_2"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_charge_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_charge_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_charge_1.description"
+      },
+      "icon": "minecraft:glowstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "skill_charge_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_charge_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_charge_2.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_charge_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "charge_1_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glmax_red dummy",
+        "scoreboard players set @s glmax_red 1500"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_charge_1"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "ability": "skill_charge_2"
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "charge_2_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glmax_red dummy",
+        "scoreboard players set @s glmax_red 2000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_charge_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_flight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_flight"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_flight.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        -2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.0,
+      "operation": 0,
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-00000000000c",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "flight_flexibility": {
       "type": "palladium:attribute_modifier",
       "attribute": "palladium:flight_flexibility",
       "amount": 5,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0b22",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-00000000000d",
       "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "flight"
-        }
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
@@ -215,12 +649,23 @@
       "attribute": "palladium:heroic_flight_type",
       "amount": 1,
       "operation": 0,
-      "uuid": "6c7a0002-1a2b-4c3d-8e4f-5a6b7c8d0b33",
+      "uuid": "6c7a0002-1a2b-4c3d-8e4f-00000000000e",
       "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "flight"
-        }
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 1
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
@@ -231,8 +676,12 @@
       "conditions": {
         "enabling": [
           {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
             "type": "palladium:ability_unlocked",
-            "ability": "flight"
+            "ability": "skill_flight"
           },
           {
             "type": "palladium:is_flying"
@@ -248,12 +697,16 @@
         "greenlantern:flight_aura"
       ],
       "particle_type": "minecraft:dust",
-      "options": "0.84 0.12 0.14 1.2",
+      "options": "0.86 0.12 0.14 1.2",
       "conditions": {
         "enabling": [
           {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
             "type": "palladium:ability_unlocked",
-            "ability": "flight"
+            "ability": "skill_flight"
           },
           {
             "type": "palladium:is_flying"
@@ -272,7 +725,15 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:is_hovering_or_flying"
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:is_flying"
           },
           {
             "type": "palladium:interval",
@@ -285,11 +746,7 @@
       "hidden_in_bar": true
     },
     "beam": {
-      "title": {
-        "translate": "ability.greenlantern.red.beam"
-      },
       "type": "palladium:energy_beam",
-      "bar_color": "white",
       "energy_beam": "greenlantern:red_beam",
       "damage": 2.0,
       "max_distance": 40.0,
@@ -314,11 +771,14 @@
           "type": "palladium:held"
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.red.beam.description"
+      "title": {
+        "translate": "ability.greenlantern.red.beam"
       },
       "icon": "minecraft:blaze_rod",
-      "list_index": 1
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 0
     },
     "beam_sound": {
       "type": "palladium:play_sound",
@@ -334,12 +794,116 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "constructs": {
+    "skill_constructs": {
+      "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.constructs"
+        "translate": "ability.greenlantern.skill_constructs"
       },
+      "description": {
+        "translate": "ability.greenlantern.skill_constructs.description"
+      },
+      "icon": "minecraft:emerald",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        -2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "skill_fist": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_fist"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_fist.description"
+      },
+      "icon": "minecraft:iron_block",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -4,
+        -2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_cage": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_cage"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_cage.description"
+      },
+      "icon": "minecraft:iron_bars",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -4,
+        -4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_fist"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "skill_slam": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_slam"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_slam.description"
+      },
+      "icon": "minecraft:anvil",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        -4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 12
+          }
+        ]
+      }
+    },
+    "constructs": {
       "type": "palladium:ability_wheel",
-      "bar_color": "white",
       "abilities": [
         "construct_blast",
         "construct_fist",
@@ -347,26 +911,31 @@
         "construct_slam"
       ],
       "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
-        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          }
+        ],
         "enabling": {
           "type": "palladium:held"
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.constructs.description"
+      "title": {
+        "translate": "ability.greenlantern.constructs"
       },
       "icon": "minecraft:emerald",
-      "list_index": 2
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1
     },
     "construct_blast": {
-      "title": {
-        "translate": "ability.greenlantern.construct_blast"
-      },
       "type": "palladium:projectile",
-      "hidden_in_bar": true,
       "entity_type": "palladium:custom_projectile",
       "velocity": 2.5,
       "inaccuracy": 0.0,
@@ -381,7 +950,7 @@
           {
             "Type": "laser",
             "Thickness": 0.15,
-            "Color": "#D71E23"
+            "Color": "#DC1E23"
           },
           {
             "Type": "particles",
@@ -390,15 +959,15 @@
           }
         ]
       },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 40
-      },
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
           },
           {
             "type": "palladium:energy_bar",
@@ -411,10 +980,17 @@
           "cooldown": 15
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.construct_blast.description"
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 40
       },
-      "icon": "minecraft:arrow"
+      "title": {
+        "translate": "ability.greenlantern.construct_blast"
+      },
+      "icon": "minecraft:arrow",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "construct_blast_sound": {
       "type": "palladium:play_sound",
@@ -430,26 +1006,24 @@
       "hidden_in_bar": true
     },
     "construct_fist": {
-      "title": {
-        "translate": "ability.greenlantern.construct_fist"
-      },
       "type": "palladium:command",
       "first_tick_commands": [
-        "execute anchored eyes positioned ^ ^ ^3 run particle minecraft:dust 0.84 0.12 0.14 2.5 ~ ~ ~ 0.8 0.8 0.8 0 60 force",
-        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run damage @s 10 minecraft:player_attack",
+        "execute anchored eyes positioned ^ ^ ^3 run particle minecraft:dust 0.86 0.12 0.14 2.5 ~ ~ ~ 0.8 0.8 0.8 0 60 force",
+        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run damage @s 12 minecraft:player_attack",
         "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run effect give @s minecraft:levitation 1 3 true",
         "playsound minecraft:entity.iron_golem.attack player @a[distance=..24] ~ ~ ~ 1 0.6"
       ],
-      "hidden_in_bar": true,
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 100
-      },
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_fist"
           },
           {
             "type": "palladium:energy_bar",
@@ -462,33 +1036,38 @@
           "cooldown": 60
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.construct_fist.description"
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 100
       },
-      "icon": "minecraft:iron_block"
+      "title": {
+        "translate": "ability.greenlantern.construct_fist"
+      },
+      "icon": "minecraft:iron_block",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "construct_cage": {
-      "title": {
-        "translate": "ability.greenlantern.construct_cage"
-      },
       "type": "palladium:command",
       "first_tick_commands": [
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] at @s run particle minecraft:dust 0.84 0.12 0.14 2.0 ~ ~1 ~ 0.6 1.0 0.6 0 120 force",
+        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] at @s run particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 0.6 1.0 0.6 0 120 force",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:slowness 6 6 true",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:weakness 6 2 true",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:glowing 6 0 true",
         "playsound minecraft:block.amethyst_block.resonate player @a[distance=..24] ~ ~ ~ 1 0.8"
       ],
-      "hidden_in_bar": true,
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 150
-      },
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_cage"
           },
           {
             "type": "palladium:energy_bar",
@@ -501,32 +1080,37 @@
           "cooldown": 100
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.construct_cage.description"
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 150
       },
-      "icon": "minecraft:iron_bars"
+      "title": {
+        "translate": "ability.greenlantern.construct_cage"
+      },
+      "icon": "minecraft:iron_bars",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "construct_slam": {
-      "title": {
-        "translate": "ability.greenlantern.construct_slam"
-      },
       "type": "palladium:command",
       "first_tick_commands": [
-        "particle minecraft:dust 0.84 0.12 0.14 2.5 ~ ~0.2 ~ 3 0.2 3 0 200 force",
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] run damage @s 6 minecraft:player_attack",
+        "particle minecraft:dust 0.86 0.12 0.14 2.5 ~ ~0.2 ~ 3 0.2 3 0 200 force",
+        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] run damage @s 8 minecraft:player_attack",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] minecraft:levitation 1 5 true",
         "playsound minecraft:entity.generic.explode player @a[distance=..24] ~ ~ ~ 1 1.2"
       ],
-      "hidden_in_bar": true,
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 120
-      },
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_slam"
           },
           {
             "type": "palladium:energy_bar",
@@ -539,17 +1123,47 @@
           "cooldown": 80
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.construct_slam.description"
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 120
       },
-      "icon": "minecraft:anvil"
+      "title": {
+        "translate": "ability.greenlantern.construct_slam"
+      },
+      "icon": "minecraft:anvil",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_force_field": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_force_field"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_force_field.description"
+      },
+      "icon": "minecraft:shield",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
     },
     "force_field": {
-      "title": {
-        "translate": "ability.greenlantern.force_field"
-      },
       "type": "palladium:damage_immunity",
-      "bar_color": "white",
       "damage_sources": [
         "minecraft:is_projectile",
         "minecraft:is_explosion",
@@ -566,6 +1180,10 @@
             "ability": "uniform"
           },
           {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_force_field"
+          },
+          {
             "type": "palladium:energy_bar",
             "energy_bar": "ring_charge",
             "min": 2
@@ -575,16 +1193,19 @@
           "type": "palladium:toggle"
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.force_field.description"
+      "title": {
+        "translate": "ability.greenlantern.force_field"
       },
       "icon": "minecraft:shield",
-      "list_index": 3
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2
     },
     "force_field_glow": {
       "type": "palladium:entity_glow",
       "mode": "self",
-      "color": "#D71E23",
+      "color": "#DC1E23",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -594,42 +1215,11 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "ring_light": {
-      "title": {
-        "translate": "ability.greenlantern.ring_light"
-      },
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "effect give @s minecraft:night_vision infinite 0 true"
-      ],
-      "last_tick_commands": [
-        "effect clear @s minecraft:night_vision"
-      ],
-      "bar_color": "white",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "uniform"
-        },
-        "enabling": {
-          "type": "palladium:toggle"
-        }
-      },
-      "description": {
-        "translate": "ability.greenlantern.ring_light.description"
-      },
-      "icon": "minecraft:glowstone_dust",
-      "list_index": 4
-    },
     "recharge": {
-      "title": {
-        "translate": "ability.greenlantern.recharge"
-      },
       "type": "palladium:dummy",
-      "bar_color": "white",
       "energy_bar_usage": {
         "energy_bar": "ring_charge",
-        "amount": -10
+        "amount": -1000000
       },
       "conditions": {
         "unlocking": {
@@ -640,24 +1230,31 @@
           "slot": "mainhand"
         },
         "enabling": {
-          "type": "palladium:held"
+          "type": "palladium:action",
+          "cooldown": 40
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.recharge.description"
+      "title": {
+        "translate": "ability.greenlantern.recharge"
       },
       "icon": "greenlantern:red_power_battery",
-      "list_index": 5
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3
     },
     "oath": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "tellraw @a[distance=..24] [{\"selector\":\"@s\",\"color\":\"#D71E23\"},{\"text\":\": \",\"color\":\"gray\"},{\"translate\":\"oath.greenlantern.red.1\",\"color\":\"#D71E23\",\"italic\":true}]",
-        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.2\",\"color\":\"#D71E23\",\"italic\":true}]",
-        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.3\",\"color\":\"#D71E23\",\"italic\":true}]",
-        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.4\",\"color\":\"#D71E23\",\"italic\":true}]",
+        "tellraw @a[distance=..24] [{\"selector\":\"@s\",\"color\":\"#DC1E23\"},{\"text\":\": \",\"color\":\"gray\"},{\"translate\":\"oath.greenlantern.red.1\",\"color\":\"#DC1E23\",\"italic\":true}]",
+        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.2\",\"color\":\"#DC1E23\",\"italic\":true}]",
+        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.3\",\"color\":\"#DC1E23\",\"italic\":true}]",
+        "tellraw @a[distance=..24] [{\"text\":\"   \"},{\"translate\":\"oath.greenlantern.red.4\",\"color\":\"#DC1E23\",\"italic\":true}]",
+        "particle minecraft:dust 0.86 0.12 0.14 1.5 ~ ~1 ~ 0.6 1 0.6 0 80 force",
         "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.2"
       ],
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",
@@ -667,26 +1264,62 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "recharge_sound": {
-      "type": "palladium:play_sound",
-      "sound": "minecraft:block.conduit.ambient",
-      "pitch": 1.2,
-      "looping": true,
+    "ring_light": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:night_vision infinite 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "effect clear @s minecraft:night_vision"
+      ],
       "conditions": {
-        "enabling": {
+        "unlocking": {
           "type": "palladium:ability_enabled",
-          "ability": "recharge"
+          "ability": "uniform"
+        },
+        "enabling": {
+          "type": "palladium:toggle"
         }
       },
+      "title": {
+        "translate": "ability.greenlantern.ring_light"
+      },
+      "icon": "minecraft:glowstone_dust",
+      "bar_color": "white",
       "hidden": true,
-      "hidden_in_bar": true
+      "hidden_in_bar": false,
+      "list_index": 5
+    },
+    "skill_napalm": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.red.skill_napalm"
+      },
+      "description": {
+        "translate": "ability.greenlantern.red.skill_napalm.description"
+      },
+      "icon": "minecraft:fire_charge",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        -2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "uniform"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
     },
     "napalm": {
-      "title": {
-        "translate": "ability.greenlantern.red.napalm"
-      },
       "type": "palladium:energy_beam",
-      "bar_color": "white",
       "energy_beam": "greenlantern:red_napalm",
       "damage": 3.0,
       "max_distance": 16.0,
@@ -703,6 +1336,10 @@
             "ability": "uniform"
           },
           {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_napalm"
+          },
+          {
             "type": "palladium:energy_bar",
             "energy_bar": "ring_charge",
             "min": 4
@@ -712,27 +1349,54 @@
           "type": "palladium:held"
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.red.napalm.description"
+      "title": {
+        "translate": "ability.greenlantern.red.napalm"
       },
       "icon": "minecraft:fire_charge",
-      "list_index": 7
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 6
+    },
+    "skill_rage": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.red.skill_rage"
+      },
+      "description": {
+        "translate": "ability.greenlantern.red.skill_rage.description"
+      },
+      "icon": "minecraft:redstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        -2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_napalm"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 12
+          }
+        ]
+      }
     },
     "rage": {
-      "title": {
-        "translate": "ability.greenlantern.red.rage"
-      },
       "type": "palladium:command",
       "first_tick_commands": [
         "effect give @s minecraft:strength infinite 1 true",
         "effect give @s minecraft:speed infinite 0 true",
         "playsound minecraft:entity.ravager.roar player @a[distance=..24] ~ ~ ~ 1 0.8"
       ],
+      "commands": [],
       "last_tick_commands": [
         "effect clear @s minecraft:strength",
         "effect clear @s minecraft:speed"
       ],
-      "bar_color": "white",
       "energy_bar_usage": {
         "energy_bar": "ring_charge",
         "amount": 2
@@ -744,6 +1408,10 @@
             "ability": "uniform"
           },
           {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rage"
+          },
+          {
             "type": "palladium:energy_bar",
             "energy_bar": "ring_charge",
             "min": 2
@@ -753,34 +1421,62 @@
           "type": "palladium:toggle"
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.red.rage.description"
+      "title": {
+        "translate": "ability.greenlantern.red.rage"
       },
       "icon": "minecraft:redstone",
-      "list_index": 8
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 7
+    },
+    "skill_roar": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.red.skill_roar"
+      },
+      "description": {
+        "translate": "ability.greenlantern.red.skill_roar.description"
+      },
+      "icon": "minecraft:goat_horn",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        -4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rage"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
     },
     "roar": {
-      "title": {
-        "translate": "ability.greenlantern.roar"
-      },
       "type": "palladium:command",
       "first_tick_commands": [
-        "particle minecraft:dust 0.84 0.12 0.14 2.0 ~ ~1 ~ 2 1 2 0 150 force",
+        "particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 2 1 2 0 150 force",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..7] minecraft:levitation 1 2 true",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..7] minecraft:weakness 4 1 true",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..7] minecraft:slowness 4 1 true",
         "playsound minecraft:entity.ender_dragon.growl player @a[distance=..24] ~ ~ ~ 1 1.5"
       ],
-      "bar_color": "white",
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 120
-      },
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_roar"
           },
           {
             "type": "palladium:energy_bar",
@@ -793,35 +1489,70 @@
           "cooldown": 200
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.roar.description"
-      },
-      "icon": "minecraft:goat_horn",
-      "list_index": 6
-    },
-    "blood_rage": {
-      "title": {
-        "translate": "ability.greenlantern.red.blood_rage"
-      },
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "particle minecraft:dust 0.84 0.12 0.14 3.0 ~ ~1 ~ 4 2 4 0 400 force",
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] run damage @s 14 minecraft:player_attack",
-        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] minecraft:wither 6 1 true",
-        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] run particle minecraft:flame ~ ~1 ~ 0.3 0.6 0.3 0.02 30 force",
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] run data merge entity @s {Fire:120s}",
-        "playsound minecraft:entity.blaze.shoot player @a[distance=..24] ~ ~ ~ 1 0.6"
-      ],
-      "bar_color": "white",
       "energy_bar_usage": {
         "energy_bar": "ring_charge",
-        "amount": 600
+        "amount": 120
       },
+      "title": {
+        "translate": "ability.greenlantern.red.roar"
+      },
+      "icon": "minecraft:goat_horn",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8
+    },
+    "skill_blood_rage": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.red.skill_blood_rage"
+      },
+      "description": {
+        "translate": "ability.greenlantern.red.skill_blood_rage.description"
+      },
+      "icon": "minecraft:nether_wart",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        -4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_roar"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_combat_2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "blood_rage": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "particle minecraft:dust 0.86 0.12 0.14 3.0 ~ ~1 ~ 4 2 4 0 400 force",
+        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] run damage @s 16 minecraft:player_attack",
+        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] minecraft:wither 6 1 true",
+        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..8] run particle minecraft:flame ~ ~1 ~ 0.3 0.6 0.3 0.02 30 force",
+        "playsound minecraft:entity.blaze.shoot player @a[distance=..24] ~ ~ ~ 1 0.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_enabled",
             "ability": "uniform"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_blood_rage"
           },
           {
             "type": "palladium:energy_bar",
@@ -834,10 +1565,17 @@
           "cooldown": 1200
         }
       },
-      "description": {
-        "translate": "ability.greenlantern.red.blood_rage.description"
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 600
+      },
+      "title": {
+        "translate": "ability.greenlantern.red.blood_rage"
       },
       "icon": "minecraft:nether_wart",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
       "list_index": 9
     }
   }

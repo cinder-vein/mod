@@ -2,25 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [
-    "GRG",
-    "XLX",
-    "III"
+    "GXG",
+    "SLS",
+    "SSS"
   ],
   "key": {
     "G": {
-      "item": "minecraft:gold_ingot"
-    },
-    "R": {
-      "item": "minecraft:raw_gold_block"
+      "item": "minecraft:orange_stained_glass"
     },
     "X": {
-      "item": "minecraft:orange_stained_glass"
+      "item": "minecraft:raw_gold_block"
     },
     "L": {
       "item": "minecraft:lantern"
     },
-    "I": {
-      "item": "minecraft:iron_ingot"
+    "S": {
+      "item": "minecraft:polished_deepslate"
     }
   },
   "result": {

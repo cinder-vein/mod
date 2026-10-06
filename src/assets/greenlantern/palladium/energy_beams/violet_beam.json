@@ -6,7 +6,7 @@
     -11,
     0
   ],
-  "glow_color": "#C83CD2",
+  "glow_color": "#D737DC",
   "core_color": "#FFFFFF",
   "glow_opacity": 0.9,
   "bloom": 3,
@@ -15,7 +15,7 @@
   "particles": [
     {
       "particle_type": "minecraft:dust",
-      "options": "0.78 0.24 0.82 1.0",
+      "options": "0.84 0.22 0.86 1.0",
       "amount": 2,
       "offset_random": [
         0.2,
