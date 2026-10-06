@@ -7,12 +7,17 @@
     " G "
   ],
   "key": {
-    "X": { "item": "minecraft:emerald_block" },
-    "E": { "item": "minecraft:ender_eye" },
-    "G": { "item": "minecraft:gold_ingot" }
+    "X": {
+      "item": "minecraft:emerald_block"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    }
   },
   "result": {
-    "item": "greenlantern:green_lantern_ring",
-    "count": 1
+    "item": "greenlantern:green_lantern_ring"
   }
 }

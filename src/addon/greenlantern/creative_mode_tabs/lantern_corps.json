@@ -1,0 +1,21 @@
+{
+  "icon": "greenlantern:green_lantern_ring",
+  "items": [
+    "greenlantern:green_lantern_ring",
+    "greenlantern:green_power_battery",
+    "greenlantern:yellow_lantern_ring",
+    "greenlantern:yellow_power_battery",
+    "greenlantern:red_lantern_ring",
+    "greenlantern:red_power_battery",
+    "greenlantern:orange_lantern_ring",
+    "greenlantern:orange_power_battery",
+    "greenlantern:blue_lantern_ring",
+    "greenlantern:blue_power_battery",
+    "greenlantern:indigo_lantern_ring",
+    "greenlantern:indigo_power_battery",
+    "greenlantern:violet_lantern_ring",
+    "greenlantern:violet_power_battery",
+    "greenlantern:white_lantern_ring",
+    "greenlantern:white_power_battery"
+  ]
+}

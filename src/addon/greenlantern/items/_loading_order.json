@@ -1,4 +1,18 @@
 [
   "green_lantern_ring",
-  "power_battery"
+  "green_power_battery",
+  "yellow_lantern_ring",
+  "yellow_power_battery",
+  "red_lantern_ring",
+  "red_power_battery",
+  "orange_lantern_ring",
+  "orange_power_battery",
+  "blue_lantern_ring",
+  "blue_power_battery",
+  "indigo_lantern_ring",
+  "indigo_power_battery",
+  "violet_lantern_ring",
+  "violet_power_battery",
+  "white_lantern_ring",
+  "white_power_battery"
 ]

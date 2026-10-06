@@ -2,19 +2,19 @@
   "max_stack_size": 1,
   "rarity": "epic",
   "is_fire_resistant": true,
-  "creative_mode_tab": "greenlantern:green_lantern",
+  "creative_mode_tab": "greenlantern:lantern_corps",
   "tooltip": [
     {
-      "translate": "item.greenlantern.green_lantern_ring.tooltip.1",
-      "color": "#3CFF5A",
+      "translate": "item.greenlantern.green_lantern_ring.tooltip",
+      "color": "#2EC846",
       "italic": true
     },
     {
-      "translate": "item.greenlantern.green_lantern_ring.tooltip.2",
+      "translate": "power.greenlantern.tooltip.hold",
       "color": "gray"
     },
     {
-      "translate": "item.greenlantern.green_lantern_ring.tooltip.3",
+      "translate": "power.greenlantern.tooltip.suit",
       "color": "gray"
     }
   ]

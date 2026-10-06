@@ -52,6 +52,7 @@ def exists(kind, rl):
         "render_layer": [SRC / "assets" / ns / "palladium" / "render_layers" / f"{path}.json"],
         "energy_beam": [SRC / "assets" / ns / "palladium" / "energy_beams" / f"{path}.json"],
         "emitter": [SRC / "assets" / ns / "palladium" / "particle_emitters" / f"{path}.json"],
+        "trail": [SRC / "assets" / ns / "palladium" / "trails" / f"{path}.json"],
         "creative_tab": [SRC / "addon" / ns / "creative_mode_tabs" / f"{path}.json"],
         "texture": [SRC / "assets" / ns / path],
     }[kind]
@@ -109,6 +110,7 @@ def validate():
         power = load(path)
         where = f"power {path.stem}"
         abilities = power.get("abilities", {})
+        uuids = {}
         bars = power.get("energy_bars", {})
         check_lang(power, where)
         if isinstance(power.get("icon"), str):
@@ -121,6 +123,14 @@ def validate():
                 check_ref("render_layer", ab["render_layer"], w)
             if "energy_beam" in ab:
                 check_ref("energy_beam", ab["energy_beam"], w)
+            if "trail" in ab:
+                check_ref("trail", ab["trail"], w)
+            if ab.get("type") == "palladium:ability_wheel":
+                for sub in ab["abilities"]:
+                    if sub not in abilities:
+                        err(f"{w}: wheel references unknown ability '{sub}'")
+            if ab.get("type") == "palladium:attribute_modifier":
+                uuids.setdefault(ab["uuid"], []).append(w)
             for e in ab.get("emitter", []):
                 check_ref("emitter", e, w)
             usages = ab.get("energy_bar_usage", [])
@@ -143,6 +153,10 @@ def validate():
                         if k not in lang:
                             err(f"{w}: missing translation '{k}'")
 
+        for u, users in uuids.items():
+            if len(users) > 1:
+                err(f"{where}: attribute uuid {u} used by {users}")
+
     for path in (SRC / "data" / NS / "palladium" / "item_powers").glob("*.json"):
         ip = load(path)
         check_ref("item", ip["item"], path.name)
@@ -158,7 +172,7 @@ def validate():
     for path in (SRC / "data" / NS / "recipes").glob("*.json"):
         recipe = load(path)
         check_ref("item", recipe["result"]["item"], path.name)
-        for ing in recipe.get("key", {}).values():
+        for ing in [*recipe.get("key", {}).values(), *recipe.get("ingredients", [])]:
             if "item" in ing:
                 check_ref("item", ing["item"], path.name)
 

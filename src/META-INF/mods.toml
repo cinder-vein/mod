@@ -7,12 +7,12 @@ license="MIT"
 
 [[mods]]
 modId="greenlantern"
-version="1.0.0"
-displayName="Green Lantern"
+version="2.0.0"
+displayName="Lantern Corps"
 authors="cinder-vein"
 logoFile="pack.png"
 description='''
-A Green Lantern addon for Palladium.
+The Lantern Corps of the emotional spectrum, as a Palladium addon.
 In brightest day, in blackest night, no evil shall escape my sight!
 '''
 

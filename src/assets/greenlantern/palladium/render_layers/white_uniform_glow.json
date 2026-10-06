@@ -1,0 +1,8 @@
+{
+  "type": "palladium:skin_overlay",
+  "texture": {
+    "normal": "greenlantern:textures/models/white_uniform_glow.png",
+    "slim": "greenlantern:textures/models/white_uniform_glow_slim.png"
+  },
+  "render_type": "glow"
+}

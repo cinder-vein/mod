@@ -1,6 +1,13 @@
 {
   "replace": false,
   "values": [
-    "greenlantern:green_lantern_ring"
+    "greenlantern:green_lantern_ring",
+    "greenlantern:yellow_lantern_ring",
+    "greenlantern:red_lantern_ring",
+    "greenlantern:orange_lantern_ring",
+    "greenlantern:blue_lantern_ring",
+    "greenlantern:indigo_lantern_ring",
+    "greenlantern:violet_lantern_ring",
+    "greenlantern:white_lantern_ring"
   ]
 }

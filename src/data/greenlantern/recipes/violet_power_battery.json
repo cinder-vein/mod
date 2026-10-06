@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "GRG",
+    "XLX",
+    "III"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "R": {
+      "item": "minecraft:amethyst_block"
+    },
+    "X": {
+      "item": "minecraft:magenta_stained_glass"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "greenlantern:violet_power_battery"
+  }
+}
