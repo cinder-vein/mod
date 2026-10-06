@@ -14,81 +14,144 @@ execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_crystal] run data me
 tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new
 scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1
 kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]
+scoreboard players add #timer gl_life 1
+execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0
 scoreboard players add @a[tag=gl_orange] gl_hoard 0
 scoreboard players add @a[tag=gl_orange] gl_s_zombie 0
 execute as @a[tag=gl_orange,scores={gl_k_zombie=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Zombie!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_zombie=1..,gl_hoard=..9}] gl_s_zombie 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_zombie=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_zombie=1..}] gl_k_zombie 0
 scoreboard players add @a[tag=gl_orange] gl_s_husk 0
 execute as @a[tag=gl_orange,scores={gl_k_husk=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Husk!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_husk=1..,gl_hoard=..9}] gl_s_husk 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_husk=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_husk=1..}] gl_k_husk 0
 scoreboard players add @a[tag=gl_orange] gl_s_drowned 0
 execute as @a[tag=gl_orange,scores={gl_k_drowned=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Drowned!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_drowned=1..,gl_hoard=..9}] gl_s_drowned 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_drowned=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_drowned=1..}] gl_k_drowned 0
 scoreboard players add @a[tag=gl_orange] gl_s_skeleton 0
 execute as @a[tag=gl_orange,scores={gl_k_skeleton=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Skeleton!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_skeleton=1..,gl_hoard=..9}] gl_s_skeleton 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_skeleton=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_skeleton=1..}] gl_k_skeleton 0
 scoreboard players add @a[tag=gl_orange] gl_s_stray 0
 execute as @a[tag=gl_orange,scores={gl_k_stray=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Stray!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_stray=1..,gl_hoard=..9}] gl_s_stray 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_stray=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_stray=1..}] gl_k_stray 0
 scoreboard players add @a[tag=gl_orange] gl_s_wither_skeleton 0
 execute as @a[tag=gl_orange,scores={gl_k_wither_skeleton=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Wither Skeleton!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_wither_skeleton=1..,gl_hoard=..9}] gl_s_wither_skeleton 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_wither_skeleton=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_wither_skeleton=1..}] gl_k_wither_skeleton 0
 scoreboard players add @a[tag=gl_orange] gl_s_spider 0
 execute as @a[tag=gl_orange,scores={gl_k_spider=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Spider!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_spider=1..,gl_hoard=..9}] gl_s_spider 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_spider=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_spider=1..}] gl_k_spider 0
 scoreboard players add @a[tag=gl_orange] gl_s_cave_spider 0
 execute as @a[tag=gl_orange,scores={gl_k_cave_spider=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Cave Spider!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_cave_spider=1..,gl_hoard=..9}] gl_s_cave_spider 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_cave_spider=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_cave_spider=1..}] gl_k_cave_spider 0
 scoreboard players add @a[tag=gl_orange] gl_s_enderman 0
 execute as @a[tag=gl_orange,scores={gl_k_enderman=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Enderman!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_enderman=1..,gl_hoard=..9}] gl_s_enderman 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_enderman=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_enderman=1..}] gl_k_enderman 0
 scoreboard players add @a[tag=gl_orange] gl_s_pillager 0
 execute as @a[tag=gl_orange,scores={gl_k_pillager=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Pillager!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_pillager=1..,gl_hoard=..9}] gl_s_pillager 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_pillager=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_pillager=1..}] gl_k_pillager 0
 scoreboard players add @a[tag=gl_orange] gl_s_vindicator 0
 execute as @a[tag=gl_orange,scores={gl_k_vindicator=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Vindicator!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_vindicator=1..,gl_hoard=..9}] gl_s_vindicator 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_vindicator=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_vindicator=1..}] gl_k_vindicator 0
 scoreboard players add @a[tag=gl_orange] gl_s_blaze 0
 execute as @a[tag=gl_orange,scores={gl_k_blaze=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Blaze!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_blaze=1..,gl_hoard=..9}] gl_s_blaze 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_blaze=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_blaze=1..}] gl_k_blaze 0
 scoreboard players add @a[tag=gl_orange] gl_s_zombified_piglin 0
 execute as @a[tag=gl_orange,scores={gl_k_zombified_piglin=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Zombified Piglin!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_zombified_piglin=1..,gl_hoard=..9}] gl_s_zombified_piglin 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_zombified_piglin=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_zombified_piglin=1..}] gl_k_zombified_piglin 0
 scoreboard players add @a[tag=gl_orange] gl_s_piglin_brute 0
 execute as @a[tag=gl_orange,scores={gl_k_piglin_brute=1..,gl_hoard=..9}] run title @s actionbar {"text": "Your hoard claims the Piglin Brute!", "color": "gold"}
 scoreboard players add @a[tag=gl_orange,scores={gl_k_piglin_brute=1..,gl_hoard=..9}] gl_s_piglin_brute 1
 scoreboard players add @a[tag=gl_orange,scores={gl_k_piglin_brute=1..,gl_hoard=..9}] gl_hoard 1
-scoreboard players set @a[scores={gl_k_piglin_brute=1..}] gl_k_piglin_brute 0
-scoreboard players add #timer gl_life 1
-execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0
 execute if score #timer gl_life matches 0 as @e[tag=gl_greed_minion] at @s run damage @s 0.01 minecraft:mob_attack by @e[type=#greenlantern:greed_prey,tag=!gl_greed_minion,distance=..16,limit=1,sort=nearest]
-execute if score #timer gl_life matches 0 at @e[tag=gl_greed_minion] run particle minecraft:dust 1 0.55 0.1 1.2 ~ ~1 ~ 0.3 0.6 0.3 0 6 force
+execute if score #timer gl_life matches 0 at @e[tag=gl_greed_minion] run particle minecraft:dust 1 0.55 0.1 1.2 ~ ~1 ~ 0.3 0.6 0.3 0 6
 scoreboard players remove @e[tag=gl_greed_minion] gl_life 1
-execute at @e[tag=gl_greed_minion,scores={gl_life=..0}] run particle minecraft:dust 1 0.55 0.1 2 ~ ~1 ~ 0.3 0.6 0.3 0 30 force
+execute at @e[tag=gl_greed_minion,scores={gl_life=..0}] run particle minecraft:dust 1 0.55 0.1 2 ~ ~1 ~ 0.3 0.6 0.3 0 30
 kill @e[tag=gl_greed_minion,scores={gl_life=..0}]
+scoreboard players add @a[tag=gl_black] gl_dead 0
+scoreboard players add @a[tag=gl_black] gl_d_zombie 0
+execute as @a[tag=gl_black,scores={gl_k_zombie=1..,gl_dead=..9}] run title @s actionbar {"text": "The Zombie will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_zombie=1..,gl_dead=..9}] gl_d_zombie 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_zombie=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_husk 0
+execute as @a[tag=gl_black,scores={gl_k_husk=1..,gl_dead=..9}] run title @s actionbar {"text": "The Husk will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_husk=1..,gl_dead=..9}] gl_d_husk 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_husk=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_drowned 0
+execute as @a[tag=gl_black,scores={gl_k_drowned=1..,gl_dead=..9}] run title @s actionbar {"text": "The Drowned will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_drowned=1..,gl_dead=..9}] gl_d_drowned 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_drowned=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_skeleton 0
+execute as @a[tag=gl_black,scores={gl_k_skeleton=1..,gl_dead=..9}] run title @s actionbar {"text": "The Skeleton will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_skeleton=1..,gl_dead=..9}] gl_d_skeleton 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_skeleton=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_stray 0
+execute as @a[tag=gl_black,scores={gl_k_stray=1..,gl_dead=..9}] run title @s actionbar {"text": "The Stray will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_stray=1..,gl_dead=..9}] gl_d_stray 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_stray=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_wither_skeleton 0
+execute as @a[tag=gl_black,scores={gl_k_wither_skeleton=1..,gl_dead=..9}] run title @s actionbar {"text": "The Wither Skeleton will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_wither_skeleton=1..,gl_dead=..9}] gl_d_wither_skeleton 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_wither_skeleton=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_spider 0
+execute as @a[tag=gl_black,scores={gl_k_spider=1..,gl_dead=..9}] run title @s actionbar {"text": "The Spider will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_spider=1..,gl_dead=..9}] gl_d_spider 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_spider=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_cave_spider 0
+execute as @a[tag=gl_black,scores={gl_k_cave_spider=1..,gl_dead=..9}] run title @s actionbar {"text": "The Cave Spider will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_cave_spider=1..,gl_dead=..9}] gl_d_cave_spider 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_cave_spider=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_enderman 0
+execute as @a[tag=gl_black,scores={gl_k_enderman=1..,gl_dead=..9}] run title @s actionbar {"text": "The Enderman will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_enderman=1..,gl_dead=..9}] gl_d_enderman 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_enderman=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_pillager 0
+execute as @a[tag=gl_black,scores={gl_k_pillager=1..,gl_dead=..9}] run title @s actionbar {"text": "The Pillager will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_pillager=1..,gl_dead=..9}] gl_d_pillager 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_pillager=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_vindicator 0
+execute as @a[tag=gl_black,scores={gl_k_vindicator=1..,gl_dead=..9}] run title @s actionbar {"text": "The Vindicator will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_vindicator=1..,gl_dead=..9}] gl_d_vindicator 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_vindicator=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_blaze 0
+execute as @a[tag=gl_black,scores={gl_k_blaze=1..,gl_dead=..9}] run title @s actionbar {"text": "The Blaze will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_blaze=1..,gl_dead=..9}] gl_d_blaze 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_blaze=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_zombified_piglin 0
+execute as @a[tag=gl_black,scores={gl_k_zombified_piglin=1..,gl_dead=..9}] run title @s actionbar {"text": "The Zombified Piglin will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_zombified_piglin=1..,gl_dead=..9}] gl_d_zombified_piglin 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_zombified_piglin=1..,gl_dead=..9}] gl_dead 1
+scoreboard players add @a[tag=gl_black] gl_d_piglin_brute 0
+execute as @a[tag=gl_black,scores={gl_k_piglin_brute=1..,gl_dead=..9}] run title @s actionbar {"text": "The Piglin Brute will rise again at your command.", "color": "dark_gray"}
+scoreboard players add @a[tag=gl_black,scores={gl_k_piglin_brute=1..,gl_dead=..9}] gl_d_piglin_brute 1
+scoreboard players add @a[tag=gl_black,scores={gl_k_piglin_brute=1..,gl_dead=..9}] gl_dead 1
+execute if score #timer gl_life matches 0 as @e[tag=gl_dead_minion] at @s run damage @s 0.01 minecraft:mob_attack by @e[type=#greenlantern:greed_prey,tag=!gl_dead_minion,distance=..16,limit=1,sort=nearest]
+execute if score #timer gl_life matches 0 at @e[tag=gl_dead_minion] run particle minecraft:soul ~ ~1 ~ 0.3 0.6 0.3 0.02 6
+scoreboard players remove @e[tag=gl_dead_minion] gl_life 1
+execute at @e[tag=gl_dead_minion,scores={gl_life=..0}] run particle minecraft:soul ~ ~1 ~ 0.3 0.6 0.3 0.02 30
+kill @e[tag=gl_dead_minion,scores={gl_life=..0}]
+scoreboard players set @a[scores={gl_k_zombie=1..}] gl_k_zombie 0
+scoreboard players set @a[scores={gl_k_husk=1..}] gl_k_husk 0
+scoreboard players set @a[scores={gl_k_drowned=1..}] gl_k_drowned 0
+scoreboard players set @a[scores={gl_k_skeleton=1..}] gl_k_skeleton 0
+scoreboard players set @a[scores={gl_k_stray=1..}] gl_k_stray 0
+scoreboard players set @a[scores={gl_k_wither_skeleton=1..}] gl_k_wither_skeleton 0
+scoreboard players set @a[scores={gl_k_spider=1..}] gl_k_spider 0
+scoreboard players set @a[scores={gl_k_cave_spider=1..}] gl_k_cave_spider 0
+scoreboard players set @a[scores={gl_k_enderman=1..}] gl_k_enderman 0
+scoreboard players set @a[scores={gl_k_pillager=1..}] gl_k_pillager 0
+scoreboard players set @a[scores={gl_k_vindicator=1..}] gl_k_vindicator 0
+scoreboard players set @a[scores={gl_k_blaze=1..}] gl_k_blaze 0
+scoreboard players set @a[scores={gl_k_zombified_piglin=1..}] gl_k_zombified_piglin 0
+scoreboard players set @a[scores={gl_k_piglin_brute=1..}] gl_k_piglin_brute 0
+scoreboard players set @a[tag=!gl_black] gl_bkills 0

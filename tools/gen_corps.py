@@ -82,6 +82,7 @@ CORPS = {
     },
     "black": {
         "name": "Black Lantern", "emotion": "Death", "color": (95, 98, 110),
+        "feeds_on_death": 200, "regen": False,  # recharged by killing, not over time
         "gem": "minecraft:wither_skeleton_skull", "glass": "minecraft:black_stained_glass",
         "oath": ["The Blackest Night falls from the skies,", "The darkness grows as all light dies,",
                  "We crave your hearts and your demise,", "By my black hand, the dead shall rise!"],
@@ -480,6 +481,16 @@ def shared_kit(k):
     # Corps tags let rings react to each other (e.g. Blue Lanterns empower Green ones).
     k.hidden("corps_tag", {**command(first=[f"tag @s remove gl_{o}" for o in CORPS if o != c] + [f"tag @s add gl_{c}"],
                                      last=[f"tag @s remove gl_{c}"])})
+    if data.get("feeds_on_death"):
+        kills = {"type": "palladium:command_result", "comparison": "==", "compare_to": 1,
+                 "command": "execute if score @s gl_bkills matches 1.."}
+        k.hidden("death_feed", {
+            **command(first=["scoreboard players set @s gl_bkills 0",
+                             "particle minecraft:soul ~ ~1 ~ 0.4 0.6 0.4 0.03 25 force",
+                             sound("minecraft:particle.soul_escape", 0.8)]),
+            "energy_bar_usage": usage(-data["feeds_on_death"]),
+            "conditions": {"unlocking": kills},
+        })
     ally = data.get("empowered_by")
     if ally:
         near = {"type": "palladium:command_result", "comparison": ">=", "compare_to": 1,
@@ -595,62 +606,89 @@ GREED_PREY = list(GREED_MOBS) + ["creeper", "witch", "slime", "magma_cube", "pha
                                  "shulker", "warden"]
 
 
-def greed_functions():
-    """Datapack functions for the hoard: load, tick and arrival."""
-    load = [f"scoreboard objectives add gl_hoard dummy", "team add gl_greed",
-            'team modify gl_greed displayName {"text":"Greed Constructs","color":"gold"}',
-            "team modify gl_greed color gold", "team modify gl_greed friendlyFire false"]
-    tick = ["scoreboard players add @a[tag=gl_orange] gl_hoard 0"]
-    arrival = []
-    for mob, held in GREED_MOBS.items():
-        k_obj, s_obj = f"gl_k_{mob}", f"gl_s_{mob}"
-        load += [f"scoreboard objectives add {k_obj} minecraft.killed:minecraft.{mob}",
-                 f"scoreboard objectives add {s_obj} dummy"]
-        new_kill = f"@a[tag=gl_orange,scores={{{k_obj}=1..,gl_hoard=..{GREED_LIMIT - 1}}}]"
-        name = mob.replace("_", " ").title()
-        tick += [
-            f"scoreboard players add @a[tag=gl_orange] {s_obj} 0",
-            f"execute as {new_kill} run title @s actionbar " + json.dumps(
-                {"text": f"Your hoard claims the {name}!", "color": "gold"}),
-            f"scoreboard players add {new_kill} {s_obj} 1",
-            f"scoreboard players add {new_kill} gl_hoard 1",
-            f"scoreboard players set @a[scores={{{k_obj}=1..}}] {k_obj} 0",
+# Summonable armies of captured mobs. Kills of GREED_MOBS by a ring wearer are claimed
+# (up to GREED_LIMIT per player) and summoned back by the army's arrival function.
+ARMIES = {
+    "greed": {
+        "corps": "orange", "store": "gl_s_", "count": "gl_hoard", "team": "gl_greed", "color": "gold",
+        "team_name": "Greed Constructs", "minion": "Greed Construct", "invisible": True,
+        "claim": "Your hoard claims the {name}!", "empty": "Your hoard is empty. Defeat mobs while wearing the ring to claim them.",
+        "particle": "minecraft:dust 1 0.55 0.1 {size} ~ ~1 ~ 0.3 0.6 0.3 0 {count}",
+    },
+    "dead": {
+        "corps": "black", "store": "gl_d_", "count": "gl_dead", "team": "gl_dead", "color": "dark_gray",
+        "team_name": "Black Lantern Revenants", "minion": "Black Lantern Revenant", "invisible": False,
+        "claim": "The {name} will rise again at your command.", "empty": "No dead answer you yet. Slay mobs while wearing the ring.",
+        "particle": "minecraft:soul ~ ~1 ~ 0.3 0.6 0.3 0.02 {count}",
+    },
+}
+
+
+def army_functions():
+    """Datapack lines for every army: (load, tick, {function path: lines})."""
+    load = ["scoreboard objectives add gl_bkills totalKillCount"]
+    tick = []
+    functions = {}
+    for mob in GREED_MOBS:
+        load.append(f"scoreboard objectives add gl_k_{mob} minecraft.killed:minecraft.{mob}")
+    for army, cfg in ARMIES.items():
+        tag, count, team, minion = f"gl_{cfg['corps']}", cfg["count"], cfg["team"], f"gl_{army}_minion"
+        fx = lambda size, n, cfg=cfg: "particle " + cfg["particle"].format(size=size, count=n)  # noqa: E731
+        load += [f"scoreboard objectives add {count} dummy", f"team add {team}",
+                 f"team modify {team} displayName " + json.dumps({"text": cfg["team_name"], "color": cfg["color"]}),
+                 f"team modify {team} color {cfg['color']}", f"team modify {team} friendlyFire false"]
+        tick.append(f"scoreboard players add @a[tag={tag}] {count} 0")
+        summons = []
+        effects = ["{Id:12,Amplifier:0b,Duration:999999,ShowParticles:0b}",  # fire resistance
+                   "{Id:5,Amplifier:1b,Duration:999999,ShowParticles:0b}",   # strength
+                   "{Id:24,Amplifier:0b,Duration:999999,ShowParticles:0b}"]  # glowing (team-colored outline)
+        if cfg["invisible"]:
+            effects.append("{Id:14,Amplifier:0b,Duration:999999,ShowParticles:0b}")  # only the outline shows
+        name_json = json.dumps({"text": cfg["minion"], "color": cfg["color"]}, separators=(",", ":"))
+        for mob, held in GREED_MOBS.items():
+            k_obj, s_obj = f"gl_k_{mob}", f"{cfg['store']}{mob}"
+            load.append(f"scoreboard objectives add {s_obj} dummy")
+            new_kill = f"@a[tag={tag},scores={{{k_obj}=1..,{count}=..{GREED_LIMIT - 1}}}]"
+            name = mob.replace("_", " ").title()
+            tick += [
+                f"scoreboard players add @a[tag={tag}] {s_obj} 0",
+                f"execute as {new_kill} run title @s actionbar " + json.dumps(
+                    {"text": cfg["claim"].format(name=name), "color": cfg["color"]}),
+                f"scoreboard players add {new_kill} {s_obj} 1",
+                f"scoreboard players add {new_kill} {count} 1",
+            ]
+            hand = f'HandItems:[{{id:"{held}",Count:1b}},{{}}],HandDropChances:[0f,0f],' if held else ""
+            nbt = (f'{{Tags:["{minion}","gl_{army}_new"],Team:"{team}",PersistenceRequired:1b,'
+                   f'DeathLootTable:"minecraft:empty",{hand}CustomName:\'{name_json}\','
+                   f'ActiveEffects:[{",".join(effects)}]}}')
+            for n in range(1, GREED_LIMIT + 1):
+                summons.append(f"execute if score @s {s_obj} matches {n}.. run summon minecraft:{mob} ~ ~ ~ {nbt}")
+        functions[f"{army}/arrival"] = [
+            f"team join {team} @s",
+            f"execute if score @s {count} matches ..0 run tellraw @s " + json.dumps({"text": cfg["empty"], "color": cfg["color"]}),
+            *summons,
+            f"spreadplayers ~ ~ 1 3 false @e[tag=gl_{army}_new,distance=..4]",
+            f"scoreboard players set @e[tag=gl_{army}_new] gl_life {GREED_SECONDS * 20}",
+            f"execute at @e[tag=gl_{army}_new] run {fx(2, 40)}",
+            f"tag @e[tag=gl_{army}_new] remove gl_{army}_new",
         ]
-        hand = f'HandItems:[{{id:"{held}",Count:1b}},{{}}],HandDropChances:[0f,0f],' if held else ""
-        nbt = ('{Tags:["gl_greed_minion","gl_greed_new"],Team:"gl_greed",PersistenceRequired:1b,'
-               'DeathLootTable:"minecraft:empty",' + hand +
-               "CustomName:'{\"text\":\"Greed Construct\",\"color\":\"gold\"}',"
-               "ActiveEffects:[{Id:14,Amplifier:0b,Duration:999999,ShowParticles:0b},"
-               "{Id:24,Amplifier:0b,Duration:999999,ShowParticles:0b},"
-               "{Id:12,Amplifier:0b,Duration:999999,ShowParticles:0b},"
-               "{Id:5,Amplifier:1b,Duration:999999,ShowParticles:0b}]}")
-        for n in range(1, GREED_LIMIT + 1):
-            arrival.append(f"execute if score @s {s_obj} matches {n}.. run summon minecraft:{mob} ~ ~ ~ {nbt}")
-    arrival = [
-        "team join gl_greed @s",
-        "execute if score @s gl_hoard matches ..0 run tellraw @s " + json.dumps(
-            {"text": "Your hoard is empty. Defeat mobs while wearing the ring to claim them.", "color": "gold"}),
-    ] + arrival + [
-        "spreadplayers ~ ~ 1 3 false @e[tag=gl_greed_new,distance=..4]",
-        f"scoreboard players set @e[tag=gl_greed_new] gl_life {GREED_SECONDS * 20}",
-        "execute at @e[tag=gl_greed_new] run particle minecraft:dust 1 0.55 0.1 2 ~ ~1 ~ 0.4 0.8 0.4 0 40 force",
-        "tag @e[tag=gl_greed_new] remove gl_greed_new",
-    ]
-    prey = f"@e[type=#{NS}:greed_prey,tag=!gl_greed_minion,distance=..16,limit=1,sort=nearest]"
-    tick += [
-        # every second, make each construct go after the nearest hostile mob
-        "scoreboard players add #timer gl_life 1",
-        "execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0",
-        f"execute if score #timer gl_life matches 0 as @e[tag=gl_greed_minion] at @s run damage @s 0.01 "
-        f"minecraft:mob_attack by {prey}",
-        "execute if score #timer gl_life matches 0 at @e[tag=gl_greed_minion] run particle minecraft:dust "
-        "1 0.55 0.1 1.2 ~ ~1 ~ 0.3 0.6 0.3 0 6 force",
-        "scoreboard players remove @e[tag=gl_greed_minion] gl_life 1",
-        "execute at @e[tag=gl_greed_minion,scores={gl_life=..0}] run particle minecraft:dust "
-        "1 0.55 0.1 2 ~ ~1 ~ 0.3 0.6 0.3 0 30 force",
-        "kill @e[tag=gl_greed_minion,scores={gl_life=..0}]",
-    ]
-    return load, tick, arrival
+        prey = f"@e[type=#{NS}:greed_prey,tag=!{minion},distance=..16,limit=1,sort=nearest]"
+        tick += [
+            # every second, send each minion after the nearest hostile mob
+            f"execute if score #timer gl_life matches 0 as @e[tag={minion}] at @s run damage @s 0.01 "
+            f"minecraft:mob_attack by {prey}",
+            f"execute if score #timer gl_life matches 0 at @e[tag={minion}] run {fx(1.2, 6)}",
+            f"scoreboard players remove @e[tag={minion}] gl_life 1",
+            f"execute at @e[tag={minion},scores={{gl_life=..0}}] run {fx(2, 30)}",
+            f"kill @e[tag={minion},scores={{gl_life=..0}}]",
+        ]
+    tick = ["scoreboard players add #timer gl_life 1",
+            "execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0"] + tick
+    # each kill is claimed by whichever army's ring the killer wears, then cleared
+    tick += [f"scoreboard players set @a[scores={{gl_k_{mob}=1..}}] gl_k_{mob} 0" for mob in GREED_MOBS]
+    # Black Lantern kills only count while wearing the black ring
+    tick.append("scoreboard players set @a[tag=!gl_black] gl_bkills 0")
+    return load, tick, functions
 
 
 def specials_yellow(k):
@@ -816,6 +854,36 @@ def specials_black(k):
                                                   "conditions": {"enabling": toggle()}}, cost=1, xp=12, index=7)
     k.pulse("death_aura_pulse", "death_aura", 40, [f"effect give {OTHERS.format(r=6)} minecraft:wither 3 0 true",
                                                    "particle minecraft:soul ~ ~1 ~ 3 1 3 0.01 20 force"])
+    k.special("raise_dead", "Raise the Dead",
+              f"Every mob you slay while wearing the ring can rise again (up to {GREED_LIMIT}). Raise them all as "
+              f"Black Lantern revenants that fight for you for {GREED_SECONDS} seconds.",
+              "minecraft:zombie_head", {**command(first=[
+                  f"function {NS}:dead/arrival", sound("minecraft:entity.zombie_villager.cure", 0.6)]),
+                  "conditions": {"enabling": action(1200)}}, cost=300, xp=16, index=8)
+    k.special("undying", "Undying",
+              "Passive: while your ring holds at least 500 charge, a killing blow leaves you standing instead. "
+              "The ring spends all its charge to bring you back.",
+              "minecraft:totem_of_undying", {"type": "palladium:immortality"}, xp=20, extra=[charge(500)])
+    k.hidden("undying_revival", {
+        **command(first=[
+            "effect give @s minecraft:instant_health 1 2 true",
+            "effect give @s minecraft:regeneration 10 2 true",
+            "effect give @s minecraft:absorption 20 2 true",
+            "particle minecraft:soul ~ ~1 ~ 0.6 1 0.6 0.05 120 force",
+            "particle minecraft:totem_of_undying ~ ~1 ~ 0.6 1 0.6 0.4 80 force",
+            "title @s actionbar " + json.dumps({"text": "The black ring will not let you die.", "color": "gray"}),
+            sound("minecraft:item.totem.use", 0.6)]),
+        "energy_bar_usage": usage(1_000_000),
+        "conditions": {"unlocking": [unlocked("skill_undying"), charge(500),
+                                     {"type": "palladium:health", "max_health": 1.5}]},
+    })
+    # Emotional Sight sits on the free slot at the start of the second bar page.
+    k.node("skill_emotional_sight", "Emotional Sight",
+           "Toggle: see every living thing within 32 blocks glowing through walls.", "minecraft:ender_eye",
+           (1, 3), ["skill_flight"], 8, shared=False)
+    k.bar("emotional_sight", {"type": "palladium:entity_glow", "mode": "others", "distance": 32.0,
+                              "conditions": {"enabling": toggle()}},
+          "Emotional Sight", "minecraft:ender_eye", 5, node="skill_emotional_sight", shared=False)
     around = OTHERS.format(r=12)
     k.ultimate("blackest_night", "Blackest Night", "plunge everything within 12 blocks into death: darkness, withering and pain.",
                "minecraft:sculk_catalyst", [
@@ -923,7 +991,8 @@ def main():
             "persistent_data": True,
             "energy_bars": {BAR: {
                 "max": {"type": "score", "objective": f"glmax_{c}", "fallback": BASE_CHARGE},
-                "auto_increase_per_tick": 1, "auto_increase_interval": 10, "color": hexcolor(rgb)}},
+                "auto_increase_per_tick": 1 if data.get("regen", True) else 0, "auto_increase_interval": 10,
+                "color": hexcolor(rgb)}},
             "abilities": k.abilities,
         })
         lang[f"power.{NS}.{c}_lantern"] = data["name"]
@@ -964,7 +1033,7 @@ def main():
             write(f"addon/{NS}/accessories/{name}.json", {"type": "palladium:render_layer", "slot": f"{NS}:{c}_suit",
                                                           "render_layer": f"{NS}:{name}", "disable_rendering": True})
             lang[f"accessory.{NS}.{name}"] = design_name
-        for mask_id, mask_name in art.MASKS:
+        for mask_id, mask_name in art.MASKS + art.MASK_EXTRAS.get(c, []):
             name = f"{c}_mask_{mask_id}"
             if mask_id == "none":
                 write(f"assets/{NS}/palladium/render_layers/{name}.json", {"type": "palladium:compound", "layers": []})
@@ -1071,10 +1140,11 @@ def main():
         "kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]",
     ]
     (SRC / f"data/{NS}/functions").mkdir(parents=True, exist_ok=True)
-    g_load, g_tick, g_arrival = greed_functions()
+    g_load, g_tick, g_functions = army_functions()
     tick += g_tick
-    (SRC / f"data/{NS}/functions/greed").mkdir(parents=True, exist_ok=True)
-    (SRC / f"data/{NS}/functions/greed/arrival.mcfunction").write_text("\n".join(g_arrival) + "\n")
+    for path, lines in g_functions.items():
+        (SRC / f"data/{NS}/functions/{path}.mcfunction").parent.mkdir(parents=True, exist_ok=True)
+        (SRC / f"data/{NS}/functions/{path}.mcfunction").write_text("\n".join(lines) + "\n")
     (SRC / f"data/{NS}/functions/tick.mcfunction").write_text("\n".join(tick) + "\n")
     (SRC / f"data/{NS}/functions/load.mcfunction").write_text(
         "\n".join(["scoreboard objectives add gl_life dummy"] + g_load) + "\n")

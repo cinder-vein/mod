@@ -15,7 +15,7 @@
         "objective": "glmax_black",
         "fallback": 1000
       },
-      "auto_increase_per_tick": 1,
+      "auto_increase_per_tick": 0,
       "auto_increase_interval": 10,
       "color": "#5F626E"
     }
@@ -1423,6 +1423,30 @@
       "hidden": true,
       "hidden_in_bar": true
     },
+    "death_feed": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard players set @s gl_bkills 0",
+        "particle minecraft:soul ~ ~1 ~ 0.4 0.6 0.4 0.03 25 force",
+        "playsound minecraft:particle.soul_escape player @a[distance=..24] ~ ~ ~ 1 0.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": -200
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:command_result",
+          "comparison": "==",
+          "compare_to": 1,
+          "command": "execute if score @s gl_bkills matches 1.."
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
     "skill_heart_rip": {
       "type": "palladium:dummy",
       "title": {
@@ -1573,6 +1597,202 @@
       "hidden": true,
       "hidden_in_bar": true
     },
+    "skill_raise_dead": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.black.skill_raise_dead"
+      },
+      "description": {
+        "translate": "ability.greenlantern.black.skill_raise_dead.description"
+      },
+      "icon": "minecraft:zombie_head",
+      "hidden_in_bar": true,
+      "gui_position": [
+        5,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_death_aura"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "raise_dead": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:dead/arrival",
+        "playsound minecraft:entity.zombie_villager.cure player @a[distance=..24] ~ ~ ~ 1 0.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_raise_dead"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 300
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 300
+      },
+      "title": {
+        "translate": "ability.greenlantern.black.raise_dead"
+      },
+      "icon": "minecraft:zombie_head",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8
+    },
+    "skill_undying": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.black.skill_undying"
+      },
+      "description": {
+        "translate": "ability.greenlantern.black.skill_undying.description"
+      },
+      "icon": "minecraft:totem_of_undying",
+      "hidden_in_bar": true,
+      "gui_position": [
+        5,
+        5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_raise_dead"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "undying": {
+      "type": "palladium:immortality",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_undying"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 500
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "undying_revival": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:instant_health 1 2 true",
+        "effect give @s minecraft:regeneration 10 2 true",
+        "effect give @s minecraft:absorption 20 2 true",
+        "particle minecraft:soul ~ ~1 ~ 0.6 1 0.6 0.05 120 force",
+        "particle minecraft:totem_of_undying ~ ~1 ~ 0.6 1 0.6 0.4 80 force",
+        "title @s actionbar {\"text\": \"The black ring will not let you die.\", \"color\": \"gray\"}",
+        "playsound minecraft:item.totem.use player @a[distance=..24] ~ ~ ~ 1 0.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 1000000
+      },
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_undying"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 500
+          },
+          {
+            "type": "palladium:health",
+            "max_health": 1.5
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_emotional_sight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.black.skill_emotional_sight"
+      },
+      "description": {
+        "translate": "ability.greenlantern.black.skill_emotional_sight.description"
+      },
+      "icon": "minecraft:ender_eye",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "emotional_sight": {
+      "type": "palladium:entity_glow",
+      "mode": "others",
+      "distance": 32.0,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_emotional_sight"
+        },
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.black.emotional_sight"
+      },
+      "icon": "minecraft:ender_eye",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 5
+    },
     "skill_blackest_night": {
       "type": "palladium:dummy",
       "title": {
@@ -1585,13 +1805,13 @@
       "hidden_in_bar": true,
       "gui_position": [
         5,
-        4
+        6
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_death_aura"
+            "ability": "skill_undying"
           },
           {
             "type": "palladium:experience_level_buyable",

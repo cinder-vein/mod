@@ -190,6 +190,7 @@ DESIGNS = {c: [("armored", "Corps Armor"), ("classic", "Classic"), ("stealth", "
 
 # Mask designs (id, name); "none" removes the mask. DEFAULT_MASK is used until one is picked.
 MASKS = [("domino", "Domino Mask"), ("goggles", "Lens Goggles"), ("cowl", "Gem Cowl"), ("none", "No Mask")]
+MASK_EXTRAS = {"black": [("deathly", "Deathly Pallor")]}  # corps-only masks
 DEFAULT_MASK = {c: "domino" for c in LOGOS}
 DEFAULT_MASK.update(violet="cowl", white="goggles", indigo="none", black="none")
 
@@ -416,6 +417,18 @@ def mask_painter(corps, mask):
             if f in ("right", "left") and y == 4:
                 return "dark"  # strap
             return None
+        if mask == "deathly":  # undead face paint: pale skin, dark sockets around the eyes, grey lips
+            if layer != "inner" or eye:
+                return None
+            if f == "front":
+                if y in (3, 4) and x in (0, 1, 2, 3, 4, 5, 6, 7) and (y == 3 and x in (1, 2, 5, 6) or y == 4):
+                    return "socket"
+                if y == 6 and 2 <= x <= 5:
+                    return "lips"
+                return "pale" if y >= 2 else None
+            if f in ("right", "left") and 2 <= y <= 7 and near_front:
+                return "pale"
+            return None
         if mask == "cowl":  # covers the forehead and frames the eyes, with a jewel
             if layer != "inner" or eye:
                 return None
@@ -435,7 +448,8 @@ def mask_painter(corps, mask):
 
 def _paint_layers(corps, rgb, painter, slim):
     p = palette(corps, rgb)
-    colors = {**p, "line": p["glow"], "gem": p["glow"]}
+    colors = {**p, "line": p["glow"], "gem": p["glow"],
+              "pale": (196, 200, 204, 255), "socket": (34, 32, 38, 255), "lips": (80, 78, 88, 255)}
     imgs = (Image.new("RGBA", (64, 64), CLEAR), Image.new("RGBA", (64, 64), CLEAR))
     for part, (inner, outer, w, h, d) in PARTS.items():
         if slim and part.endswith("arm"):
@@ -724,8 +738,18 @@ def construct_shapes():
 
 
 def construct_texture(corps, rgb):
-    """Translucent hard light: bright edges, softer middle."""
+    """Translucent hard light: bright edges, softer middle. Black Lantern constructs are
+    corrupted: near-black with pale cracks running through them."""
     p = palette(corps, rgb)
+    if corps == "black":
+        img = Image.new("RGBA", (16, 16))
+        for y in range(16):
+            for x in range(16):
+                crack = (x * 3 + y * 5) % 13 == 0 or (x - y) % 11 == 0
+                edge = x in (0, 15) or y in (0, 15)
+                c = (190, 196, 210) if crack else ((70, 72, 82) if edge else (24, 24, 30))
+                img.putpixel((x, y), c + (235 if edge or crack else 205,))
+        return img
     img = Image.new("RGBA", (16, 16))
     for y in range(16):
         for x in range(16):

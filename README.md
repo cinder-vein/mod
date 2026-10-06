@@ -7,7 +7,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 ## Install
 
 1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
-2. Put `dist/greenlantern-6.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
+2. Put `dist/greenlantern-7.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
 3. Optional: **Curios** to wear rings in a ring slot.
 
 ## The corps
@@ -22,7 +22,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 | Star Sapphire | Love | Crystal Prison, Love's Embrace, Charm | Love Conquers All |
 | Indigo Tribe | Compassion | Phase, Compassion, Healing Touch | Staff of Compassion |
 | White Lantern | Life | Life Growth, Aura of Life | Light of the Entity |
-| Black Lantern | Death | Heart Rip, Death Aura | Blackest Night |
+| Black Lantern | Death | Heart Rip, Death Aura, Raise the Dead, Undying (passive), Emotional Sight | Blackest Night |
 
 ## How it plays
 
@@ -42,6 +42,11 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 - **Constructs are 3D:** fists, hammers, cages and walls of hard light appear in the world in your corps'
   color (Red makes claws, Star Sapphires make crystals), then fade after a few seconds.
 - **Red rage** tints your screen red; the **Sinestro Corps** makes its victims hear Parallax.
+- **Black Lantern:** the ring doesn't recharge over time. Every kill feeds it 200 charge (the battery still
+  works). *Raise the Dead* brings back up to 10 slain mobs as revenants for 30 seconds; *Undying* saves you
+  from a killing blow once while the ring holds 500+ charge (it drains the ring); *Emotional Sight* shows
+  every living thing within 32 blocks through walls. Its constructs are corrupted black-and-bone, and the
+  Mask slot has a *Deathly Pallor* option.
 - **Blue and Green** empower each other within 12 blocks (faster recharge, more damage) once the
   *Hope Amplified* / *Willpower Ignited* upgrade is bought.
 - **Skill tree:** open Palladium's powers menu and spend **XP levels** to unlock upgrades:
