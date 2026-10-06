@@ -1,0 +1,21 @@
+{
+  "max_stack_size": 1,
+  "rarity": "epic",
+  "is_fire_resistant": true,
+  "creative_mode_tab": "greenlantern:green_lantern",
+  "tooltip": [
+    {
+      "translate": "item.greenlantern.green_lantern_ring.tooltip.1",
+      "color": "#3CFF5A",
+      "italic": true
+    },
+    {
+      "translate": "item.greenlantern.green_lantern_ring.tooltip.2",
+      "color": "gray"
+    },
+    {
+      "translate": "item.greenlantern.green_lantern_ring.tooltip.3",
+      "color": "gray"
+    }
+  ]
+}

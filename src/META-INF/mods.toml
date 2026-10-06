@@ -1,0 +1,38 @@
+# Data-only Forge mod: no Java code, so it uses Forge's low-code loader.
+# Palladium picks up every mod jar as an addon pack, which is how the
+# "addon/" folder in this jar gets loaded.
+modLoader="lowcodefml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="greenlantern"
+version="1.0.0"
+displayName="Green Lantern"
+authors="cinder-vein"
+logoFile="pack.png"
+description='''
+A Green Lantern addon for Palladium.
+In brightest day, in blackest night, no evil shall escape my sight!
+'''
+
+[[dependencies.greenlantern]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.greenlantern]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.20.2)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.greenlantern]]
+    modId="palladium"
+    mandatory=true
+    versionRange="[4.0.0,)"
+    ordering="AFTER"
+    side="BOTH"

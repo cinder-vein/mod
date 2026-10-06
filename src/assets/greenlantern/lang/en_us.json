@@ -1,0 +1,42 @@
+{
+  "itemGroup.greenlantern.green_lantern": "Green Lantern",
+
+  "item.greenlantern.green_lantern_ring": "Green Lantern Power Ring",
+  "item.greenlantern.green_lantern_ring.tooltip.1": "\"In brightest day, in blackest night...\"",
+  "item.greenlantern.green_lantern_ring.tooltip.2": "Hold in either hand, or wear it in a Curios ring slot.",
+  "item.greenlantern.green_lantern_ring.tooltip.3": "Toggle the Lantern Uniform to unlock the ring's powers.",
+
+  "item.greenlantern.power_battery": "Green Lantern Power Battery",
+  "item.greenlantern.power_battery.tooltip.1": "Hold in your main hand while wearing the ring,",
+  "item.greenlantern.power_battery.tooltip.2": "then hold the Recharge key to recite the oath.",
+
+  "power.greenlantern.green_lantern": "Green Lantern",
+
+  "ability.greenlantern.uniform": "Lantern Uniform",
+  "ability.greenlantern.uniform.description": "Let the ring clothe you in the uniform of the Green Lantern Corps. All other ring powers need the uniform to be active.",
+  "ability.greenlantern.ring_protection": "Ring Protection",
+  "ability.greenlantern.ring_protection.description": "The ring's life support keeps you safe from drowning, freezing and falling.",
+  "ability.greenlantern.construct_fists": "Construct Fists",
+  "ability.greenlantern.construct_fists.description": "Your punches are wrapped in hard-light constructs and hit much harder. You also gain hard-light armor.",
+  "ability.greenlantern.flight": "Flight",
+  "ability.greenlantern.flight.description": "Fly using the ring's power. Flying slowly drains willpower.",
+  "ability.greenlantern.willpower_beam": "Willpower Beam",
+  "ability.greenlantern.willpower_beam.description": "Hold to fire a continuous beam of green light. Drains willpower while active.",
+  "ability.greenlantern.construct_blast": "Construct Blast",
+  "ability.greenlantern.construct_blast.description": "Fire a fast bolt of hard light. Costs 40 willpower.",
+  "ability.greenlantern.construct_fist": "Construct: Giant Fist",
+  "ability.greenlantern.construct_fist.description": "Slam everything in front of you with a giant green fist, launching it into the air. Costs 100 willpower.",
+  "ability.greenlantern.construct_cage": "Construct: Cage",
+  "ability.greenlantern.construct_cage.description": "Trap the nearest creature within 12 blocks in a hard-light cage, slowing and weakening it. Costs 150 willpower.",
+  "ability.greenlantern.force_field": "Force Field",
+  "ability.greenlantern.force_field.description": "Toggle a protective bubble that blocks projectiles, explosions and fire. Drains willpower while active.",
+  "ability.greenlantern.ring_light": "Ring Light",
+  "ability.greenlantern.ring_light.description": "Toggle the ring's glow to see in the dark.",
+  "ability.greenlantern.recharge": "Recharge",
+  "ability.greenlantern.recharge.description": "With a Power Battery in your main hand, hold to recite the oath and recharge your willpower.",
+
+  "oath.greenlantern.line1": "In brightest day, in blackest night,",
+  "oath.greenlantern.line2": "No evil shall escape my sight.",
+  "oath.greenlantern.line3": "Let those who worship evil's might,",
+  "oath.greenlantern.line4": "Beware my power... Green Lantern's light!"
+}
