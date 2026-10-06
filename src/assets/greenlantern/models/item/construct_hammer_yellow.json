@@ -1,0 +1,7 @@
+{
+  "parent": "greenlantern:item/construct_hammer_base",
+  "textures": {
+    "0": "greenlantern:item/construct/yellow",
+    "particle": "greenlantern:item/construct/yellow"
+  }
+}

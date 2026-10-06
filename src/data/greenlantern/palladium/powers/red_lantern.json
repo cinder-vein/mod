@@ -3,7 +3,7 @@
     "translate": "power.greenlantern.red_lantern"
   },
   "icon": "greenlantern:red_lantern_ring",
-  "background": "minecraft:textures/block/black_concrete.png",
+  "background": "greenlantern:textures/gui/menu/red.png",
   "gui_display_type": "tree",
   "primary_color": "#DC1E23",
   "secondary_color": "#580C0E",
@@ -245,8 +245,8 @@
       "icon": "minecraft:golden_apple",
       "hidden_in_bar": true,
       "gui_position": [
-        -2,
-        0
+        -5,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -272,8 +272,8 @@
       "icon": "minecraft:enchanted_golden_apple",
       "hidden_in_bar": true,
       "gui_position": [
-        -4,
-        0
+        -5,
+        2
       ],
       "conditions": {
         "unlocking": [
@@ -343,8 +343,8 @@
       "icon": "minecraft:iron_sword",
       "hidden_in_bar": true,
       "gui_position": [
-        2,
-        0
+        -3,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -370,8 +370,8 @@
       "icon": "minecraft:netherite_sword",
       "hidden_in_bar": true,
       "gui_position": [
-        4,
-        0
+        -3,
+        2
       ],
       "conditions": {
         "unlocking": [
@@ -485,8 +485,8 @@
       "icon": "minecraft:glowstone",
       "hidden_in_bar": true,
       "gui_position": [
-        0,
-        2
+        -1,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -512,8 +512,8 @@
       "icon": "minecraft:beacon",
       "hidden_in_bar": true,
       "gui_position": [
-        0,
-        4
+        -1,
+        2
       ],
       "conditions": {
         "unlocking": [
@@ -584,8 +584,8 @@
       "icon": "minecraft:feather",
       "hidden_in_bar": true,
       "gui_position": [
-        0,
-        -2
+        1,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -783,8 +783,8 @@
       "icon": "minecraft:emerald",
       "hidden_in_bar": true,
       "gui_position": [
-        -2,
-        -2
+        3,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -810,8 +810,8 @@
       "icon": "minecraft:iron_block",
       "hidden_in_bar": true,
       "gui_position": [
-        -4,
-        -2
+        3,
+        2
       ],
       "conditions": {
         "unlocking": [
@@ -837,8 +837,8 @@
       "icon": "minecraft:iron_bars",
       "hidden_in_bar": true,
       "gui_position": [
-        -4,
-        -4
+        3,
+        3
       ],
       "conditions": {
         "unlocking": [
@@ -864,18 +864,45 @@
       "icon": "minecraft:anvil",
       "hidden_in_bar": true,
       "gui_position": [
-        -2,
-        -4
+        3,
+        4
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
+            "ability": "skill_cage"
           },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 12
+          }
+        ]
+      }
+    },
+    "skill_wall": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_wall"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_wall.description"
+      },
+      "icon": "minecraft:shield",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_slam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
           }
         ]
       }
@@ -886,7 +913,8 @@
         "construct_blast",
         "construct_fist",
         "construct_cage",
-        "construct_slam"
+        "construct_slam",
+        "construct_wall"
       ],
       "conditions": {
         "unlocking": {
@@ -976,6 +1004,8 @@
     "construct_fist": {
       "type": "palladium:command",
       "first_tick_commands": [
+        "execute anchored eyes positioned ^ ^-0.4 ^2.6 run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_claw\"],item:{id:\"greenlantern:construct_claw\",Count:1b,tag:{CustomModelData:3}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
+        "execute anchored eyes positioned ^ ^-0.4 ^2.6 run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
         "execute anchored eyes positioned ^ ^ ^3 run particle minecraft:dust 0.86 0.12 0.14 2.5 ~ ~ ~ 0.8 0.8 0.8 0 60 force",
         "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run damage @s 12 minecraft:player_attack",
         "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run effect give @s minecraft:levitation 1 3 true",
@@ -1015,6 +1045,8 @@
     "construct_cage": {
       "type": "palladium:command",
       "first_tick_commands": [
+        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] positioned ~ ~1 ~ run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_cage\"],item:{id:\"greenlantern:construct_cage\",Count:1b,tag:{CustomModelData:3}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
+        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] positioned ~ ~1 ~ run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
         "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] at @s run particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 0.6 1.0 0.6 0 120 force",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:slowness 6 6 true",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:weakness 6 2 true",
@@ -1055,6 +1087,8 @@
     "construct_slam": {
       "type": "palladium:command",
       "first_tick_commands": [
+        "execute positioned ~ ~3.4 ~ run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_hammer\"],item:{id:\"greenlantern:construct_hammer\",Count:1b,tag:{CustomModelData:3}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
+        "execute positioned ~ ~3.4 ~ run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
         "particle minecraft:dust 0.86 0.12 0.14 2.5 ~ ~0.2 ~ 3 0.2 3 0 200 force",
         "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] run damage @s 8 minecraft:player_attack",
         "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] minecraft:levitation 1 5 true",
@@ -1091,6 +1125,46 @@
       "hidden": true,
       "hidden_in_bar": true
     },
+    "construct_wall": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "execute anchored eyes positioned ^ ^-0.4 ^2.4 run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_wall\"],item:{id:\"greenlantern:construct_wall\",Count:1b,tag:{CustomModelData:3}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
+        "execute anchored eyes positioned ^ ^-0.4 ^2.4 run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
+        "effect give @s minecraft:resistance 5 2 true",
+        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run effect give @s minecraft:slowness 5 3 true",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 0.7"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_wall"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 100
+          }
+        ],
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 120
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 100
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_wall"
+      },
+      "icon": "minecraft:shield",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
     "skill_force_field": {
       "type": "palladium:dummy",
       "title": {
@@ -1102,8 +1176,8 @@
       "icon": "minecraft:shield",
       "hidden_in_bar": true,
       "gui_position": [
-        2,
-        2
+        5,
+        1
       ],
       "conditions": {
         "unlocking": [
@@ -1363,14 +1437,14 @@
       "icon": "minecraft:fire_charge",
       "hidden_in_bar": true,
       "gui_position": [
-        2,
-        -2
+        5,
+        2
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "uniform"
+            "ability": "skill_force_field"
           },
           {
             "type": "palladium:experience_level_buyable",
@@ -1426,8 +1500,8 @@
       "icon": "minecraft:redstone",
       "hidden_in_bar": true,
       "gui_position": [
-        4,
-        -2
+        5,
+        3
       ],
       "conditions": {
         "unlocking": [
@@ -1483,6 +1557,21 @@
       "hidden_in_bar": false,
       "list_index": 7
     },
+    "rage_overlay": {
+      "type": "palladium:gui_overlay",
+      "texture": "greenlantern:textures/gui/rage_overlay.png",
+      "texture_width": 256,
+      "texture_height": 256,
+      "alignment": "stretch",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "rage"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
     "skill_roar": {
       "type": "palladium:dummy",
       "title": {
@@ -1494,8 +1583,8 @@
       "icon": "minecraft:goat_horn",
       "hidden_in_bar": true,
       "gui_position": [
-        4,
-        -4
+        5,
+        4
       ],
       "conditions": {
         "unlocking": [
@@ -1562,18 +1651,14 @@
       "icon": "minecraft:nether_wart",
       "hidden_in_bar": true,
       "gui_position": [
-        2,
-        -4
+        5,
+        5
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
             "ability": "skill_roar"
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_combat_2"
           },
           {
             "type": "palladium:experience_level_buyable",

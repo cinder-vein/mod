@@ -7,7 +7,7 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 ## Install
 
 1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
-2. Put `dist/greenlantern-4.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
+2. Put `dist/greenlantern-5.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
 3. Optional: **Curios** to wear rings in a ring slot.
 
 ## The corps
@@ -34,6 +34,9 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
   (Corps Uniform, Classic, Armored; plus Sapphire Gown, Tribal Robes and Risen for Violet, Indigo and Black).
 - **Recharge:** **right-click** with your corps' Power Battery in your main hand, or **right-click a placed one**.
   Either fully charges the ring and recites the oath.
+- **Constructs are 3D:** fists, hammers, cages and walls of hard light appear in the world in your corps'
+  color (Red makes claws, Star Sapphires make crystals), then fade after a few seconds.
+- **Red rage** tints your screen red; the **Sinestro Corps** makes its victims hear Parallax.
 - **Blue and Green** empower each other within 12 blocks (faster recharge, more damage) once the
   *Hope Amplified* / *Willpower Ignited* upgrade is bought.
 - **Skill tree:** open Palladium's powers menu and spend **XP levels** to unlock upgrades:
@@ -44,9 +47,9 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 | Combat | +4 damage (5) → +4 more (15) |
 | Capacity | 1500 charge (5) → 2000 charge (15) |
 | Flight | Flight with trail and aura (5) |
-| Constructs | Wheel + Blast (5) → Giant Fist (8) → Cage (10); Hammer Slam (12) |
+| Constructs | Wheel + Blast (5) → Giant Fist (8) → Cage (10) → Hammer Slam (12) → Wall (10) |
 | Force Field | Projectile, explosion and fire immunity (5) |
-| Corps specials | Each special in order (8, 12, 16), then the Ultimate (30, also needs Combat II) |
+| Corps specials | After Force Field: each special in order (8, 12, 16), then the Ultimate (30) |
 
 Beam, Ring Light, Suit Up and recharging are available from the start.
 

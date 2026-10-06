@@ -183,20 +183,59 @@ def box_faces(u, v, w, h, d):
     }
 
 
+PANELS = {"main", "light", "dark", "deep", "gold"}
+FABRIC = {"trim", "trim2", "disc"}
+
+
+def mix(c1, c2, t):
+    return tuple(int(a + (b - a) * t) for a, b in zip(c1[:3], c2[:3])) + (255,)
+
+
+def scale(c, f):
+    return tuple(max(0, min(255, int(v * f))) for v in c[:3]) + (255,)
+
+
 def paint_box(imgs, colors, u, v, w, h, d, painter):
-    """painter(face, x, y, face_w, face_h) -> palette key or None, per hi-res pixel."""
+    """painter(face, x, y, face_w, face_h) -> palette key or None, per hi-res pixel.
+
+    Each face is shaded like a hand-drawn skin: a soft top-to-bottom gradient, darker
+    seams where panels meet, a highlight along the top edge of each panel, woven noise
+    on the black under-suit, and colored light bleeding from glowing lines."""
     suit, glow = imgs
     for face, (fx, fy, fw, fh) in box_faces(u, v, w, h, d).items():
         fw, fh = fw * S, fh * S
+        keys = [[painter(face, x, y, fw, fh) for x in range(fw)] for y in range(fh)]
         for y in range(fh):
             for x in range(fw):
-                key = painter(face, x, y, fw, fh)
+                key = keys[y][x]
                 if key is None:
                     continue
                 pos = (fx * S + x, fy * S + y)
-                suit.putpixel(pos, colors[key])
+                c = colors[key]
                 if key in GLOWING:
+                    suit.putpixel(pos, c)
                     glow.putpixel(pos, colors["glow"] if key != "symbol" else colors["symbol"])
+                    continue
+                around = [keys[j][i] for i, j in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
+                          if 0 <= i < fw and 0 <= j < fh]
+                above = keys[y - 1][x] if y > 0 else None
+                if face in ("top", "bottom"):
+                    f = 1.0
+                else:
+                    f = 1.07 - 0.16 * (y / max(1, fh - 1))  # light from above
+                if key in PANELS:
+                    if any(n is not None and n != key and n not in GLOWING for n in around):
+                        f *= 0.78  # seam
+                    elif above != key:
+                        f *= 1.18  # highlight on the panel's top edge
+                    elif (x * 3 + y * 5) % 11 == 0:
+                        f *= 0.95  # subtle cloth grain
+                elif key in FABRIC:
+                    f *= 0.9 + ((x * 7 + y * 13 + (x * y) % 5) % 5) * 0.045  # woven texture
+                    if any(n in ("line", "gem") for n in around):
+                        c = mix(c, colors["glow"], 0.35)  # light bleeding onto the suit
+                c = scale(c, f)
+                suit.putpixel(pos, c)
 
 
 def logo_at(logo, x, y, ox, oy):
@@ -206,7 +245,10 @@ def logo_at(logo, x, y, ox, oy):
 
 def chest(logo, x, y):
     """The logo on a disc in the middle of the chest, or None outside the disc."""
-    if (x - 7.5) ** 2 + (y - 8.5) ** 2 <= 6.4 ** 2:
+    r2 = (x - 7.5) ** 2 + (y - 8.5) ** 2
+    if r2 <= 6.9 ** 2:
+        if r2 >= 6.2 ** 2:
+            return "light"  # badge rim
         return "symbol" if logo_at(logo, x, y, 2, 3) else "disc"
     return None
 
@@ -554,9 +596,9 @@ def ring_model(slim):
                     {"origin": [x0, 8.6, -2.15], "dimensions": [1.4, 0.6, 0.2], "texture_offset": [0, 0]},
                     {"origin": [x0, 8.6, 1.95], "dimensions": [1.4, 0.6, 0.2], "texture_offset": [0, 0]},
                     # signet plate on the outside of the hand
-                    {"origin": [x0 - 0.3, 8.2, -1.0], "dimensions": [0.3, 1.4, 2.0], "texture_offset": [0, 4]},
+                    {"origin": [x0 - 0.45, 7.9, -1.2], "dimensions": [0.45, 1.8, 2.4], "texture_offset": [0, 4]},
                     # gem
-                    {"origin": [x0 - 0.5, 8.5, -0.6], "dimensions": [0.2, 0.8, 1.2], "texture_offset": [0, 10]},
+                    {"origin": [x0 - 0.75, 8.2, -0.8], "dimensions": [0.3, 1.2, 1.6], "texture_offset": [0, 10]},
                 ],
                 "children": {},
             },
@@ -706,4 +748,92 @@ def logo_texture(corps_colors):
         for x, ch in enumerate(row):
             if ch == "#":
                 d.rectangle((31 + x * 6, 31 + y * 6, 36 + x * 6, 36 + y * 6), fill=(240, 255, 240, 255))
+    return img
+
+
+# --- hard-light constructs (3D item models shown by display entities) --------------------
+
+def _box(frm, to):
+    return {"from": frm, "to": to, "faces": {f: {"texture": "#0", "uv": [0, 0, 16, 16]}
+                                             for f in ("north", "south", "east", "west", "up", "down")}}
+
+
+def construct_shapes():
+    """Shape name -> list of elements in a 16x16x16 box, centered on (8, 8, 8)."""
+    fist = [
+        _box([3, 3, 5], [13, 11, 13]),     # back of the hand
+        _box([3, 11, 4], [5.4, 14, 11]),   # four curled fingers
+        _box([5.6, 11, 4], [8, 14.5, 11]),
+        _box([8.2, 11, 4], [10.6, 14.5, 11]),
+        _box([10.8, 11, 4], [13, 14, 11]),
+        _box([3, 9, 2], [13, 11.5, 5]),    # knuckle ridge, facing forward
+        _box([12.5, 5, 6], [15, 10, 11]),  # thumb
+        _box([5, 0, 6], [11, 3, 12]),      # wrist
+    ]
+    hammer = [
+        _box([7, 0, 7], [9, 10, 9]),       # handle
+        _box([2, 10, 4], [14, 16, 12]),    # head
+        _box([1, 11, 5], [2, 15, 11]),     # striking faces
+        _box([14, 11, 5], [15, 15, 11]),
+    ]
+    cage = []
+    for x, z in ((1, 1), (14, 1), (1, 14), (14, 14), (7.5, 1), (7.5, 14), (1, 7.5), (14, 7.5)):
+        cage.append(_box([x, 0, z], [x + 1, 16, z + 1]))  # bars
+    cage += [_box([1, 0, 1], [15, 1, 15]), _box([1, 15, 1], [15, 16, 15])]  # floor and roof frame
+    wall = [
+        _box([0, 0, 7], [16, 16, 9]),      # slab
+        _box([0, 0, 6.5], [16, 1, 9.5]), _box([0, 15, 6.5], [16, 16, 9.5]),  # frame
+        _box([0, 0, 6.5], [1, 16, 9.5]), _box([15, 0, 6.5], [16, 16, 9.5]),
+        _box([5, 5, 6], [11, 11, 10]),     # boss in the middle
+    ]
+    claw = [
+        _box([7, 0, 7], [9, 8, 9]),        # shaft
+        _box([3, 8, 7], [13, 10, 9]),      # crossbar
+        _box([3, 10, 7], [5, 15, 9]), _box([3.5, 15, 7.5], [4.5, 16, 8.5]),   # three hooked prongs
+        _box([7, 10, 7], [9, 16, 9]),
+        _box([11, 10, 7], [13, 15, 9]), _box([11.5, 15, 7.5], [12.5, 16, 8.5]),
+    ]
+    crystal = [
+        _box([6, 0, 6], [10, 14, 10]), _box([7, 14, 7], [9, 16, 9]),          # central spire
+        _box([2, 0, 3], [5, 9, 6]), _box([2.8, 9, 3.8], [4.2, 11, 5.2]),        # side shards
+        _box([11, 0, 9], [14, 10, 12]), _box([11.8, 10, 9.8], [13.2, 12, 11.2]),
+        _box([9, 0, 2], [11, 6, 4]), _box([4, 0, 11], [7, 7, 14]),
+    ]
+    return {"fist": fist, "hammer": hammer, "cage": cage, "wall": wall, "claw": claw, "crystal": crystal}
+
+
+def construct_texture(corps, rgb):
+    """Translucent hard light: bright edges, softer middle."""
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            edge = x in (0, 15) or y in (0, 15)
+            c = p["light"] if edge else (p["glow"] if (x + y) % 6 == 0 else p["main"])
+            img.putpixel((x, y), c[:3] + ((235,) if edge else (170,)))
+    return img
+
+
+def rage_overlay():
+    """256x256 screen overlay: a pulsing-red vignette for Red Lantern rage."""
+    img = Image.new("RGBA", (256, 256))
+    for y in range(256):
+        for x in range(256):
+            r = (((x - 127.5) / 127.5) ** 2 + ((y - 127.5) / 127.5) ** 2) ** 0.5
+            a = max(0.0, min(1.0, (r - 0.55) / 0.6))
+            img.putpixel((x, y), (190, 10, 15, int(170 * a)))
+    return img
+
+
+def menu_background(corps, rgb):
+    """16x16 tile for the powers menu: dark stone with a faint corps-colored grid."""
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            base = mix((18, 19, 22), p["main"], 0.12)
+            if x == 0 or y == 0:
+                base = mix((18, 19, 22), p["main"], 0.35)
+            n = ((x * 7 + y * 13) % 5) * 2
+            img.putpixel((x, y), tuple(min(255, v + n) for v in base[:3]) + (255,))
     return img

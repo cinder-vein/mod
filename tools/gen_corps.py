@@ -42,6 +42,7 @@ CORPS = {
     "red": {
         "name": "Red Lantern", "emotion": "Rage", "color": (220, 30, 35),
         "health": 40, "bonus_damage": 4,  # rage: fewer hearts, more strength
+        "shapes": {"fist": "claw"},
         "gem": "minecraft:redstone_block", "glass": "minecraft:red_stained_glass",
         "oath": ["With blood and rage of crimson red,", "Ripped from a corpse so freshly dead,",
                  "Together with our hellish hate,", "We'll burn you all... that is your fate!"],
@@ -61,6 +62,7 @@ CORPS = {
     },
     "violet": {
         "name": "Star Sapphire", "emotion": "Love", "color": (215, 55, 220),
+        "shapes": {"cage": "crystal"},
         "gem": "minecraft:amethyst_block", "glass": "minecraft:magenta_stained_glass",
         "oath": ["For hearts long lost and full of fright,", "For those alone in blackest night,",
                  "Accept our ring and join our fight,", "Love conquers all... with violet light!"],
@@ -93,6 +95,29 @@ OTHERS = "@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft
 NEAREST = OTHERS[:-1] + ",limit=1,sort=nearest]"
 ALLIES = "@a[distance=..{r}]"
 UNIFORM = {"type": "palladium:ability_enabled", "ability": "uniform"}
+
+# 3D hard-light constructs: item models shown by item_display entities that grow in,
+# then are removed by the datapack tick function after `life` ticks.
+SHAPES = {
+    "fist": {"name": "Fist", "scale": 2.6, "life": 24},
+    "hammer": {"name": "Hammer", "scale": 3.2, "life": 24},
+    "cage": {"name": "Cage", "scale": 2.4, "life": 120},
+    "wall": {"name": "Wall", "scale": 3.2, "life": 100},
+    "claw": {"name": "Claw", "scale": 2.8, "life": 24},
+    "crystal": {"name": "Crystal", "scale": 2.6, "life": 160},
+}
+
+
+def construct_cmds(corps, shape, where):
+    """Commands that spawn a construct. `where` is an `execute ...` prefix that sets the position."""
+    n = list(CORPS).index(corps) + 1
+    nbt = ('{Tags:["gl_construct","gl_new","gl_%s"],item:{id:"%s:construct_%s",Count:1b,tag:{CustomModelData:%d}},'
+           'item_display:"none",brightness:{sky:15,block:15},view_range:2f,'
+           'transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],'
+           'scale:[0.2f,0.2f,0.2f]}}') % (shape, NS, shape, n)
+    newest = "@e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest]"
+    return [f"{where} run summon minecraft:item_display ~ ~ ~ {nbt}",
+            f"{where} run tp {newest} ~ ~ ~ ~ 0"]
 
 
 def hexcolor(rgb):
@@ -157,7 +182,7 @@ def one(conds):
 class Kit:
     """Builds one corps' power: bar abilities, skill-tree nodes and hidden helpers."""
 
-    SPECIAL_SLOTS = [(2, -2), (4, -2), (4, -4)]
+    SPECIAL_SLOTS = [(5, 2), (5, 3), (5, 4)]
 
     def __init__(self, corps, data):
         self.c = corps
@@ -167,6 +192,7 @@ class Kit:
         self.lang = {}
         self.specials = []
         self.attr_count = 0
+        self.shapes = {**{s: s for s in SHAPES}, **data.get("shapes", {})}
 
     def tr(self, key, english, shared):
         lang_key = f"ability.{NS}.{key}" if shared else f"ability.{NS}.{self.c}.{key}"
@@ -215,7 +241,7 @@ class Kit:
     def special(self, key, name, desc, icon, ability, cost=0, xp=8, index=None, extra=()):
         """A corps-specific ability: a tree node plus (if index is set) a bar ability."""
         n = len(self.specials)
-        parents = ["uniform"] if n == 0 else [self.specials[-1]]
+        parents = ["skill_force_field"] if n == 0 else [self.specials[-1]]
         self.node(f"skill_{key}", name, desc, icon, self.SPECIAL_SLOTS[n], parents, xp, shared=False)
         self.specials.append(f"skill_{key}")
         if index is None:  # passive: the effect is unlocked by the node alone
@@ -229,8 +255,7 @@ class Kit:
         self.hidden(key, {**command(first=commands), "conditions": {"enabling": [enabled(source), interval(every)]}})
 
     def ultimate(self, key, name, desc, icon, commands, cost=600, cooldown=1200):
-        self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (2, -4),
-                  [self.specials[-1], "skill_combat_2"], 30, shared=False)
+        self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (5, 5), [self.specials[-1]], 30, shared=False)
         self.bar(key, {**command(first=commands), "conditions": {"enabling": action(cooldown)}},
                  name, icon, 9, node=f"skill_{key}", cost=cost, shared=False)
 
@@ -290,24 +315,24 @@ def shared_kit(k):
 
     # --- skill tree ---
     k.node("skill_health_1", "Vitality I", "+10 hearts while your ring is charged.",
-           "minecraft:golden_apple", (-2, 0), ["uniform"], 5)
+           "minecraft:golden_apple", (-5, 1), ["uniform"], 5)
     k.node("skill_health_2", "Vitality II", "Another +10 hearts while your ring is charged.",
-           "minecraft:enchanted_golden_apple", (-4, 0), ["skill_health_1"], 15)
+           "minecraft:enchanted_golden_apple", (-5, 2), ["skill_health_1"], 15)
     k.attribute("health_1", "minecraft:generic.max_health", 20, [unlocked("skill_health_1"), charge(1)])
     k.attribute("health_2", "minecraft:generic.max_health", 20, [unlocked("skill_health_2"), charge(1)])
 
     k.node("skill_combat_1", "Combat I", "+4 attack and punch damage while your ring is charged.",
-           "minecraft:iron_sword", (2, 0), ["uniform"], 5)
+           "minecraft:iron_sword", (-3, 1), ["uniform"], 5)
     k.node("skill_combat_2", "Combat II", "Another +4 attack and punch damage.",
-           "minecraft:netherite_sword", (4, 0), ["skill_combat_1"], 15)
+           "minecraft:netherite_sword", (-3, 2), ["skill_combat_1"], 15)
     for i in (1, 2):
         k.attribute(f"combat_{i}", "minecraft:generic.attack_damage", 4, [unlocked(f"skill_combat_{i}"), charge(1)])
         k.attribute(f"combat_{i}_fists", "palladium:punch_damage", 4, [unlocked(f"skill_combat_{i}"), charge(1)])
 
     k.node("skill_charge_1", "Capacity I", "Your ring holds 1500 charge instead of 1000.",
-           "minecraft:glowstone", (0, 2), ["uniform"], 5)
+           "minecraft:glowstone", (-1, 1), ["uniform"], 5)
     k.node("skill_charge_2", "Capacity II", "Your ring holds 2000 charge.",
-           "minecraft:beacon", (0, 4), ["skill_charge_1"], 15)
+           "minecraft:beacon", (-1, 2), ["skill_charge_1"], 15)
     # The bar's max reads a per-corps scoreboard score (falls back to 1000).
     setup = f"scoreboard objectives add {obj} dummy"
     k.hidden("charge_1_apply", {**command(first=[setup, f"scoreboard players set @s {obj} 1500"]),
@@ -317,7 +342,7 @@ def shared_kit(k):
                                 "conditions": {"unlocking": unlocked("skill_charge_2")}})
 
     k.node("skill_flight", "Flight", "Fly on the power of your ring, leaving a trail of light. Flying slowly drains charge.",
-           "minecraft:feather", (0, -2), ["uniform"], 5)
+           "minecraft:feather", (1, 1), ["uniform"], 5)
     flight = [unlocked("skill_flight"), charge(1)]
     k.attribute("flight", "palladium:flight_speed", 1.0, flight)
     k.attribute("flight_flexibility", "palladium:flight_flexibility", 5, flight)
@@ -339,14 +364,16 @@ def shared_kit(k):
                             "looping": True, "conditions": {"enabling": enabled("beam")}})
 
     k.node("skill_constructs", "Constructs", "Unlocks the construct wheel and the Blast construct.",
-           "minecraft:emerald", (-2, -2), ["uniform"], 5)
+           "minecraft:emerald", (3, 1), ["uniform"], 5)
     k.node("skill_fist", "Construct: Giant Fist", "Adds the Giant Fist to the construct wheel.",
-           "minecraft:iron_block", (-4, -2), ["skill_constructs"], 8)
+           "minecraft:iron_block", (3, 2), ["skill_constructs"], 8)
     k.node("skill_cage", "Construct: Cage", "Adds the Cage to the construct wheel.",
-           "minecraft:iron_bars", (-4, -4), ["skill_fist"], 10)
+           "minecraft:iron_bars", (3, 3), ["skill_fist"], 10)
     k.node("skill_slam", "Construct: Hammer Slam", "Adds the Hammer Slam to the construct wheel.",
-           "minecraft:anvil", (-2, -4), ["skill_constructs"], 12)
-    constructs = ["construct_blast", "construct_fist", "construct_cage", "construct_slam"]
+           "minecraft:anvil", (3, 4), ["skill_cage"], 12)
+    k.node("skill_wall", "Construct: Wall", "Adds the Wall to the construct wheel.",
+           "minecraft:shield", (3, 5), ["skill_slam"], 10)
+    constructs = ["construct_blast", "construct_fist", "construct_cage", "construct_slam", "construct_wall"]
     k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": constructs,
                          "conditions": {"enabling": held()}},
           "Constructs", "minecraft:emerald", 1, node="skill_constructs")
@@ -372,12 +399,14 @@ def shared_kit(k):
     # everything near the point 3 blocks ahead (you stand ~3 blocks away, so you're never hit)
     hit = "@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5]"
     construct("construct_fist", "Construct: Giant Fist", "minecraft:iron_block", "skill_fist", 100, 60, command(first=[
+        *construct_cmds(c, k.shapes["fist"], "execute anchored eyes positioned ^ ^-0.4 ^2.6"),
         f"{front} run {burst(rgb, 2.5, '0.8 0.8 0.8', 60, '~ ~ ~')}",
         f"{front} as {hit} run damage @s 12 minecraft:player_attack",
         f"{front} as {hit} run effect give @s minecraft:levitation 1 3 true",
         sound("minecraft:entity.iron_golem.attack", 0.6)]))
     target = NEAREST.format(r=12)
     construct("construct_cage", "Construct: Cage", "minecraft:iron_bars", "skill_cage", 150, 100, command(first=[
+        *construct_cmds(c, k.shapes["cage"], f"execute at {target} positioned ~ ~1 ~"),
         f"execute as {target} at @s run {burst(rgb, 2.0, '0.6 1.0 0.6', 120, '~ ~1 ~')}",
         f"effect give {target} minecraft:slowness 6 6 true",
         f"effect give {target} minecraft:weakness 6 2 true",
@@ -385,13 +414,19 @@ def shared_kit(k):
         sound("minecraft:block.amethyst_block.resonate", 0.8)]))
     around = OTHERS.format(r=6)
     construct("construct_slam", "Construct: Hammer Slam", "minecraft:anvil", "skill_slam", 120, 80, command(first=[
+        *construct_cmds(c, k.shapes["hammer"], "execute positioned ~ ~3.4 ~"),
         burst(rgb, 2.5, "3 0.2 3", 200, "~ ~0.2 ~"),
         f"execute as {around} run damage @s 8 minecraft:player_attack",
         f"effect give {around} minecraft:levitation 1 5 true",
         sound("minecraft:entity.generic.explode", 1.2)]))
+    construct("construct_wall", "Construct: Wall", "minecraft:shield", "skill_wall", 100, 120, command(first=[
+        *construct_cmds(c, k.shapes["wall"], "execute anchored eyes positioned ^ ^-0.4 ^2.4"),
+        "effect give @s minecraft:resistance 5 2 true",
+        f"{front} as {hit} run effect give @s minecraft:slowness 5 3 true",
+        sound("minecraft:block.beacon.power_select", 0.7)]))
 
     k.node("skill_force_field", "Force Field", "Unlocks a bubble that blocks projectiles, explosions and fire.",
-           "minecraft:shield", (2, 2), ["uniform"], 5)
+           "minecraft:shield", (5, 1), ["uniform"], 5)
     k.bar("force_field", {
         "type": "palladium:damage_immunity",
         "damage_sources": ["minecraft:is_projectile", "minecraft:is_explosion", "minecraft:is_fire"],
@@ -445,7 +480,7 @@ def shared_kit(k):
         near = {"type": "palladium:command_result", "comparison": ">=", "compare_to": 1,
                 "command": f"execute if entity @a[tag=gl_{ally},distance=0.1..12]"}
         k.node("skill_empowered", data["empowered_name"], data["empowered_desc"], f"{NS}:{ally}_lantern_ring",
-               (-2, 2), ["uniform"], 8)
+               (1, 2), ["skill_flight"], 8)
         k.hidden("empowered_charge", {"type": "palladium:dummy", "energy_bar_usage": usage(-2),
                                       "conditions": {"unlocking": [unlocked("skill_empowered"), near]}})
         k.attribute("empowered_damage", "minecraft:generic.attack_damage", 4, [unlocked("skill_empowered"), near])
@@ -487,6 +522,11 @@ def specials_red(k):
                   last=["effect clear @s minecraft:strength", "effect clear @s minecraft:speed"]),
         "energy_bar_usage": usage(2), "conditions": {"enabling": toggle()},
     }, cost=2, xp=12, index=7)
+    k.hidden("rage_overlay", {
+        "type": "palladium:gui_overlay", "texture": f"{NS}:textures/gui/rage_overlay.png",
+        "texture_width": 256, "texture_height": 256, "alignment": "stretch",
+        "conditions": {"enabling": enabled("rage")},
+    })
     roar(k, [f"effect give {OTHERS.format(r=7)} minecraft:slowness 4 1 true"], index=8, xp=16)
     around = OTHERS.format(r=8)
     k.ultimate("blood_rage", "Blood Rage", "a storm of rage that hurts, withers and burns everything within 8 blocks.",
@@ -526,6 +566,9 @@ def specials_orange(k):
                    sound("minecraft:entity.wither.ambient", 1.4)])
 
 
+WHISPER = json.dumps({"text": "Don't you hear him?", "color": "yellow", "italic": True})
+
+
 def specials_yellow(k):
     around = OTHERS.format(r=10)
     k.special("inflict_fear", "Inflict Fear", "Fill everything within 10 blocks with terror: darkness, slowness and weakness.",
@@ -535,6 +578,8 @@ def specials_yellow(k):
                   f"effect give {around} minecraft:darkness 6 0 true",
                   f"effect give {around} minecraft:slowness 6 1 true",
                   f"effect give {around} minecraft:weakness 6 1 true",
+                  f"title @a[distance=0.5..10] times 5 50 15",
+                  f"title @a[distance=0.5..10] title {WHISPER}",
                   sound("minecraft:ambient.cave", 0.8)]),
                   "conditions": {"enabling": action(200)}}, cost=120, xp=8, index=6)
     target = NEAREST.format(r=12)
@@ -544,6 +589,7 @@ def specials_yellow(k):
                   f"effect give {target} minecraft:nausea 10 0 true",
                   f"effect give {target} minecraft:blindness 6 0 true",
                   f"effect give {target} minecraft:mining_fatigue 10 2 true",
+                  f"title {target} title {WHISPER}",
                   sound("minecraft:entity.warden.heartbeat", 1.0)]),
                   "conditions": {"enabling": action(120)}}, cost=100, xp=12, index=7)
     around = OTHERS.format(r=12)
@@ -613,6 +659,7 @@ def specials_violet(k):
     target = NEAREST.format(r=12)
     k.special("crystal_prison", "Crystal Prison", "Seal the nearest creature within 12 blocks in violet crystal for 8 seconds.",
               "minecraft:amethyst_cluster", {**command(first=[
+                  *construct_cmds("violet", "crystal", f"execute at {target} positioned ~ ~1 ~"),
                   f"execute as {target} at @s run particle minecraft:end_rod ~ ~1 ~ 0.4 0.8 0.4 0.01 60 force",
                   f"execute as {target} at @s run {burst(k.rgb, 2.0, '0.4 1 0.4', 100, '~ ~1 ~')}",
                   f"effect give {target} minecraft:slowness 8 255 true",
@@ -717,6 +764,7 @@ def save(img, rel):
 
 GENERATED_DIRS = [
     f"addon/{NS}", f"data/{NS}/palladium", f"data/{NS}/recipes", f"data/{NS}/loot_tables", f"data/{NS}/curios",
+    f"data/{NS}/functions", "data/minecraft/tags/functions",
     f"assets/{NS}/models", f"assets/{NS}/blockstates", f"assets/{NS}/textures", f"assets/{NS}/palladium",
 ]
 
@@ -784,7 +832,7 @@ def main():
         write(f"data/{NS}/palladium/powers/{c}_lantern.json", {
             "name": {"translate": f"power.{NS}.{c}_lantern"},
             "icon": f"{NS}:{ring}",
-            "background": "minecraft:textures/block/black_concrete.png",
+            "background": f"{NS}:textures/gui/menu/{c}.png",
             "gui_display_type": "tree",
             "primary_color": hexcolor(rgb),
             "secondary_color": hexcolor(art.shade(rgb, 0.4)),
@@ -795,6 +843,8 @@ def main():
             "abilities": k.abilities,
         })
         lang[f"power.{NS}.{c}_lantern"] = data["name"]
+        save(art.menu_background(c, rgb), f"assets/{NS}/textures/gui/menu/{c}.png")
+        save(art.construct_texture(c, rgb), f"assets/{NS}/textures/item/construct/{c}.png")
         lang.update(k.lang)
         for slot in ("mainhand", "offhand", "curios:ring"):
             write(f"data/{NS}/palladium/item_powers/{ring}_{slot.replace(':', '_')}.json",
@@ -880,6 +930,50 @@ def main():
         "motion_random": [0.2, 0.2, 0.2], "visible_in_first_person": False})
     write("data/curios/tags/items/ring.json", {"replace": False, "values": [f"{NS}:{c}_lantern_ring" for c in CORPS]})
     write(f"data/{NS}/curios/entities/lantern_ring.json", {"entities": ["player"], "slots": ["ring"]})
+    # Constructs: one hidden item per shape; CustomModelData picks the corps color.
+    for shape, elements in art.construct_shapes().items():
+        item = f"construct_{shape}"
+        write(f"addon/{NS}/items/{item}.json", {"max_stack_size": 1})
+        lang[f"item.{NS}.{item}"] = f"{SHAPES[shape]['name']} Construct"
+        write(f"assets/{NS}/models/item/{item}_base.json", {
+            "render_type": "minecraft:translucent",
+            "textures": {"0": f"{NS}:item/construct/green", "particle": f"{NS}:item/construct/green"},
+            "elements": elements,
+        })
+        write(f"assets/{NS}/models/item/{item}.json", {
+            "parent": f"{NS}:item/{item}_base",
+            "overrides": [{"predicate": {"custom_model_data": i + 1}, "model": f"{NS}:item/{item}_{c}"}
+                          for i, c in enumerate(CORPS)],
+        })
+        for c in CORPS:
+            write(f"assets/{NS}/models/item/{item}_{c}.json", {
+                "parent": f"{NS}:item/{item}_base",
+                "textures": {"0": f"{NS}:item/construct/{c}", "particle": f"{NS}:item/construct/{c}"}})
+    items += [f"construct_{shape}" for shape in SHAPES]
+
+    # Datapack: grows new constructs in and removes them when their time is up.
+    tick = ["# Generated by tools/gen_corps.py"]
+    for shape, cfg in SHAPES.items():
+        sel = f"@e[type=minecraft:item_display,tag=gl_new,tag=gl_{shape}]"
+        sc = f"{cfg['scale']}f"
+        tick += [
+            f"scoreboard players set {sel} gl_life {cfg['life']}",
+            f"execute as {sel} run data merge entity @s {{start_interpolation:0,interpolation_duration:5,"
+            f"transformation:{{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],"
+            f"scale:[{sc},{sc},{sc}]}}}}",
+        ]
+    tick += [
+        "tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new",
+        "scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1",
+        "kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]",
+    ]
+    (SRC / f"data/{NS}/functions").mkdir(parents=True, exist_ok=True)
+    (SRC / f"data/{NS}/functions/tick.mcfunction").write_text("\n".join(tick) + "\n")
+    (SRC / f"data/{NS}/functions/load.mcfunction").write_text("scoreboard objectives add gl_life dummy\n")
+    write("data/minecraft/tags/functions/tick.json", {"values": [f"{NS}:tick"]})
+    write("data/minecraft/tags/functions/load.json", {"values": [f"{NS}:load"]})
+    save(art.rage_overlay(), f"assets/{NS}/textures/gui/rage_overlay.png")
+
     write(f"assets/{NS}/lang/en_us.json", lang)
     save(art.logo_texture([CORPS[c]["color"] for c in SPECTRUM]), "pack.png")
     print(f"Generated {len(CORPS)} corps")

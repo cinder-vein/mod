@@ -124,6 +124,12 @@ def validate():
             if ab.get("type") == "palladium:skin_change":
                 for t in ab["texture"].values() if isinstance(ab["texture"], dict) else [ab["texture"]]:
                     check_ref("texture", t, w)
+            if ab.get("type") == "palladium:gui_overlay":
+                check_ref("texture", ab["texture"], w)
+            for key in ("first_tick_commands", "commands", "last_tick_commands"):
+                for cmd in ab.get(key, []):
+                    for item in __import__("re").findall(r'id:"(%s:[a-z_]+)"' % NS, cmd):
+                        check_ref("item", item, w)
             if "default_layer" in ab:
                 check_ref("render_layer", ab["default_layer"], w)
             if "accessory_slot" in ab:
@@ -206,6 +212,10 @@ def validate():
             err(f"block {path.stem}: missing translation")
     for path in (SRC / "assets" / NS / "models").rglob("*.json"):
         model = load(path)
+        for o in model.get("overrides", []):
+            ns, _, m = o["model"].partition(":")
+            if not (SRC / "assets" / ns / "models" / f"{m}.json").exists():
+                err(f"model {path.name}: missing override model {o['model']}")
         parent = model.get("parent", "")
         if parent.startswith(NS + ":") and not (SRC / "assets" / NS / "models" / f"{parent.split(':')[1]}.json").exists():
             err(f"model {path.name}: missing parent {parent}")

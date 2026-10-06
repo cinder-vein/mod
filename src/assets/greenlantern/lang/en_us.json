@@ -34,11 +34,14 @@
   "ability.greenlantern.skill_cage.description": "Adds the Cage to the construct wheel. Costs 10 XP levels.",
   "ability.greenlantern.skill_slam": "Construct: Hammer Slam",
   "ability.greenlantern.skill_slam.description": "Adds the Hammer Slam to the construct wheel. Costs 12 XP levels.",
+  "ability.greenlantern.skill_wall": "Construct: Wall",
+  "ability.greenlantern.skill_wall.description": "Adds the Wall to the construct wheel. Costs 10 XP levels.",
   "ability.greenlantern.constructs": "Constructs",
   "ability.greenlantern.construct_blast": "Construct: Blast",
   "ability.greenlantern.construct_fist": "Construct: Giant Fist",
   "ability.greenlantern.construct_cage": "Construct: Cage",
   "ability.greenlantern.construct_slam": "Construct: Hammer Slam",
+  "ability.greenlantern.construct_wall": "Construct: Wall",
   "ability.greenlantern.skill_force_field": "Force Field",
   "ability.greenlantern.skill_force_field.description": "Unlocks a bubble that blocks projectiles, explosions and fire. Costs 5 XP levels.",
   "ability.greenlantern.force_field": "Force Field",
@@ -256,5 +259,11 @@
   "accessory.greenlantern.black_suit_risen": "Risen",
   "accessory.greenlantern.black_suit_corps": "Corps Uniform",
   "accessory.greenlantern.black_suit_classic": "Classic",
-  "accessory.greenlantern.black_suit_armored": "Armored"
+  "accessory.greenlantern.black_suit_armored": "Armored",
+  "item.greenlantern.construct_fist": "Fist Construct",
+  "item.greenlantern.construct_hammer": "Hammer Construct",
+  "item.greenlantern.construct_cage": "Cage Construct",
+  "item.greenlantern.construct_wall": "Wall Construct",
+  "item.greenlantern.construct_claw": "Claw Construct",
+  "item.greenlantern.construct_crystal": "Crystal Construct"
 }
