@@ -910,30 +910,10 @@
         ]
       }
     },
-    "flight_trail": {
-      "type": "palladium:trail",
-      "trail": "greenlantern:white_trail",
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_flight"
-          },
-          {
-            "type": "palladium:is_flying"
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
     "flight_aura": {
-      "type": "palladium:particles",
-      "emitter": [
-        "greenlantern:flight_aura"
-      ],
-      "particle_type": "minecraft:dust",
-      "options": "0.92 0.95 0.98 1.2",
+      "type": "palladium:entity_glow",
+      "mode": "self",
+      "color": "#EBF2FA",
       "conditions": {
         "enabling": [
           {
@@ -2510,10 +2490,9 @@
       "hidden_in_bar": false,
       "list_index": 2
     },
-    "force_field_glow": {
-      "type": "palladium:entity_glow",
-      "mode": "self",
-      "color": "#EBF2FA",
+    "force_field_bubble": {
+      "type": "palladium:render_layer",
+      "render_layer": "greenlantern:white_bubble",
       "conditions": {
         "enabling": {
           "type": "palladium:ability_enabled",

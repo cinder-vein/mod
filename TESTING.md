@@ -145,6 +145,28 @@ Use a creative test world with cheats on, plus a second account or a friend for 
       reward (+1,500 Willpower), the quest gets a tick, and the next one starts.
 - [ ] Sneak for a while: Fear's page shows the sneaking points growing.
 
+## 7c. Flight and the force field
+- [ ] Buy Flight and fly: you glow with an outline in your ring's color (no trail).
+- [ ] Turn on Force Field: a bubble of hexagonal hard light surrounds you, turning and crouching with you. With two
+      rings, the bubble takes your first ring's color; Prismatic Shield layers both colors.
+
+## 7d. The emotional spectrum entities
+- [ ] `/lantern entity status`: all nine are free.
+- [ ] `/lantern emotion <you> will set 20000`, stand outside in the sky's view, then `/lantern entity summon ion`. A title
+      says Ion is here; a huge green leviathan floats toward you. Within 8 blocks it offers itself: click **[ACCEPT]**.
+  - The announcement goes out, Ion's model disappears, and you get the Ion host bar (Will Surge, Giant Fist,
+    Unbreakable Will, Willpower Unbound, Release) and the Ion tree in the powers menu. Your bar's power is full.
+  - Buy Will Surge (5 levels): it dashes you forward. Buy Flight: you fly with a green glow.
+- [ ] Second player: hold a Power Battery, **sneak and look at you** from a few blocks for 5 seconds: the actionbar
+      counts up, then the battery becomes **Lantern of Ion** and your host bar is gone.
+  - They right-click the lantern: **[HOST IT]** (needs 100% willpower) or **[RELEASE IT]** (Ion is free again).
+- [ ] Host again, then say *"I release you"* and click **[RELEASE IT]**: Ion leaves you.
+- [ ] `/lantern emotion <you> fear set 12000` then `/lantern entity summon parallax`: it appears behind you and flies
+      at you. When it reaches you, you're possessed. Within a few minutes it takes control (darkness, nausea).
+- [ ] In the Nether with 25%+ rage: `/lantern entity summon butcher`. A boss bar appears; the Butcher fights. Bring it
+      to 15%: with 50% rage you become its host, without it the Butcher vanishes.
+- [ ] Ophidian (100% avarice, below y 30): it asks for gold. Throw it a block of gold: then it offers itself.
+
 ## 8. Leaders
 - [ ] `/lantern leader <you> green`. A member wearing a green ring stands near you. Use
       **Revoke Ring** (last page): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; drop it

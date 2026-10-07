@@ -35,6 +35,66 @@ scoreboard players add #s gl_dtick 1
 execute if score #s gl_dtick matches 5.. run scoreboard players set @a gl_dlast -1
 execute if score #s gl_dtick matches 5.. run scoreboard players set #s gl_dtick 0
 execute as @a[tag=gl_dual] run function greenlantern:dual/second
+scoreboard players operation #req25 gl_ent = #threshold gl_cfg
+scoreboard players operation #req50 gl_ent = #threshold gl_cfg
+scoreboard players operation #req60 gl_ent = #threshold gl_cfg
+scoreboard players operation #req100 gl_ent = #threshold gl_cfg
+scoreboard players set #pct gl_ent 100
+scoreboard players set #p25 gl_ent 25
+scoreboard players operation #req25 gl_ent *= #p25 gl_ent
+scoreboard players operation #req25 gl_ent /= #pct gl_ent
+scoreboard players set #p50 gl_ent 50
+scoreboard players operation #req50 gl_ent *= #p50 gl_ent
+scoreboard players operation #req50 gl_ent /= #pct gl_ent
+scoreboard players set #p60 gl_ent 60
+scoreboard players operation #req60 gl_ent *= #p60 gl_ent
+scoreboard players operation #req60 gl_ent /= #pct gl_ent
+scoreboard players add #minute gl_ent 1
+execute if score #minute gl_ent matches 60.. if score #entities gl_cfg matches 1 run function greenlantern:entity/minute
+execute if score #minute gl_ent matches 60.. run scoreboard players set #minute gl_ent 0
+scoreboard players add @a gl_edc_ion 0
+scoreboard players add @a gl_edc_parallax 0
+scoreboard players add @a gl_edc_butcher 0
+scoreboard players add @a gl_edc_ophidian 0
+scoreboard players add @a gl_edc_adara 0
+scoreboard players add @a gl_edc_predator 0
+scoreboard players add @a gl_edc_proselyte 0
+scoreboard players add @a gl_edc_life 0
+scoreboard players add @a gl_edc_nekron 0
+scoreboard players remove @a[scores={gl_edc_ion=1..}] gl_edc_ion 1
+scoreboard players remove @a[scores={gl_edc_parallax=1..}] gl_edc_parallax 1
+scoreboard players remove @a[scores={gl_edc_butcher=1..}] gl_edc_butcher 1
+scoreboard players remove @a[scores={gl_edc_ophidian=1..}] gl_edc_ophidian 1
+scoreboard players remove @a[scores={gl_edc_adara=1..}] gl_edc_adara 1
+scoreboard players remove @a[scores={gl_edc_predator=1..}] gl_edc_predator 1
+scoreboard players remove @a[scores={gl_edc_proselyte=1..}] gl_edc_proselyte 1
+scoreboard players remove @a[scores={gl_edc_life=1..}] gl_edc_life 1
+scoreboard players remove @a[scores={gl_edc_nekron=1..}] gl_edc_nekron 1
+function greenlantern:entity/ion/second
+function greenlantern:entity/parallax/second
+function greenlantern:entity/butcher/second
+execute if score #state_butcher gl_ent matches 1 as @e[tag=gl_ent_butcher] at @s run function greenlantern:entity/butcher/special_clock
+function greenlantern:entity/ophidian/second
+function greenlantern:entity/adara/second
+function greenlantern:entity/predator/second
+function greenlantern:entity/proselyte/second
+function greenlantern:entity/life/second
+function greenlantern:entity/nekron/second
+execute if score #state_nekron gl_ent matches 1 as @e[tag=gl_ent_nekron] at @s run function greenlantern:entity/nekron/special_clock
+scoreboard players remove @a[scores={gl_eofft=1..}] gl_eofft 1
+tag @a[tag=gl_eoffer_ion,scores={gl_eofft=..0}] remove gl_eoffer_ion
+tag @a[tag=gl_eoffer_parallax,scores={gl_eofft=..0}] remove gl_eoffer_parallax
+tag @a[tag=gl_eoffer_butcher,scores={gl_eofft=..0}] remove gl_eoffer_butcher
+tag @a[tag=gl_eoffer_ophidian,scores={gl_eofft=..0}] remove gl_eoffer_ophidian
+tag @a[tag=gl_eoffer_adara,scores={gl_eofft=..0}] remove gl_eoffer_adara
+tag @a[tag=gl_eoffer_predator,scores={gl_eofft=..0}] remove gl_eoffer_predator
+tag @a[tag=gl_eoffer_proselyte,scores={gl_eofft=..0}] remove gl_eoffer_proselyte
+tag @a[tag=gl_eoffer_life,scores={gl_eofft=..0}] remove gl_eoffer_life
+tag @a[tag=gl_eoffer_nekron,scores={gl_eofft=..0}] remove gl_eoffer_nekron
+scoreboard players enable @a gl_entity
+scoreboard players remove @a[scores={gl_lifecd=1..}] gl_lifecd 1
+tag @a[tag=gl_host_life,scores={gl_lifecd=..0}] add gl_life_ready
+scoreboard players add @a[tag=gl_host_life] gl_lifecd 0
 execute as @a[tag=gl_green,tag=gl_cr_green] if predicate greenlantern:construct_held/green_mainhand run function greenlantern:construct/green/upkeep
 execute as @a[tag=gl_green,tag=gl_cr_green] if predicate greenlantern:construct_held/green_offhand run function greenlantern:construct/green/upkeep
 execute as @a[tag=gl_green,tag=gl_cr_green,tag=gl_scuba_green] run function greenlantern:construct/green/upkeep

@@ -741,6 +741,11 @@ BRIDGE_BOXES = {"s": "~-1 ~-1 ~1 ~1 ~-1 ~16", "n": "~-1 ~-1 ~-16 ~1 ~-1 ~-1",
                 "w": "~-16 ~-1 ~-1 ~-1 ~-1 ~1", "e": "~1 ~-1 ~-1 ~16 ~-1 ~1"}
 
 
+# Constructs an emotional entity's host forms without a ring (see the host powers in gen_corps.py): only the effect,
+# paid from the host's own power. (corps, construct key)
+HOST_CONSTRUCTS = [("green", "fist"), ("green", "signature"), ("yellow", "signature"), ("black", "signature")]
+
+
 def generate(corps_table):
     """Returns (load, tick, second, functions, files) for the construct system; files maps paths
     under data/greenlantern/ to JSON."""
@@ -748,4 +753,7 @@ def generate(corps_table):
     g.shared()
     for c in corps_table:
         g.corps_functions(c)
+    for c, key in HOST_CONSTRUCTS:
+        con = next(x for x in all_constructs(c) if x.key == key)
+        g.fn[f"host_cx/{c}/{key}"] = ["tag @s add gl_user", *g.effect(c, con), "tag @s remove gl_user"]
     return g.load, g.tick, g.second, g.fn, g.files

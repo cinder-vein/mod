@@ -614,6 +614,61 @@ def suit_model(slim):
     }
 
 
+# --- the force field: a bubble of hard light around the player ---------------------------------
+
+BUBBLE_RADIUS = 21          # model units (16 per block): about 2.6 blocks across
+BUBBLE_CENTER = [0, 8, 0]   # from the top of the body: halfway between the top of the head and the feet
+
+
+def bubble_model():
+    """A faceted sphere of thin panels, as children of the body (so it turns and crouches with the player). Rings of
+    panels every 30 degrees of latitude, with a cap at each pole. Every other part is empty."""
+    import math
+    r = BUBBLE_RADIUS
+    panels = {}
+    for lat in (-60, -30, 0, 30, 60):
+        n = 8 if abs(lat) == 60 else 12
+        w = 2 * math.pi * r * math.cos(math.radians(lat)) / n + 1.2   # a little overlap closes the seams
+        h = math.pi * r / 6 + 1.2
+        for i in range(n):
+            panels[f"p{lat + 90}_{i}"] = {
+                "part_pose": {"offset": [0, 0, 0], "rotation": [lat, i * 360 / n, 0]},
+                "cubes": [{"origin": [round(-w / 2, 3), round(-h / 2, 3), -r], "dimensions": [round(w, 3), round(h, 3), 0],
+                           "texture_offset": [0, 0]}],
+                "children": {}}
+    for name, pitch in (("cap_top", 90), ("cap_bottom", -90)):
+        side = 2 * r * math.sin(math.radians(15)) + 1.2
+        panels[name] = {"part_pose": {"offset": [0, 0, 0], "rotation": [pitch, 0, 0]},
+                        "cubes": [{"origin": [-side / 2, -side / 2, -r], "dimensions": [side, side, 0],
+                                   "texture_offset": [0, 0]}], "children": {}}
+    empty = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {}}
+    return {"texture_width": 64, "texture_height": 64, "mesh": {
+        "head": empty, "hat": empty,
+        "body": {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {
+            "bubble": {"part_pose": {"offset": BUBBLE_CENTER, "rotation": [0, 0, 0]}, "cubes": [], "children": panels}}},
+        "right_arm": {**empty, "part_pose": {"offset": [-5, 2, 0], "rotation": [0, 0, 0]}},
+        "left_arm": {**empty, "part_pose": {"offset": [5, 2, 0], "rotation": [0, 0, 0]}},
+        "right_leg": {**empty, "part_pose": {"offset": [-1.9, 12, 0], "rotation": [0, 0, 0]}},
+        "left_leg": {**empty, "part_pose": {"offset": [1.9, 12, 0], "rotation": [0, 0, 0]}},
+    }}
+
+
+def bubble_texture(corps, rgb):
+    """64x64 hexagon lattice, drawn for an additive glow: bright lines, a faint fill, so the bubble reads as light."""
+    img = Image.new("RGBA", (64, 64), (0, 0, 0, 255))
+    line = (200, 205, 220) if corps == "black" else shade(rgb, 1.25)[:3]
+    fill = (40, 42, 50) if corps == "black" else tuple(int(v * 0.16) for v in rgb[:3])
+    for y in range(64):
+        for x in range(64):
+            # hexagons 8 wide, 7 tall, alternate rows offset by half
+            row = y // 7
+            cx = (x + (4 if row % 2 else 0)) % 8
+            cy = y % 7
+            edge = cy == 0 or cx == 0 or (cy in (1, 6) and cx in (1, 7))
+            img.putpixel((x, y), (line if edge else fill) + (255,))
+    return img
+
+
 def slot_icon(corps, rgb, kind="suit"):
     """16x16 icon for the corps' suit/mask slots in the accessories menu."""
     p = palette(corps, rgb)

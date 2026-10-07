@@ -1,0 +1,837 @@
+{
+  "name": {
+    "translate": "power.greenlantern.host_predator"
+  },
+  "icon": "minecraft:amethyst_cluster",
+  "background": "greenlantern:textures/gui/menu/violet.png",
+  "gui_display_type": "tree",
+  "primary_color": "#D737DC",
+  "secondary_color": "#561658",
+  "persistent_data": true,
+  "energy_bars": {
+    "ring_charge": {
+      "max": {
+        "type": "score",
+        "objective": "glhmax_predator",
+        "fallback": 1500
+      },
+      "auto_increase_per_tick": 1,
+      "auto_increase_interval": 5,
+      "color": "#D737DC"
+    }
+  },
+  "abilities": {
+    "host_root": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.host_root"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.host_root.description"
+      },
+      "icon": "minecraft:amethyst_cluster",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0
+      ]
+    },
+    "host_health": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-ee0b3a6a741c",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_armor": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-6840971a36fc",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_toughness": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-8dbf60bc15d2",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_aura": {
+      "type": "palladium:particles",
+      "emitter": [
+        "greenlantern:flight_aura"
+      ],
+      "particle_type": "minecraft:dust",
+      "options": "0.84 0.22 0.86 1.0",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 3
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_fill": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "energybar value add @s greenlantern:host_predator ring_charge 100000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_vitality_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_vitality_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_vitality_1.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -4,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_vitality_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_vitality_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_vitality_2.description"
+      },
+      "icon": "minecraft:enchanted_golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -4,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_vitality_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "vitality_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-7b38e41a7073",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "vitality_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-42e5e32fa3d5",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_might_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_might_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_might_1.description"
+      },
+      "icon": "minecraft:iron_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_might_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_might_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_might_2.description"
+      },
+      "icon": "minecraft:netherite_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_might_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "might_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-08bdd33b74f4",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_1_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d5bad67b0302",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-b504d5fbf391",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-12bcf2c5a4ca",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_flight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_flight"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_flight.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.0,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-7658050a713b",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "flight_flexibility": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_flexibility",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-611f1f182e22",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "heroic_flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d1a18e9e0acd",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "flight_aura": {
+      "type": "palladium:entity_glow",
+      "mode": "self",
+      "color": "#D737DC",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:is_flying"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_reserves": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_reserves"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_reserves.description"
+      },
+      "icon": "minecraft:glowstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_wellspring": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_wellspring"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_wellspring.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_reserves"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "reserves_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glhmax_predator dummy",
+        "scoreboard players set @s glhmax_predator 2500"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_reserves"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "wellspring_regen": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": -1
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_wellspring"
+        },
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 4
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_passive": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_passive"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_passive.description"
+      },
+      "icon": "minecraft:pink_tulip",
+      "hidden_in_bar": true,
+      "gui_position": [
+        6,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "devotion": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "execute if entity @a[distance=0.1..8] run effect give @s minecraft:regeneration 3 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 39
+        },
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_passive"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_crystal_embrace": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_crystal_embrace"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_crystal_embrace.description"
+      },
+      "icon": "minecraft:amethyst_cluster",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "crystal_embrace": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "execute at @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] positioned ~ ~1 ~ run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_crystal\"],item:{id:\"greenlantern:construct_crystal\",Count:1b,tag:{CustomModelData:6}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
+        "execute at @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] positioned ~ ~1 ~ run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] minecraft:slowness 8 255 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] minecraft:jump_boost 8 250 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] minecraft:mining_fatigue 8 4 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..12,limit=1,sort=nearest] minecraft:glowing 8 0 true",
+        "playsound minecraft:block.amethyst_cluster.place player @a[distance=..24] ~ ~ ~ 1 0.8",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_crystal_embrace"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 150
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 200
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 150
+      },
+      "title": {
+        "translate": "ability.greenlantern.host_predator.crystal_embrace"
+      },
+      "icon": "greenlantern:textures/gui/ability/crystal_prison_host_predator.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 0,
+      "description": {
+        "translate": "ability.greenlantern.host_predator.crystal_embrace.description"
+      }
+    },
+    "skill_hearts_desire": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_hearts_desire"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_hearts_desire.description"
+      },
+      "icon": "minecraft:poppy",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_crystal_embrace"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "hearts_desire": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "execute at @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..10] run particle minecraft:heart ~ ~2 ~ 0.3 0.3 0.3 0 3 force",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..10] minecraft:weakness 10 3 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..10] minecraft:slowness 10 0 true",
+        "playsound minecraft:entity.allay.item_given player @a[distance=..24] ~ ~ ~ 1 1.2",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_hearts_desire"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 120
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 200
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 120
+      },
+      "title": {
+        "translate": "ability.greenlantern.host_predator.hearts_desire"
+      },
+      "icon": "greenlantern:textures/gui/ability/charm_host_predator.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "description": {
+        "translate": "ability.greenlantern.host_predator.hearts_desire.description"
+      }
+    },
+    "skill_obsession": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_obsession"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_obsession.description"
+      },
+      "icon": "minecraft:spyglass",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_hearts_desire"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "obsession": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..16,limit=1,sort=nearest] minecraft:glowing 15 0 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..16,limit=1,sort=nearest] minecraft:weakness 15 1 true",
+        "effect give @s minecraft:strength 15 1 true",
+        "effect give @s minecraft:speed 15 0 true",
+        "playsound minecraft:entity.warden.heartbeat player @a[distance=..24] ~ ~ ~ 1 1.4",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_obsession"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 100
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 300
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 100
+      },
+      "title": {
+        "translate": "ability.greenlantern.host_predator.obsession"
+      },
+      "icon": "greenlantern:textures/gui/ability/loves_embrace_host_predator.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "description": {
+        "translate": "ability.greenlantern.host_predator.obsession.description"
+      }
+    },
+    "skill_love_unending": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.host_predator.skill_love_unending"
+      },
+      "description": {
+        "translate": "ability.greenlantern.host_predator.skill_love_unending.description"
+      },
+      "icon": "minecraft:amethyst_block",
+      "hidden_in_bar": true,
+      "gui_position": [
+        4,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_obsession"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "love_unending": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "particle minecraft:dust 0.84 0.22 0.86 3.0 ~ ~1 ~ 4 2 4 0 300 force",
+        "particle minecraft:flash ~ ~1 ~ 0 0 0 0 2 force",
+        "particle minecraft:heart ~ ~1.5 ~ 5 2 5 0 80 force",
+        "effect give @a[distance=..16] minecraft:instant_health 1 4 true",
+        "effect give @e[type=!#greenlantern:not_creatures,tag=!gl_user,tag=!gl_greed_minion,tag=!gl_dead_minion,distance=..16] minecraft:weakness 15 254 true",
+        "playsound minecraft:ui.toast.challenge_complete player @a[distance=..24] ~ ~ ~ 1 1.4",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_love_unending"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "ring_charge",
+            "min": 600
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 600
+      },
+      "title": {
+        "translate": "ability.greenlantern.host_predator.love_unending"
+      },
+      "icon": "greenlantern:textures/gui/ability/overload_host_predator.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "description": {
+        "translate": "ability.greenlantern.host_predator.love_unending.description"
+      }
+    },
+    "release": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:entity/release_ask"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 40
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.host_predator.release"
+      },
+      "icon": "greenlantern:textures/gui/ability/revoke_host_predator.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 4
+    }
+  }
+}

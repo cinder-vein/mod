@@ -375,6 +375,31 @@ execute if score #t gl_dtick matches 0 as @a[tag=gl_dual] run function greenlant
 scoreboard players remove @a[scores={gl_kjs=1..}] gl_kjs 1
 tag @a[tag=gl_kjs,scores={gl_kjs=..0}] remove gl_ctrl
 tag @a[tag=gl_kjs,scores={gl_kjs=..0}] remove gl_kjs
+execute as @e[type=minecraft:item_display,tag=gl_entm_ion,tag=!gl_entm_grown] run function greenlantern:entity/ion/grow
+execute if score #state_ion gl_ent matches 1 as @e[tag=gl_ent_ion] at @s run function greenlantern:entity/ion/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_parallax,tag=!gl_entm_grown] run function greenlantern:entity/parallax/grow
+execute if score #state_parallax gl_ent matches 1 as @e[tag=gl_ent_parallax] at @s run function greenlantern:entity/parallax/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_butcher,tag=!gl_entm_grown] run function greenlantern:entity/butcher/grow
+execute if score #state_butcher gl_ent matches 1 as @e[tag=gl_ent_butcher] at @s run function greenlantern:entity/butcher/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_ophidian,tag=!gl_entm_grown] run function greenlantern:entity/ophidian/grow
+execute if score #state_ophidian gl_ent matches 1 as @e[tag=gl_ent_ophidian] at @s run function greenlantern:entity/ophidian/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_adara,tag=!gl_entm_grown] run function greenlantern:entity/adara/grow
+execute if score #state_adara gl_ent matches 1 as @e[tag=gl_ent_adara] at @s run function greenlantern:entity/adara/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_predator,tag=!gl_entm_grown] run function greenlantern:entity/predator/grow
+execute if score #state_predator gl_ent matches 1 as @e[tag=gl_ent_predator] at @s run function greenlantern:entity/predator/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_proselyte,tag=!gl_entm_grown] run function greenlantern:entity/proselyte/grow
+execute if score #state_proselyte gl_ent matches 1 as @e[tag=gl_ent_proselyte] at @s run function greenlantern:entity/proselyte/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_life,tag=!gl_entm_grown] run function greenlantern:entity/life/grow
+execute if score #state_life gl_ent matches 1 as @e[tag=gl_ent_life] at @s run function greenlantern:entity/life/tick
+execute as @e[type=minecraft:item_display,tag=gl_entm_nekron,tag=!gl_entm_grown] run function greenlantern:entity/nekron/grow
+execute if score #state_nekron gl_ent matches 1 as @e[tag=gl_ent_nekron] at @s run function greenlantern:entity/nekron/tick
+execute as @a[scores={gl_entity=1..}] run function greenlantern:entity/trigger
+execute as @a[predicate=greenlantern:entity/sneaking,predicate=greenlantern:entity/holding_battery] at @s if entity @a[tag=gl_host,distance=0.1..6] run function greenlantern:entity/exorcise
+scoreboard players set @a[scores={gl_exo=1..},predicate=!greenlantern:entity/sneaking] gl_exo 0
+scoreboard players set @a[scores={gl_exo=1..},predicate=!greenlantern:entity/holding_battery] gl_exo 0
+scoreboard players remove @e[tag=gl_boss_minion] gl_life 1
+execute at @e[tag=gl_boss_minion,scores={gl_life=..0}] run particle minecraft:soul ~ ~1 ~ 0.3 0.6 0.3 0.02 20 force
+kill @e[tag=gl_boss_minion,scores={gl_life=..0}]
 scoreboard players remove @a[scores={gl_cc_sword=1..}] gl_cc_sword 1
 scoreboard players remove @a[scores={gl_cc_sword_shield=1..}] gl_cc_sword_shield 1
 scoreboard players remove @a[scores={gl_cc_mace=1..}] gl_cc_mace 1

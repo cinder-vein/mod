@@ -163,6 +163,8 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function 
 | `/lantern threshold <n>` | change the threshold (`scoreboard players set #threshold gl_cfg <n>`) |
 | `/lantern enable` / `disable` | turn emotions and ring offers on or off |
 | `/lantern forging on\|off`, `/lantern forgecooldown <seconds>` | allow forging rings by oath; time between forgings (default 300) |
+| `/lantern entity status\|reset\|on\|off` | the emotional spectrum entities: where each one is; free them all; let them appear or not |
+| `/lantern entity summon <entity>` | bring a free entity to you now (ion, parallax, butcher, ophidian, adara, predator, proselyte, life, nekron) |
 
 - **Emotion names:** will, fear, rage, greed, hope, love, compassion, death.
 - **Corps names:** green, yellow, red, orange, blue, violet, indigo, white, black.
@@ -264,9 +266,9 @@ Open Palladium's powers menu and spend **XP levels**:
 | Combat | +4 damage (5) → +4 more (15) |
 | Capacity | 1500 charge (5) → 2000 charge (15) |
 | Passive Recharge | I: 2 charge a second (60) → II: 4 (60) → III: 8 (60) → IV: 16 (60). Each tier replaces the last |
-| Flight | Flight with trail and aura (5) |
+| Flight | Flight: while you fly, you glow with an aura of your ring's light (5) |
 | Constructs | Constructs (5): the wheel and the basics → one branch each for Melee, Ranged, Defense and Utility: I (8) → II (12) → Signature construct (20, needs all four) |
-| Force Field | Projectile, explosion and fire immunity (5) |
+| Force Field | A bubble of hard light around you: projectile, explosion and fire immunity (5) |
 | Corps specials | After Force Field: each special in order (8, 12, 16), then the Ultimate (30) |
 
 Beam, Energy Blast, Scan, Ring Light, Suit Up and recharging at a battery are available from the start.
@@ -309,6 +311,63 @@ ring** (left hand). With three rings, the first two in that order bond.
   and throws it into the air, and gives you Strength II, Resistance II and Speed II for 15 seconds.
 - Hearts and armor from the rings themselves don't stack.
 
+## The emotional spectrum entities
+
+Nine beings of pure emotion roam the world, one of each. Each is either free, out in the world, inside a host, or
+sealed in a lantern. You don't need a ring to host one: only the emotion. Check yours in the Emotional Spectrum menu.
+
+| Entity | Emotion | How it comes | Where |
+|---|---|---|---|
+| Ion | Willpower | offers itself to someone with 100% willpower | in the sky |
+| Parallax | Fear | hunts someone with 60% fear and possesses them | anywhere in the Overworld |
+| The Butcher | Rage | a boss: bring it down, and it takes the nearest player with 50% rage | the Nether |
+| Ophidian | Avarice | offers itself to someone with 100% avarice, once they throw it a **block of gold** | caves (below y 30) |
+| Adara | Hope | offers itself to someone with 100% hope | in the sky |
+| The Predator | Love | hunts someone with 60% love and possesses them | anywhere in the Overworld |
+| The Proselyte | Compassion | offers itself to someone with 100% compassion | in the sky |
+| The Life Entity | Life | offers itself to someone with all seven spectrum emotions at 100% | in the sky |
+| Nekron | Death | a boss: bring it down, and it takes the nearest player with 50% death | the deep dark (below y 0) |
+
+- **When they come:** once a minute, each free entity has a chance (about 1 in 6) to come to a player it can draw:
+  100% of its emotion for the ones that offer, 60% for the hunters, 25% for the bosses (a challenger). A title tells you.
+  It stays 10 minutes (20 for hunters and bosses), then fades away until next time.
+- **Offers:** click **[ACCEPT]** or **[DECLINE]** in chat. Declining keeps it away from you for 30 minutes.
+- **Hunters** come from behind and fly at you; if one reaches you, it possesses you. Flying away can lose it. A host of
+  a hunter is sometimes overtaken by it (once a minute, 1 in 4): Parallax spreads darkness and eats your willpower,
+  the Predator's obsession slows you and eats your compassion.
+- **Bosses** fight back (a ravager-sized Butcher, a fast Nekron who drags you to him and raises the dead) and show a
+  boss bar. At 15% health one takes the nearest player as its host if they're worthy; otherwise it vanishes.
+
+**Being a host:** you get the entity's power, with its own bar and skill tree (powers menu). No ring needed.
+- Always: +10 hearts, armor, and an aura in the entity's color. A power bar that refills on its own (and fills
+  completely when the entity comes to you).
+- Skill tree (XP levels): Vitality I/II (+10 hearts each), Might I/II (+4 damage each), Flight (with a glowing aura),
+  Deep Reserves and Wellspring (more power, faster), a unique passive, and the entity's three abilities and ultimate.
+
+| Entity | Abilities (then the ultimate) | Passive |
+|---|---|---|
+| Ion | Will Surge, Giant Fist, Unbreakable Will → Willpower Unbound | Indomitable |
+| Parallax | Fear Gaze, Spikes of Terror, Terror → Fear Incarnate | Feeds on Fear |
+| The Butcher | Blood Vomit, Rampage, Gore Charge → Slaughter | Bloodlust |
+| Ophidian | Coil, Hoard, Devour → Serpent's Hoard | Endless Avarice |
+| Adara | Wings of Hope, Beacon of Hope, Rekindle → Hope Eternal | Undying Hope |
+| The Predator | Crystal Embrace, Heart's Desire, Obsession → Love Unending | Devotion |
+| The Proselyte | Empathy, Tendrils, Indigo Phase → Compassion for All | Empathic Link |
+| The Life Entity | Life Wave, Regrowth, Breath of Life → Light of Creation | Eternal Life (cheat death every 10 minutes) |
+| Nekron | Black Hand, Raise the Dead, Death's Touch → Blackest Night | Deathless |
+
+**Ending it:**
+- **Give it up:** the **Release** slot on its bar, or say *"I release you"*, then confirm. It goes back into the world
+  (and stays away from you for an hour).
+- **Draw it out with a lantern:** another player **sneaks while holding a Power Battery** (any corps) and **looks at
+  the host for five seconds** from within 6 blocks. The host sees a warning and can get away. Then the entity is sealed:
+  the battery becomes the **Lantern of &lt;entity&gt;**. Right-click it to **release** the entity into the world, or to
+  **host** it yourself if you're worthy (the same emotion it asks for). A lantern left shut for two hours goes empty:
+  the entity breaks free.
+
+Admins: `/lantern entity status | reset | on | off | summon <entity>` (KubeJS), or the functions under
+`greenlantern:entity/admin/` (e.g. `function greenlantern:entity/admin/summon/ion`).
+
 ## Crafting
 
 - **Ring:** the corps item on top, then gold / eye of ender / gold, then gold at the bottom. Corps items:
@@ -335,6 +394,8 @@ ring** (left hand). With three rings, the first two in that order bond.
   `python3 tools/icons.py preview.png` renders them all.
 - `tools/systems.py`: ownership, emotions, ring offers, leaders, admin functions, the chat phrases and the KubeJS script.
 - `tools/emotions.py`: the Emotional Spectrum menu, the tracking of what raised each emotion, and the quests.
+- `tools/entities.py`: the emotional spectrum entities in the world (appearing, offers, hunts, bosses, hosting, lanterns).
+  Their host powers are in `gen_corps.py` (`host_power`, `host_kits`) and their bodies in `tools/entity_models/`.
 - `tools/art.py`: logos, suit recoloring, masks, merged suits, the worn ring, ring icons, the lantern and construct
   models.
 - **To rebuild:** run `python3 tools/gen_corps.py`, then `python3 tools/build.py`. The build checks every

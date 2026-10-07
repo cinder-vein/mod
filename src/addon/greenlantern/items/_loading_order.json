@@ -16,5 +16,7 @@
   "white_lantern_ring",
   "white_power_battery",
   "black_lantern_ring",
-  "black_power_battery"
+  "black_power_battery",
+  "entity_body",
+  "entity_lantern"
 ]

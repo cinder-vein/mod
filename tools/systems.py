@@ -1095,6 +1095,7 @@ def generate(corps_table, write, write_text):
         f"Players: say their corps' oath (or /trigger gl_forge, /ring forge) to forge an unbound ring ({FORGE_COST} charge)",
         "/lantern forging on|off  |  /lantern forgecooldown <seconds>  -  ring forging",
         "/lantern reset <player> | show <player> | enable | disable",
+        "/lantern entity status | reset | on | off | summon <entity>  -  function greenlantern:entity/admin/...",
         "corps: " + ", ".join(corps),
     ])]
 
@@ -1150,12 +1151,18 @@ def generate(corps_table, write, write_text):
     return load, tick, fn
 
 
+def entity_keys():
+    import entities  # (entities imports this module)
+    return [e.key for e in entities.ENTITIES]
+
+
 def write_kubejs(corps_table, write_text):
     """Optional /lantern, /ring and /emotions commands and looser chat wordings when KubeJS is installed."""
     corps = list(corps_table)
     script = (KUBEJS_TEMPLATE.replace("__CORPS__", json.dumps(corps)).replace("__EMOTIONS__", json.dumps(EMOTIONS))
               .replace("__OATHS__", json.dumps({c: " ".join(corps_table[c]["oath"]) for c in corps}, indent=2))
-              .replace("__PHRASES__", json.dumps(sorted(chat_phrases(corps_table)))))
+              .replace("__PHRASES__", json.dumps(sorted(chat_phrases(corps_table))))
+              .replace("__ENTITIES__", json.dumps(entity_keys())))
     write_text(f"data/{NS}/kubejs_scripts/lantern_commands.js", script)
     return script
 
@@ -1169,6 +1176,7 @@ const EMOTIONS = __EMOTIONS__
 const OATHS = __OATHS__
 // answered by Palladium itself (exact messages), so the script leaves them alone
 const PALLADIUM_PHRASES = __PHRASES__
+const ENTITY_KEYS = __ENTITIES__
 console.info('[Lantern Corps] KubeJS script loaded: /lantern, /ring and /emotions')
 
 ServerEvents.commandRegistry(event => {
@@ -1239,6 +1247,21 @@ ServerEvents.commandRegistry(event => {
       .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'greenlantern:admin/forging_off'))))
     .then(Commands.literal('forgecooldown').then(Commands.argument('seconds', Arguments.INTEGER.create(event)).executes(ctx =>
       run(ctx, `scoreboard players set #forge_cd gl_cfg ${Math.max(0, Arguments.INTEGER.getResult(ctx, 'seconds'))}`))))
+    .then(Commands.literal('entity')
+      .then(Commands.literal('status').executes(ctx => runSelf(ctx, 'greenlantern:entity/admin/status')))
+      .then(Commands.literal('reset').executes(ctx => runSelf(ctx, 'greenlantern:entity/admin/reset')))
+      .then(Commands.literal('on').executes(ctx => runSelf(ctx, 'greenlantern:entity/admin/on')))
+      .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'greenlantern:entity/admin/off')))
+      .then(Commands.literal('summon').then(Commands.argument('entity', Arguments.WORD.create(event))
+        .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
+        .executes(ctx => {
+          const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
+          if (ENTITY_KEYS.indexOf(key) < 0) {
+            ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
+            return 0
+          }
+          return runSelf(ctx, `greenlantern:entity/admin/summon/${key}`)
+        }))))
     .then(Commands.literal('enable').executes(ctx => runSelf(ctx, 'greenlantern:admin/enable')))
     .then(Commands.literal('disable').executes(ctx => runSelf(ctx, 'greenlantern:admin/disable')))
   )

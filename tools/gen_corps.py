@@ -13,11 +13,15 @@ re-run this script. Art lives in art.py.
 import hashlib
 import json
 import shutil
+
+from PIL import Image
 from pathlib import Path
 
 import art
 import constructs
 import emotions
+import entities
+import entity_models
 import icons
 import spectrum
 import systems
@@ -433,12 +437,11 @@ def shared_kit(k):
         k.hidden(f"recharge_passive_{i}", {"type": "palladium:dummy", "energy_bar_usage": usage(-amount),
                                            "conditions": {"unlocking": highest, "enabling": interval(every)}})
 
-    k.node("skill_flight", "Flight", "Fly on the power of your ring, leaving a trail of light. Flying slowly drains charge.",
-           "minecraft:feather", (1, 1), ["ring_root"], 5)
+    k.node("skill_flight", "Flight", "Fly on the power of your ring, wrapped in an aura of its light. Flying slowly drains "
+           "charge.", "minecraft:feather", (1, 1), ["ring_root"], 5)
     flying = [unlocked("skill_flight"), {"type": "palladium:is_flying"}]
-    k.hidden("flight_trail", {"type": "palladium:trail", "trail": f"{NS}:{c}_trail", "conditions": {"enabling": flying}})
-    k.hidden("flight_aura", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
-                             "particle_type": "minecraft:dust", "options": dust(rgb, 1.2),
+    # while flying you glow with your ring's light (an aura outline in the corps color)
+    k.hidden("flight_aura", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(rgb),
                              "conditions": {"enabling": flying}})
     k.hidden("flight_drain", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
                               "conditions": {"enabling": [*flying, interval(5)]}})
@@ -476,8 +479,9 @@ def shared_kit(k):
         "damage_sources": ["minecraft:is_projectile", "minecraft:is_explosion", "minecraft:is_fire"],
         "energy_bar_usage": usage(2), "conditions": {"enabling": toggle()},
     }, "Force Field", k.glyph("force_field"), 2, node="skill_force_field", cost=2, extra=[NOT_DUAL])
-    k.hidden("force_field_glow", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(rgb),
-                                  "conditions": {"enabling": enabled("force_field")}})
+    # the force field is a bubble of hard light around you
+    k.hidden("force_field_bubble", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_bubble",
+                                    "conditions": {"enabling": enabled("force_field")}})
 
     # Recharging: right-click while holding your battery, or right-click a placed one.
     # These only unlock while that's possible, so they never steal ordinary right-clicks.
@@ -1320,9 +1324,10 @@ def spectrum_power():
                 extra=[*bond(a, b), ring_charge(a, 1), ring_charge(b, 1), any_field, which])
     field_on = OR(*[enabled(f"{key}_{a}_{b}") for a, b in pairs for key in ("force_field", "prismatic")])
     prism_on = OR(*[enabled(f"prismatic_{a}_{b}") for a, b in pairs])
-    for c, data in CORPS.items():  # glow in the first ring's color; a prismatic shield shimmers in both
-        k.hidden(f"field_glow_{c}", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(data["color"]),
-                                     "conditions": {"enabling": [field_on, *first_worn(c)]}})
+    for c, data in CORPS.items():  # a bubble in the first ring's color; a prismatic shield layers both rings' bubbles
+        k.hidden(f"field_bubble_{c}", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_bubble",
+                                       "conditions": {"enabling": OR(AND(field_on, *first_worn(c)),
+                                                                     AND(prism_on, has_power(c)))}})
         k.hidden(f"prism_shimmer_{c}", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
                                         "particle_type": "minecraft:dust", "options": dust(data["color"], 1.0),
                                         "conditions": {"enabling": [prism_on, has_power(c), interval(4)]}})
@@ -1499,12 +1504,416 @@ def save(img, rel):
     img.save(path)
 
 
+# --- hosts of the emotional spectrum entities ------------------------------------------------
+# A player hosting an entity (see entities.py) gets greenlantern:host_<entity>: no ring needed. Its own skill tree,
+# three abilities and an ultimate, a unique passive, and Release. Its power bar refills from the entity itself.
+
+HOST_ICON = {"ion": "minecraft:heart_of_the_sea", "parallax": "minecraft:spider_eye", "butcher": "minecraft:nether_wart",
+             "ophidian": "minecraft:gold_block", "adara": "minecraft:feather", "predator": "minecraft:amethyst_cluster",
+             "proselyte": "minecraft:ink_sac", "life": "minecraft:nether_star", "nekron": "minecraft:wither_skeleton_skull"}
+
+
+def host_kits(e):
+    """(passive, [ability, ability, ability, ultimate]) for entity e. A passive is (name, description, item, abilities
+    {key: json}); an ability is (key, name, description, glyph, fallback item, cost, cooldown or None for a held/toggle
+    ability, ability json or command lines)."""
+    rgb = e.rgb
+    T = lambda r: constructs.TARGETS.format(r=r) + "]"  # noqa: E731  creatures, never the host (tagged gl_user)
+    T1 = lambda r: constructs.TARGETS.format(r=r) + ",limit=1,sort=nearest]"  # noqa: E731
+    pulse = lambda every, cmds: {**command(first=cmds), "conditions": {"enabling": interval(every)}}  # noqa: E731
+    user = lambda lines: ["tag @s add gl_user", *lines, "tag @s remove gl_user"]  # noqa: E731
+    big = lambda: [burst(rgb, 3.0, "4 2 4", 300), "particle minecraft:flash ~ ~1 ~ 0 0 0 0 2 force"]  # noqa: E731
+    k = e.key
+    if k == "ion":
+        return (("Indomitable", "Nothing moves you: no knockback, no slowness, weakness, blindness or darkness.",
+                 "minecraft:anvil", {
+                     "indomitable_clear": pulse(10, [f"effect clear @s minecraft:{x}" for x in
+                                                     ("slowness", "weakness", "blindness", "darkness")])}),
+                [("will_surge", "Will Surge", "Surge forward up to 8 blocks and knock everything around you away.",
+                  "blast", "minecraft:feather", 60, 60, user([
+                      f"function {NS}:entity/dash", burst(rgb, 2.0, "1.5 1 1.5", 80),
+                      f"execute as {T(4)} run damage @s 6 minecraft:player_attack by @p[tag=gl_user]",
+                      f"effect give {T(4)} minecraft:levitation 1 2 true"])),
+                 ("giant_fist", "Giant Fist", "A giant fist of will punches whatever is in front of you into the air.",
+                  "rage", "minecraft:iron_block", 100, 60, [f"function {NS}:host_cx/green/fist"]),
+                 ("unbreakable", "Unbreakable Will", "Toggle: Resistance III while your power lasts.",
+                  "force_field", "minecraft:shield", 1, None, {
+                      **command(first=["effect give @s minecraft:resistance infinite 2 true"],
+                                last=["effect clear @s minecraft:resistance"]),
+                      "energy_bar_usage": usage(1), "conditions": {"enabling": toggle()}}),
+                 ("will_unbound", "Willpower Unbound", "Ultimate: a nova of pure will hurts and hurls everything within "
+                  "12 blocks, and a construct train smashes through what's ahead.", "overload", "minecraft:emerald_block",
+                  600, 1200, user([*big(), f"execute as {T(12)} run damage @s 24 minecraft:player_attack by @p[tag=gl_user]",
+                                   f"effect give {T(12)} minecraft:levitation 2 4 true",
+                                   f"function {NS}:host_cx/green/signature",
+                                   sound("minecraft:entity.generic.explode", 0.6)]))])
+    if k == "parallax":
+        return (("Feeds on Fear", "Hostile mobs around you feed you: you regenerate while one is within 10 blocks.",
+                 "minecraft:spider_eye", {
+                     "feeds_on_fear": pulse(40, [f"execute if entity {constructs.HOSTILE.format(r=10)} run "
+                                                 "effect give @s minecraft:regeneration 3 1 true"])}),
+                [("fear_gaze", "Fear Gaze", "Everything in front of you is struck with darkness, slowness and weakness.",
+                  "inflict_fear", "minecraft:ender_eye", 80, 100, user([
+                      *[f"execute anchored eyes positioned ^ ^ ^5 run effect give {T(6)} minecraft:{x} 8 1 true"
+                        for x in ("darkness", "slowness", "weakness")],
+                      f"execute anchored eyes positioned ^ ^ ^5 as {T(6)} at @s run particle minecraft:squid_ink ~ ~1 ~ "
+                      f"0.3 0.5 0.3 0.02 15 force",
+                      f"execute anchored eyes positioned ^ ^ ^5 as @a[tag=!gl_user,distance=..6] run title @s title {WHISPER}",
+                      sound("minecraft:ambient.cave", 0.6)])),
+                 ("fear_spikes", "Spikes of Terror", "A ring of fear spikes bursts from the ground around you.",
+                  "nightmare", "minecraft:pointed_dripstone", 150, 160, [f"function {NS}:host_cx/yellow/signature"]),
+                 ("terror", "Terror", "The nearest creature within 12 blocks is lifted, withered and maddened by fear.",
+                  "inflict_fear", "minecraft:wither_rose", 100, 120, user([
+                      f"effect give {T1(12)} minecraft:levitation 2 2 true", f"effect give {T1(12)} minecraft:wither 5 1 true",
+                      f"effect give {T1(12)} minecraft:nausea 8 0 true",
+                      f"execute as {T1(12)} if entity @s[type=minecraft:player] run title @s title {WHISPER}",
+                      sound("minecraft:entity.warden.heartbeat", 1.2)])),
+                 ("fear_incarnate", "Fear Incarnate", "Ultimate: everything within 16 blocks is crippled by terror for "
+                  "15 seconds.", "overload", "minecraft:sculk_shrieker", 600, 1200, user([
+                      *big(), *[f"effect give {T(16)} minecraft:{x} 15 {a} true" for x, a in
+                                (("darkness", 0), ("slowness", 3), ("weakness", 2), ("nausea", 0))],
+                      sound("minecraft:entity.warden.roar", 1.0)]))])
+    if k == "butcher":
+        return (("Bloodlust", "+4 attack damage, and fire can't burn you.", "minecraft:iron_axe", {
+                    "bloodlust_fire": pulse(100, ["effect give @s minecraft:fire_resistance 15 0 true"])}),
+                [("blood_vomit", "Blood Vomit", "Hold: spew burning blood that sets everything it hits on fire.",
+                  "napalm", "minecraft:fire_charge", 4, None, {
+                      "type": "palladium:energy_beam", "energy_beam": f"{NS}:red_napalm", "damage": 4.0,
+                      "max_distance": 18.0, "speed": 0.8, "set_on_fire_seconds": 6, "energy_bar_usage": usage(4),
+                      "conditions": {"enabling": held()}}),
+                 ("rampage", "Rampage", "Strength III, Speed II and Resistance for 12 seconds.", "rage",
+                  "minecraft:blaze_powder", 150, 400, [
+                      "effect give @s minecraft:strength 12 2 true", "effect give @s minecraft:speed 12 1 true",
+                      "effect give @s minecraft:resistance 12 0 true", burst(rgb, 2.0, "0.6 1 0.6", 120),
+                      sound("minecraft:entity.ravager.roar", 0.8)]),
+                 ("gore_charge", "Gore Charge", "Charge forward and gore everything where you land.", "blast",
+                  "minecraft:goat_horn", 100, 80, user([
+                      f"function {NS}:entity/dash", f"execute as {T(3)} run damage @s 12 minecraft:player_attack by @p[tag=gl_user]",
+                      f"effect give {T(3)} minecraft:levitation 1 3 true", burst(rgb, 2.0, "1 1 1", 100)])),
+                 ("slaughter", "Slaughter", "Ultimate: a storm of rage hurts, withers and burns everything within 10 "
+                  "blocks.", "overload", "minecraft:nether_wart_block", 600, 1200, user([
+                      *big(), f"execute as {T(10)} run damage @s 24 minecraft:player_attack by @p[tag=gl_user]",
+                      f"effect give {T(10)} minecraft:wither 6 2 true",
+                      f"execute at {T(10)} run particle minecraft:flame ~ ~1 ~ 0.3 0.6 0.3 0.02 30 force",
+                      sound("minecraft:entity.blaze.shoot", 0.5)]))])
+    if k == "ophidian":
+        return (("Endless Avarice", "+5 luck: better loot from everything.", "minecraft:gold_ingot", {}),
+                [("coil", "Coil", "Drag the nearest creature within 12 blocks to you and bind it in your coils.",
+                  "greed_arrival", "minecraft:lead", 100, 120, user([
+                      f"execute rotated ~ 0 positioned ^ ^ ^2 run tp {T1(12)} ~ ~ ~",
+                      f"effect give {T1(4)} minecraft:slowness 5 255 true", f"effect give {T1(4)} minecraft:jump_boost 5 250 true",
+                      f"effect give {T1(4)} minecraft:glowing 5 0 true", burst(rgb, 1.5, "1 1 1", 80),
+                      sound("minecraft:item.armor.equip_chain", 0.6)])),
+                 ("hoard", "Hoard", "Everything within 20 blocks that glitters is yours: items and experience fly to you.",
+                  "hoard", "minecraft:chest", 50, 40, [
+                      "tp @e[type=minecraft:item,distance=..20] @s", "tp @e[type=minecraft:experience_orb,distance=..20] @s",
+                      burst(rgb, 1.5, "2 1 2", 80), sound("minecraft:entity.item.pickup", 0.6)]),
+                 ("devour", "Devour", "Bite the nearest creature within 8 blocks and keep its life as extra hearts.",
+                  "life_drain", "minecraft:ghast_tear", 120, 120, user([
+                      f"execute as {T1(8)} run damage @s 12 minecraft:magic by @p[tag=gl_user]",
+                      "effect give @s minecraft:absorption 30 2 true", "effect give @s minecraft:instant_health 1 0 true",
+                      sound("minecraft:entity.generic.eat", 0.5)])),
+                 ("serpents_hoard", "Serpent's Hoard", "Ultimate: devour the life of everything within 10 blocks and keep it.",
+                  "overload", "minecraft:enchanted_golden_apple", 600, 1200, user([
+                      *big(), f"execute as {T(10)} run damage @s 16 minecraft:magic by @p[tag=gl_user]",
+                      f"effect give {T(10)} minecraft:wither 5 1 true", "effect give @s minecraft:absorption 60 4 true",
+                      sound("minecraft:entity.wither.ambient", 1.4)]))])
+    if k == "adara":
+        return (("Undying Hope", "Below 10 hearts you keep regenerating.", "minecraft:golden_apple", {
+                    "undying_hope": {**command(first=["effect give @s minecraft:regeneration 3 1 true"]),
+                                     "conditions": {"unlocking": {"type": "palladium:health", "min_health": 0,
+                                                                  "max_health": 20},
+                                                    "enabling": interval(40)}}}),
+                [("wings_of_hope", "Wings of Hope", "Soar upward and glide down; players around you regenerate.",
+                  "hope_aura", "minecraft:elytra", 80, 160, [
+                      "effect give @s minecraft:levitation 1 12 true", "effect give @s minecraft:slow_falling 10 0 true",
+                      f"effect give {ALLIES.format(r=8)} minecraft:regeneration 5 1 true", burst(rgb, 2.0, "1 1 1", 100),
+                      sound("minecraft:entity.ender_dragon.flap", 1.4)]),
+                 ("beacon_of_hope", "Beacon of Hope", "Every player within 12 blocks regenerates and resists damage for "
+                  "12 seconds.", "rekindle", "minecraft:beacon", 150, 300, [
+                      f"effect give {ALLIES.format(r=12)} minecraft:regeneration 12 1 true",
+                      f"effect give {ALLIES.format(r=12)} minecraft:resistance 12 0 true", burst(rgb, 2.0, "3 1 3", 150),
+                      sound("minecraft:block.beacon.power_select", 1.6)]),
+                 ("rekindle", "Rekindle", "Heal every player within 12 blocks and give them extra hearts.",
+                  "healing_touch", "minecraft:golden_apple", 200, 600, [
+                      f"effect give {ALLIES.format(r=12)} minecraft:instant_health 1 1 true",
+                      f"effect give {ALLIES.format(r=12)} minecraft:absorption 60 1 true", burst(rgb, 2.0, "3 1 3", 150),
+                      sound("minecraft:block.beacon.power_select", 1.8)]),
+                 ("hope_eternal", "Hope Eternal", "Ultimate: every player within 24 blocks is healed and gains "
+                  "Regeneration and Resistance for 20 seconds.", "overload", "minecraft:beacon", 600, 1200, [
+                      *big(), *[f"effect give {ALLIES.format(r=24)} minecraft:{x} {t} {a} true" for x, t, a in
+                                (("instant_health", 1, 2), ("regeneration", 20, 2), ("resistance", 20, 1))],
+                      sound("minecraft:ui.toast.challenge_complete", 1.2)])])
+    if k == "predator":
+        return (("Devotion", "You regenerate while another player is within 8 blocks.", "minecraft:pink_tulip", {
+                    "devotion": pulse(40, ["execute if entity @a[distance=0.1..8] run "
+                                           "effect give @s minecraft:regeneration 3 0 true"])}),
+                [("crystal_embrace", "Crystal Embrace", "Seal the nearest creature within 12 blocks in violet crystal.",
+                  "crystal_prison", "minecraft:amethyst_cluster", 150, 200, user([
+                      *construct_cmds("violet", "crystal", f"execute at {T1(12)} positioned ~ ~1 ~"),
+                      *[f"effect give {T1(12)} minecraft:{x} 8 {a} true" for x, a in
+                        (("slowness", 255), ("jump_boost", 250), ("mining_fatigue", 4), ("glowing", 0))],
+                      sound("minecraft:block.amethyst_cluster.place", 0.8)])),
+                 ("hearts_desire", "Heart's Desire", "Everything within 10 blocks is charmed and can barely hurt anyone.",
+                  "charm", "minecraft:poppy", 120, 200, user([
+                      f"execute at {T(10)} run particle minecraft:heart ~ ~2 ~ 0.3 0.3 0.3 0 3 force",
+                      f"effect give {T(10)} minecraft:weakness 10 3 true", f"effect give {T(10)} minecraft:slowness 10 0 true",
+                      sound("minecraft:entity.allay.item_given", 1.2)])),
+                 ("obsession", "Obsession", "Mark the nearest creature within 16 blocks: it glows and weakens, and you "
+                  "gain Strength II and Speed for 15 seconds.", "loves_embrace", "minecraft:spyglass", 100, 300, user([
+                      f"effect give {T1(16)} minecraft:glowing 15 0 true", f"effect give {T1(16)} minecraft:weakness 15 1 true",
+                      "effect give @s minecraft:strength 15 1 true", "effect give @s minecraft:speed 15 0 true",
+                      sound("minecraft:entity.warden.heartbeat", 1.4)])),
+                 ("love_unending", "Love Unending", "Ultimate: fully heal every player within 16 blocks and pacify "
+                  "everything else.", "overload", "minecraft:amethyst_block", 600, 1200, user([
+                      *big(), "particle minecraft:heart ~ ~1.5 ~ 5 2 5 0 80 force",
+                      f"effect give {ALLIES.format(r=16)} minecraft:instant_health 1 4 true",
+                      f"effect give {T(16)} minecraft:weakness 15 254 true",
+                      sound("minecraft:ui.toast.challenge_complete", 1.4)]))])
+    if k == "proselyte":
+        return (("Empathic Link", "Players within 8 blocks of you slowly regenerate.", "minecraft:blue_orchid", {
+                    "empathic_link": pulse(60, [f"effect give {ALLIES.format(r=8)} minecraft:regeneration 4 0 true"])}),
+                [("empathy", "Empathy", "The nearest creature within 12 blocks feels every hurt it causes and can barely "
+                  "fight for 10 seconds.", "compassion", "minecraft:blue_orchid", 150, 200, user([
+                      f"effect give {T1(12)} minecraft:weakness 10 254 true", f"effect give {T1(12)} minecraft:slowness 10 1 true",
+                      f"execute at {T1(12)} run {burst(rgb, 1.5, '0.4 0.8 0.4', 60, '~ ~1 ~')}",
+                      sound("minecraft:block.amethyst_block.chime", 0.7)])),
+                 ("tendrils", "Tendrils", "Tentacles drag everything within 8 blocks in front of you and slow it.",
+                  "greed_arrival", "minecraft:ink_sac", 120, 160, user([
+                      f"execute rotated ~ 0 positioned ^ ^ ^2.5 run tp {T(8)} ~ ~ ~",
+                      f"effect give {T(4)} minecraft:slowness 5 2 true", burst(rgb, 1.5, "2 1 2", 100),
+                      sound("minecraft:entity.squid.squirt", 0.6)])),
+                 ("phase", "Indigo Phase", "Throw a bolt of indigo light and teleport to where it lands.", "phase",
+                  "minecraft:ender_pearl", 80, 40, {
+                      "type": "palladium:projectile", "entity_type": "minecraft:ender_pearl", "velocity": 2.5,
+                      "inaccuracy": 0.0}),
+                 ("compassion_for_all", "Compassion for All", "Ultimate: everything within 16 blocks is overwhelmed by "
+                  "empathy and can barely fight for 15 seconds.", "overload", "minecraft:end_rod", 600, 1200, user([
+                      *big(), f"effect give {T(16)} minecraft:weakness 15 254 true",
+                      f"effect give {T(16)} minecraft:slowness 15 2 true", f"effect give {T(16)} minecraft:nausea 10 0 true",
+                      sound("minecraft:block.beacon.deactivate", 0.8)]))])
+    if k == "life":
+        return (("Eternal Life", "Once every ten minutes a killing blow leaves you standing instead.",
+                 "minecraft:totem_of_undying", {
+                     "eternal_life": {"type": "palladium:immortality",
+                                      "conditions": {"unlocking": [unlocked("skill_passive"), has_tag("gl_life_ready")]}},
+                     "eternal_life_revival": {
+                         **command(first=["effect give @s minecraft:instant_health 1 3 true",
+                                          "effect give @s minecraft:regeneration 10 2 true",
+                                          "effect give @s minecraft:absorption 20 3 true",
+                                          "particle minecraft:totem_of_undying ~ ~1 ~ 0.6 1 0.6 0.4 120 force",
+                                          "tag @s remove gl_life_ready", "scoreboard players set @s gl_lifecd 600",
+                                          "title @s actionbar " + json.dumps({"text": "Life will not let you go.",
+                                                                              "color": "white"}),
+                                          sound("minecraft:item.totem.use", 1.2)]),
+                         "conditions": {"unlocking": [unlocked("skill_passive"), has_tag("gl_life_ready"),
+                                                      {"type": "palladium:health", "max_health": 1.5}]}}}),
+                [("life_wave", "Life Wave", "A wave of life heals every living thing within 10 blocks and burns the undead.",
+                  "life_aura", "minecraft:glistering_melon_slice", 150, 160, [
+                      "effect give @e[distance=..10,type=!minecraft:item,type=!minecraft:experience_orb] "
+                      "minecraft:instant_health 1 1 true", "particle minecraft:end_rod ~ ~1 ~ 4 1 4 0.05 150 force",
+                      sound("minecraft:block.beacon.activate", 1.4)]),
+                 ("regrowth", "Regrowth", "The ground around you comes to life: dirt turns to grass, cobblestone to moss.",
+                  "life_growth", "minecraft:bone_meal", 60, 40, [
+                      "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:grass_block replace minecraft:dirt",
+                      "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:grass_block replace minecraft:coarse_dirt",
+                      "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:moss_block replace minecraft:cobblestone",
+                      "particle minecraft:happy_villager ~ ~0.5 ~ 5 0.5 5 0 200 force",
+                      sound("minecraft:item.bone_meal.use", 1.0)]),
+                 ("breath_of_life", "Breath of Life", "Every player within 12 blocks gains 8 extra hearts and regenerates.",
+                  "healing_touch", "minecraft:totem_of_undying", 200, 600, [
+                      f"effect give {ALLIES.format(r=12)} minecraft:absorption 60 3 true",
+                      f"effect give {ALLIES.format(r=12)} minecraft:regeneration 10 1 true",
+                      "particle minecraft:end_rod ~ ~1 ~ 3 1 3 0.02 100 force", sound("minecraft:item.totem.use", 1.6)]),
+                 ("light_of_creation", "Light of Creation", "Ultimate: a blaze of pure life heals everything within 20 "
+                  "blocks and scorches the undead.", "overload", "minecraft:nether_star", 600, 1200, [
+                      "particle minecraft:end_rod ~ ~1 ~ 8 3 8 0.05 500 force", "particle minecraft:flash ~ ~1 ~ 0 0 0 0 3 force",
+                      "effect give @e[distance=..20,type=!minecraft:item,type=!minecraft:experience_orb] "
+                      "minecraft:instant_health 1 3 true",
+                      f"effect give {ALLIES.format(r=20)} minecraft:regeneration 20 1 true",
+                      sound("minecraft:block.beacon.activate", 0.6)])])
+    # nekron
+    minion = ('{Tags:["gl_dead_minion","gl_dead_new"],Team:"gl_dead",PersistenceRequired:1b,'
+              'DeathLootTable:"minecraft:empty",CustomName:\'{"text":"Risen Dead","color":"dark_gray"}\'}')
+    raise_dead = ["team join gl_dead @s", *[f"summon minecraft:{m} ~ ~ ~ {minion}" for m in ("zombie", "zombie",
+                                                                                          "skeleton", "skeleton")],
+                  "effect give @e[tag=gl_dead_new] minecraft:strength infinite 1 true",
+                  "effect give @e[tag=gl_dead_new] minecraft:fire_resistance infinite 0 true",
+                  "spreadplayers ~ ~ 1 3 false @e[tag=gl_dead_new,distance=..4]",
+                  f"scoreboard players set @e[tag=gl_dead_new] gl_life 600",
+                  "execute at @e[tag=gl_dead_new] run particle minecraft:soul ~ ~1 ~ 0.3 0.6 0.3 0.02 30 force",
+                  "tag @e[tag=gl_dead_new] remove gl_dead_new"]
+    return (("Deathless", "The dead don't hunger, wither or sicken: no hunger, wither or poison.",
+             "minecraft:rotten_flesh", {
+                 "deathless": pulse(100, ["effect give @s minecraft:saturation 1 0 true",
+                                          *[f"effect clear @s minecraft:{x}" for x in ("wither", "poison", "hunger")]])}),
+            [("black_hand", "Black Hand", "A black hand drags the nearest creature within 12 blocks to you and withers it.",
+              "heart_rip", "minecraft:wither_skeleton_skull", 150, 120, [f"function {NS}:host_cx/black/signature"]),
+             ("raise_dead", "Raise the Dead", "Four of the dead rise to fight for you for 30 seconds.", "raise_dead",
+              "minecraft:zombie_head", 300, 1200, raise_dead + [sound("minecraft:entity.zombie_villager.cure", 0.6)]),
+             ("deaths_touch", "Death's Touch", "Toggle: everything within 6 blocks slowly withers while your power lasts.",
+              "death_aura", "minecraft:wither_rose", 1, None, {
+                  **command(), "energy_bar_usage": usage(1), "conditions": {"enabling": toggle()}}),
+             ("blackest_night", "Blackest Night", "Ultimate: plunge everything within 16 blocks into death, and raise "
+              "the dead.", "overload", "minecraft:sculk_catalyst", 600, 1200, user([
+                  "particle minecraft:soul ~ ~1 ~ 6 2 6 0.05 400 force",
+                  f"execute as {T(16)} run damage @s 16 minecraft:magic by @p[tag=gl_user]",
+                  f"effect give {T(16)} minecraft:wither 10 2 true", f"effect give {T(16)} minecraft:darkness 10 0 true",
+                  *raise_dead, sound("minecraft:entity.wither.spawn", 0.8)]))])
+
+
+def host_power(e):
+    k = Kit(f"host_{e.key}", {"color": e.rgb, "name": e.name, "emotion": e.emotion})
+    key, rgb, name = e.key, e.rgb, e.name
+    hunt = (f" Beware: {name} hunts its hosts down and sometimes takes control of you." if e.kind == "hunt" else "")
+    k.abilities["host_root"] = {
+        "type": "palladium:dummy", "title": k.tr("host_root", name, False),
+        "description": k.tr("host_root.description",
+                            f"You host {name}, {e.title}. Its power is yours, no ring needed: grow it here with XP levels. "
+                            f"Give it up with Release (last slot) or by saying \"I release you\". Another player can draw "
+                            f"it out of you by sneaking with a Power Battery and staring at you for five seconds." + hunt,
+                            False),
+        "icon": HOST_ICON[key], "hidden_in_bar": True, "gui_position": [0, 0]}
+
+    def attr(akey, attribute, amount, conds=None):
+        k.hidden(akey, {"type": "palladium:attribute_modifier", "attribute": attribute, "amount": amount, "operation": 0,
+                        "uuid": "6c7afe00-1a2b-4c3d-8e4f-" + hashlib.md5(f"{key}.{akey}".encode()).hexdigest()[:12],
+                        **({"conditions": {"unlocking": one(conds)}} if conds else {})})
+
+    # the host's body: always
+    attr("host_health", "minecraft:generic.max_health", 20)
+    attr("host_armor", "minecraft:generic.armor", 6)
+    attr("host_toughness", "minecraft:generic.armor_toughness", 4)
+    k.hidden("host_aura", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
+                           "particle_type": "minecraft:dust", "options": dust(rgb, 1.0),
+                           "conditions": {"enabling": interval(4)}})
+    # the entity is an endless source: its power is full whenever it comes to you (or you log back in)
+    k.hidden("host_fill", {**command(first=[f"energybar value add @s {NS}:host_{key} {BAR} 100000"])})
+
+    # --- skill tree ---
+    k.node("skill_vitality_1", "Vitality I", "+10 hearts.", "minecraft:golden_apple", (-4, 1), ["host_root"], 8, shared=False)
+    k.node("skill_vitality_2", "Vitality II", "Another +10 hearts.", "minecraft:enchanted_golden_apple", (-4, 2),
+           ["skill_vitality_1"], 16, shared=False)
+    attr("vitality_1", "minecraft:generic.max_health", 20, [unlocked("skill_vitality_1")])
+    attr("vitality_2", "minecraft:generic.max_health", 20, [unlocked("skill_vitality_2")])
+    k.node("skill_might_1", "Might I", "+4 attack and punch damage.", "minecraft:iron_sword", (-2, 1), ["host_root"], 8,
+           shared=False)
+    k.node("skill_might_2", "Might II", "Another +4 attack and punch damage.", "minecraft:netherite_sword", (-2, 2),
+           ["skill_might_1"], 16, shared=False)
+    for n in (1, 2):
+        attr(f"might_{n}", "minecraft:generic.attack_damage", 4, [unlocked(f"skill_might_{n}")])
+        attr(f"might_{n}_fists", "palladium:punch_damage", 4, [unlocked(f"skill_might_{n}")])
+    k.node("skill_flight", "Flight", f"Fly on {name}'s power.", "minecraft:feather", (0, 1), ["host_root"], 5, shared=False)
+    attr("flight", "palladium:flight_speed", 1.0, [unlocked("skill_flight")])
+    attr("flight_flexibility", "palladium:flight_flexibility", 5, [unlocked("skill_flight")])
+    attr("heroic_flight", "palladium:heroic_flight_type", 1, [unlocked("skill_flight")])
+    k.hidden("flight_aura", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(rgb),
+                             "conditions": {"enabling": [unlocked("skill_flight"), {"type": "palladium:is_flying"}]}})
+    k.node("skill_reserves", "Deep Reserves", "Your power holds 2500 instead of 1500.", "minecraft:glowstone", (2, 1),
+           ["host_root"], 8, shared=False)
+    k.node("skill_wellspring", "Wellspring", "Your power refills twice as fast.", "minecraft:beacon", (2, 2),
+           ["skill_reserves"], 16, shared=False)
+    k.hidden("reserves_apply", {**command(first=[f"scoreboard objectives add glhmax_{key} dummy",
+                                                 f"scoreboard players set @s glhmax_{key} 2500"]),
+                                "conditions": {"unlocking": unlocked("skill_reserves")}})
+    k.hidden("wellspring_regen", {"type": "palladium:dummy", "energy_bar_usage": usage(-1),
+                                  "conditions": {"unlocking": unlocked("skill_wellspring"), "enabling": interval(5)}})
+    passive, abilities = host_kits(e)
+    pname, pdesc, picon, pabilities = passive
+    k.node("skill_passive", pname, pdesc, picon, (6, 1), ["host_root"], 10, shared=False)
+    for pkey, pjson in pabilities.items():  # every part of the passive needs its node
+        conds = dict(pjson.get("conditions", {}))
+        own = conds.get("unlocking")
+        own = [] if own is None else (own if isinstance(own, list) else [own])
+        if unlocked("skill_passive") not in own:
+            own = [unlocked("skill_passive")] + own
+        conds["unlocking"] = one(own)
+        k.hidden(pkey, {**pjson, "conditions": conds})
+    if key == "ophidian":
+        attr("avarice_luck", "minecraft:generic.luck", 5, [unlocked("skill_passive")])
+    if key == "ion":
+        attr("indomitable", "minecraft:generic.knockback_resistance", 1, [unlocked("skill_passive")])
+    if key == "butcher":
+        attr("bloodlust", "minecraft:generic.attack_damage", 4, [unlocked("skill_passive")])
+    if key == "nekron":
+        k.pulse("deaths_touch_pulse", "deaths_touch", 40, [
+            f"effect give {OTHERS.format(r=6)} minecraft:wither 3 0 true",
+            "particle minecraft:soul ~ ~1 ~ 3 1 3 0.01 20 force"])
+
+    # the abilities: a chain in the tree, the first four slots of the bar
+    parent = "host_root"
+    for n, (akey, aname, adesc, glyph, item, cost, cooldown, payload) in enumerate(abilities):
+        ultimate = n == 3
+        xp = (5, 10, 15, 30)[n]
+        k.node(f"skill_{akey}", aname, adesc, item, (4, 1 + n), [parent], xp, shared=False)
+        parent = f"skill_{akey}"
+        if isinstance(payload, list):
+            payload = {**command(first=payload), "conditions": {"enabling": action(cooldown)}}
+        elif cooldown and "conditions" not in payload:
+            payload = {**payload, "conditions": {"enabling": action(cooldown)}}
+        k.bar(akey, payload, aname, k.glyph(glyph, item), n, node=f"skill_{akey}", cost=cost, shared=False)
+        k.abilities[akey]["description"] = k.tr(f"{akey}.description",
+                                                ("Ultimate: " if ultimate and not adesc.startswith("Ultimate") else "")
+                                                + adesc + f" Costs {cost} power" + ("" if cooldown else " a tick") + ".",
+                                                False)
+    k.bar("release", {**command(first=[f"function {NS}:entity/release_ask"]), "conditions": {"enabling": action(40)}},
+          f"Release {name}", k.glyph("revoke", "minecraft:barrier"), 4, shared=False)
+    return {
+        "name": {"translate": f"power.{NS}.host_{key}"}, "icon": HOST_ICON[key],
+        "background": f"{NS}:textures/gui/menu/{e.corps}.png", "gui_display_type": "tree",
+        "primary_color": hexcolor(rgb), "secondary_color": hexcolor(art.shade(rgb, 0.4)), "persistent_data": True,
+        "energy_bars": {BAR: {"max": {"type": "score", "objective": f"glhmax_{key}", "fallback": 1500},
+                              "auto_increase_per_tick": 1, "auto_increase_interval": 5, "color": hexcolor(rgb)}},
+        "abilities": k.abilities,
+    }, k.lang
+
+
+def entity_assets(lang):
+    """The entities' bodies (one hidden item, a model per entity), the Entity Lantern, and the host powers."""
+    models = entity_models.load()
+    glow = Image.new("RGBA", (16, 16), (255, 252, 235, 255))
+    save(glow, f"assets/{NS}/textures/item/construct/glow.png")
+    write(f"addon/{NS}/items/entity_body.json", {"max_stack_size": 1})
+    lang[f"item.{NS}.entity_body"] = "Emotional Entity"
+    overrides = []
+    for i, e in enumerate(entities.ENTITIES, 1):
+        elements = models.get(e.key, {}).get("elements") or [art._box([2, 2, 2], [14, 14, 14])]  # until it's modelled
+        write(f"assets/{NS}/models/item/entity_body_{e.key}.json", {
+            "textures": {"0": f"{NS}:item/construct/{e.corps}", "1": f"{NS}:item/construct/glow",
+                         "particle": f"{NS}:item/construct/{e.corps}"},
+            "elements": elements})
+        overrides.append({"predicate": {"custom_model_data": i}, "model": f"{NS}:item/entity_body_{e.key}"})
+        power, power_lang = host_power(e)
+        write(f"data/{NS}/palladium/powers/host_{e.key}.json", power)
+        lang.update(power_lang)
+        lang[f"power.{NS}.host_{e.key}"] = f"{e.name} (host)"
+    write(f"assets/{NS}/models/item/entity_body.json", {
+        "parent": f"{NS}:item/entity_body_{entities.ENTITIES[0].key}", "overrides": overrides})
+    # the Entity Lantern: a Power Battery with an entity sealed inside (looks like that corps' battery)
+    write(f"addon/{NS}/items/entity_lantern.json", {"max_stack_size": 1, "rarity": "epic", "is_fire_resistant": True})
+    lang[f"item.{NS}.entity_lantern"] = "Entity Lantern"
+    write(f"assets/{NS}/models/item/entity_lantern.json", {
+        "parent": f"{NS}:block/green_power_battery",
+        "overrides": [{"predicate": {"custom_model_data": i}, "model": f"{NS}:block/{e.corps}_power_battery"}
+                      for i, e in enumerate(entities.ENTITIES, 1)]})
+    write(f"data/{NS}/tags/items/power_batteries.json", {"replace": False, "values": [
+        f"{NS}:{c}_power_battery" for c in CORPS]})
+    return models
+
+
 def spirit_power():
     """greenlantern:emotional_spectrum: a hidden power every player has (granted by the datapack). It answers chat
     phrases without KubeJS, through Palladium's own chat conditions: calling your ring, speaking your oath, answering a
     ring's offer, and opening the Emotional Spectrum menu."""
     abilities = {}
-    for n, (phrase, function) in enumerate(sorted(systems.chat_phrases(CORPS).items())):
+    phrases = {**systems.chat_phrases(CORPS), "i release you": "entity/release_ask", "i release you!": "entity/release_ask"}
+    # right-click an Entity Lantern to release or host the entity sealed inside
+    abilities["lantern_use"] = {
+        **command(first=[f"function {NS}:entity/lantern_use"]), "hidden": True, "hidden_in_bar": True,
+        "conditions": {"unlocking": {"type": "palladium:item_in_slot", "item": {"item": f"{NS}:entity_lantern"},
+                                     "slot": "mainhand"},
+                       "enabling": {"type": "palladium:action", "key_type": "right_click", "cooldown": 20}}}
+    for n, (phrase, function) in enumerate(sorted(phrases.items())):
         abilities[f"chat_{n}"] = {
             **command(first=[f"function {NS}:{function}"]), "hidden": True, "hidden_in_bar": True,
             "conditions": {"enabling": {"type": "palladium:chat_action", "chat_message": phrase, "cooldown": 20}}}
@@ -1734,8 +2143,10 @@ def main():
                 "glow_opacity": 0.9, "bloom": 3, "size": 1.4, "rotation_speed": 3,
                 "particles": [{"particle_type": "minecraft:dust", "options": dust(fx), "amount": 2,
                                "offset_random": [0.2, 0.2, 0.2]}]})
-        write(f"assets/{NS}/palladium/trails/{c}_trail.json",
-              {"type": "palladium:gradient", "spacing": 2, "lifetime": 14, "color": hexcolor(fx)})
+        save(art.bubble_texture(c, rgb), f"assets/{NS}/textures/models/bubble/{c}.png")
+        write(f"assets/{NS}/palladium/render_layers/{c}_bubble.json", {
+            "model_layer": f"{NS}:player#bubble", "texture": f"{NS}:textures/models/bubble/{c}.png",
+            "render_type": "glow"})
 
         # recipes
         if data["gem"]:
@@ -1764,7 +2175,9 @@ def main():
         "result": {"item": f"{NS}:white_lantern_ring"}})
 
     spectrum_assets(lang)
+    entity_assets(lang)
 
+    items += ["entity_body", "entity_lantern"]
     write(f"addon/{NS}/items/_loading_order.json", items)
     write(f"addon/{NS}/creative_mode_tabs/lantern_corps.json", {"icon": f"{NS}:green_lantern_ring", "items": tab})
     write(f"assets/{NS}/palladium/model_layers/lantern_ring/player.json", art.ring_model(False))
@@ -1774,6 +2187,7 @@ def main():
     write(f"assets/{NS}/palladium/model_layers/lantern_ring_left/player.json", art.ring_model(False, left=True))
     write(f"assets/{NS}/palladium/model_layers/lantern_ring_left_slim/player.json", art.ring_model(True, left=True))
     write(f"assets/{NS}/palladium/model_layers/scuba/player.json", art.scuba_model())
+    write(f"assets/{NS}/palladium/model_layers/bubble/player.json", art.bubble_model())
     write(f"assets/{NS}/palladium/particle_emitters/ring_hand.json", {
         "body_part": "right_arm", "amount": 1, "offset": [-1, -10, 0], "offset_random": [1, 1, 1],
         "motion": [0, 0.5, 0], "motion_random": [0.3, 0.3, 0.3], "visible_in_first_person": False})
@@ -1906,6 +2320,13 @@ def main():
     g_tick += d_tick
     g_functions["second"] += d_second
     g_functions.update(d_functions)
+    n_load, n_tick, n_second, n_functions, n_files = entities.generate(entities.body_sizes(entity_models.load()))
+    g_load += n_load
+    g_tick += n_tick
+    g_functions["second"] += n_second
+    g_functions.update(n_functions)
+    for path, data in n_files.items():
+        write(f"data/{NS}/{path}", data)
     k_load, k_tick, k_second, k_functions, k_files = constructs.generate(CORPS)
     for path, data in k_files.items():
         write(f"data/{NS}/{path}", data)

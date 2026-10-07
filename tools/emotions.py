@@ -193,6 +193,11 @@ def generate():
         name = [button(TITLE[e], 10 + i, f"{TITLE[e]}: what raises it, and its quests", EMOTION_COLOR[e]),
                 {"text": " "}]
         menu += bar_lines(e, name, stats(e))
+    import entities  # the entity you host, if any
+    for ent in entities.ENTITIES:
+        menu.append(f"execute if entity @s[tag=gl_host_{ent.key}] run " + tellraw("@s", [
+            "", {"text": " You host ", "color": "gray"}, {"text": ent.name, "color": ent.color, "bold": True},
+            {"text": f", {ent.title}.", "color": "gray"}]))
     menu.append(tellraw("@s", ["", {"text": " At 100% that corps' ring comes for you. The White Lantern ring comes when all "
                                         "seven spectrum emotions (not Death) are at 100%.", "color": "dark_gray"}]))
     fn["emotion/menu"] = menu

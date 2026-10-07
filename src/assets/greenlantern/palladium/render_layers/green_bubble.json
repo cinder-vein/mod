@@ -1,0 +1,5 @@
+{
+  "model_layer": "greenlantern:player#bubble",
+  "texture": "greenlantern:textures/models/bubble/green.png",
+  "render_type": "glow"
+}

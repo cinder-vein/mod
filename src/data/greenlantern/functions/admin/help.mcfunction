@@ -12,4 +12,5 @@ tellraw @s [{"text":"  one ring: /trigger gl_recall set 11 green, 12 yellow, 13 
 tellraw @s [{"text":"Players: say their corps' oath (or /trigger gl_forge, /ring forge) to forge an unbound ring (500 charge)","color":"gray"}]
 tellraw @s [{"text":"/lantern forging on|off  |  /lantern forgecooldown <seconds>  -  ring forging","color":"gray"}]
 tellraw @s [{"text":"/lantern reset <player> | show <player> | enable | disable","color":"gray"}]
+tellraw @s [{"text":"/lantern entity status | reset | on | off | summon <entity>  -  function greenlantern:entity/admin/...","color":"gray"}]
 tellraw @s [{"text":"corps: green, yellow, red, orange, blue, violet, indigo, white, black","color":"gray"}]

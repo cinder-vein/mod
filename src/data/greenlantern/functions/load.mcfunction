@@ -298,6 +298,67 @@ scoreboard objectives add glmax_violet dummy
 scoreboard objectives add glmax_indigo dummy
 scoreboard objectives add glmax_white dummy
 scoreboard objectives add glmax_black dummy
+scoreboard objectives add gl_ent dummy
+scoreboard objectives add gl_eser dummy
+scoreboard objectives add gl_exo dummy
+scoreboard objectives add gl_entity trigger
+scoreboard objectives add gl_eofft dummy
+scoreboard objectives add gl_lifecd dummy
+scoreboard objectives add gl_takeover dummy
+execute unless score #entities gl_cfg matches 0.. run scoreboard players set #entities gl_cfg 1
+scoreboard players add #state_ion gl_ent 0
+scoreboard players add #host_ion gl_ent 0
+scoreboard players add #ser_ion gl_ent 0
+scoreboard players add #seal_ion gl_ent 0
+scoreboard objectives add gl_edc_ion dummy
+scoreboard players add #state_parallax gl_ent 0
+scoreboard players add #host_parallax gl_ent 0
+scoreboard players add #ser_parallax gl_ent 0
+scoreboard players add #seal_parallax gl_ent 0
+scoreboard objectives add gl_edc_parallax dummy
+scoreboard players add #state_butcher gl_ent 0
+scoreboard players add #host_butcher gl_ent 0
+scoreboard players add #ser_butcher gl_ent 0
+scoreboard players add #seal_butcher gl_ent 0
+scoreboard objectives add gl_edc_butcher dummy
+bossbar add greenlantern:butcher {"text": "The Butcher", "color": "#DC1E23"}
+bossbar set greenlantern:butcher color red
+bossbar set greenlantern:butcher max 400
+bossbar set greenlantern:butcher style notched_10
+scoreboard players add #state_ophidian gl_ent 0
+scoreboard players add #host_ophidian gl_ent 0
+scoreboard players add #ser_ophidian gl_ent 0
+scoreboard players add #seal_ophidian gl_ent 0
+scoreboard objectives add gl_edc_ophidian dummy
+scoreboard players add #state_adara gl_ent 0
+scoreboard players add #host_adara gl_ent 0
+scoreboard players add #ser_adara gl_ent 0
+scoreboard players add #seal_adara gl_ent 0
+scoreboard objectives add gl_edc_adara dummy
+scoreboard players add #state_predator gl_ent 0
+scoreboard players add #host_predator gl_ent 0
+scoreboard players add #ser_predator gl_ent 0
+scoreboard players add #seal_predator gl_ent 0
+scoreboard objectives add gl_edc_predator dummy
+scoreboard players add #state_proselyte gl_ent 0
+scoreboard players add #host_proselyte gl_ent 0
+scoreboard players add #ser_proselyte gl_ent 0
+scoreboard players add #seal_proselyte gl_ent 0
+scoreboard objectives add gl_edc_proselyte dummy
+scoreboard players add #state_life gl_ent 0
+scoreboard players add #host_life gl_ent 0
+scoreboard players add #ser_life gl_ent 0
+scoreboard players add #seal_life gl_ent 0
+scoreboard objectives add gl_edc_life dummy
+scoreboard players add #state_nekron gl_ent 0
+scoreboard players add #host_nekron gl_ent 0
+scoreboard players add #ser_nekron gl_ent 0
+scoreboard players add #seal_nekron gl_ent 0
+scoreboard objectives add gl_edc_nekron dummy
+bossbar add greenlantern:nekron {"text": "Nekron", "color": "#969BAA"}
+bossbar set greenlantern:nekron color white
+bossbar set greenlantern:nekron max 320
+bossbar set greenlantern:nekron style notched_10
 scoreboard objectives add gl_gat dummy
 scoreboard objectives add gl_cc_sword dummy
 scoreboard objectives add gl_cc_sword_shield dummy
