@@ -62,6 +62,7 @@ scoreboard objectives add gl_ch_indigo dummy
 scoreboard objectives add gl_ch_white dummy
 scoreboard objectives add gl_ch_black dummy
 scoreboard objectives add gl_ok dummy
+scoreboard objectives add gl_left minecraft.custom:minecraft.leave_game
 scoreboard objectives add gl_t_green dummy
 scoreboard objectives add gl_t_yellow dummy
 scoreboard objectives add gl_t_red dummy

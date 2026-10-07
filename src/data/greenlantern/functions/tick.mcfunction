@@ -18,6 +18,7 @@ execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_hand] run data merge
 tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new
 scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new] gl_life 1
 kill @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new,scores={gl_life=..0}]
+execute as @a[scores={gl_left=1..}] run function greenlantern:charge/rejoined
 scoreboard players add #timer gl_life 1
 execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0
 scoreboard players add @a[tag=gl_orange] gl_hoard 0

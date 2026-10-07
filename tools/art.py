@@ -780,8 +780,8 @@ def _moved(e, dy):
     return e
 
 
-# the cannonball is drawn as a projectile's GROUND item, centered on its feet: lift it into its hitbox
-SHAPE_DISPLAY = {"ball": {"ground": {"rotation": [0, 0, 0], "translation": [0, 8, 0], "scale": [1, 1, 1]}}}
+# per-shape display transforms (none needed: the cannonball stays centered on its projectile's path)
+SHAPE_DISPLAY = {}
 
 
 def _glow_box(frm, to, angle=-45):
@@ -869,14 +869,16 @@ def construct_block_texture(corps, rgb, hardlight=False):
             edge = x in (0, 15) or y in (0, 15)
             inner = x in (1, 14) or y in (1, 14)
             lattice = hardlight and ((x + y) % 5 == 0 or (x - y) % 5 == 0)
+            # hard light can't merge with its neighbours (Palladium blocks don't cull each other), so its
+            # frame is faint: walls read as one field with soft seams rather than a grid of panes
             if dark:
-                c, a = ((190, 196, 210), 235) if edge or lattice else ((24, 24, 30), 190)
+                c, a = ((190, 196, 210), 150 if hardlight else 235) if edge or lattice else ((24, 24, 30), 150 if hardlight else 190)
             elif edge:
-                c, a = p["light"][:3], 240
+                c, a = p["light"][:3], 130 if hardlight else 240
             elif inner or lattice:
-                c, a = p["glow"][:3], 200
+                c, a = p["glow"][:3], 110 if hardlight else 200
             else:
-                c, a = p["main"][:3], 110 if hardlight else 140
+                c, a = p["main"][:3], 80 if hardlight else 140
             img.putpixel((x, y), c + (a,))
     return img
 

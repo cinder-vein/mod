@@ -1131,6 +1131,11 @@ def charge_functions():
                    f"execute as @a[tag=gl_cr_{c},scores={{gl_ok=1}}] run scoreboard players operation @s gl_ch_{c} = @s gl_tmp"]
     load.append("scoreboard objectives add gl_ok dummy")
     fns["charge/save"] = second
+    # Logging out doesn't run the rings' last ticks, so a returning player may still carry gl_cr_<corps>
+    # while their re-added ring reads 0 until it is restored: clear the markers on rejoin, so neither the
+    # charge save nor construct upkeep acts on that 0.
+    load.append("scoreboard objectives add gl_left minecraft.custom:minecraft.leave_game")
+    fns["charge/rejoined"] = [f"tag @s remove gl_cr_{c}" for c in CORPS] + ["scoreboard players set @s gl_left 0"]
     return fns, load
 
 
@@ -1330,7 +1335,7 @@ def main():
         # placeable construct blocks (Construct Blocks) and temporary hard light (walls, domes, bridges)
         for block, hardlight in ((f"{c}_construct_block", False), (f"{c}_hardlight", True)):
             write(f"addon/{NS}/blocks/{block}.json", {
-                "sound_type": "minecraft:amethyst", "map_color": MAP_COLOR[c], "destroy_time": 4.0 if hardlight else 0.3,
+                "sound_type": "minecraft:amethyst", "map_color": MAP_COLOR[c], "destroy_time": -1.0 if hardlight else 0.3,
                 "explosion_resistance": 1200.0 if hardlight else 1.0, "no_occlusion": True,
                 "render_type": "translucent", "register_item": not hardlight,
                 **({} if hardlight else {"creative_mode_tab": f"{NS}:lantern_corps"})})
@@ -1486,6 +1491,7 @@ def main():
     c_fns, c_load = charge_functions()
     g_functions.update(c_fns)
     g_load += c_load
+    g_tick.insert(0, f"execute as @a[scores={{gl_left=1..}}] run function {NS}:charge/rejoined")
     g_tick += sense_tags()
     for c in CORPS:  # a corps tag lasts while that ring's power keeps refreshing it
         g_load.append(f"scoreboard objectives add gl_t_{c} dummy")

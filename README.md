@@ -154,7 +154,9 @@ Constructs work like the Green Lantern mod showcase:
   - Press the slot again to dismiss them.
   - Each one (and Scuba Gear) costs its ring 3 charge a second, a little more than the ring regains.
   - They dissolve when that ring runs dry, when you have no ring on you at all, or when they're dropped.
-- **Hard light** (Barrier Wall, Dome, Bridge) only fills air and vanishes on its own.
+  - Weapons and tools wear out like netherite gear; form a fresh one when they break.
+- **Hard light** (Barrier Wall, Dome, Bridge) only fills air and vanishes on its own. While it lasts it can't be
+  broken or pushed by pistons.
 
 | Category | Construct | Charge | Unlocked by |
 |---|---|---|---|

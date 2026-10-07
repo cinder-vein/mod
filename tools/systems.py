@@ -49,7 +49,7 @@ EMOTIONS = list(SOURCES)
 
 OFFER_SECONDS = 60
 ID_BITS = 16  # player ids up to 65 535
-CURIOS_SLOTS = 16  # ring slots checked (Curios merges slot counts from every pack)
+CURIOS_SLOTS = 32  # ring slots handled (Curios merges slot counts from every pack)
 DECLINE_COOLDOWN = 3600  # seconds before a declined corps asks again
 FORGE_COST = 500  # charge spent forging a new ring
 FORGE_COOLDOWN = 300  # seconds between forgings (/lantern forgecooldown)
@@ -509,6 +509,8 @@ def generate(corps_table, write, write_text):
         *[f'execute if score #strip gl_tmp matches {idx[c]} if data storage {STORAGE} cur{{id:"{ring(c)}"}} '
           f"run scoreboard players set #lantern gl_tmp 1" for c in corps],
         f"execute if score #lantern gl_tmp matches 1 store result score #slot gl_tmp run data get storage {STORAGE} cur.Slot",
+        f"execute if score #lantern gl_tmp matches 1 unless score #slot gl_tmp matches 0..{CURIOS_SLOTS - 1} run "
+        "scoreboard players set #lantern gl_tmp 0",
         f"execute if score #lantern gl_tmp matches 1 run function #{NS}:curios_clear_slot",
         "execute if score #lantern gl_tmp matches 1 run scoreboard players add #stripped gl_tmp 1",
         f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_strip_next",

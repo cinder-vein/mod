@@ -233,7 +233,7 @@ class Gen:
 
     def item(self, corps, item, extra=""):
         n = self.corps.index(corps) + 1
-        return f"{NS}:{item}{{CustomModelData:{n},Unbreakable:1b,gl_construct:1b,HideFlags:4{extra}}}"
+        return f"{NS}:{item}{{CustomModelData:{n},gl_construct:1b{extra}}}"  # they wear out like netherite gear
 
     def projectile(self, nbt, speed, where="execute anchored eyes positioned ^ ^ ^1.2"):
         """Summon a Palladium custom projectile in front of the player and send it where they look.
