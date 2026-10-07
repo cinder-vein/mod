@@ -21,7 +21,7 @@ def mirror(el):
     """The same element mirrored across the x=8 plane (rotations about y and z flip their sense)."""
     a, b = el["from"], el["to"]
     out = box([16 - b[0], a[1], a[2]], [16 - a[0], b[1], b[2]])
-    out["faces"] = el["faces"]
+    out["faces"] = {f: dict(fd) for f, fd in el["faces"].items()}
     if "rotation" in el:
         rt = el["rotation"]
         o = rt["origin"]
@@ -128,7 +128,7 @@ def parallax():
     # horn-tendrils: rising off the crown, then whipping back and out over the body, tips drooping
     e += pair([4.0, 16.0, -9], [5.75, 24.0, -7.25], rot=r("x", 45, [4.9, 16, -8.1]))
     e += pair([4.25, 20.75, -3.5], [5.5, 22.0, 18], rot=r("y", -22.5, [4.9, 21.4, -3.5]))
-    e += pair([-3.6, 19.0, 15.0], [-2.4, 20.25, 29], rot=r("x", 22.5, [-3.0, 20.25, 15.0]))
+    e += pair([-3.9, 20.75, 15.0], [-2.6, 22.0, 29], rot=r("x", 22.5, [-3.25, 22.0, 15.0]))
     # narrow armoured thorax and waist
     e.append(box([4.5, 9.0, -4.5], [11.5, 14.5, 8]))
     e.append(box([4.0, 13.0, -3.5], [12.0, 16.0, 7]))
@@ -197,14 +197,15 @@ def butcher():
     return e
 
 
-def build(fn, length_units, length_blocks):
+def build(fn, span_units, span_blocks):
+    """Scale so the creature's defining span (model units) comes out at span_blocks in the world."""
     elements = fn()
-    scale = round(length_blocks * 16 / length_units, 2)
+    scale = round(span_blocks * 16 / span_units, 2)
     return {"elements": elements, "scale": scale, "lift": lift_for(elements, scale)}
 
 
 MODELS = {
-    "ion": build(ion, 48, 7.0),
-    "parallax": build(parallax, 48, 5.0),
-    "butcher": build(butcher, 31, 3.0),
+    "ion": build(ion, 48, 7.0),  # 48 units snout to flukes -> ~7 blocks long
+    "parallax": build(parallax, 48, 5.0),  # 48 units mandibles to sting -> ~5 blocks long
+    "butcher": build(butcher, 31, 3.0),  # ~31 units hooves to spines -> ~3 blocks tall
 }
