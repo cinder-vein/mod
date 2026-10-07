@@ -11,3 +11,4 @@ execute if score #v gl_tmp matches 16 run function greenlantern:recall/request_v
 execute if score #v gl_tmp matches 17 run function greenlantern:recall/request_indigo
 execute if score #v gl_tmp matches 18 run function greenlantern:recall/request_white
 execute if score #v gl_tmp matches 19 run function greenlantern:recall/request_black
+execute unless score #v gl_tmp matches 1 unless score #v gl_tmp matches 11..19 run tellraw @s [{"text":"/trigger gl_recall calls all your rings. One ring: /trigger gl_recall set 11 (green), 12 (yellow), 13 (red), 14 (orange), 15 (blue), 16 (violet), 17 (indigo), 18 (white), 19 (black)","color":"gray"}]

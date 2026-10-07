@@ -82,7 +82,10 @@ Use a creative test world with cheats on, plus a second account or a friend for 
   - `/ring recall green` works, and so does saying *"ring, come to me"* in chat.
   - Saying *"return to me, blue ring"* calls only the blue ring.
   - If the ring is already on you, it says so.
+- [ ] Put the ring in your ender chest and call it: it comes out at your feet (no new ring).
 - [ ] A member whose ring was revoked runs `/trigger gl_recall`: *"No ring has chosen you yet."*
+- [ ] Craft a second green ring while wearing yours and hold it: it drops at your feet ("you already bear a ring of
+      this corps"). Your own ring keeps working. A friend can pick it up and bind it.
 
 ## 6c. Forging a ring by oath
 - [ ] Wear a charged green ring and type the Green Lantern oath in chat (KubeJS):

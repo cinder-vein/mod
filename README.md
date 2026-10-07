@@ -38,16 +38,22 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
   - If anyone else holds or wears it, it leaves them and flies back to its bearer, in any dimension.
   - If the bearer is offline it waits where it fell. It never despawns, and only its bearer can pick it up.
   - Ownership follows the player, not their name, so a renamed player keeps their rings.
+  - You bear one ring per corps. Another ring of a corps you already bear (one you crafted or picked up) won't bind to
+    you: it drops at your feet and waits for another bearer. A lost ring is replaced by calling it back.
 - **Calling your ring back:** anyone can call the rings that chose them, from anywhere.
   - `/trigger gl_recall` calls every ring you're the bearer of. It works for every player and needs no extra mods.
+    `/trigger gl_recall set 11` to `19` calls one ring (11 green, 12 yellow, 13 red, 14 orange, 15 blue, 16 violet,
+    17 indigo, 18 white, 19 black).
   - With KubeJS you can also run `/ring recall` or `/ring recall <corps>`, or say it in chat. Any message with
     "ring" and a calling word works, such as *"ring, come to me"*, *"return to me, green ring"* or *"I summon my
     ring"*. Naming a corps or its emotion calls just that ring.
-  - A ring **lying anywhere in a loaded area**, in any dimension, flies back to you.
+  - A ring **lying anywhere in a loaded area**, in any dimension, flies back to you. A ring in **your ender chest** comes
+    out at your feet.
   - A ring **stored in a chest**, left in an unloaded area or lost can't be reached by commands. Instead a new ring
     forms on you, and the one you left behind **goes dark for good**. It crumbles to dust if anyone wears it, so rings
     never duplicate.
   - There's a 10-second wait between calls. A ring revoked by a leader or removed by an admin can't be called back.
+  - A ring bound before 9.0 can be called back once you've worn it since updating.
 - **Forging a new ring (for a recruit):** speak your corps' oath while wearing your ring, and your ring forges a new
   one.
   - With KubeJS, type the oath in chat. It's shown in chat every time you recharge. Capitals and punctuation don't

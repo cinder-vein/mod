@@ -113,7 +113,9 @@ def generate(corps_table, write, write_text):
     fn["id/new"] = ["scoreboard players add #next gl_id 1", "scoreboard players operation @s gl_id = #next gl_id",
                     f"function {NS}:id/to_tags"]
     fn["id/from_tags"] = ["scoreboard players set @s gl_id 0"] + [
-        f"execute if entity @s[tag=gl_b{i}] run scoreboard players add @s gl_id {2 ** i}" for i in range(ID_BITS)]
+        f"execute if entity @s[tag=gl_b{i}] run scoreboard players add @s gl_id {2 ** i}" for i in range(ID_BITS)] + [
+        # their ring serials were keyed by the old name: for a minute, the rings they wear set them again
+        "tag @s add gl_reser", "scoreboard players set @s gl_reser 60"]
     to_tags = ["scoreboard players operation #v gl_tmp = @s gl_id"]
     for i in range(ID_BITS):
         to_tags += [f"tag @s remove gl_b{i}",
@@ -122,10 +124,24 @@ def generate(corps_table, write, write_text):
                     f"execute if score #bit gl_tmp matches 1 run tag @s add gl_b{i}",
                     "scoreboard players operation #v gl_tmp /= #2 gl_cfg"]
     fn["id/to_tags"] = to_tags + ["tag @s add gl_hasid"]
+    fn["id/migrate"] = [
+        "scoreboard players set #old gl_tmp 0",
+        *[f"execute if entity @s[tag=gl_member_{c}] run scoreboard players set #old gl_tmp 1" for c in corps],
+        f"execute if score #old gl_tmp matches 1 run function {NS}:id/to_tags",
+        f"execute if score #old gl_tmp matches 0 run function {NS}:id/fresh",
+    ]
+    fn["id/fresh"] = [f"function {NS}:id/new", *[f"scoreboard players reset @s gl_ser_{c}" for c in corps]]
+    # the tags win over a name-keyed score left by someone else under this name
+    fn["id/verify"] = [
+        "scoreboard players set #t gl_tmp 0",
+        *[f"execute if entity @s[tag=gl_b{i}] run scoreboard players add #t gl_tmp {2 ** i}" for i in range(ID_BITS)],
+        f"execute unless score @s gl_id = #t gl_tmp run function {NS}:id/from_tags",
+    ]
     tick += [
         f"execute as @a unless score @s gl_id matches 1.. run function {NS}:id/assign",
-        # players from before 9.0 have an id but no tags yet
-        f"execute as @a[tag=!gl_hasid] run function {NS}:id/to_tags",
+        # players from before 9.0 have an id but no tags yet: bearers (8.0 tagged them gl_member_*)
+        # keep it; anyone else gets a fresh id (a reused old name must not inherit its rings)
+        f"execute as @a[tag=!gl_hasid] run function {NS}:id/migrate",
     ]
 
     # ---------------------------------------------------------------- binding
@@ -187,6 +203,15 @@ def generate(corps_table, write, write_text):
                 "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": ring(c), "functions": functions}]}],
             })
 
+    fn["ring/secure_drop"] = [  # as and at the bearer, right after a bound ring was dropped at their feet
+        "tag @s add gl_giving",
+        f"execute as @e[type=minecraft:item,distance=..1.5,nbt={{Item:{{tag:{{gl_bound:1b}}}}}},limit=1,sort=nearest] run "
+        f"function {NS}:ring/secure_item",
+        "tag @s remove gl_giving",
+        tellraw("@s", [{"text": "Your inventory is full: your ring waits at your feet.", "color": "gray"}]),
+    ]
+    fn["ring/secure_item"] = ["data merge entity @s {Age:-32768s,PickupDelay:0s}",
+                              "data modify entity @s Owner set from entity @a[tag=gl_giving,limit=1] UUID"]
     # owner id and id bits of @s, for the bind modifier
     fn["ring/store_owner"] = [
         f"execute store result storage {STORAGE} owner int 1 run scoreboard players get @s gl_id",
@@ -203,11 +228,22 @@ def generate(corps_table, write, write_text):
     fn["ring/new_serial"] = ["scoreboard players add #serial gl_cfg 1",
                              f"execute store result storage {STORAGE} serial int 1 run scoreboard players get #serial gl_cfg"]
     set_serial = lambda c: f"scoreboard players operation @s gl_ser_{c} = #serial gl_cfg"  # noqa: E731
+    load += ["scoreboard objectives add gl_reser dummy"]
+
+    def bearer(c, run):
+        """Lines running `run` when @s bears a ring of corps c: a valid serial, or a pre-update ring
+        they've been seen wearing since the update (gl_legacy_<c>)."""
+        return [f"execute if score @s gl_ser_{c} matches 1.. run {run}",
+                f"execute if score @s gl_ser_{c} matches 0 if entity @s[tag=gl_legacy_{c}] run {run}"]
 
     def give_ring(table):
-        """Gives a ring from a loot table; drops it at your feet when your inventory is full."""
-        return [f"execute store result score #given gl_tmp run loot give @s loot {NS}:rings/{table}",
-                f"execute if score #given gl_tmp matches 0 at @s run loot spawn ~ ~ ~ loot {NS}:rings/{table}"]
+        """Gives a ring from a loot table; drops it at your feet when your inventory is full. A bound
+        ring dropped that way never despawns and only its bearer can pick it up."""
+        lines = [f"execute store result score #given gl_tmp run loot give @s loot {NS}:rings/{table}",
+                 f"execute if score #given gl_tmp matches 0 at @s run loot spawn ~ ~ ~ loot {NS}:rings/{table}"]
+        if not table.startswith("giver_"):
+            lines.append(f"execute if score #given gl_tmp matches 0 at @s run function {NS}:ring/secure_drop")
+        return lines
 
     newest_eject = "@e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest]"
     eject_summon = ('summon minecraft:item ~ ~1 ~ {Tags:["gl_eject"],PickupDelay:20s,Age:-32768s,'
@@ -235,7 +271,17 @@ def generate(corps_table, write, write_text):
             f"execute if predicate {NS}:giver_ring_{hand} store result score #giver gl_tmp run "
             f"data get entity @s {path}.tag.gl_giver",
             f"execute if score #giver gl_tmp = @s gl_id run function {NS}:ring/giver_held_{hand}",
-            f"execute unless score #giver gl_tmp = @s gl_id run function {NS}:ring/bind_{hand}",
+            f"execute unless score #giver gl_tmp = @s gl_id run function {NS}:ring/claim_new_{hand}",
+        ]
+        # A ring of a corps you already bear waits for another bearer: binding it would make it your one
+        # valid ring and darken the one you wear. (A lost ring is replaced with recall.)
+        claim_new = ["scoreboard players set #keep gl_tmp 0", *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps]]
+        for c in corps:
+            claim_new += [line.replace("execute if score", f"execute if predicate {NS}:held/{c}_{hand} if score", 1)
+                          for line in bearer(c, "scoreboard players set #keep gl_tmp 1")]
+        fn[f"ring/claim_new_{hand}"] = claim_new + [
+            f"execute if score #keep gl_tmp matches 1 run function {NS}:ring/second_ring_{hand}",
+            f"execute if score #keep gl_tmp matches 0 run function {NS}:ring/bind_{hand}",
         ]
         # A ring being handed on (forged, revoked or unbound) doesn't bind to the one handing it on. A
         # valid bearer of that corps (a leader, a forger) may carry it; anyone else (revoked, or unbound
@@ -243,12 +289,22 @@ def generate(corps_table, write, write_text):
         # their feet for its new bearer.
         keep = ["scoreboard players set #keep gl_tmp 0", *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps]]
         for c in corps:
-            keep += [f"execute if predicate {NS}:held/{c}_{hand} if score @s gl_ser_{c} matches 1.. run "
-                     "scoreboard players set #keep gl_tmp 1",
-                     f"execute if predicate {NS}:held/{c}_{hand} if score @s gl_ser_{c} matches 0 if entity "
-                     f"@s[tag=gl_member_{c}] run scoreboard players set #keep gl_tmp 1"]
+            keep += [line.replace("execute if score", f"execute if predicate {NS}:held/{c}_{hand} if score", 1)
+                     for line in bearer(c, "scoreboard players set #keep gl_tmp 1")]
         fn[f"ring/giver_held_{hand}"] = keep + [
             f"execute if score #keep gl_tmp matches 0 run function {NS}:ring/giver_drop_{hand}"]
+        fn[f"ring/second_ring_{hand}"] = [
+            f"function {NS}:ring/drop_{hand}",
+            "title @s actionbar " + json.dumps({"text": "You already bear a ring of this corps: this one waits for "
+                                                        "another bearer.", "color": "gray"}),
+        ]
+        fn[f"ring/drop_{hand}"] = [
+            'summon minecraft:item ~ ~0.5 ~ {Tags:["gl_drop"],PickupDelay:40s,Age:-32768s,'
+            'Item:{id:"minecraft:stone",Count:1b}}',
+            f"data modify entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Item set from entity @s {path}",
+            f"item replace entity @s {slot} with minecraft:air",
+            "tag @e[type=minecraft:item,tag=gl_drop] remove gl_drop",
+        ]
         fn[f"ring/giver_drop_{hand}"] = [
             'summon minecraft:item ~ ~0.5 ~ {Tags:["gl_drop"],PickupDelay:40s,Age:-32768s,'
             'Item:{id:"minecraft:stone",Count:1b}}',
@@ -274,10 +330,17 @@ def generate(corps_table, write, write_text):
             check += [f"execute if entity @s[tag=gl_b{i}] if predicate {NS}:ob/{hand}_{i}_0 run function {NS}:ring/eject_{hand}",
                       f"execute if entity @s[tag=!gl_b{i}] if predicate {NS}:ob/{hand}_{i}_1 run function {NS}:ring/eject_{hand}"]
         fn[f"ring/check_{hand}"] = check
-        fn[f"ring/legacy_{hand}"] = [  # a pre-9.0 ring: compare ids once, then upgrade it or throw it out
+        legacy_ok = ["scoreboard players set #keep gl_tmp 0", *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+                     *[f"execute if predicate {NS}:held/{c}_{hand} if score @s gl_ser_{c} matches 0 if entity "
+                       f"@s[tag=gl_member_{c}] run scoreboard players set #keep gl_tmp 1" for c in corps]]
+        fn[f"ring/legacy_{hand}"] = [  # a pre-9.0 ring: its bearer's ring is upgraded; a revoked or replaced one goes dark
             f"execute store result score #owner gl_tmp run data get entity @s {path}.tag.gl_owner",
-            f"execute if score #owner gl_tmp = @s gl_id run function {NS}:ring/rebind_{hand}",
             f"execute unless score #owner gl_tmp = @s gl_id run function {NS}:ring/eject_{hand}",
+            f"execute if score #owner gl_tmp = @s gl_id run function {NS}:ring/legacy_own_{hand}",
+        ]
+        fn[f"ring/legacy_own_{hand}"] = legacy_ok + [  # decided before rebind changes the serial
+            f"execute if score #keep gl_tmp matches 1 run function {NS}:ring/rebind_{hand}",
+            f"execute if score #keep gl_tmp matches 0 run function {NS}:ring/dark_{hand}",
         ]
         fn[f"ring/eject_{hand}"] = [  # run as the holder, at the holder
             f"execute store result score #owner gl_tmp run data get entity @s {path}.tag.gl_owner",
@@ -326,9 +389,13 @@ def generate(corps_table, write, write_text):
         f"execute unless score #owner gl_tmp = @s gl_id run function {NS}:ring/curios_eject",
         f"execute if score #owner gl_tmp = @s gl_id run function {NS}:ring/curios_serial",
     ]
-    fn["ring/curios_serial"] = [
+    fn["ring/curios_serial"] = [  # an owned ring in a Curios slot
         f"execute store result score #s gl_tmp run data get storage {STORAGE} cur.tag.gl_serial",
         *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+        *[f'execute if entity @s[tag=gl_reser] if score @s gl_ser_{c} matches 0 if score #s gl_tmp matches 1.. if data '
+          f'storage {STORAGE} cur{{id:"{ring(c)}"}} run scoreboard players operation @s gl_ser_{c} = #s gl_tmp' for c in corps],
+        *[f'execute if score #s gl_tmp matches 0 if score @s gl_ser_{c} matches 0 if data storage {STORAGE} '
+          f'cur{{id:"{ring(c)}"}} run tag @s add gl_legacy_{c}' for c in corps],
         *[f'execute if data storage {STORAGE} cur{{id:"{ring(c)}"}} unless score #s gl_tmp = @s gl_ser_{c} run '
           f"function {NS}:ring/curios_dark" for c in corps],
     ]
@@ -336,7 +403,7 @@ def generate(corps_table, write, write_text):
     fn["ring/dark_message"] = [
         "particle minecraft:smoke ~ ~1.2 ~ 0.2 0.3 0.2 0.02 30 force",
         "playsound minecraft:block.beacon.deactivate player @a[distance=..16] ~ ~ ~ 1 0.6",
-        tellraw("@s", [{"text": "This ring has gone dark: you called a new one to you. It crumbles to dust.",
+        tellraw("@s", [{"text": "This ring has gone dark: its power answers another ring now. It crumbles to dust.",
                         "color": "gray", "italic": True}]),
     ]
     # rings in your hands: checked twice a second (the owner check above runs every tick)
@@ -347,6 +414,9 @@ def generate(corps_table, write, write_text):
             f"execute store result score #owner gl_tmp run data get storage {STORAGE} held.gl_owner",
             f"execute store result score #s gl_tmp run data get storage {STORAGE} held.gl_serial",
             *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+            *[f"execute if entity @s[tag=gl_reser] if score #owner gl_tmp = @s gl_id if score @s gl_ser_{c} matches 0 if score "
+              f"#s gl_tmp matches 1.. if predicate {NS}:held/{c}_{hand} run scoreboard players operation @s gl_ser_{c} = #s gl_tmp"
+              for c in corps],
             *[f"execute if score #owner gl_tmp = @s gl_id if predicate {NS}:held/{c}_{hand} unless score #s gl_tmp = "
               f"@s gl_ser_{c} run function {NS}:ring/dark_{hand}" for c in corps],
         ]
@@ -357,9 +427,16 @@ def generate(corps_table, write, write_text):
         f"function {NS}:ring/curios_check",
     ]
     fn["ring/curios_pop"] = [  # throw the ring in storage `cur` out of its Curios slot (#slot)
+        f"execute if score #slot gl_tmp matches 0..{CURIOS_SLOTS - 1} run function {NS}:ring/curios_pop_slot",
+        f"execute if score #slot gl_tmp matches {CURIOS_SLOTS}.. run "
+        + tellraw("@s", [{"text": f"Lantern rings only work in the first {CURIOS_SLOTS} ring slots.", "color": "gray"}]),
+    ]
+    fn["ring/curios_pop_slot"] = [
         eject_summon,
         f"data modify entity {newest_eject} Item set from storage {STORAGE} cur",
         f"data remove entity {newest_eject} Item.Slot",
+        # only a bound ring is kept for its bearer; an unbound one is anyone's
+        f"execute if data storage {STORAGE} cur.tag{{gl_bound:1b}} run "
         f"data modify entity {newest_eject} Owner set from storage {STORAGE} cur.tag.gl_owner_uuid",
         f"function #{NS}:curios_clear_slot",
     ]
@@ -409,10 +486,7 @@ def generate(corps_table, write, write_text):
     load += ["scoreboard objectives add gl_recall trigger", "scoreboard objectives add gl_rcd dummy"]
     init_serials = [f"scoreboard players add @s gl_ser_{c} 0" for c in corps]
 
-    def eligible(c, run):
-        return [f"execute if score @s gl_ser_{c} matches 1.. run {run}",
-                # bound before 9.0 (no serial yet): members of the corps
-                f"execute if score @s gl_ser_{c} matches 0 if entity @s[tag=gl_member_{c}] run {run}"]
+    eligible = bearer
 
     cooldown_msg = tellraw("@s", [{"text": "Your ring is still answering your last call. Try again in ", "color": "gray"},
                                   {"score": {"name": "@s", "objective": "gl_rcd"}, "color": "white"},
@@ -433,6 +507,9 @@ def generate(corps_table, write, write_text):
         "scoreboard players enable @s gl_recall",
         f"execute if score #v gl_tmp matches 1 run function {NS}:recall/request",
         *[f"execute if score #v gl_tmp matches {10 + idx[c]} run function {NS}:recall/request_{c}" for c in corps],
+        "execute unless score #v gl_tmp matches 1 unless score #v gl_tmp matches 11..19 run "
+        + tellraw("@s", [{"text": "/trigger gl_recall calls all your rings. One ring: /trigger gl_recall set "
+                                  + ", ".join(f"{10 + idx[c]} ({c})" for c in corps), "color": "gray"}]),
     ]
     rc = f"{STORAGE} rc"
     clear_inv = [f"execute if score #slot gl_tmp matches {i} run item replace entity @s container.{i} with minecraft:air"
@@ -443,6 +520,21 @@ def generate(corps_table, write, write_text):
                              f"function {NS}:recall/clear_inv_slot", f"function {NS}:ring/dark_message"]
     fn["recall/dark_curios"] = [f"execute store result score #slot gl_tmp run data get storage {rc}.Slot",
                                 f"function #{NS}:curios_clear_slot", f"function {NS}:ring/dark_message"]
+    fn["recall/dark_ender"] = [f"execute store result score #slot gl_tmp run data get storage {rc}.Slot",
+                                f"function {NS}:recall/clear_ender_slot", f"function {NS}:ring/dark_message"]
+    fn["recall/clear_ender_slot"] = [
+        f"execute if score #slot gl_tmp matches {i} run item replace entity @s enderchest.{i} with minecraft:air"
+        for i in range(27)]
+    fn["recall/from_ender"] = [  # a valid ring in your ender chest comes out at your feet, yours to pick up
+        "scoreboard players set #found gl_tmp 2",
+        f"execute store result score #slot gl_tmp run data get storage {rc}.Slot",
+        'summon minecraft:item ~ ~0.5 ~ {Tags:["gl_drop"],PickupDelay:0s,Age:-32768s,Item:{id:"minecraft:stone",Count:1b}}',
+        f"data modify entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Item set from storage {rc}",
+        "data remove entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Item.Slot",
+        "data modify entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Owner set from entity @s UUID",
+        "tag @e[type=minecraft:item,tag=gl_drop] remove gl_drop",
+        f"function {NS}:recall/clear_ender_slot",
+    ]
     fn["recall/fly"] = [  # as the ring's item entity
         "scoreboard players set #found gl_tmp 2",
         "data merge entity @s {PickupDelay:0s,Age:-32768s}",
@@ -467,6 +559,7 @@ def generate(corps_table, write, write_text):
             "scoreboard players add #called gl_tmp 1",
             "scoreboard players set @s gl_rcd 10",
             "scoreboard players set #found gl_tmp 0",
+            "tag @a remove gl_caller",
             "tag @s add gl_caller",
             f"function {NS}:recall/self_{c}",
             f"execute if score #found gl_tmp matches 0 as @e[type=minecraft:item,nbt={{Item:{{id:\"{ring(c)}\","
@@ -487,19 +580,23 @@ def generate(corps_table, write, write_text):
             f"data remove storage {STORAGE} scan",
             f"data modify storage {STORAGE} scan set from entity @s {curios_items}",
             f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/curios_next_{c}",
+            # your ender chest: a valid ring there comes out to you
+            f"data remove storage {STORAGE} scan",
+            f"execute if score #found gl_tmp matches 0 run data modify storage {STORAGE} scan set from entity @s EnderItems",
+            f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/ender_next_{c}",
         ]
-        for kind, dark in (("self", "dark_inv"), ("curios", "dark_curios")):
+        for kind, dark in (("self", "dark_inv"), ("curios", "dark_curios"), ("ender", "dark_ender")):
             fn[f"recall/{kind}_next_{c}"] = [
                 f"data modify storage {rc} set from storage {STORAGE} scan[0]",
                 f"data remove storage {STORAGE} scan[0]",
                 f'execute if data storage {rc}{{id:"{ring(c)}",tag:{{gl_bound:1b}}}} run function {NS}:recall/{kind}_item_{c}',
                 f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/{kind}_next_{c}",
             ]
+            found = f"function {NS}:recall/from_ender" if kind == "ender" else "scoreboard players set #found gl_tmp 1"
             fn[f"recall/{kind}_item_{c}"] = [
                 f"execute store result score #owner gl_tmp run data get storage {rc}.tag.gl_owner",
                 f"execute store result score #s gl_tmp run data get storage {rc}.tag.gl_serial",
-                f"execute if score #owner gl_tmp = @s gl_id if score #s gl_tmp = @s gl_ser_{c} run "
-                "scoreboard players set #found gl_tmp 1",
+                f"execute if score #owner gl_tmp = @s gl_id if score #s gl_tmp = @s gl_ser_{c} run {found}",
                 f"execute if score #owner gl_tmp = @s gl_id unless score #s gl_tmp = @s gl_ser_{c} run "
                 f"function {NS}:recall/{dark}",
             ]
@@ -569,7 +666,7 @@ def generate(corps_table, write, write_text):
             f"scoreboard players add @s gl_ser_{c} 0",
             f"execute unless entity @s[tag=gl_{c}] run scoreboard players set #ok gl_tmp 0",
             f"execute if score @s gl_ser_{c} matches -1 run scoreboard players set #ok gl_tmp 0",
-            f"execute if score @s gl_ser_{c} matches 0 unless entity @s[tag=gl_member_{c}] run scoreboard players set #ok gl_tmp 0",
+            f"execute if score @s gl_ser_{c} matches 0 unless entity @s[tag=gl_legacy_{c}] run scoreboard players set #ok gl_tmp 0",
             f"execute if score #ok gl_tmp matches 0 run "
             + tellraw("@s", [{"text": f"Your words echo, but no ring answers. Wear your own {name} ring to forge another.",
                               "color": "gray", "italic": True}]),
@@ -639,10 +736,11 @@ def generate(corps_table, write, write_text):
     ]
 
     # ---------------------------------------------------------------- ring offers
-    def offer_ok(c):
-        return f"@a[gamemode=survival,tag=!gl_offer_any,tag=!gl_member_{c},scores={{gl_cd_{c}=..0}}]"
+    def offer_ok(c):  # never a revoked or removed bearer (gl_ser -1): only an admin can offer them that ring again
+        return f"@a[gamemode=survival,tag=!gl_offer_any,tag=!gl_member_{c},scores={{gl_cd_{c}=..0,gl_ser_{c}=0..}}]"
 
-    offer_scan = [f"scoreboard players add @a gl_cd_{c} 0" for c in corps]
+    offer_scan = [f"scoreboard players add @a gl_cd_{c} 0" for c in corps] + [
+        f"scoreboard players add @a gl_ser_{c} 0" for c in corps]
     for c in corps:
         if c == "white":
             cond = " ".join(f"if score @s gl_e_{EMOTION_OF[s]} >= #threshold gl_cfg" for s in SPECTRUM)
@@ -759,7 +857,8 @@ def generate(corps_table, write, write_text):
         ]
         fn[f"leader/revoke_{c}"] = [  # run as the leader: revoke the nearest bearer of this corps' ring
             "tag @s add gl_revoker",
-            f"execute as @p[tag=gl_{c},tag=!gl_revoker,distance=..8] run function {NS}:leader/revoke_target_{c}",
+            f"execute as @p[tag=gl_{c},tag=!gl_revoker,tag=!gl_leader_{c},distance=..8] run "
+            f"function {NS}:leader/revoke_target_{c}",
             f"execute unless entity @p[tag=gl_revoked,distance=..8] run "
             + tellraw("@s", [{"text": "No member of your corps is close enough.", "color": "gray"}]),
             "tag @a remove gl_revoked",
@@ -825,6 +924,7 @@ def generate(corps_table, write, write_text):
         fn[f"admin/unleader/{c}"] = [f"tag @s remove gl_leader_{c}", f"function {NS}:leader/update_any"]
         fn[f"admin/remove/{c}"] = [f"function {NS}:ring/strip_{c}", f"function {NS}:leader/update_any"]
         fn[f"admin/offer/{c}"] = [f"function {NS}:offer/clear", f"scoreboard players set @s gl_cd_{c} 0",
+                                  f"execute if score @s gl_ser_{c} matches -1 run scoreboard players set @s gl_ser_{c} 0",
                                   f"function {NS}:offer/start_{c}"]
         fn[f"admin/emotion/max_{EMOTION_OF.get(c, 'all')}"] = (
             [f"scoreboard players operation @s gl_e_{e} = #threshold gl_cfg" for e in EMOTIONS] if c == "white"
@@ -875,6 +975,9 @@ def generate(corps_table, write, write_text):
         f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
         f"execute as @a[scores={{gl_recall=1..}}] at @s run function {NS}:recall/trigger",
         f"execute as @a[scores={{gl_forge=1..}}] at @s run function {NS}:forge/trigger",
+        "scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0",
+        "scoreboard players set @a[scores={gl_forge=..-1}] gl_forge 0",
+        "scoreboard players set @a[scores={gl_construct=..-1}] gl_construct 0",
         f"execute as @a[tag=gl_offer_any] at @s run function {NS}:offer/follow",
         f"execute as @a[scores={{gl_accept=1..}}] at @s run function {NS}:offer/accept_trigger",
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",
@@ -905,6 +1008,9 @@ def generate(corps_table, write, write_text):
         "scoreboard players enable @a gl_recall",
         "scoreboard players enable @a gl_forge",
         "scoreboard players remove @a[scores={gl_fcd=1..}] gl_fcd 1",
+        "scoreboard players remove @a[scores={gl_reser=1..}] gl_reser 1",
+        f"execute as @a[tag=gl_hasid] run function {NS}:id/verify",
+        "tag @a[tag=gl_reser,scores={gl_reser=..0}] remove gl_reser",
         "scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1",
     ]
     fn["offer/scan"] = offer_scan

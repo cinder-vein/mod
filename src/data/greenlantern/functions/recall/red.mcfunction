@@ -1,6 +1,7 @@
 scoreboard players add #called gl_tmp 1
 scoreboard players set @s gl_rcd 10
 scoreboard players set #found gl_tmp 0
+tag @a remove gl_caller
 tag @s add gl_caller
 function greenlantern:recall/self_red
 execute if score #found gl_tmp matches 0 as @e[type=minecraft:item,nbt={Item:{id:"greenlantern:red_lantern_ring",tag:{gl_bound:1b}}}] run function greenlantern:recall/item_red

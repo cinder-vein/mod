@@ -9,5 +9,5 @@ scoreboard players add @s gl_ser_indigo 0
 scoreboard players add @s gl_ser_white 0
 scoreboard players add @s gl_ser_black 0
 execute if score @s gl_ser_violet matches 1.. run function greenlantern:recall/violet
-execute if score @s gl_ser_violet matches 0 if entity @s[tag=gl_member_violet] run function greenlantern:recall/violet
+execute if score @s gl_ser_violet matches 0 if entity @s[tag=gl_legacy_violet] run function greenlantern:recall/violet
 execute if score #called gl_tmp matches 0 run tellraw @s [{"text":"No Star Sapphire ring has chosen you.","color":"gray"}]

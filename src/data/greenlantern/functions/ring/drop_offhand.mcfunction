@@ -1,0 +1,4 @@
+summon minecraft:item ~ ~0.5 ~ {Tags:["gl_drop"],PickupDelay:40s,Age:-32768s,Item:{id:"minecraft:stone",Count:1b}}
+data modify entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Item set from entity @s Inventory[{Slot:-106b}]
+item replace entity @s weapon.offhand with minecraft:air
+tag @e[type=minecraft:item,tag=gl_drop] remove gl_drop

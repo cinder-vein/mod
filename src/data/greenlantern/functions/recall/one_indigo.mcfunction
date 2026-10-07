@@ -9,5 +9,5 @@ scoreboard players add @s gl_ser_indigo 0
 scoreboard players add @s gl_ser_white 0
 scoreboard players add @s gl_ser_black 0
 execute if score @s gl_ser_indigo matches 1.. run function greenlantern:recall/indigo
-execute if score @s gl_ser_indigo matches 0 if entity @s[tag=gl_member_indigo] run function greenlantern:recall/indigo
+execute if score @s gl_ser_indigo matches 0 if entity @s[tag=gl_legacy_indigo] run function greenlantern:recall/indigo
 execute if score #called gl_tmp matches 0 run tellraw @s [{"text":"No Indigo Tribe ring has chosen you.","color":"gray"}]

@@ -15,3 +15,5 @@ execute if entity @s[tag=gl_b12] run scoreboard players add @s gl_id 4096
 execute if entity @s[tag=gl_b13] run scoreboard players add @s gl_id 8192
 execute if entity @s[tag=gl_b14] run scoreboard players add @s gl_id 16384
 execute if entity @s[tag=gl_b15] run scoreboard players add @s gl_id 32768
+tag @s add gl_reser
+scoreboard players set @s gl_reser 60

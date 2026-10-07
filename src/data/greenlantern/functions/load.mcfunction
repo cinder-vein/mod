@@ -163,6 +163,7 @@ scoreboard objectives add gl_ser_violet dummy
 scoreboard objectives add gl_ser_indigo dummy
 scoreboard objectives add gl_ser_white dummy
 scoreboard objectives add gl_ser_black dummy
+scoreboard objectives add gl_reser dummy
 scoreboard objectives add gl_recall trigger
 scoreboard objectives add gl_rcd dummy
 scoreboard objectives add gl_forge trigger

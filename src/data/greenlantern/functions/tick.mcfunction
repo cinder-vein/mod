@@ -291,12 +291,15 @@ tag @a[tag=gl_indigo] add gl_ring
 tag @a[tag=gl_white] add gl_ring
 tag @a[tag=gl_black] add gl_ring
 execute as @a unless score @s gl_id matches 1.. run function greenlantern:id/assign
-execute as @a[tag=!gl_hasid] run function greenlantern:id/to_tags
+execute as @a[tag=!gl_hasid] run function greenlantern:id/migrate
 execute as @a at @s run function greenlantern:ring/bind_check
 execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
 execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
 execute as @a[scores={gl_recall=1..}] at @s run function greenlantern:recall/trigger
 execute as @a[scores={gl_forge=1..}] at @s run function greenlantern:forge/trigger
+scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0
+scoreboard players set @a[scores={gl_forge=..-1}] gl_forge 0
+scoreboard players set @a[scores={gl_construct=..-1}] gl_construct 0
 execute as @a[tag=gl_offer_any] at @s run function greenlantern:offer/follow
 execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/accept_trigger
 execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger
