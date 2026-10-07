@@ -1,0 +1,2491 @@
+{
+  "name": {
+    "translate": "power.greenlantern.emotional_spectrum"
+  },
+  "icon": "minecraft:nether_star",
+  "hidden": true,
+  "abilities": {
+    "chat_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_yes"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "accept",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "black ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "black ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "black ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "black ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_5": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "blue ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_6": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "blue ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_7": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "blue ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_8": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "blue ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_9": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_10": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_11": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, black ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_12": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, black ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_13": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, blue ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_14": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, blue ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_15": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, green ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_16": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, green ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_17": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, indigo ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_18": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, indigo ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_19": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, orange ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_20": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, orange ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_21": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, red ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_22": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, red ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_23": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_24": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_25": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, sinestro ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_26": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, sinestro ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_27": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, star sapphire ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_28": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, star sapphire ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_29": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, violet ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_30": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, violet ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_31": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, white ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_32": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, white ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_33": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, yellow ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_34": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "come to me, yellow ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_35": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_no"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "decline",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_36": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "emotional spectrum",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_37": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "emotions",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_38": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "for hearts long lost and full of fright for those alone in blackest night accept our ring and join our fight love conquers all with violet light",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_39": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "for hearts long lost and full of fright, for those alone in blackest night, accept our ring and join our fight, love conquers all... with violet light!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_40": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "from the light of creation every color of the spectrum all life as one shines white",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_41": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "from the light of creation, every color of the spectrum, all life, as one, ...shines white!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_42": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "green ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_43": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "green ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_44": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "green ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_45": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "green ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_46": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_yes"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i accept",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_47": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i call my ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_48": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i call my ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_49": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_no"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i decline",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_50": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i summon my ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_51": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "i summon my ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_52": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in blackest day in brightest night beware your fears made into light let those who try to stop what's right burn like my power sinestro's might",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_53": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in blackest day in brightest night beware your fears made into light let those who try to stop whats right burn like my power sinestros might",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_54": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in blackest day, in brightest night, beware your fears made into light. let those who try to stop what's right, burn like my power... sinestro's might!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_55": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in brightest day in blackest night no evil shall escape my sight let those who worship evil's might beware my power green lantern's light",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_56": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in brightest day in blackest night no evil shall escape my sight let those who worship evils might beware my power green lanterns light",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_57": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in brightest day, in blackest night, no evil shall escape my sight. let those who worship evil's might, beware my power... green lantern's light!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_58": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in fearful day in raging night with strong hearts full our souls ignite when all seems lost in the war of light look to the stars for hope burns bright",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_59": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "in fearful day, in raging night, with strong hearts full, our souls ignite, when all seems lost in the war of light, look to the stars... for hope burns bright!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_60": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "indigo ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_61": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "indigo ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_62": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "indigo ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_63": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "indigo ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_64": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "my emotions",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_65": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_no"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "n",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_66": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_no"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "no",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_67": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "orange ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_68": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "orange ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_69": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "orange ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_70": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "orange ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_71": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "red ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_72": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "red ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_73": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "red ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_74": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "red ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_75": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, black ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_76": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, black ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_77": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, blue ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_78": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_blue"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, blue ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_79": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, green ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_80": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, green ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_81": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, indigo ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_82": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, indigo ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_83": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, orange ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_84": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, orange ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_85": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, red ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_86": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, red ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_87": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_88": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_89": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, sinestro ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_90": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, sinestro ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_91": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, star sapphire ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_92": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, star sapphire ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_93": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, violet ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_94": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, violet ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_95": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, white ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_96": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, white ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_97": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, yellow ring",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_98": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "return to me, yellow ring!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_99": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring come back",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_100": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring come back!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_101": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_102": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_103": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring return to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_104": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring return to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_105": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, come back",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_106": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, come back!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_107": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_108": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_109": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, return to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_110": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, return to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_111": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_112": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "ring, to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_113": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "show my emotions",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_114": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "sinestro ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_115": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "sinestro ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_116": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "sinestro ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_117": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "sinestro ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_118": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "star sapphire ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_119": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "star sapphire ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_120": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "star sapphire ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_121": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "star sapphire ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_122": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "the blackest night falls from the skies the darkness grows as all light dies we crave your hearts and your demise by my black hand the dead shall rise",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_123": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_black"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "the blackest night falls from the skies, the darkness grows as all light dies, we crave your hearts and your demise, by my black hand, the dead shall rise!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_124": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "tor lowar lan abin sur ak wo tauva ihla wo nauva natromo faan dur ak naja ono ot vauva abin sur",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_125": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_indigo"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "tor lowar lan, abin sur, ak wo tauva, ihla wo nauva, natromo faan, dur ak naja, ono ot vauva, abin sur.",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_126": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "violet ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_127": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "violet ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_128": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "violet ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_129": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_violet"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "violet ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_130": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "what's mine is mine and mine and mine and mine and not yours",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_131": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "what's mine is mine, and mine, and mine... and mine! and not yours!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_132": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_orange"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "whats mine is mine and mine and mine and mine and not yours",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_133": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "white ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_134": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "white ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_135": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "white ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_136": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_white"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "white ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_137": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "with blood and rage of crimson red ripped from a corpse so freshly dead together with our hellish hate we'll burn you all that is your fate",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_138": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "with blood and rage of crimson red ripped from a corpse so freshly dead together with our hellish hate well burn you all that is your fate",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_139": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:forge/request_red"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "with blood and rage of crimson red, ripped from a corpse so freshly dead, together with our hellish hate, we'll burn you all... that is your fate!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_140": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_yes"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "y",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_141": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "yellow ring come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_142": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "yellow ring come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_143": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "yellow ring, come to me",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_144": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:recall/request_yellow"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "yellow ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_145": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:offer/chat_yes"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "yes",
+          "cooldown": 20
+        }
+      }
+    }
+  }
+}

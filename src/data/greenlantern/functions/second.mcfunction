@@ -27,6 +27,8 @@ tag @a[tag=gl_reser,scores={gl_reser=..0}] remove gl_reser
 scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1
 function greenlantern:charge/save
 execute at @a[tag=gl_yellow] run effect give @e[type=#greenlantern:greed_prey,distance=..8] minecraft:weakness 2 0 true
+execute as @a run function greenlantern:emotion/quests
+superpower add greenlantern:emotional_spectrum @a
 execute as @a[tag=gl_dual] run superpower add greenlantern:spectrum_lantern @s
 execute as @a[tag=!gl_dual] run superpower remove greenlantern:spectrum_lantern @s
 scoreboard players add #s gl_dtick 1
@@ -60,11 +62,7 @@ execute as @a[tag=gl_white,tag=gl_cr_white,tag=gl_scuba_white] run function gree
 execute as @a[tag=gl_black,tag=gl_cr_black] if predicate greenlantern:construct_held/black_mainhand run function greenlantern:construct/black/upkeep
 execute as @a[tag=gl_black,tag=gl_cr_black] if predicate greenlantern:construct_held/black_offhand run function greenlantern:construct/black/upkeep
 execute as @a[tag=gl_black,tag=gl_cr_black,tag=gl_scuba_black] run function greenlantern:construct/black/upkeep
-tag @a remove gl_carry
-tag @a[tag=gl_ring] add gl_carry
-execute as @a[tag=!gl_carry] store result score @s gl_tmp run clear @s #greenlantern:lantern_rings 0
-tag @a[tag=!gl_carry,scores={gl_tmp=1..}] add gl_carry
-clear @a[tag=!gl_carry] #greenlantern:constructs
+clear @a[tag=!gl_ring] #greenlantern:constructs
 kill @e[type=minecraft:item,nbt={Item:{tag:{gl_construct:1b}}}]
 tag @a[tag=gl_scuba_green,tag=!gl_green] remove gl_scuba_green
 tag @a[tag=gl_scuba_yellow,tag=!gl_yellow] remove gl_scuba_yellow

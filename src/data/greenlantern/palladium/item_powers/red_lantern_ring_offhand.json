@@ -1,8 +1,0 @@
-{
-  "slot": "offhand",
-  "item": "greenlantern:red_lantern_ring",
-  "power": [
-    "greenlantern:red_lantern",
-    "greenlantern:lantern_base"
-  ]
-}

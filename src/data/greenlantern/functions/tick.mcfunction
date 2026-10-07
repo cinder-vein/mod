@@ -296,6 +296,8 @@ execute as @a[tag=!gl_hasid] run function greenlantern:id/migrate
 execute as @a at @s run function greenlantern:ring/bind_check
 execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
 execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
+execute if score #second gl_cfg matches 0 as @a at @s run function greenlantern:ring/carry_check
+execute if score #second gl_cfg matches 10 as @a at @s run function greenlantern:ring/carry_check
 execute as @a[scores={gl_recall=1..}] at @s run function greenlantern:recall/trigger
 execute as @a[scores={gl_forge=1..}] at @s run function greenlantern:forge/trigger
 scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0
@@ -305,8 +307,6 @@ execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/acce
 execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger
 execute as @a[scores={gl_revoke=1..}] at @s run function greenlantern:leader/revoke_trigger
 execute as @a[scores={gl_roster=1..}] run function greenlantern:leader/roster_trigger
-execute as @a[scores={gl_emotions=1..}] run function greenlantern:emotion/show
-scoreboard players set @a[scores={gl_emotions=1..}] gl_emotions 0
 execute as @e[type=minecraft:item_display,tag=gl_leave_go] at @s run tp @s ~ ~0.6 ~
 scoreboard players remove @e[type=minecraft:item_display,tag=gl_leave_go] gl_tmp 1
 kill @e[type=minecraft:item_display,tag=gl_leave_go,scores={gl_tmp=..0}]
@@ -320,6 +320,7 @@ effect clear @a[tag=gl_black] minecraft:wither
 effect clear @a[tag=gl_black] minecraft:poison
 execute as @a[tag=gl_indigo,scores={gl_hurt=1..}] at @s run effect give @e[type=#greenlantern:greed_prey,distance=..5] minecraft:weakness 5 1 true
 scoreboard players set @a[scores={gl_hurt=1..}] gl_hurt 0
+execute as @a[scores={gl_emotions=1..}] run function greenlantern:emotion/trigger
 scoreboard players set @a gl_rings 0
 tag @a[tag=gl_p1_green] remove gl_p1_green
 tag @a[tag=gl_p2_green] remove gl_p2_green

@@ -60,6 +60,42 @@ DISPLAY_TRANSFORM = ("transformation:{left_rotation:[0f,0f,0f,1f],right_rotation
                      "translation:[0f,0f,0f],scale:[0.7f,0.7f,0.7f]}")
 
 
+# Chat phrases answered without KubeJS, through Palladium's chat conditions (an exact message, any capitals; see
+# the emotional_spectrum power in gen_corps.py). With KubeJS, its script also understands looser wordings.
+RECALL_PHRASES = ["ring, come to me", "ring come to me", "come to me, ring", "come to me ring", "ring, return to me",
+                  "ring return to me", "return to me, ring", "ring, come back", "ring come back", "i summon my ring",
+                  "i call my ring", "ring, to me"]
+RECALL_CORPS_PHRASES = ["{n} ring, come to me", "{n} ring come to me", "come to me, {n} ring", "return to me, {n} ring"]
+RING_NAMES = {"yellow": ["yellow", "sinestro"], "violet": ["violet", "star sapphire"]}
+OFFER_ANSWERS = {"yes": "chat_yes", "y": "chat_yes", "accept": "chat_yes", "i accept": "chat_yes",
+                 "no": "chat_no", "n": "chat_no", "decline": "chat_no", "i decline": "chat_no"}
+MENU_PHRASES = ["emotions", "my emotions", "emotional spectrum", "show my emotions"]
+
+
+def chat_phrases(corps_table):
+    """{phrase: function (without namespace)} for every chat phrase the mod answers."""
+    out = {}
+    for p in RECALL_PHRASES:
+        for end in ("", "!"):
+            out[p + end] = "recall/request"
+    for c in corps_table:
+        for n in RING_NAMES.get(c, [c]):
+            for p in RECALL_CORPS_PHRASES:
+                for end in ("", "!"):
+                    out[p.format(n=n) + end] = f"recall/request_{c}"
+    for c, data in corps_table.items():  # the oath as shown when recharging, or without punctuation
+        oath = " ".join(data["oath"]).lower()
+        for keep in ("", "'"):  # with or without apostrophes
+            bare = "".join(ch if ch.isalpha() or ch == " " or ch in keep else ("" if ch == "'" else " ") for ch in oath)
+            out[" ".join(bare.split())] = f"forge/request_{c}"
+        out[oath] = f"forge/request_{c}"
+    for word, fn in OFFER_ANSWERS.items():
+        out[word] = f"offer/{fn}"
+    for p in MENU_PHRASES:
+        out[p] = "emotion/menu"
+    return out
+
+
 def tellraw(target, parts):
     return f"tellraw {target} " + json.dumps(parts, separators=(",", ":"))
 
@@ -489,8 +525,57 @@ def generate(corps_table, write, write_text):
     fn["ring/curios_unbound"] = [
         f"function {NS}:ring/curios_pop",
         "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
-        tellraw("@s", [{"text": "Hold a new ring in your hand once to bind it to you, then wear it.",
-                        "color": "gray", "italic": True}]),
+        tellraw("@s", [{"text": "A ring has to bind to you before you can wear it. It binds when you carry it, unless you "
+                                "already bear a ring of its corps or you're handing it on.", "color": "gray",
+                        "italic": True}]),
+    ]
+    # A ring binds to the first player who carries it: an unbound ring in your inventory binds to you, unless you're
+    # handing it on (a forged or revoked ring, marked with you as its giver) or you already bear a ring of its corps
+    # (a spare, waiting for another bearer). Rings held in a hand bind the same way, every tick (bind_check).
+    fn["ring/carry_check"] = [  # as a player, twice a second
+        f"execute store result score #all gl_tmp run clear @s #{NS}:lantern_rings 0",
+        f"execute store result score #bound gl_tmp run clear @s #{NS}:lantern_rings{{gl_bound:1b}} 0",
+        f"execute if score #all gl_tmp > #bound gl_tmp run function {NS}:ring/carry_scan",
+    ]
+    fn["ring/carry_scan"] = [
+        f"data remove storage {STORAGE} carry",
+        f"data modify storage {STORAGE} carry set from entity @s Inventory",
+        f"execute if data storage {STORAGE} carry[0] run function {NS}:ring/carry_next",
+    ]
+    fn["ring/carry_next"] = [
+        f"data modify storage {STORAGE} cur set from storage {STORAGE} carry[0]",
+        f"data remove storage {STORAGE} carry[0]",
+        "scoreboard players set #corps gl_tmp 0",
+        *[f'execute if data storage {STORAGE} cur{{id:"{ring(c)}"}} run scoreboard players set #corps gl_tmp {idx[c]}'
+          for c in corps],
+        f"execute if score #corps gl_tmp matches 1.. unless data storage {STORAGE} cur.tag{{gl_bound:1b}} run "
+        f"function {NS}:ring/carry_item",
+        f"execute if data storage {STORAGE} carry[0] run function {NS}:ring/carry_next",
+    ]
+    carry_item = [
+        f"execute store result score #slot gl_tmp run data get storage {STORAGE} cur.Slot",
+        "execute unless score #slot gl_tmp matches 0..35 run scoreboard players set #corps gl_tmp 0",
+        "scoreboard players set #giver gl_tmp 0",
+        f"execute if data storage {STORAGE} cur.tag{{gl_gv:1b}} store result score #giver gl_tmp run "
+        f"data get storage {STORAGE} cur.tag.gl_giver",
+        "execute if score #giver gl_tmp = @s gl_id run scoreboard players set #corps gl_tmp 0",
+        *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+    ]
+    for c in corps:
+        carry_item += [line.replace("execute if score", f"execute if score #corps gl_tmp matches {idx[c]} if score", 1)
+                       for line in bearer(c, "scoreboard players set #corps gl_tmp 0")]
+    fn["ring/carry_item"] = carry_item + [f"execute if score #corps gl_tmp matches 1.. run function {NS}:ring/carry_bind"]
+    fn["ring/carry_bind"] = [
+        f"function {NS}:ring/store_owner", f"function {NS}:ring/new_serial",
+        *[f"execute if score #slot gl_tmp matches {i} run item modify entity @s container.{i} {NS}:bind" for i in range(36)],
+        *[line for c in corps for line in (
+            f"execute if score #corps gl_tmp matches {idx[c]} run {set_serial(c)}",
+            f"execute if score #corps gl_tmp matches {idx[c]} run tag @s remove gl_legacy_{c}",
+            f"execute if score #corps gl_tmp matches {idx[c]} run tag @s add gl_member_{c}")],
+        f"function {NS}:ring/save_serials",
+        tellraw("@s", [{"text": "The ring binds itself to you. Wear it in a ring slot to use its power.", "color": "gray",
+                        "italic": True}]),
+        "playsound minecraft:block.beacon.power_select player @s ~ ~ ~ 1 1.6",
     ]
     fn["ring/curios_clear_slot"] = [f"execute if score #slot gl_tmp matches {i} run curios replace ring {i} @s with minecraft:air"
                                     for i in range(CURIOS_SLOTS)]
@@ -755,29 +840,24 @@ def generate(corps_table, write, write_text):
     for e in EMOTIONS:
         for i, (crit, w) in enumerate(SOURCES[e]):
             src = f"gl_s_{e}{i}"
+            track = f"gl_tr_{e}{i}"  # lifetime points from this source, for the Emotional Spectrum menu
             if w == 1:
                 feed.append(f"scoreboard players operation @s gl_e_{e} += @s {src}")
+                feed.append(f"scoreboard players operation @s {track} += @s {src}")
                 feed.append(f"scoreboard players set @s {src} 0")
             elif w > 1:
                 feed += [f"scoreboard players operation @s gl_tmp = @s {src}",
                          f"scoreboard players operation @s gl_tmp *= #w{w} gl_cfg",
                          f"scoreboard players operation @s gl_e_{e} += @s gl_tmp",
+                         f"scoreboard players operation @s {track} += @s gl_tmp",
                          f"scoreboard players set @s {src} 0"]
             else:  # divide, keeping the remainder for next time
                 feed += [f"scoreboard players operation @s gl_tmp = @s {src}",
                          f"scoreboard players operation @s gl_tmp /= #w{-w} gl_cfg",
                          f"scoreboard players operation @s gl_e_{e} += @s gl_tmp",
+                         f"scoreboard players operation @s {track} += @s gl_tmp",
                          f"scoreboard players operation @s {src} %= #w{-w} gl_cfg"]
     fn["emotion/feed"] = [f"scoreboard players add @s gl_e_{e} 0" for e in EMOTIONS] + feed
-    fn["emotion/show"] = [
-        tellraw("@s", [{"text": "Your emotional spectrum", "color": "white", "bold": True}]),
-        *[tellraw("@s", [{"text": f"  {EMOTION_NAME[e].capitalize()}: ", "color": "gray"},
-                         {"score": {"name": "@s", "objective": f"gl_e_{e}"}, "color": "white"},
-                         {"text": " / ", "color": "dark_gray"},
-                         {"score": {"name": "#threshold", "objective": "gl_cfg"}, "color": "dark_gray"}])
-          for e in EMOTIONS],
-    ]
-
     # ---------------------------------------------------------------- ring offers
     def offer_ok(c):  # never a revoked or removed bearer (gl_ser -1): only an admin can offer them that ring again
         return f"@a[gamemode=survival,tag=!gl_offer_any,tag=!gl_member_{c},scores={{gl_cd_{c}=..0,gl_ser_{c}=0..}}]"
@@ -881,6 +961,8 @@ def generate(corps_table, write, write_text):
           for c in corps],
         "scoreboard players set @s gl_decline 0",
     ]
+    fn["offer/chat_yes"] = [f"execute if entity @s[tag=gl_offer_any] run function {NS}:offer/accept_chat"]
+    fn["offer/chat_no"] = [f"execute if entity @s[tag=gl_offer_any] run function {NS}:offer/decline_chat"]
     fn["offer/accept_chat"] = [f"execute if entity @s[tag=gl_offer_{c}] run function {NS}:offer/accept_{c}" for c in corps]
     fn["offer/decline_chat"] = [f"execute if entity @s[tag=gl_offer_{c}] run function {NS}:offer/decline_{c}" for c in corps]
     fn["offer/timeout"] = [f"execute if entity @s[tag=gl_offer_{c}] run function {NS}:offer/decline_{c}" for c in corps]
@@ -1022,6 +1104,8 @@ def generate(corps_table, write, write_text):
         # rings worn in Curios slots, twice a second, for players a ring is powering
         f"execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
         f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
+        f"execute if score #second gl_cfg matches 0 as @a at @s run function {NS}:ring/carry_check",
+        f"execute if score #second gl_cfg matches 10 as @a at @s run function {NS}:ring/carry_check",
         f"execute as @a[scores={{gl_recall=1..}}] at @s run function {NS}:recall/trigger",
         f"execute as @a[scores={{gl_forge=1..}}] at @s run function {NS}:forge/trigger",
         "scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0",
@@ -1031,8 +1115,6 @@ def generate(corps_table, write, write_text):
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",
         f"execute as @a[scores={{gl_revoke=1..}}] at @s run function {NS}:leader/revoke_trigger",
         f"execute as @a[scores={{gl_roster=1..}}] run function {NS}:leader/roster_trigger",
-        f"execute as @a[scores={{gl_emotions=1..}}] run function {NS}:emotion/show",
-        "scoreboard players set @a[scores={gl_emotions=1..}] gl_emotions 0",
         # leaving rings rise and vanish
         "execute as @e[type=minecraft:item_display,tag=gl_leave_go] at @s run tp @s ~ ~0.6 ~",
         "scoreboard players remove @e[type=minecraft:item_display,tag=gl_leave_go] gl_tmp 1",
@@ -1064,23 +1146,30 @@ def generate(corps_table, write, write_text):
     ]
     fn["offer/scan"] = offer_scan
 
-    write_kubejs(corps, {c: corps_table[c]["oath"] for c in corps}, write_text)
+    write_kubejs(corps_table, write_text)
     return load, tick, fn
 
 
-def write_kubejs(corps, oaths, write_text):
-    """Optional /lantern command and chat replies when KubeJS is installed."""
+def write_kubejs(corps_table, write_text):
+    """Optional /lantern, /ring and /emotions commands and looser chat wordings when KubeJS is installed."""
+    corps = list(corps_table)
     script = (KUBEJS_TEMPLATE.replace("__CORPS__", json.dumps(corps)).replace("__EMOTIONS__", json.dumps(EMOTIONS))
-              .replace("__OATHS__", json.dumps({c: " ".join(oaths[c]) for c in corps}, indent=2)))
+              .replace("__OATHS__", json.dumps({c: " ".join(corps_table[c]["oath"]) for c in corps}, indent=2))
+              .replace("__PHRASES__", json.dumps(sorted(chat_phrases(corps_table)))))
     write_text(f"data/{NS}/kubejs_scripts/lantern_commands.js", script)
+    return script
 
 
-KUBEJS_TEMPLATE = r"""// Lantern Corps: /lantern admin command and chat replies to ring offers.
-// Loaded by Palladium's KubeJS integration when KubeJS is installed; without KubeJS the
-// same features are available through /function greenlantern:admin/... and /trigger.
+KUBEJS_TEMPLATE = r"""// Lantern Corps: the /lantern admin command, /ring recall|forge, /emotions, and looser chat wordings for calling
+// your ring and speaking your oath. Loaded by Palladium's KubeJS integration when KubeJS is installed (or copy it
+// into kubejs/server_scripts). Without KubeJS the exact phrases still work through Palladium, and the rest is
+// available through /trigger and /function greenlantern:admin/...
 const CORPS = __CORPS__
 const EMOTIONS = __EMOTIONS__
 const OATHS = __OATHS__
+// answered by Palladium itself (exact messages), so the script leaves them alone
+const PALLADIUM_PHRASES = __PHRASES__
+console.info('[Lantern Corps] KubeJS script loaded: /lantern, /ring and /emotions')
 
 ServerEvents.commandRegistry(event => {
   const { commands: Commands, arguments: Arguments } = event
@@ -1186,6 +1275,7 @@ ServerEvents.commandRegistry(event => {
   const corpsArgument = (then) => Commands.argument('corps', Arguments.WORD.create(event))
     .suggests((ctx, builder) => suggestCorps(builder))
     .executes(then)
+  event.register(Commands.literal('emotions').executes(ctx => runSelf(ctx, 'greenlantern:emotion/menu')))
   event.register(Commands.literal('ring')
     .then(Commands.literal('recall')
       .executes(ctx => recall(ctx, null))
@@ -1272,12 +1362,13 @@ const spokenOath = (msg) => {
   return bestScore >= OATH_MATCH ? best : null
 }
 
-// Answer a ring's offer by typing yes / no in chat, call your ring with a phrase, or forge a ring
-// by speaking your oath.
+// Call your ring with a phrase, or forge a ring by speaking your oath. (Typing yes / no to a ring's offer, and the
+// exact phrases, are answered by Palladium.)
 PlayerEvents.chat(event => {
   const player = event.player
   const server = player.server
   const msg = String(event.message).trim().toLowerCase()
+  if (PALLADIUM_PHRASES.indexOf(msg) >= 0) return
   const oath = spokenOath(msg)
   if (oath) {  // the oath stays in chat for everyone to hear
     server.runCommandSilent(`execute as ${player.getStringUUID()} at @s run function greenlantern:forge/request_${oath}`)
@@ -1285,16 +1376,6 @@ PlayerEvents.chat(event => {
   }
   if (isCall(msg)) {
     callRing(server, player, namedCorps(msg))  // the words still show in chat
-    return
-  }
-  if (!player.tags.contains('gl_offer_any')) return
-  const name = event.username
-  if (['yes', 'y', 'accept', 'i accept'].indexOf(msg) >= 0) {
-    server.runCommandSilent(`execute as ${name} at @s run function greenlantern:offer/accept_chat`)
-    event.cancel()
-  } else if (['no', 'n', 'decline', 'i decline'].indexOf(msg) >= 0) {
-    server.runCommandSilent(`execute as ${name} at @s run function greenlantern:offer/decline_chat`)
-    event.cancel()
   }
 })
 """

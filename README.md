@@ -6,12 +6,16 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 
 ## Install
 
-1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
+1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore) and **Curios** (rings are
+   worn in its ring slots).
 2. Put `dist/greenlantern-10.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
-3. Optional:
-   - **Curios** gives you two ring slots.
-   - **KubeJS** adds the `/lantern` admin command and lets players answer a ring by typing *yes* / *no*. Installed on
-     the client too, it lets you switch ring modes with **Ctrl** (otherwise you sneak instead).
+3. Optional: **KubeJS** adds the `/lantern` admin command, `/ring recall|forge`, `/emotions`, and looser chat wordings
+   for calling your ring and speaking your oath. Installed on the client too, it lets you switch ring modes with
+   **Ctrl** (otherwise you sneak instead).
+   - Palladium loads the KubeJS scripts from the mod jar. If `/ring` or `/lantern` is still an unknown command with
+     KubeJS installed, copy the files from this repository's `kubejs/server_scripts` into your game's
+     `kubejs/server_scripts` folder (and `kubejs/client_scripts` into `kubejs/client_scripts`), then restart.
+     `logs/kubejs/server.log` says *"[Lantern Corps] KubeJS script loaded"* when it works.
 
 ## The corps
 
@@ -29,25 +33,30 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 
 ## Rings
 
-- **Wearing a ring:** hold it in either hand, or wear it in a Curios ring slot (best: it keeps your hands free
-  for constructs). It shows on your hand like in the showcase: a signet with your corps' logo on the outside of the
+- **Wearing a ring:** a ring only works worn in a **Curios ring slot** (there are two). Held in a hand or carried, it
+  does nothing. It shows on your hand like in the showcase: a signet with your corps' logo on the outside of the
   hand, at the base of the fingers, and a band across the front of the index finger. A second ring shows on your left
   hand. **All powers work with or without the suit.**
 - **Charge bonus:** a charged ring gives **40 hearts** and netherite-level armor. Red gives 30 hearts, but
   more strength.
-- **Ownership:** a ring binds to the first player who holds it, and shows *Bound to &lt;name&gt;* on it.
+- **Ownership:** a ring binds to the first player who carries it (picks it up, holds it or is given it), and shows
+  *Bound to &lt;name&gt;* on it. A ring must be bound to you before you can wear it.
   - If anyone else holds or wears it, it leaves them and flies back to its bearer, in any dimension.
   - If the bearer is offline it waits where it fell. It never despawns, and only its bearer can pick it up.
   - Ownership follows the player, not their name, so a renamed player keeps their rings.
   - You bear one ring per corps. Another ring of a corps you already bear (one you crafted or picked up) won't bind to
-    you: it drops at your feet and waits for another bearer. A lost ring is replaced by calling it back.
+    you: you can carry it, but if you hold or wear it, it drops at your feet and waits for another bearer. A lost ring
+    is replaced by calling it back.
 - **Calling your ring back:** anyone can call the rings that chose them, from anywhere.
   - `/trigger gl_recall` calls every ring you're the bearer of. It works for every player and needs no extra mods.
     `/trigger gl_recall set 11` to `19` calls one ring (11 green, 12 yellow, 13 red, 14 orange, 15 blue, 16 violet,
     17 indigo, 18 white, 19 black).
-  - With KubeJS you can also run `/ring recall` or `/ring recall <corps>`, or say it in chat. Any message with
-    "ring" and a calling word works, such as *"ring, come to me"*, *"return to me, green ring"* or *"I summon my
-    ring"*. Naming a corps or its emotion calls just that ring.
+  - **Say it in chat** (no extra mods needed): *"ring, come to me"*, *"ring, return to me"*, *"come to me, ring"*,
+    *"ring, come back"*, *"I summon my ring"* or *"I call my ring"* call every ring. *"green ring, come to me"*,
+    *"come to me, blue ring"* or *"return to me, star sapphire ring"* call one. Capitals don't matter; the commas and
+    an ending "!" must be as shown.
+  - With KubeJS you can also run `/ring recall` or `/ring recall <corps>`, and any chat message with "ring" and a
+    calling word works (*"come back blue ring"*). Naming a corps or its emotion calls just that ring.
   - A ring **lying anywhere in a loaded area**, in any dimension, flies back to you. A ring in **your ender chest** comes
     out at your feet.
   - A ring **stored in a chest**, left in an unloaded area or lost can't be reached by commands. Instead a new ring
@@ -57,13 +66,12 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
   - A ring bound before 9.0 can be called back once you've worn it since updating.
 - **Forging a new ring (for a recruit):** speak your corps' oath while wearing your ring, and your ring forges a new
   one.
-  - With KubeJS, type the oath in chat. It's shown in chat every time you recharge. Capitals and punctuation don't
-    matter, and small slips are fine.
-  - Without KubeJS, use `/trigger gl_forge`. With KubeJS you can also use `/ring forge [corps]`. Both recite the oath
-    for you.
+  - Type the oath in chat, word for word. It's shown in chat every time you recharge. Capitals and punctuation don't
+    matter. With KubeJS, small slips are fine too.
+  - Or use `/trigger gl_forge` (with KubeJS also `/ring forge [corps]`). Both recite the oath for you.
   - It costs **500 charge**, and the ring needs **5 minutes** to rest before forging again.
   - The new ring is **unbound** and remembers who forged it. It never binds to you, so it can't replace or darken your
-    own ring. You can carry it; drop it (Q) for your recruit. It binds to the next player who holds it.
+    own ring. You can carry it; drop it (Q) for your recruit. It binds to the next player who carries it.
   - Admins: `/lantern forging on|off` and `/lantern forgecooldown <seconds>`.
 - **Two rings at once** merge into the **Spectrum Bond**, with its own bar and skill tree (see below).
 - **Recharging:**
@@ -81,7 +89,17 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 
 ## The ring chooses you
 
-Every player builds up eight emotions just by playing. Check yours with `/trigger gl_emotions`.
+Every player builds up eight emotions just by playing.
+
+**The Emotional Spectrum menu** shows them. Open it by saying *"emotions"* in chat, with `/trigger gl_emotions`, with
+`/emotions` (KubeJS), or with the *Emotional Spectrum* button on the last page of a ring's bar. It's a clickable chat
+menu:
+- **Main page:** each emotion's bar, its percentage of the threshold (the ring comes at 100%), its level (one per 10%)
+  and the amount itself.
+- **Click an emotion** for its page:
+  - **What raised it:** every action that feeds it, with the points it has earned you so far and how much each gives.
+  - **Its quests:** three per emotion, done in order. They track themselves; finishing one gives its reward and starts
+    the next.
 
 | Emotion | Corps | Grows from |
 |---|---|---|
@@ -94,10 +112,21 @@ Every player builds up eight emotions just by playing. Check yours with `/trigge
 | Compassion | Indigo | talking to villagers, potting flowers, filling cauldrons |
 | Death | Black | killing mobs, dying |
 
+| Emotion | Quests (reward: 1 500 → 3 000 → 6 000) |
+|---|---|
+| Willpower | Block 25 hearts of damage with a shield → take 150 hearts of damage → defeat the Ender Dragon |
+| Fear | Sneak for 10 minutes → defeat 10 phantoms → defeat the Warden |
+| Rage | Deal 200 hearts of damage → defeat 150 mobs → defeat 3 ravagers |
+| Avarice | Trade 30 times → mine 24 diamond ore → mine 12 ancient debris |
+| Hope | Sleep in a bed 7 times → ring a bell 25 times → win 2 raids |
+| Love | Breed 20 animals → eat 14 slices of cake → breed 100 animals |
+| Compassion | Talk to villagers 40 times → pot 12 flowers → brew at a brewing stand 25 times |
+| Death | Defeat 100 mobs → defeat 40 zombies or skeletons → defeat the Wither |
+
 When an emotion reaches the **threshold (20 000)** while you're in survival, that corps' ring streaks down to you:
 *"&lt;Name&gt;, you have great willpower. Welcome to the Green Lantern Corps. Do you accept?"*
 
-- Click **[ACCEPT]** or **[DECLINE]**, or type **yes** / **no** (typing needs KubeJS).
+- Click **[ACCEPT]** or **[DECLINE]**, or type **yes** / **no** in chat.
 - If you accept, the ring is bound to you, it brings its **Power Battery** with you, and the server announces it.
   If your inventory is full, they drop at your feet.
 - If you decline, or wait 60 seconds, the ring flies away and doesn't return for an hour.
@@ -129,7 +158,7 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function 
 | `/lantern offer <player> <corps>` | make that ring choose the player now |
 | `/lantern leader\|unleader <player> <corps>` | appoint or remove a corps leader |
 | `/lantern remove <player> <corps>` / `removeall <player>` | take rings away (inventory, hands and Curios) |
-| `/lantern unbind <player>` | unbind the ring in their main hand (it binds to the next player who holds it) |
+| `/lantern unbind <player>` | unbind the ring in their main hand (it binds to the next player who carries it) |
 | `/lantern reset <player>` / `cooldowns <player>` / `show <player>` | reset emotions, clear decline cooldowns, show emotions |
 | `/lantern threshold <n>` | change the threshold (`scoreboard players set #threshold gl_cfg <n>`) |
 | `/lantern enable` / `disable` | turn emotions and ring offers on or off |
@@ -147,11 +176,10 @@ Constructs work like the Green Lantern mod showcase:
 - **The Construct Wheel** (second slot of the first page) holds every construct. Hold its key and pick one with the
   mouse. Constructs you haven't unlocked are greyed out.
 - **Held constructs** are real weapons and tools. They form in your empty hand, or the item in that hand moves to a
-  free slot. A ring held in your hand is never moved: the construct goes to your inventory instead. Wear the ring in a
-  Curios slot or your other hand to wield constructs. If there's no room, nothing forms and no charge is spent.
+  free slot. If there's no room, nothing forms and no charge is spent.
   - Pick them on the wheel again to dismiss them.
   - Each one (and Scuba Gear) costs its ring 3 charge a second.
-  - They dissolve when that ring runs dry, when you have no ring on you at all, or when they're dropped.
+  - They dissolve when that ring runs dry, when you wear no ring at all, or when they're dropped.
   - Weapons and tools wear out like netherite gear; form a fresh one when they break.
 - **Hard light** (Barrier Wall, Dome, Bridge) only fills air and vanishes on its own. While it lasts it can't be
   broken or pushed by pistons.
@@ -246,13 +274,13 @@ Beam, Energy Blast, Scan, Ring Light, Suit Up and recharging at a battery are av
 The ability bar's pages (switch with **X**):
 1. Beam / Energy Blast, Construct Wheel / Scan, Force Field, Ring Light, Suit Up.
 2. Your corps' specials and Ultimate (plus Emotional Sight for Black).
-3. Revoke Ring (leaders only).
+3. Emotional Spectrum (opens the emotions menu), and Revoke Ring for leaders.
 
 Every ability slot has its own icon in the corps' colors.
 
 ## Two rings: the Spectrum Bond
 
-Wear two rings (both hands, or two Curios ring slots) and they bond. The first ring in this order is your **first
+Wear two rings (in your two Curios ring slots) and they bond. The first ring in this order is your **first
 ring** (right hand): green, yellow, red, orange, blue, violet, indigo, white, black. The other is your **second
 ring** (left hand). With three rings, the first two in that order bond.
 
@@ -305,7 +333,8 @@ ring** (left hand). With three rings, the first two in that order bond.
   modes, and the KubeJS scripts for the Ctrl key.
 - `tools/icons.py` and `tools/icon_glyphs/`: the ability icons, drawn as 32x32 pixel-art maps and recolored per corps.
   `python3 tools/icons.py preview.png` renders them all.
-- `tools/systems.py`: ownership, emotions, ring offers, leaders, admin functions and the KubeJS script.
+- `tools/systems.py`: ownership, emotions, ring offers, leaders, admin functions, the chat phrases and the KubeJS script.
+- `tools/emotions.py`: the Emotional Spectrum menu, the tracking of what raised each emotion, and the quests.
 - `tools/art.py`: logos, suit recoloring, masks, merged suits, the worn ring, ring icons, the lantern and construct
   models.
 - **To rebuild:** run `python3 tools/gen_corps.py`, then `python3 tools/build.py`. The build checks every

@@ -1,9 +1,1 @@
-tellraw @s [{"text":"Your emotional spectrum","color":"white","bold":true}]
-tellraw @s [{"text":"  Willpower: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_will"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Fear: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_fear"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Rage: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_rage"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Avarice: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_greed"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Hope: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_hope"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Love: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_love"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  Compassion: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_compassion"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
-tellraw @s [{"text":"  A closeness to death: ","color":"gray"},{"score":{"name":"@s","objective":"gl_e_death"},"color":"white"},{"text":" / ","color":"dark_gray"},{"score":{"name":"#threshold","objective":"gl_cfg"},"color":"dark_gray"}]
+function greenlantern:emotion/menu

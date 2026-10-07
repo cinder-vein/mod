@@ -2324,6 +2324,28 @@
       "hidden_in_bar": false,
       "list_index": 17
     },
+    "emotions": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 20
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.emotions"
+      },
+      "icon": "greenlantern:textures/gui/ability/emotional_sight_green.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 15
+    },
     "ring_light": {
       "type": "palladium:command",
       "first_tick_commands": [

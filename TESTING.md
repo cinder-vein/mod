@@ -4,11 +4,15 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 `/reload` re-runs the datapack after any change.
 
 ## 1. Rings, suits, beam
-- [ ] `/give @s greenlantern:green_lantern_ring` and hold it. Chat says *"The ring is now bound to you"*, and the tooltip
-      shows *Bound to &lt;you&gt;*.
+- [ ] `/give @s greenlantern:green_lantern_ring`. Within half a second chat says *"The ring binds itself to you"*, and
+      the tooltip shows *Bound to &lt;you&gt;*.
+- [ ] Hold the ring in your hand: no ability bar, no hearts. Put it in a **Curios ring slot**: the bar and the
+      hearts appear. Rings only work from a ring slot.
+- [ ] Put a fresh ring straight into the ring slot from the creative menu (never carried): it pops out with a message.
+      Pick it up, wait a moment, wear it: it works.
 - [ ] In third person (F5), look at your right hand. The ring's logo signet sits on the **outside of the hand, at the
       base of the fingers**, and a thin band crosses the front of the hand. It's on the hand, not the wrist.
-- [ ] Wear a second ring (blue in the offhand, or a second Curios slot). It shows on your **left** hand.
+- [ ] Wear a second ring (blue, in the second ring slot). It shows on your **left** hand.
 - [ ] Hold the beam key: your right arm points forward and the beam leaves the hand.
 - [ ] **Suit Up** (bottom slot of the first page): the suit appears and your face stays visible. Suit and mask
       choices are in the accessories menu.
@@ -102,23 +106,24 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 - [ ] Drop your bound ring, walk away (or go to the Nether), then run `/trigger gl_recall`. The ring flies to you.
 - [ ] Put the ring in a chest, close it and `/trigger gl_recall`. A new ring forms on you. Take the old one out of the
       chest and wear it: it crumbles ("This ring has gone dark").
-- [ ] With KubeJS:
-  - `/ring recall green` works, and so does saying *"ring, come to me"* in chat.
-  - Saying *"return to me, blue ring"* calls only the blue ring.
-  - If the ring is already on you, it says so.
+- [ ] **Without KubeJS** (or with it): say *"ring, come to me"* in chat: the ring flies back. *"Return to me, blue ring"*
+      calls only the blue ring. If the ring is already on you, it says so.
+- [ ] With KubeJS: `/ring recall green` works, and so does a looser wording like *"come back blue ring"*.
+      `logs/kubejs/server.log` shows *"[Lantern Corps] KubeJS script loaded"*. If `/ring` is unknown, copy the repo's
+      `kubejs/server_scripts` files into the game's `kubejs/server_scripts` and restart.
 - [ ] Put the ring in your ender chest and call it: it comes out at your feet (no new ring).
 - [ ] A member whose ring was revoked runs `/trigger gl_recall`: *"No ring has chosen you yet."*
 - [ ] Craft a second green ring while wearing yours and hold it: it drops at your feet ("you already bear a ring of
       this corps"). Your own ring keeps working. A friend can pick it up and bind it.
 
 ## 6c. Forging a ring by oath
-- [ ] Wear a charged green ring and type the Green Lantern oath in chat (KubeJS):
+- [ ] Wear a charged green ring and type the Green Lantern oath in chat (works without KubeJS, word for word):
   *In brightest day, in blackest night, no evil shall escape my sight. Let those who worship evil's might, beware my
   power... Green Lantern's light!*
   - A title says *"A new Green Lantern ring is forged"*, 500 charge is spent, and you get an unbound ring.
   - Nearby players see the oath and the announcement.
-- [ ] Hold the forged ring: it doesn't bind to you. Drop it (Q); a second player picks it up and holds it: it binds
-      to them. Your own ring keeps working.
+- [ ] Carry the forged ring: it doesn't bind to you. Drop it (Q); a second player picks it up: it binds to them. Your
+      own ring keeps working.
 - [ ] Forge again right away: it says to wait (5 minutes). `/lantern forgecooldown 0` removes the wait.
 - [ ] Without the ring on, the oath says *"no ring answers"*. Type only half the oath: nothing happens.
 - [ ] `/trigger gl_forge` (and `/ring forge green` with KubeJS) recites the oath for you and forges.
@@ -128,10 +133,20 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 - [ ] `/lantern emotion <you> will set 20000` in survival. Within a second a ring hovers in front of you and asks.
 - [ ] Click **[ACCEPT]**: you get a bound ring **and its Power Battery**. Try it with a full inventory: both drop at your
       feet.
-- [ ] Decline (or type *no* with KubeJS): the ring flies away. `/lantern cooldowns <you>` lets it come back.
+- [ ] Decline (or type *no* in chat; *yes* accepts): the ring flies away. `/lantern cooldowns <you>` lets it come back.
+
+## 7b. Emotional Spectrum menu and quests
+- [ ] Say *"emotions"* in chat (or `/trigger gl_emotions`, or the *Emotional Spectrum* button on the last page of a
+      ring's bar). The menu lists all eight emotions with a bar, a percentage, a level and the amount.
+- [ ] `/lantern emotion <you> will set 10000`: Willpower shows 50% and Lv 5.
+- [ ] Click *Willpower*: its page lists what raised it (taking damage, blocking, absorbing) with the points from each,
+      and its three quests. The first is active: *Stand Your Ground*, block 25 hearts with a shield.
+- [ ] Block damage with a shield and reopen the page: the progress goes up. Finish it: a title and chat message show the
+      reward (+1,500 Willpower), the quest gets a tick, and the next one starts.
+- [ ] Sneak for a while: Fear's page shows the sneaking points growing.
 
 ## 8. Leaders
-- [ ] `/lantern leader <you> green`. A member wearing a green ring (in a hand or a Curios slot) stands near you. Use
+- [ ] `/lantern leader <you> green`. A member wearing a green ring stands near you. Use
       **Revoke Ring** (last page): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; drop it
       and your recruit can pick it up and bind it. The revoked member can't wield it.
 - [ ] `/trigger gl_roster` lists members; `/trigger gl_revoke set <id>` revokes remotely.

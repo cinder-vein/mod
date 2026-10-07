@@ -17,6 +17,7 @@ from pathlib import Path
 
 import art
 import constructs
+import emotions
 import icons
 import spectrum
 import systems
@@ -514,6 +515,8 @@ def shared_kit(k):
                           "conditions": {"enabling": action(40)}},
           "Revoke Ring", k.glyph("revoke"), 17, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
     k.lang[f"ability.{NS}.revoke_ring.description"] = "Leaders only: take the ring from the nearest member of your corps."
+    k.bar("emotions", {**command(first=[f"function {NS}:emotion/menu"]), "conditions": {"enabling": action(20)}},
+          "Emotional Spectrum", k.glyph("emotional_sight", "minecraft:book"), 15)
     k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision 30 0 true"],
                                    last=["effect clear @s minecraft:night_vision"]),
                          "conditions": {"enabling": toggle()}}, "Ring Light", k.glyph("ring_light"), 3, extra=[NOT_DUAL])
@@ -1496,6 +1499,19 @@ def save(img, rel):
     img.save(path)
 
 
+def spirit_power():
+    """greenlantern:emotional_spectrum: a hidden power every player has (granted by the datapack). It answers chat
+    phrases without KubeJS, through Palladium's own chat conditions: calling your ring, speaking your oath, answering a
+    ring's offer, and opening the Emotional Spectrum menu."""
+    abilities = {}
+    for n, (phrase, function) in enumerate(sorted(systems.chat_phrases(CORPS).items())):
+        abilities[f"chat_{n}"] = {
+            **command(first=[f"function {NS}:{function}"]), "hidden": True, "hidden_in_bar": True,
+            "conditions": {"enabling": {"type": "palladium:chat_action", "chat_message": phrase, "cooldown": 20}}}
+    return {"name": {"translate": f"power.{NS}.emotional_spectrum"}, "icon": "minecraft:nether_star", "hidden": True,
+            "abilities": abilities}
+
+
 def spectrum_assets(lang):
     """The Spectrum Bond power, its merged suits and masks, and the KubeJS scripts for the Ctrl key."""
     power, power_lang = spectrum_power()
@@ -1542,6 +1558,9 @@ def spectrum_assets(lang):
 
     write_text(f"assets/{NS}/kubejs_scripts/lantern_keys.js", spectrum.KUBEJS_CLIENT)
     write_text(f"data/{NS}/kubejs_scripts/lantern_keys.js", spectrum.KUBEJS_SERVER.lstrip())
+    write(f"data/{NS}/palladium/powers/emotional_spectrum.json", spirit_power())
+    lang[f"power.{NS}.emotional_spectrum"] = "Emotional Spectrum"
+
 
 
 GENERATED_DIRS = [
@@ -1559,10 +1578,10 @@ def main():
 
     lang = {
         f"itemGroup.{NS}.lantern_corps": "Lantern Corps",
-        f"tooltip.{NS}.ring.hold": "Hold in either hand, or wear it in a Curios ring slot.",
+        f"tooltip.{NS}.ring.hold": "Wear it in a Curios ring slot. It binds to whoever carries it first.",
         f"tooltip.{NS}.ring.tree": "Open the powers menu to upgrade it with XP.",
-        f"tooltip.{NS}.battery.1": "Hold it in your main hand (ring in your other hand",
-        f"tooltip.{NS}.battery.2": "or a ring slot) and press Recharge to fully charge it.",
+        f"tooltip.{NS}.battery.1": "Right-click with it in your main hand, or right-click it",
+        f"tooltip.{NS}.battery.2": "once placed, to fully charge the ring you wear.",
     }
     items, tab = [], []
 
@@ -1631,9 +1650,9 @@ def main():
         save(art.menu_background(c, rgb), f"assets/{NS}/textures/gui/menu/{c}.png")
         save(art.construct_texture(c, rgb), f"assets/{NS}/textures/item/construct/{c}.png")
         lang.update(k.lang)
-        for slot in ("mainhand", "offhand", "curios:ring"):
-            write(f"data/{NS}/palladium/item_powers/{ring}_{slot.replace(':', '_')}.json",
-                  {"slot": slot, "item": f"{NS}:{ring}", "power": [f"{NS}:{c}_lantern", f"{NS}:lantern_base"]})
+        # a ring only works worn in a Curios ring slot
+        write(f"data/{NS}/palladium/item_powers/{ring}_curios_ring.json",
+              {"slot": "curios:ring", "item": f"{NS}:{ring}", "power": [f"{NS}:{c}_lantern", f"{NS}:lantern_base"]})
 
         # Suits and masks: one accessory slot each in the accessories menu, shown while you
         # wear this corps' ring. Both render on the two-layer suit model.
@@ -1875,6 +1894,13 @@ def main():
     g_functions["second"] += b_second
     write(f"data/{NS}/tags/entity_types/pets.json", {"replace": False, "values": [
         f"minecraft:{m}" for m in ("wolf", "cat", "parrot", "horse", "donkey", "mule", "llama", "allay", "fox", "axolotl")]})
+    e_load, e_tick, e_second, e_functions = emotions.generate()
+    g_load += e_load
+    g_tick += e_tick
+    g_functions["second"] += e_second
+    g_functions.update(e_functions)
+    # every player carries the hidden Emotional Spectrum power (chat phrases without KubeJS)
+    g_functions["second"].append(f"superpower add {NS}:emotional_spectrum @a")
     d_load, d_tick, d_second, d_functions = spectrum.generate(CORPS, fusion_pairs())
     g_load += d_load
     g_tick += d_tick
@@ -1900,6 +1926,14 @@ def main():
     write("data/minecraft/tags/functions/load.json", {"values": [f"{NS}:load"]})
     save(art.rage_overlay(), f"assets/{NS}/textures/gui/rage_overlay.png")
 
+    # The KubeJS scripts again, to copy into the game's kubejs folder by hand if Palladium doesn't load them from the
+    # jar (/ring or /lantern "unknown command" with KubeJS installed).
+    shutil.rmtree(ROOT / "kubejs", ignore_errors=True)
+    for side, src in (("server_scripts", "data"), ("client_scripts", "assets")):
+        for script in sorted((SRC / src / NS / "kubejs_scripts").glob("*.js")):
+            dest = ROOT / "kubejs" / side / script.name
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(script.read_text(encoding="utf-8"), encoding="utf-8")
     for name, (glyph, rgb, accent) in sorted(ICONS.items()):
         save(icons.render(glyph, rgb, accent), f"assets/{NS}/textures/gui/ability/{name}")
     write(f"assets/{NS}/lang/en_us.json", lang)

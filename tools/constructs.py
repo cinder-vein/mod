@@ -267,27 +267,23 @@ class Gen:
     # --- held items ---------------------------------------------------------------------------
 
     def equip(self, corps, item, hand, extra=""):
-        """Form the item in the main hand or offhand: the hand's current item moves to a free
-        inventory slot; a ring held there is never moved (that would reset its power)."""
+        """Form the item in the main hand or offhand: the hand's current item moves to a free inventory slot
+        (room_check made sure there is one; if not, the construct goes to the inventory)."""
         full = self.item(corps, item, extra)
         slot = "weapon.mainhand" if hand == "main" else "weapon.offhand"
         return [
             f"function {NS}:construct/free_{hand}",
             f"execute if score #free gl_tmp matches 1 run item replace entity @s {slot} with {full}",
             f"execute if score #free gl_tmp matches 0 run give @s {full}",
-            f"execute if score #free gl_tmp matches 0 run "
-            + tellraw("@s", [{"text": "Your ring is in that hand, so the construct formed in your inventory. Wear the "
-                                      "ring in a Curios ring slot (or the other hand) to wield constructs.",
-                              "color": "gray", "italic": True}]),
         ]
 
     def hand_functions(self):
-        for hand, slot, path, pred in (("main", "weapon.mainhand", "SelectedItem", "ring_mainhand"),
-                                       ("off", "weapon.offhand", "Inventory[{Slot:-106b}]", "ring_offhand")):
+        for hand, slot, path in (("main", "weapon.mainhand", "SelectedItem"),
+                                 ("off", "weapon.offhand", "Inventory[{Slot:-106b}]")):
             self.fn[f"construct/free_{hand}"] = [
                 "scoreboard players set #free gl_tmp 1",
                 f"execute if data entity @s {path} run scoreboard players set #free gl_tmp 0",
-                f"execute if score #free gl_tmp matches 0 unless predicate {NS}:{pred} run function {NS}:construct/stash_{hand}",
+                f"execute if score #free gl_tmp matches 0 run function {NS}:construct/stash_{hand}",
             ]
             stash = [f"data modify storage {STORAGE} inv set from entity @s Inventory"]
             for i in list(range(9, 36)) + list(range(0, 9)):
@@ -734,13 +730,8 @@ class Gen:
             "tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_train_new",
         ]
         self.second += [
-            # constructs only exist through a ring: they dissolve when you have none on you (worn, or
-            # carried: a ring held in the main hand stops powering you while you hold the construct)
-            "tag @a remove gl_carry",
-            "tag @a[tag=gl_ring] add gl_carry",
-            f"execute as @a[tag=!gl_carry] store result score @s gl_tmp run clear @s #{NS}:lantern_rings 0",
-            "tag @a[tag=!gl_carry,scores={gl_tmp=1..}] add gl_carry",
-            f"clear @a[tag=!gl_carry] #{NS}:constructs",
+            # constructs only exist through a ring: they dissolve when you wear none
+            f"clear @a[tag=!gl_ring] #{NS}:constructs",
             f"kill @e[type=minecraft:item,nbt={{Item:{{tag:{{gl_construct:1b}}}}}}]",
             *[f"tag @a[tag=gl_scuba_{c},tag=!gl_{c}] remove gl_scuba_{c}" for c in corps],
         ]
