@@ -4,3 +4,5 @@ function greenlantern:ring/curios_strip
 tag @s remove gl_member_yellow
 tag @s remove gl_leader_yellow
 scoreboard players set @s gl_ser_yellow -1
+tag @s remove gl_legacy_yellow
+function greenlantern:ring/save_serials

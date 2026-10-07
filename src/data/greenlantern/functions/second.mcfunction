@@ -22,6 +22,7 @@ scoreboard players enable @a gl_forge
 scoreboard players remove @a[scores={gl_fcd=1..}] gl_fcd 1
 scoreboard players remove @a[scores={gl_reser=1..}] gl_reser 1
 execute as @a[tag=gl_hasid] run function greenlantern:id/verify
+execute as @a[tag=gl_hasid,tag=!gl_sersaved] run function greenlantern:ring/save_serials
 tag @a[tag=gl_reser,scores={gl_reser=..0}] remove gl_reser
 scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1
 function greenlantern:charge/save

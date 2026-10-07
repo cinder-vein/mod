@@ -15,5 +15,15 @@ execute if entity @s[tag=gl_b12] run scoreboard players add @s gl_id 4096
 execute if entity @s[tag=gl_b13] run scoreboard players add @s gl_id 8192
 execute if entity @s[tag=gl_b14] run scoreboard players add @s gl_id 16384
 execute if entity @s[tag=gl_b15] run scoreboard players add @s gl_id 32768
+scoreboard players reset @s gl_ser_green
+scoreboard players reset @s gl_ser_yellow
+scoreboard players reset @s gl_ser_red
+scoreboard players reset @s gl_ser_orange
+scoreboard players reset @s gl_ser_blue
+scoreboard players reset @s gl_ser_violet
+scoreboard players reset @s gl_ser_indigo
+scoreboard players reset @s gl_ser_white
+scoreboard players reset @s gl_ser_black
+function greenlantern:ring/load_serials
 tag @s add gl_reser
 scoreboard players set @s gl_reser 60

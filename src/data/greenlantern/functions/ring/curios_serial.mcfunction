@@ -35,3 +35,4 @@ execute if data storage greenlantern:binding cur{id:"greenlantern:violet_lantern
 execute if data storage greenlantern:binding cur{id:"greenlantern:indigo_lantern_ring"} unless score #s gl_tmp = @s gl_ser_indigo run function greenlantern:ring/curios_dark
 execute if data storage greenlantern:binding cur{id:"greenlantern:white_lantern_ring"} unless score #s gl_tmp = @s gl_ser_white run function greenlantern:ring/curios_dark
 execute if data storage greenlantern:binding cur{id:"greenlantern:black_lantern_ring"} unless score #s gl_tmp = @s gl_ser_black run function greenlantern:ring/curios_dark
+execute if entity @s[tag=gl_reser] run function greenlantern:ring/save_serials
