@@ -1452,7 +1452,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_sword"
       },
-      "icon": "greenlantern:textures/gui/ability/sword_green.png",
+      "icon": "greenlantern:construct_sword",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1480,7 +1480,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_sword_shield"
       },
-      "icon": "greenlantern:textures/gui/ability/sword_shield_green.png",
+      "icon": "greenlantern:construct_shield",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1508,7 +1508,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_mace"
       },
-      "icon": "greenlantern:textures/gui/ability/mace_green.png",
+      "icon": "greenlantern:construct_mace",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1536,7 +1536,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_axe"
       },
-      "icon": "greenlantern:textures/gui/ability/axe_green.png",
+      "icon": "greenlantern:construct_axe",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1564,7 +1564,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_fist"
       },
-      "icon": "greenlantern:textures/gui/ability/fist_green.png",
+      "icon": "greenlantern:construct_fist",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1592,7 +1592,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_slam"
       },
-      "icon": "greenlantern:textures/gui/ability/hammer_green.png",
+      "icon": "greenlantern:construct_hammer",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1620,7 +1620,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_gatling"
       },
-      "icon": "greenlantern:textures/gui/ability/gatling_green.png",
+      "icon": "greenlantern:construct_gatling",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1648,7 +1648,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_missiles"
       },
-      "icon": "greenlantern:textures/gui/ability/missiles_green.png",
+      "icon": "minecraft:firework_rocket",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1676,7 +1676,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_cannon"
       },
-      "icon": "greenlantern:textures/gui/ability/cannon_green.png",
+      "icon": "greenlantern:construct_ball",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1704,7 +1704,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_shield"
       },
-      "icon": "greenlantern:textures/gui/ability/shield_green.png",
+      "icon": "greenlantern:construct_shield",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1732,7 +1732,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_barrier"
       },
-      "icon": "greenlantern:textures/gui/ability/barrier_green.png",
+      "icon": "greenlantern:construct_wall",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1760,7 +1760,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_cage"
       },
-      "icon": "greenlantern:textures/gui/ability/cage_green.png",
+      "icon": "greenlantern:construct_cage",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1788,7 +1788,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_dome"
       },
-      "icon": "greenlantern:textures/gui/ability/dome_green.png",
+      "icon": "minecraft:glass",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1816,7 +1816,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_blocks"
       },
-      "icon": "greenlantern:textures/gui/ability/blocks_green.png",
+      "icon": "minecraft:lime_stained_glass",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1844,7 +1844,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_scuba"
       },
-      "icon": "greenlantern:textures/gui/ability/scuba_green.png",
+      "icon": "minecraft:turtle_helmet",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1872,7 +1872,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_drill"
       },
-      "icon": "greenlantern:textures/gui/ability/drill_green.png",
+      "icon": "greenlantern:construct_drill",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1900,7 +1900,7 @@
       "title": {
         "translate": "ability.greenlantern.cx_bridge"
       },
-      "icon": "greenlantern:textures/gui/ability/bridge_green.png",
+      "icon": "minecraft:scaffolding",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -1928,7 +1928,7 @@
       "title": {
         "translate": "ability.greenlantern.green.cx_signature"
       },
-      "icon": "greenlantern:textures/gui/ability/train_green.png",
+      "icon": "minecraft:minecart",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true,
@@ -2613,7 +2613,7 @@
       "title": {
         "translate": "ability.greenlantern.green.emerald_nova"
       },
-      "icon": "greenlantern:textures/gui/ability/emerald_nova_green.png",
+      "icon": "minecraft:emerald_block",
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,

@@ -65,8 +65,6 @@ def _glyph_modules():
     sys.path.insert(0, str(pkg.parent))
     glyphs = {}
     for info in pkgutil.iter_modules([str(pkg)]):
-        if info.name.startswith("example"):  # style reference only
-            continue
         mod = importlib.import_module(f"icon_glyphs.{info.name}")
         for name, rows in getattr(mod, "GLYPHS", {}).items():
             if name in glyphs:

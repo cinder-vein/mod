@@ -12,7 +12,6 @@ re-run this script. Art lives in art.py.
 """
 import hashlib
 import json
-import os
 import shutil
 from pathlib import Path
 
@@ -146,12 +145,12 @@ SWITCHING = OR(has_tag("gl_ctrl"), AND({"type": "palladium:crouching"}, NOT(has_
 ICONS = {}  # texture file under assets/greenlantern/textures/gui/ability/ -> (glyph, rgb, accent rgb)
 
 
-def glyph_icon(glyph, key, rgb, accent=None):
+def glyph_icon(glyph, key, rgb, accent=None, fallback=None):
+    """The ability icon for `glyph` in these colors, or `fallback` (an item id) while that glyph isn't drawn yet."""
     if glyph not in icons.GLYPHS:
-        if not os.environ.get("GL_ICON_PLACEHOLDER"):  # set it to preview a build before every glyph is drawn
-            raise KeyError(f"no glyph '{glyph}' in tools/icon_glyphs")
-        ICONS[f"{glyph}_{key}.png"] = (sorted(icons.GLYPHS)[0], rgb, accent)
-        return f"{NS}:textures/gui/ability/{glyph}_{key}.png"
+        if fallback:
+            return fallback
+        raise KeyError(f"no glyph '{glyph}' in tools/icon_glyphs")
     ICONS[f"{glyph}_{key}.png"] = (glyph, rgb, accent)
     return f"{NS}:textures/gui/ability/{glyph}_{key}.png"
 
@@ -239,8 +238,8 @@ class Kit:
         self.attr_count = 0
         self.shapes = {**{s: s for s in SHAPES}, **data.get("shapes", {})}
 
-    def glyph(self, glyph):
-        return glyph_icon(glyph, self.c, self.rgb, self.accent)
+    def glyph(self, glyph, fallback=None):
+        return glyph_icon(glyph, self.c, self.rgb, self.accent, fallback)
 
     def tr(self, key, english, shared):
         lang_key = f"ability.{NS}.{key}" if shared else f"ability.{NS}.{self.c}.{key}"
@@ -302,7 +301,7 @@ class Kit:
             ability["conditions"] = {"unlocking": one([unlocked(f"skill_{key}"), *extra])}
             self.hidden(key, ability)
         else:
-            self.bar(key, ability, name, self.glyph(key), index + 5, node=f"skill_{key}", cost=cost, extra=extra,
+            self.bar(key, ability, name, self.glyph(key, icon), index + 5, node=f"skill_{key}", cost=cost, extra=extra,
                      shared=False)
 
     def pulse(self, key, source, every, commands):
@@ -313,7 +312,7 @@ class Kit:
         self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (self.SPECIAL_COLUMN, 2 + len(self.specials)),
                   [self.specials[-1]], 30, shared=False)
         self.bar(key, {**command(first=commands), "conditions": {"enabling": action(cooldown)}},
-                 name, self.glyph(key), 14, node=f"skill_{key}", cost=cost, shared=False)
+                 name, self.glyph(key, icon), 14, node=f"skill_{key}", cost=cost, shared=False)
 
 
 # --- the kit every corps shares -----------------------------------------------------
@@ -585,7 +584,7 @@ def construct_abilities(k):
         shared = con.key != "signature"
         k.bar(f"cx_{con.key}", {**command(first=[f"function {NS}:construct/{c}/{con.key}"]),
                                 "conditions": {"enabling": {"type": "palladium:ability_wheel", "cooldown": 5}}},
-              con.name, k.glyph(construct_glyph(c, con.key)), None, node=f"skill_{con.node}", shared=shared)
+              con.name, k.glyph(construct_glyph(c, con.key), con.icon), None, node=f"skill_{con.node}", shared=shared)
         k.abilities[f"cx_{con.key}"]["hidden_in_bar"] = True
         del k.abilities[f"cx_{con.key}"]["list_index"]
         k.abilities[f"cx_{con.key}"]["description"] = k.tr(
@@ -1284,18 +1283,18 @@ def spectrum_power():
     k.bar("switch_mode", {**command(first=[f"function {NS}:ring/mode"]), "conditions": {"enabling": action(10)}},
           "Switch Mode", k.glyph("mode"), 0, extra=[SWITCHING])
 
-    catalog = [(con.key, con.name, con.node, construct_glyph("green", con.key)) for con in constructs.CATALOG]
-    catalog += [("sig_1", "Signature Construct", "signature", "emerald_nova"),
-                ("sig_2", "Second Signature Construct", "signature", "fusion")]
+    catalog = [(con.key, con.name, con.node, construct_glyph("green", con.key), con.icon) for con in constructs.CATALOG]
+    catalog += [("sig_1", "Signature Construct", "signature", "emerald_nova", "minecraft:nether_star"),
+                ("sig_2", "Second Signature Construct", "signature", "fusion", "minecraft:end_crystal")]
     k.lang[f"ability.{NS}.spectrum.cx_sig_1.description"] = (
         "Your first ring's signature construct (or the second's, if only it has one unlocked).")
     k.lang[f"ability.{NS}.spectrum.cx_sig_2.description"] = (
         "Your second ring's signature construct. Needs Twin Signatures.")
-    for key, name, node, glyph in catalog:
+    for key, name, node, glyph, item in catalog:
         extra = [any_ring_unlocked(f"skill_{node}")] + ([unlocked("skill_twin_signatures")] if key == "sig_2" else [])
         k.bar(f"cx_{key}", {**command(first=[f"function {NS}:dual/cx/{key}"]),
                             "conditions": {"enabling": {"type": "palladium:ability_wheel", "cooldown": 5}}},
-              name, k.glyph(glyph), None, extra=extra, shared=not key.startswith("sig"))
+              name, k.glyph(glyph, item), None, extra=extra, shared=not key.startswith("sig"))
         k.abilities[f"cx_{key}"]["hidden_in_bar"] = True
         del k.abilities[f"cx_{key}"]["list_index"]
         k.abilities[f"cx_{key}"]["description"] = {  # catalog constructs share the rings' names and descriptions
