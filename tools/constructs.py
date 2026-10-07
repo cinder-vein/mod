@@ -321,7 +321,7 @@ class Gen:
                 f"scoreboard players set @e[type=minecraft:marker,tag=gl_hl_new] gl_life {life}",
                 "tag @e[type=minecraft:marker,tag=gl_hl_new] remove gl_hl_new",
                 # structures it may overlap last as long as it does, so an expiring one never clears it early
-                f"scoreboard players set @e[type=minecraft:marker,tag=gl_hl,distance=..24,scores={{gl_life=..{life}}}] "
+                f"scoreboard players set @e[type=minecraft:marker,tag=gl_hl,distance=..34,scores={{gl_life=..{life}}}] "
                 f"gl_life {life}"]
 
     # --- the effect of each construct ----------------------------------------------------------

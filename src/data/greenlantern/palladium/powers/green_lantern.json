@@ -172,11 +172,13 @@
       "particle_type": "minecraft:dust",
       "options": "0.18 0.78 0.27 0.8",
       "conditions": {
-        "enabling": {
-          "type": "palladium:interval",
-          "active_ticks": 1,
-          "disabled_ticks": 3
-        }
+        "enabling": [
+          {
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 3
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true

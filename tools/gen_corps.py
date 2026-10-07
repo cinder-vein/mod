@@ -264,6 +264,8 @@ class Kit:
 
 def shared_kit(k):
     c, rgb, data = k.c, k.rgb, k.data
+    # rings of corps listed before this one: with one of those also worn, this ring is on the left hand
+    earlier = [{"type": "palladium:has_power", "power": f"{NS}:{o}_lantern"} for o in list(CORPS)[:list(CORPS).index(c)]]
     obj = f"glmax_{c}"
 
     # Suit Up: the root of the skill tree and the bottom slot of the first bar page.
@@ -299,7 +301,6 @@ def shared_kit(k):
     })
     # The ring is always visible on your hand while you wear it: the first ring (in CORPS order) on
     # the right hand, a second ring on the left.
-    earlier = [{"type": "palladium:has_power", "power": f"{NS}:{o}_lantern"} for o in list(CORPS)[:list(CORPS).index(c)]]
     for part in ("band", "gem"):
         right = {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_{part}"}
         if earlier:
@@ -307,10 +308,14 @@ def shared_kit(k):
             k.hidden(f"ring_{part}_left", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_{part}_left",
                                            "conditions": {"enabling": {"type": "palladium:or", "conditions": earlier}}})
         k.hidden(f"ring_{part}", right)
-    k.hidden("ring_aura", {
-        "type": "palladium:particles", "emitter": [f"{NS}:ring_hand"], "particle_type": "minecraft:dust",
-        "options": dust(rgb, 0.8), "conditions": {"enabling": interval(4)},
-    })
+    for side, cond in (("", {"type": "palladium:not", "conditions": earlier} if earlier else None),
+                       ("_left", {"type": "palladium:or", "conditions": earlier} if earlier else False)):
+        if cond is False:
+            continue  # the first corps' ring is always on the right hand
+        k.hidden(f"ring_aura{side}", {
+            "type": "palladium:particles", "emitter": [f"{NS}:ring_hand{side}"], "particle_type": "minecraft:dust",
+            "options": dust(rgb, 0.8), "conditions": {"enabling": [interval(4), *([cond] if cond else [])]},
+        })
 
     # A charged ring alone makes you far tougher: 40 hearts and netherite-level armor.
     # Hearts, armor, protection and the shared skill bonuses live in the hidden lantern_base power
@@ -1386,6 +1391,9 @@ def main():
     write(f"assets/{NS}/palladium/particle_emitters/ring_hand.json", {
         "body_part": "right_arm", "amount": 1, "offset": [-1, -10, 0], "offset_random": [1, 1, 1],
         "motion": [0, 0.5, 0], "motion_random": [0.3, 0.3, 0.3], "visible_in_first_person": False})
+    write(f"assets/{NS}/palladium/particle_emitters/ring_hand_left.json", {
+        "body_part": "left_arm", "amount": 1, "offset": [1, -10, 0], "offset_random": [1, 1, 1],
+        "motion": [0, 0.5, 0], "motion_random": [0.3, 0.3, 0.3], "visible_in_first_person": False})
     write(f"assets/{NS}/palladium/particle_emitters/flight_aura.json", {
         "body_part": "chest", "amount": 2, "offset": [0, -6, 0], "offset_random": [6, 12, 6],
         "motion_random": [0.2, 0.2, 0.2], "visible_in_first_person": False})
@@ -1402,6 +1410,7 @@ def main():
             "render_type": "minecraft:translucent",
             "textures": {"0": f"{NS}:item/construct/green", "particle": f"{NS}:item/construct/green"},
             "elements": elements,
+            **({"display": art.SHAPE_DISPLAY[shape]} if shape in art.SHAPE_DISPLAY else {}),
         })
         write(f"assets/{NS}/models/item/{item}.json", {
             "parent": f"{NS}:item/{item}_base",

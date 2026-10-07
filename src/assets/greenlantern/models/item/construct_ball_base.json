@@ -71,6 +71,11 @@
             16
           ]
         }
+      },
+      "shade": false,
+      "forge_data": {
+        "block_light": 15,
+        "sky_light": 15
       }
     },
     {
@@ -139,6 +144,11 @@
             16
           ]
         }
+      },
+      "shade": false,
+      "forge_data": {
+        "block_light": 15,
+        "sky_light": 15
       }
     },
     {
@@ -207,6 +217,11 @@
             16
           ]
         }
+      },
+      "shade": false,
+      "forge_data": {
+        "block_light": 15,
+        "sky_light": 15
       }
     },
     {
@@ -275,7 +290,31 @@
             16
           ]
         }
+      },
+      "shade": false,
+      "forge_data": {
+        "block_light": 15,
+        "sky_light": 15
       }
     }
-  ]
+  ],
+  "display": {
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        8,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  }
 }

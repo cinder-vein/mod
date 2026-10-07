@@ -696,8 +696,9 @@ def _box(frm, to):
 
 
 def construct_shapes():
-    """Shape name -> list of elements in a 16x16x16 box, centered on (8, 8, 8). Shapes face +z
-    (the display entity's facing direction)."""
+    """Shape name -> list of elements in a 16x16x16 box, centered on (8, 8, 8). Shapes face -z:
+    an item_display turns its item half a turn, so a model's -z side faces the entity's facing
+    direction (the fist's knuckles sit at low z for that reason)."""
     fist = [
         _box([3, 3, 5], [13, 11, 13]),     # back of the hand
         _box([3, 11, 4], [5.4, 14, 11]),   # four curled fingers
@@ -744,6 +745,8 @@ def construct_shapes():
             _box([13, 4, 6.5], [15.5, 9, 9.5]), _box([14.5, 9, 6.5], [16, 11, 9.5])]   # thumb
     for x0, x1 in ((3, 5.2), (5.6, 7.8), (8.2, 10.4), (10.8, 13)):  # grasping fingers
         hand += [_box([x0, 10, 6.5], [x1, 15, 9.5]), _box([x0, 15, 9.5], [x1, 16.5, 12.5])]
+    # the train (and the grasping hand above) are built facing +z, then mirrored to face -z; the
+    # train is lifted 8 units so its wheels sit at the display's feet
     train = [_box([2, 0, -4], [14, 2, 20]),                       # chassis
              _box([3, 2, -4], [13, 12, 4]), _box([2, 12, -5], [14, 13, 5]),    # cab and roof
              _box([4, 2, 4], [12, 10, 18]),                      # boiler
@@ -752,10 +755,33 @@ def construct_shapes():
              _box([6, 5, 18], [10, 8, 18.5])]                    # headlamp
     for z in (-2, 6, 14):
         train += [_box([1, -2, z], [2, 2, z + 4]), _box([14, -2, z], [15, 2, z + 4])]  # wheels
+    train = [_moved(_mirrored_z(e), dy=8) for e in train]
+    hand = [_mirrored_z(e) for e in hand]
     ball = [_box([3, 3, 3], [13, 13, 13]), _box([5, 1, 5], [11, 15, 11]),
             _box([1, 5, 5], [15, 11, 11]), _box([5, 5, 1], [11, 11, 15])]
-    return {"fist": fist, "hammer": hammer, "cage": cage, "wall": wall, "claw": claw, "crystal": crystal,
-            "spike": spike, "hand": hand, "train": train, "ball": ball}
+    shapes = {"fist": fist, "hammer": hammer, "cage": cage, "wall": wall, "claw": claw, "crystal": crystal,
+              "spike": spike, "hand": hand, "train": train, "ball": ball}
+    for elements in shapes.values():  # hard light glows wherever it is drawn (displays, projectiles)
+        for e in elements:
+            e["shade"] = False
+            e["forge_data"] = {"block_light": 15, "sky_light": 15}
+    return shapes
+
+
+def _mirrored_z(e):
+    e = dict(e)
+    e["from"], e["to"] = [e["from"][0], e["from"][1], 16 - e["to"][2]], [e["to"][0], e["to"][1], 16 - e["from"][2]]
+    return e
+
+
+def _moved(e, dy):
+    e = dict(e)
+    e["from"], e["to"] = [e["from"][0], e["from"][1] + dy, e["from"][2]], [e["to"][0], e["to"][1] + dy, e["to"][2]]
+    return e
+
+
+# the cannonball is drawn as a projectile's GROUND item, centered on its feet: lift it into its hitbox
+SHAPE_DISPLAY = {"ball": {"ground": {"rotation": [0, 0, 0], "translation": [0, 8, 0], "scale": [1, 1, 1]}}}
 
 
 def _glow_box(frm, to, angle=-45):
@@ -827,7 +853,9 @@ def held_construct_models():
     return {"construct_sword": (sword, HANDHELD_DISPLAY), "construct_mace": (mace, HANDHELD_DISPLAY),
             "construct_axe": (axe, HANDHELD_DISPLAY), "construct_drill": (drill, HANDHELD_DISPLAY),
             "construct_gatling": (gatling, HANDHELD_DISPLAY), "construct_claws": (claws, HANDHELD_DISPLAY),
-            "construct_staff": (staff, HANDHELD_DISPLAY), "construct_shield": (shield, SHIELD_DISPLAY)}
+            "construct_staff": (staff, {**HANDHELD_DISPLAY, "gui": {"rotation": [0, 0, 0], "translation": [0, 0, 0],
+                                                                  "scale": [0.6, 0.6, 0.6]}}),
+            "construct_shield": (shield, SHIELD_DISPLAY)}
 
 
 def construct_block_texture(corps, rgb, hardlight=False):

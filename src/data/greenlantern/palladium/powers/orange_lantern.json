@@ -260,11 +260,66 @@
       "particle_type": "minecraft:dust",
       "options": "0.98 0.51 0.08 0.8",
       "conditions": {
-        "enabling": {
-          "type": "palladium:interval",
-          "active_ticks": 1,
-          "disabled_ticks": 3
-        }
+        "enabling": [
+          {
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 3
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:green_lantern"
+              },
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:yellow_lantern"
+              },
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:red_lantern"
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "ring_aura_left": {
+      "type": "palladium:particles",
+      "emitter": [
+        "greenlantern:ring_hand_left"
+      ],
+      "particle_type": "minecraft:dust",
+      "options": "0.98 0.51 0.08 0.8",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 3
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:green_lantern"
+              },
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:yellow_lantern"
+              },
+              {
+                "type": "palladium:has_power",
+                "power": "greenlantern:red_lantern"
+              }
+            ]
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
