@@ -74,6 +74,16 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 - [ ] `/lantern unbind <you>` while holding your ring: it stays unbound while you hold it, and binds to the next player
       who holds it.
 
+## 6b. Calling your ring
+- [ ] Drop your bound ring, walk away (or go to the Nether), then run `/trigger gl_recall`. The ring flies to you.
+- [ ] Put the ring in a chest, close it and `/trigger gl_recall`. A new ring forms on you. Take the old one out of the
+      chest and wear it: it crumbles ("This ring has gone dark").
+- [ ] With KubeJS:
+  - `/ring recall green` works, and so does saying *"ring, come to me"* in chat.
+  - Saying *"return to me, blue ring"* calls only the blue ring.
+  - If the ring is already on you, it says so.
+- [ ] A member whose ring was revoked runs `/trigger gl_recall`: *"No ring has chosen you yet."*
+
 ## 7. Ring offers
 - [ ] `/lantern emotion <you> will set 20000` in survival. Within a second a ring hovers in front of you and asks.
 - [ ] Click **[ACCEPT]**: you get a bound ring **and its Power Battery**. Try it with a full inventory: both drop at your

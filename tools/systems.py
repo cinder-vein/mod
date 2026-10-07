@@ -147,6 +147,10 @@ def generate(corps_table, write, write_text):
         write(f"data/{NS}/predicates/unbound_ring_{hand}.json", [held_pred(hand), inverted(bound)])
         write(f"data/{NS}/predicates/bound_ring_{hand}.json", bound)
         write(f"data/{NS}/predicates/ring_{hand}.json", held_pred(hand))
+        for c in corps:
+            write(f"data/{NS}/predicates/held/{c}_{hand}.json", {
+                "condition": "minecraft:entity_properties", "entity": "this",
+                "predicate": {"equipment": {hand: {"items": [ring(c)]}}}})
         write(f"data/{NS}/predicates/giver_ring_{hand}.json", [held_pred(hand, "{gl_gv:1b}"), inverted(bound)])
         # bound before 9.0: no owner bits yet
         write(f"data/{NS}/predicates/legacy_ring_{hand}.json", [
@@ -158,7 +162,8 @@ def generate(corps_table, write, write_text):
         {"function": "minecraft:set_nbt", "tag": "{gl_bound:1b,gl_gv:0b,gl_giver:0}"},
         {"function": "minecraft:copy_nbt", "source": {"type": "minecraft:storage", "source": STORAGE},
          "ops": [{"source": "owner", "target": "gl_owner", "op": "replace"},
-                 {"source": "bits", "target": "gl_ob", "op": "replace"}]},
+                 {"source": "bits", "target": "gl_ob", "op": "replace"},
+                 {"source": "serial", "target": "gl_serial", "op": "replace"}]},
         {"function": "minecraft:copy_nbt", "source": "this",
          "ops": [{"source": "UUID", "target": "gl_owner_uuid", "op": "replace"}]},
         {"function": "minecraft:set_lore", "entity": "this", "replace": True, "lore": [
@@ -188,6 +193,14 @@ def generate(corps_table, write, write_text):
           for i in range(ID_BITS)],
     ]
     fn["ring/store_giver"] = [f"execute store result storage {STORAGE} giver int 1 run scoreboard players get @s gl_id"]
+    # Every binding gets a new serial number, and each player remembers the serial of their one
+    # valid ring per corps (gl_ser_<corps>; 0 = bound before 9.0, -1 = revoked). A ring whose serial
+    # isn't its bearer's current one has gone dark: it was replaced by a recall (see below).
+    load += ["execute unless score #serial gl_cfg matches 1.. run scoreboard players set #serial gl_cfg 0",
+             *[f"scoreboard objectives add gl_ser_{c} dummy" for c in corps]]
+    fn["ring/new_serial"] = ["scoreboard players add #serial gl_cfg 1",
+                             f"execute store result storage {STORAGE} serial int 1 run scoreboard players get #serial gl_cfg"]
+    set_serial = lambda c: f"scoreboard players operation @s gl_ser_{c} = #serial gl_cfg"  # noqa: E731
 
     def give_ring(table):
         """Gives a ring from a loot table; drops it at your feet when your inventory is full."""
@@ -223,11 +236,15 @@ def generate(corps_table, write, write_text):
         ]
         fn[f"ring/bind_{hand}"] = [
             f"function {NS}:ring/rebind_{hand}",
-            *[f"execute if data entity @s {held_ring(c)} run tag @s add gl_member_{c}" for c in corps],
+            *[f"execute if predicate {NS}:held/{c}_{hand} run tag @s add gl_member_{c}" for c in corps],
             tellraw("@s", [{"text": "The ring is now bound to you.", "color": "gray", "italic": True}]),
             "playsound minecraft:block.beacon.power_select player @s ~ ~ ~ 1 1.6",
         ]
-        fn[f"ring/rebind_{hand}"] = [f"function {NS}:ring/store_owner", f"item modify entity @s {slot} {NS}:bind"]
+        fn[f"ring/rebind_{hand}"] = [
+            f"function {NS}:ring/store_owner", f"function {NS}:ring/new_serial",
+            f"item modify entity @s {slot} {NS}:bind",
+            *[f"execute if predicate {NS}:held/{c}_{hand} run {set_serial(c)}" for c in corps],
+        ]
         check = [f"execute if predicate {NS}:legacy_ring_{hand} run function {NS}:ring/legacy_{hand}"]
         for i in range(ID_BITS):
             check += [f"execute if entity @s[tag=gl_b{i}] if predicate {NS}:ob/{hand}_{i}_0 run function {NS}:ring/eject_{hand}",
@@ -283,6 +300,37 @@ def generate(corps_table, write, write_text):
     fn["ring/curios_bound"] = [
         f"execute store result score #owner gl_tmp run data get storage {STORAGE} cur.tag.gl_owner",
         f"execute unless score #owner gl_tmp = @s gl_id run function {NS}:ring/curios_eject",
+        f"execute if score #owner gl_tmp = @s gl_id run function {NS}:ring/curios_serial",
+    ]
+    fn["ring/curios_serial"] = [
+        f"execute store result score #s gl_tmp run data get storage {STORAGE} cur.tag.gl_serial",
+        *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+        *[f'execute if data storage {STORAGE} cur{{id:"{ring(c)}"}} unless score #s gl_tmp = @s gl_ser_{c} run '
+          f"function {NS}:ring/curios_dark" for c in corps],
+    ]
+    fn["ring/curios_dark"] = [f"function #{NS}:curios_clear_slot", f"function {NS}:ring/dark_message"]
+    fn["ring/dark_message"] = [
+        "particle minecraft:smoke ~ ~1.2 ~ 0.2 0.3 0.2 0.02 30 force",
+        "playsound minecraft:block.beacon.deactivate player @a[distance=..16] ~ ~ ~ 1 0.6",
+        tellraw("@s", [{"text": "This ring has gone dark: you called a new one to you. It crumbles to dust.",
+                        "color": "gray", "italic": True}]),
+    ]
+    # rings in your hands: checked twice a second (the owner check above runs every tick)
+    for hand, slot, path in (("mainhand", "weapon.mainhand", "SelectedItem"),
+                             ("offhand", "weapon.offhand", "Inventory[{Slot:-106b}]")):
+        fn[f"ring/serial_{hand}"] = [
+            f"data modify storage {STORAGE} held set from entity @s {path}.tag",
+            f"execute store result score #owner gl_tmp run data get storage {STORAGE} held.gl_owner",
+            f"execute store result score #s gl_tmp run data get storage {STORAGE} held.gl_serial",
+            *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps],
+            *[f"execute if score #owner gl_tmp = @s gl_id if predicate {NS}:held/{c}_{hand} unless score #s gl_tmp = "
+              f"@s gl_ser_{c} run function {NS}:ring/dark_{hand}" for c in corps],
+        ]
+        fn[f"ring/dark_{hand}"] = [f"item replace entity @s {slot} with minecraft:air", f"function {NS}:ring/dark_message"]
+    fn["ring/serial_check"] = [
+        f"execute if predicate {NS}:bound_ring_mainhand run function {NS}:ring/serial_mainhand",
+        f"execute if predicate {NS}:bound_ring_offhand run function {NS}:ring/serial_offhand",
+        f"function {NS}:ring/curios_check",
     ]
     fn["ring/curios_pop"] = [  # throw the ring in storage `cur` out of its Curios slot (#slot)
         eject_summon,
@@ -324,6 +372,134 @@ def generate(corps_table, write, write_text):
         "execute if score #lantern gl_tmp matches 1 run scoreboard players add #stripped gl_tmp 1",
         f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_strip_next",
     ]
+
+    # ---------------------------------------------------------------- recall
+    # Anyone can call their own rings back: /trigger gl_recall (every ring that chose you), and with
+    # KubeJS "/ring recall [corps]" or a chat phrase like "ring, come to me".
+    # - Already on you (hands, inventory or Curios slots): nothing to do.
+    # - Lying in a loaded chunk, in any dimension: it flies back to you.
+    # - Anywhere else (a chest, an unloaded chunk, lost): commands can't reach into chests, so a new
+    #   ring forms in your inventory and the one left behind goes dark for good (new serial, see
+    #   above). A dark ring crumbles when worn and comes back as a dead ring, so rings never duplicate.
+    # A revoked or removed ring (gl_ser -1) can't be recalled.
+    load += ["scoreboard objectives add gl_recall trigger", "scoreboard objectives add gl_rcd dummy"]
+    init_serials = [f"scoreboard players add @s gl_ser_{c} 0" for c in corps]
+
+    def eligible(c, run):
+        return [f"execute if score @s gl_ser_{c} matches 1.. run {run}",
+                # bound before 9.0 (no serial yet): members of the corps
+                f"execute if score @s gl_ser_{c} matches 0 if entity @s[tag=gl_member_{c}] run {run}"]
+
+    cooldown_msg = tellraw("@s", [{"text": "Your ring is still answering your last call. Try again in ", "color": "gray"},
+                                  {"score": {"name": "@s", "objective": "gl_rcd"}, "color": "white"},
+                                  {"text": " s.", "color": "gray"}])
+    fn["recall/request"] = [  # every ring that chose you
+        f"execute if score @s gl_rcd matches 1.. run {cooldown_msg}",
+        f"execute unless score @s gl_rcd matches 1.. run function {NS}:recall/all",
+    ]
+    fn["recall/all"] = [
+        "scoreboard players set #called gl_tmp 0", *init_serials,
+        *[line for c in corps for line in eligible(c, f"function {NS}:recall/{c}")],
+        "execute if score #called gl_tmp matches 0 run "
+        + tellraw("@s", [{"text": "No ring has chosen you yet.", "color": "gray"}]),
+    ]
+    fn["recall/trigger"] = [
+        "scoreboard players operation #v gl_tmp = @s gl_recall",
+        "scoreboard players set @s gl_recall 0",
+        "scoreboard players enable @s gl_recall",
+        f"execute if score #v gl_tmp matches 1 run function {NS}:recall/request",
+        *[f"execute if score #v gl_tmp matches {10 + idx[c]} run function {NS}:recall/request_{c}" for c in corps],
+    ]
+    rc = f"{STORAGE} rc"
+    clear_inv = [f"execute if score #slot gl_tmp matches {i} run item replace entity @s container.{i} with minecraft:air"
+                 for i in range(36)]
+    clear_inv.append("execute if score #slot gl_tmp matches -106 run item replace entity @s weapon.offhand with minecraft:air")
+    fn["recall/clear_inv_slot"] = clear_inv
+    fn["recall/dark_inv"] = [f"execute store result score #slot gl_tmp run data get storage {rc}.Slot",
+                             f"function {NS}:recall/clear_inv_slot", f"function {NS}:ring/dark_message"]
+    fn["recall/dark_curios"] = [f"execute store result score #slot gl_tmp run data get storage {rc}.Slot",
+                                f"function #{NS}:curios_clear_slot", f"function {NS}:ring/dark_message"]
+    fn["recall/fly"] = [  # as the ring's item entity
+        "scoreboard players set #found gl_tmp 2",
+        "data merge entity @s {PickupDelay:0s,Age:-32768s}",
+        "execute at @s run particle minecraft:end_rod ~ ~0.5 ~ 0.2 0.2 0.2 0.05 20 force",
+        "execute at @a[tag=gl_caller,limit=1] run tp @s ~ ~0.5 ~",
+    ]
+    for c in corps:
+        rgb = corps_table[c]["color"]
+        col = color(rgb if c != "black" else (170, 175, 190))
+        name = corps_table[c]["name"]
+        fn[f"recall/request_{c}"] = [
+            f"execute if score @s gl_rcd matches 1.. run {cooldown_msg}",
+            f"execute unless score @s gl_rcd matches 1.. run function {NS}:recall/one_{c}",
+        ]
+        fn[f"recall/one_{c}"] = [
+            "scoreboard players set #called gl_tmp 0", *init_serials,
+            *eligible(c, f"function {NS}:recall/{c}"),
+            "execute if score #called gl_tmp matches 0 run "
+            + tellraw("@s", [{"text": f"No {name} ring has chosen you.", "color": "gray"}]),
+        ]
+        fn[f"recall/{c}"] = [  # as and at the caller, who may call it
+            "scoreboard players add #called gl_tmp 1",
+            "scoreboard players set @s gl_rcd 10",
+            "scoreboard players set #found gl_tmp 0",
+            "tag @s add gl_caller",
+            f"function {NS}:recall/self_{c}",
+            f"execute if score #found gl_tmp matches 0 as @e[type=minecraft:item,nbt={{Item:{{id:\"{ring(c)}\","
+            f"tag:{{gl_bound:1b}}}}}}] run function {NS}:recall/item_{c}",
+            f"execute if score #found gl_tmp matches 0 run function {NS}:recall/reforge_{c}",
+            "execute if score #found gl_tmp matches 1 run "
+            + tellraw("@s", [{"text": f"Your {name} ring is already with you.", "color": col}]),
+            "execute if score #found gl_tmp matches 2 run "
+            + tellraw("@s", [{"text": f"Your {name} ring flies back to you.", "color": col}]),
+            "execute if score #found gl_tmp matches 2 run playsound minecraft:block.beacon.power_select player @s ~ ~ ~ 1 1.6",
+            "tag @s remove gl_caller",
+        ]
+        # 1. on you: your inventory (hands included) and your Curios ring slots
+        fn[f"recall/self_{c}"] = [
+            f"data remove storage {STORAGE} scan",
+            f"data modify storage {STORAGE} scan set from entity @s Inventory",
+            f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/self_next_{c}",
+            f"data remove storage {STORAGE} scan",
+            f"data modify storage {STORAGE} scan set from entity @s {curios_items}",
+            f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/curios_next_{c}",
+        ]
+        for kind, dark in (("self", "dark_inv"), ("curios", "dark_curios")):
+            fn[f"recall/{kind}_next_{c}"] = [
+                f"data modify storage {rc} set from storage {STORAGE} scan[0]",
+                f"data remove storage {STORAGE} scan[0]",
+                f'execute if data storage {rc}{{id:"{ring(c)}",tag:{{gl_bound:1b}}}} run function {NS}:recall/{kind}_item_{c}',
+                f"execute if data storage {STORAGE} scan[0] run function {NS}:recall/{kind}_next_{c}",
+            ]
+            fn[f"recall/{kind}_item_{c}"] = [
+                f"execute store result score #owner gl_tmp run data get storage {rc}.tag.gl_owner",
+                f"execute store result score #s gl_tmp run data get storage {rc}.tag.gl_serial",
+                f"execute if score #owner gl_tmp = @s gl_id if score #s gl_tmp = @s gl_ser_{c} run "
+                "scoreboard players set #found gl_tmp 1",
+                f"execute if score #owner gl_tmp = @s gl_id unless score #s gl_tmp = @s gl_ser_{c} run "
+                f"function {NS}:recall/{dark}",
+            ]
+        # 2. lying in a loaded chunk anywhere (run as each such item); dark copies crumble
+        caller = "@a[tag=gl_caller,limit=1]"
+        fn[f"recall/item_{c}"] = [
+            "execute store result score #owner gl_tmp run data get entity @s Item.tag.gl_owner",
+            "execute store result score #s gl_tmp run data get entity @s Item.tag.gl_serial",
+            f"execute if score #owner gl_tmp = {caller} gl_id unless score #s gl_tmp = {caller} gl_ser_{c} run "
+            "execute at @s run particle minecraft:smoke ~ ~0.3 ~ 0.1 0.1 0.1 0.02 15 force",
+            f"execute if score #owner gl_tmp = {caller} gl_id unless score #s gl_tmp = {caller} gl_ser_{c} run kill @s",
+            f"execute if score #owner gl_tmp = {caller} gl_id if score #s gl_tmp = {caller} gl_ser_{c} run "
+            f"function {NS}:recall/fly",
+        ]
+        # 3. anywhere else: a new ring forms, and the one left behind goes dark
+        fn[f"recall/reforge_{c}"] = [
+            f"function {NS}:ring/store_owner", f"function {NS}:ring/new_serial", set_serial(c),
+            *give_ring(c),
+            f"tag @s add gl_member_{c}",
+            f"particle minecraft:dust {rgb[0] / 255:.2f} {rgb[1] / 255:.2f} {rgb[2] / 255:.2f} 1.5 ~ ~1.2 ~ 0.4 0.6 0.4 0 60 force",
+            "playsound minecraft:block.beacon.activate player @s ~ ~ ~ 1 1.6",
+            tellraw("@s", [{"text": f"Your {name} ring answers your call and forms on you. ", "color": col},
+                           {"text": "The ring you left behind has gone dark.", "color": "gray", "italic": True}]),
+        ]
 
     # ---------------------------------------------------------------- emotions
     feed = []
@@ -396,6 +572,8 @@ def generate(corps_table, write, write_text):
         ]
         fn[f"offer/accept_{c}"] = [
             f"function {NS}:ring/store_owner",
+            f"function {NS}:ring/new_serial",
+            set_serial(c),
             *give_ring(c),
             # the ring brings its power battery with it (/give drops it at your feet if you're full)
             f"give @s {NS}:{c}_power_battery",
@@ -468,6 +646,7 @@ def generate(corps_table, write, write_text):
             f"function {NS}:ring/curios_strip",
             f"tag @s remove gl_member_{c}",
             f"tag @s remove gl_leader_{c}",
+            f"scoreboard players set @s gl_ser_{c} -1",  # and it can't be recalled
         ]
         fn[f"leader/revoke_{c}"] = [  # run as the leader: revoke the nearest bearer of this corps' ring
             "tag @s add gl_revoker",
@@ -524,7 +703,8 @@ def generate(corps_table, write, write_text):
     # ---------------------------------------------------------------- admin (run "as <player>")
     for c in corps:
         col = color(corps_table[c]["color"] if c != "black" else (170, 175, 190))
-        fn[f"admin/give/{c}"] = [f"function {NS}:ring/store_owner", *give_ring(c), f"tag @s add gl_member_{c}"]
+        fn[f"admin/give/{c}"] = [f"function {NS}:ring/store_owner", f"function {NS}:ring/new_serial", set_serial(c),
+                                 *give_ring(c), f"tag @s add gl_member_{c}"]
         fn[f"admin/give_unbound/{c}"] = [f"give @s {ring(c)}"]
         fn[f"admin/battery/{c}"] = [f"give @s {NS}:{c}_power_battery"]
         fn[f"admin/leader/{c}"] = [
@@ -545,6 +725,7 @@ def generate(corps_table, write, write_text):
         f"execute unless predicate {NS}:ring_mainhand run "
         + tellraw("@s", [{"text": "Hold the ring in your main hand to unbind it.", "color": "gray"}]),
         f"execute if predicate {NS}:ring_mainhand run function {NS}:ring/store_giver",
+        *[f"execute if predicate {NS}:held/{c}_mainhand run scoreboard players set @s gl_ser_{c} -1" for c in corps],
         f"execute if predicate {NS}:ring_mainhand run item modify entity @s weapon.mainhand {NS}:unbind",
         f"execute if predicate {NS}:ring_mainhand run "
         + tellraw("@s", [{"text": "The ring in your hand is unbound. It will bind to the next player who holds it.",
@@ -570,6 +751,7 @@ def generate(corps_table, write, write_text):
         "/lantern offer <player> <corps>  -  makes that corps' ring choose the player now",
         "/lantern unbind <player>  -  unbinds the ring in their main hand",
         "/lantern threshold <n>  -  scoreboard players set #threshold gl_cfg <n>",
+        "Players: /trigger gl_recall (or /ring recall [corps], or 'ring, come to me' in chat) calls their rings back",
         "/lantern reset <player> | show <player> | enable | disable",
         "corps: " + ", ".join(corps),
     ])]
@@ -578,8 +760,9 @@ def generate(corps_table, write, write_text):
     tick += [
         f"execute as @a at @s run function {NS}:ring/bind_check",
         # rings worn in Curios slots, twice a second, for players a ring is powering
-        f"execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function {NS}:ring/curios_check",
-        f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/curios_check",
+        f"execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
+        f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
+        f"execute as @a[scores={{gl_recall=1..}}] at @s run function {NS}:recall/trigger",
         f"execute as @a[tag=gl_offer_any] at @s run function {NS}:offer/follow",
         f"execute as @a[scores={{gl_accept=1..}}] at @s run function {NS}:offer/accept_trigger",
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",
@@ -607,6 +790,8 @@ def generate(corps_table, write, write_text):
         "scoreboard players enable @a[tag=gl_leader_any] gl_revoke",
         "scoreboard players enable @a[tag=gl_leader_any] gl_roster",
         "scoreboard players enable @a gl_emotions",
+        "scoreboard players enable @a gl_recall",
+        "scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1",
     ]
     fn["offer/scan"] = offer_scan
 
@@ -681,15 +866,67 @@ ServerEvents.commandRegistry(event => {
     .then(Commands.literal('enable').executes(ctx => run(ctx, `execute as ${ctx.source.textName} run function greenlantern:admin/enable`)))
     .then(Commands.literal('disable').executes(ctx => run(ctx, `execute as ${ctx.source.textName} run function greenlantern:admin/disable`)))
   )
+
+  // /ring recall [corps]: anyone can call their own rings back (no permission needed)
+  const recall = (ctx, corps) => {
+    const player = ctx.source.player
+    if (!player) {
+      ctx.source.sendFailure(Text.of('Only players can call their rings.'))
+      return 0
+    }
+    if (corps && CORPS.indexOf(corps) < 0) {
+      ctx.source.sendFailure(Text.of(`Unknown corps '${corps}'. Use one of: ${CORPS.join(', ')}`))
+      return 0
+    }
+    callRing(ctx.source.server, player, corps)
+    return 1
+  }
+  event.register(Commands.literal('ring')
+    .then(Commands.literal('recall')
+      .executes(ctx => recall(ctx, null))
+      .then(Commands.argument('corps', Arguments.WORD.create(event))
+        .suggests((ctx, builder) => { CORPS.forEach(c => builder.suggest(c)); return builder.buildFuture() })
+        .executes(ctx => recall(ctx, Arguments.WORD.getResult(ctx, 'corps')))))
+  )
 })
 
-// Answer a ring's offer by typing yes / no in chat.
+// Recall runs as the player (by UUID, so any name works).
+const callRing = (server, player, corps) => {
+  const fn = corps ? `greenlantern:recall/request_${corps}` : 'greenlantern:recall/request'
+  server.runCommandSilent(`execute as ${player.getStringUUID()} at @s run function ${fn}`)
+}
+
+// Chat phrases that call your ring: "ring", plus a calling word ("ring, come to me", "return to me,
+// green ring", "I summon my ring"). Naming a corps or its emotion calls only that ring.
+const CALL_WORDS = /\b(come|return|recall|summon|back|answer|to me)\b/
+const CORPS_WORDS = {
+  green: ['green', 'will', 'willpower'], yellow: ['yellow', 'sinestro', 'fear'], red: ['red', 'rage'],
+  orange: ['orange', 'greed', 'avarice'], blue: ['blue', 'hope'], violet: ['violet', 'star sapphire', 'sapphire', 'love'],
+  indigo: ['indigo', 'compassion'], white: ['white', 'life'], black: ['black', 'death']
+}
+const namedCorps = (msg) => {
+  let found = null
+  CORPS.forEach(c => {
+    if (found) return
+    const words = CORPS_WORDS[c] || [c]
+    words.forEach(w => {
+      if (!found && new RegExp('\\b' + w + '\\b').test(msg)) found = c
+    })
+  })
+  return found
+}
+
+// Answer a ring's offer by typing yes / no in chat, or call your ring with a phrase.
 PlayerEvents.chat(event => {
   const player = event.player
-  if (!player.tags.contains('gl_offer_any')) return
-  const name = event.username
   const server = player.server
   const msg = String(event.message).trim().toLowerCase()
+  if (/\bring\b/.test(msg) && CALL_WORDS.test(msg)) {
+    callRing(server, player, namedCorps(msg))  // the words still show in chat
+    return
+  }
+  if (!player.tags.contains('gl_offer_any')) return
+  const name = event.username
   if (['yes', 'y', 'accept', 'i accept'].indexOf(msg) >= 0) {
     server.runCommandSilent(`execute as ${name} at @s run function greenlantern:offer/accept_chat`)
     event.cancel()

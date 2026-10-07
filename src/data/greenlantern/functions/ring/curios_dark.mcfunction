@@ -1,0 +1,2 @@
+function #greenlantern:curios_clear_slot
+function greenlantern:ring/dark_message

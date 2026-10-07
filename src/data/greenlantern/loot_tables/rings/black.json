@@ -28,6 +28,11 @@
                   "source": "bits",
                   "target": "gl_ob",
                   "op": "replace"
+                },
+                {
+                  "source": "serial",
+                  "target": "gl_serial",
+                  "op": "replace"
                 }
               ]
             },

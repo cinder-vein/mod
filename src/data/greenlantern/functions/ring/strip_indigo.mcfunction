@@ -3,3 +3,4 @@ scoreboard players set #strip gl_tmp 7
 function greenlantern:ring/curios_strip
 tag @s remove gl_member_indigo
 tag @s remove gl_leader_indigo
+scoreboard players set @s gl_ser_indigo -1

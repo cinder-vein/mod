@@ -38,6 +38,16 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
   - If anyone else holds or wears it, it leaves them and flies back to its bearer, in any dimension.
   - If the bearer is offline it waits where it fell. It never despawns, and only its bearer can pick it up.
   - Ownership follows the player, not their name, so a renamed player keeps their rings.
+- **Calling your ring back:** anyone can call the rings that chose them, from anywhere.
+  - `/trigger gl_recall` calls every ring you're the bearer of. It works for every player and needs no extra mods.
+  - With KubeJS you can also run `/ring recall` or `/ring recall <corps>`, or say it in chat. Any message with
+    "ring" and a calling word works, such as *"ring, come to me"*, *"return to me, green ring"* or *"I summon my
+    ring"*. Naming a corps or its emotion calls just that ring.
+  - A ring **lying anywhere in a loaded area**, in any dimension, flies back to you.
+  - A ring **stored in a chest**, left in an unloaded area or lost can't be reached by commands. Instead a new ring
+    forms on you, and the one you left behind **goes dark for good**. It crumbles to dust if anyone wears it, so rings
+    never duplicate.
+  - There's a 10-second wait between calls. A ring revoked by a leader or removed by an admin can't be called back.
 - **Two rings at once:** wear two rings (both hands, or two Curios ring slots) and you get **Spectrum Fusion**.
   - Every pair of corps has its own fusion. For example *Hope Ignites Will* (Green + Blue) and
     *Life and Death* (White + Black).

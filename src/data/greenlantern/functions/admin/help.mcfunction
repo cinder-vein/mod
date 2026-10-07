@@ -7,5 +7,6 @@ tellraw @s [{"text":"/lantern remove <player> <corps> | removeall <player>  -  f
 tellraw @s [{"text":"/lantern offer <player> <corps>  -  makes that corps' ring choose the player now","color":"gray"}]
 tellraw @s [{"text":"/lantern unbind <player>  -  unbinds the ring in their main hand","color":"gray"}]
 tellraw @s [{"text":"/lantern threshold <n>  -  scoreboard players set #threshold gl_cfg <n>","color":"gray"}]
+tellraw @s [{"text":"Players: /trigger gl_recall (or /ring recall [corps], or 'ring, come to me' in chat) calls their rings back","color":"gray"}]
 tellraw @s [{"text":"/lantern reset <player> | show <player> | enable | disable","color":"gray"}]
 tellraw @s [{"text":"corps: green, yellow, red, orange, blue, violet, indigo, white, black","color":"gray"}]

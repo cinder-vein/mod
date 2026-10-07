@@ -17,6 +17,8 @@ scoreboard players enable @a[tag=gl_offer_any] gl_decline
 scoreboard players enable @a[tag=gl_leader_any] gl_revoke
 scoreboard players enable @a[tag=gl_leader_any] gl_roster
 scoreboard players enable @a gl_emotions
+scoreboard players enable @a gl_recall
+scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1
 function greenlantern:charge/save
 execute at @a[tag=gl_yellow] run effect give @e[type=#greenlantern:greed_prey,distance=..8] minecraft:weakness 2 0 true
 clear @a[tag=!gl_ring] #greenlantern:constructs

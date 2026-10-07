@@ -153,6 +153,18 @@ scoreboard players set #w100 gl_cfg 100
 scoreboard objectives add gl_s_death1 minecraft.custom:minecraft.deaths
 scoreboard players set #w300 gl_cfg 300
 scoreboard players set #2 gl_cfg 2
+execute unless score #serial gl_cfg matches 1.. run scoreboard players set #serial gl_cfg 0
+scoreboard objectives add gl_ser_green dummy
+scoreboard objectives add gl_ser_yellow dummy
+scoreboard objectives add gl_ser_red dummy
+scoreboard objectives add gl_ser_orange dummy
+scoreboard objectives add gl_ser_blue dummy
+scoreboard objectives add gl_ser_violet dummy
+scoreboard objectives add gl_ser_indigo dummy
+scoreboard objectives add gl_ser_white dummy
+scoreboard objectives add gl_ser_black dummy
+scoreboard objectives add gl_recall trigger
+scoreboard objectives add gl_rcd dummy
 scoreboard objectives add gl_hurt minecraft.custom:minecraft.damage_taken
 scoreboard objectives add gl_construct trigger
 scoreboard objectives add gl_slotinit dummy
