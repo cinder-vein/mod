@@ -172,23 +172,27 @@ scoreboard objectives add gl_fcd dummy
 execute unless score #forge gl_cfg matches 0.. run scoreboard players set #forge gl_cfg 1
 execute unless score #forge_cd gl_cfg matches 0.. run scoreboard players set #forge_cd gl_cfg 300
 scoreboard objectives add gl_hurt minecraft.custom:minecraft.damage_taken
-scoreboard objectives add gl_construct trigger
-scoreboard objectives add gl_slotinit dummy
+scoreboard objectives add gl_rings dummy
+scoreboard objectives add gl_dmax dummy
+scoreboard objectives add gl_dlast dummy
+scoreboard objectives add gl_dtick dummy
+scoreboard objectives add gl_kjs dummy
+scoreboard objectives add glmax_green dummy
+scoreboard objectives add glmax_yellow dummy
+scoreboard objectives add glmax_red dummy
+scoreboard objectives add glmax_orange dummy
+scoreboard objectives add glmax_blue dummy
+scoreboard objectives add glmax_violet dummy
+scoreboard objectives add glmax_indigo dummy
+scoreboard objectives add glmax_white dummy
+scoreboard objectives add glmax_black dummy
 scoreboard objectives add gl_gat dummy
-scoreboard objectives add gl_cfgslot dummy
-scoreboard objectives add gl_cfgcat dummy
-scoreboard objectives add gl_slot1 dummy
-scoreboard objectives add gl_slot2 dummy
-scoreboard objectives add gl_slot3 dummy
-scoreboard objectives add gl_slot4 dummy
-scoreboard objectives add gl_slot5 dummy
 scoreboard objectives add gl_cc_sword dummy
 scoreboard objectives add gl_cc_sword_shield dummy
 scoreboard objectives add gl_cc_mace dummy
 scoreboard objectives add gl_cc_axe dummy
 scoreboard objectives add gl_cc_fist dummy
 scoreboard objectives add gl_cc_slam dummy
-scoreboard objectives add gl_cc_blast dummy
 scoreboard objectives add gl_cc_gatling dummy
 scoreboard objectives add gl_cc_missiles dummy
 scoreboard objectives add gl_cc_cannon dummy
@@ -200,5 +204,4 @@ scoreboard objectives add gl_cc_blocks dummy
 scoreboard objectives add gl_cc_scuba dummy
 scoreboard objectives add gl_cc_drill dummy
 scoreboard objectives add gl_cc_bridge dummy
-scoreboard objectives add gl_cc_scan dummy
 scoreboard objectives add gl_cc_signature dummy

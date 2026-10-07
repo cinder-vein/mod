@@ -5,6 +5,7 @@ with its own logo. Replace any generated PNG with hand-drawn art if you like,
 but it will be overwritten the next time gen_corps.py runs unless you remove
 that step there.
 """
+import functools
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -304,7 +305,11 @@ def _families(corps, rgb, design):
 
 
 def _recolor(img, corps, rgb, design):
-    primary, base, light = _families(corps, rgb, design)
+    return _recolor_families(img, *_families(corps, rgb, design),
+                             (255, 255, 255, 255) if corps != "black" else palette(corps, rgb)["glow"])
+
+
+def _recolor_families(img, primary, base, light, glow_color):
     mapping = {}
     for src, dst in zip(T_PRIMARY, primary):
         mapping[src] = dst
@@ -314,7 +319,6 @@ def _recolor(img, corps, rgb, design):
         mapping[src] = dst
     out = Image.new("RGBA", img.size, CLEAR)
     glow = Image.new("RGBA", img.size, CLEAR)
-    p = palette(corps, rgb)
     for y in range(img.size[1]):
         for x in range(img.size[0]):
             c = img.getpixel((x, y))
@@ -322,7 +326,7 @@ def _recolor(img, corps, rgb, design):
                 continue
             out.putpixel((x, y), mapping.get(c[:3], c[:3]) + (255,))
             if (x, y) in T_GLOW:
-                glow.putpixel((x, y), (255, 255, 255, 255) if corps != "black" else p["glow"])
+                glow.putpixel((x, y), glow_color)
     return out, glow
 
 
@@ -421,10 +425,11 @@ def mask_painter(corps, mask):
     return paint
 
 
-def _paint_layers(corps, rgb, painter, slim):
+def _paint_layers(corps, rgb, painter, slim, overrides=None):
     p = palette(corps, rgb)
     colors = {**p, "line": p["glow"], "gem": p["glow"],
-              "pale": (196, 200, 204, 255), "socket": (34, 32, 38, 255), "lips": (80, 78, 88, 255)}
+              "pale": (196, 200, 204, 255), "socket": (34, 32, 38, 255), "lips": (80, 78, 88, 255),
+              **(overrides or {})}
     imgs = (Image.new("RGBA", (64, 64), CLEAR), Image.new("RGBA", (64, 64), CLEAR))
     for part, (inner, outer, w, h, d) in PARTS.items():
         if slim and part.endswith("arm"):
@@ -440,6 +445,148 @@ def mask(corps, rgb, mask_id):
     if mask_id == "corps":
         return corps_mask(corps, rgb)
     return _paint_layers(corps, rgb, mask_painter(corps, mask_id), False)
+
+
+# --- merged suits and masks (two rings: the Spectrum Bond) -----------------------------------
+# One accessory per design; each renders the right texture for the bonded pair (a: the first ring in CORPS order,
+# worn on the right hand; b: the second, on the left).
+
+SPECTRUM_SUITS = [("split", "Split Light"), ("fusion", "Fusion Uniform"), ("fusion_reversed", "Fusion Uniform (Reversed)"),
+                  ("halves", "Twin Halves"), ("shadow_split", "Spectrum Shadow")]
+SPECTRUM_MASKS = [("split", "Split Mask"), ("domino", "Twin Domino"), ("goggles", "Twin Lens Goggles"),
+                  ("cowl", "Twin Gem Cowl"), ("none", "No Mask")]
+
+
+def skin_side(x, y):
+    """Which side of the wearer a pixel of a 64x64 skin-layout texture is on: "R" (their right), "L", or None."""
+    if 40 <= x < 56 and 16 <= y < 48:      # right arm and sleeve
+        return "R"
+    if 32 <= x < 64 and 48 <= y < 64:      # left arm and sleeve
+        return "L"
+    if 0 <= x < 16 and 16 <= y < 48:       # right leg and trouser
+        return "R"
+    if 0 <= x < 32 and 48 <= y < 64:       # left leg and trouser
+        return "L"
+
+    def box(lx, ly, w, d):  # a box's faces in its own UV block: top/bottom row, then right, front, left, back
+        if ly < d:
+            for start in (d, d + w):  # top, bottom
+                if start <= lx < start + w:
+                    return "R" if lx < start + w // 2 else "L"
+            return None
+        if lx < d:
+            return "R"
+        if lx < d + w:
+            return "R" if lx < d + w // 2 else "L"  # the front, seen from the front: their right is on the left
+        if lx < d + w + d:
+            return "L"
+        if lx < d + w + d + w:
+            return "L" if lx < d + w + d + w // 2 else "R"  # the back, seen from behind
+        return None
+
+    if 16 <= x < 40 and 16 <= y < 48:      # body and jacket
+        return box(x - 16, (y - 16) % 16, 8, 4)
+    if y < 16:                             # head and hat
+        return box(x % 32, y, 8, 8)
+    return None
+
+
+def _legs(x, y):
+    return (0 <= x < 16 and 16 <= y < 48) or (0 <= x < 32 and 48 <= y < 64)
+
+
+def _compose(img_r, img_l, pick):
+    """Per pixel: img_r where pick(x, y) is "R", else img_l."""
+    out = Image.new("RGBA", img_r.size, CLEAR)
+    for y in range(img_r.size[1]):
+        for x in range(img_r.size[0]):
+            out.putpixel((x, y), (img_r if pick(x, y) == "R" else img_l).getpixel((x, y)))
+    return out
+
+
+@functools.lru_cache(maxsize=None)
+def _suit_recolor(corps, rgb, design, slim):
+    return suit(corps, rgb, design, slim)[0]
+
+
+def spectrum_suit(a, rgb_a, b, rgb_b, design, slim):
+    """The merged suit texture for rings a (right hand) and b (left hand). Its glow is spectrum_suit_glow()."""
+    tpl = Image.open(TEMPLATE).convert("RGBA")
+    tpl.paste(CLEAR, (0, 0, 64, HEAD_ROWS))
+    if slim:
+        tpl = _to_slim(tpl)
+    white = (255, 255, 255, 255)
+    if design in ("split", "shadow_split", "halves"):
+        base_design = "shadow" if design == "shadow_split" else "uniform"
+        ra, rb = _suit_recolor(a, rgb_a, base_design, slim), _suit_recolor(b, rgb_b, base_design, slim)
+        if design == "halves":  # the first ring above the belt, the second below
+            return _compose(ra, rb, lambda x, y: "L" if _legs(x, y) else "R")
+        return _compose(ra, rb, skin_side)
+    first, second = (a, rgb_a), (b, rgb_b)
+    if design == "fusion_reversed":
+        first, second = second, first
+    # the first ring's panels; the second ring's color on the gloves and emblem, and deep in the under-suit
+    primary, _, _ = _families(*first, "uniform")
+    other, _, _ = _families(*second, "uniform")
+    light = _shades(other[0], T_LIGHT)
+    deep = tuple(int(v * 0.3) for v in (other[0] if second[0] != "white" else (120, 128, 146)))
+    base = _shades(deep, T_BASE)
+    suit_img, _ = _recolor_families(tpl, primary, base, light, white)
+    return suit_img
+
+
+def spectrum_suit_glow():
+    """The merged suits' glowing chest emblem (the same for every pair and skin)."""
+    glow = Image.new("RGBA", (64, 64), CLEAR)
+    for x, y in T_GLOW:
+        if y >= HEAD_ROWS:
+            glow.putpixel((x, y), (255, 255, 255, 255))
+    return glow
+
+
+def spectrum_mask(a, rgb_a, b, rgb_b, mask_id):
+    """(mask, glow) for the merged masks: split down the middle, or the first ring's mask with the second's lights."""
+    if mask_id == "split":
+        ma, ga = corps_mask(a, rgb_a)
+        mb, gb = corps_mask(b, rgb_b)
+        return _compose(ma, mb, skin_side), _compose(ga, gb, skin_side)
+    pb = palette(b, rgb_b)
+    return _paint_layers(a, rgb_a, mask_painter(a, mask_id), False,
+                         {"dark": pb["main"], "glow": pb["glow"], "line": pb["glow"], "gem": pb["glow"]})
+
+
+def spectrum_slot_icon(kind):
+    """16x16 accessories-menu icon for the Spectrum Suit / Spectrum Mask slots: a two-tone emblem."""
+    left, right = (46, 200, 70, 255), (40, 130, 255, 255)
+    img = Image.new("RGBA", (16, 16), CLEAR)
+    if kind == "mask":
+        d = ImageDraw.Draw(img)
+        d.rectangle((1, 5, 7, 9), fill=left)
+        d.rectangle((8, 5, 14, 9), fill=right)
+        for x0 in (3, 9):
+            d.rectangle((x0, 6, x0 + 3, 8), fill=CLEAR)
+        return img
+    for y, row in enumerate(LOGOS["white"]):
+        for x, ch in enumerate(row):
+            if ch == "#":
+                img.putpixel((2 + x, 2 + y), shade(left if x < 5 else right, 1.3) if x != 5 else (255, 255, 255, 255))
+    return img
+
+
+def spectrum_menu_background():
+    """16x16 tile for the Spectrum Bond's powers menu: dark stone with a faint rainbow grid."""
+    hues = [(46, 200, 70), (245, 205, 30), (220, 30, 35), (250, 130, 20), (40, 130, 255), (215, 55, 220),
+            (105, 60, 230), (235, 242, 250)]
+    img = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            tint = hues[(x + y) // 4 % len(hues)]
+            base = mix((18, 19, 22), tint, 0.10)
+            if x == 0 or y == 0:
+                base = mix((18, 19, 22), tint, 0.38)
+            n = ((x * 7 + y * 13) % 5) * 2
+            img.putpixel((x, y), tuple(min(255, v + n) for v in base[:3]) + (255,))
+    return img
 
 
 def suit_model(slim):
@@ -928,20 +1075,6 @@ def scuba_texture(corps, rgb):
 DIGITS = {"1": [".#.", "##.", ".#.", ".#.", "###"], "2": ["##.", "..#", ".#.", "#..", "###"],
           "3": ["##.", "..#", ".#.", "..#", "##."], "4": ["#.#", "#.#", "###", "..#", "..#"],
           "5": ["###", "#..", "##.", "..#", "##."]}
-
-
-def construct_slot_icon(corps, rgb, n):
-    """16x16 icon for Construct n on the ability bar: a hard-light diamond with the slot number."""
-    p = palette(corps, rgb)
-    img = Image.new("RGBA", (16, 16), CLEAR)
-    d = ImageDraw.Draw(img)
-    d.polygon([(8, 0), (15, 7), (8, 15), (1, 7)], fill=p["dark"], outline=p["glow"])
-    d.polygon([(8, 3), (12, 7), (8, 12), (4, 7)], fill=p["main"])
-    for y, row in enumerate(DIGITS[str(n)]):
-        for x, ch in enumerate(row):
-            if ch == "#":
-                img.putpixel((7 + x, 5 + y), WHITE)
-    return img
 
 
 def construct_texture(corps, rgb):

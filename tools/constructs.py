@@ -2,14 +2,14 @@
 
 - a catalog of constructs in four categories (melee, ranged, defense, utility), unlocked in the
   skill tree, plus one signature construct per corps;
-- five construct slots on their own ability-bar page (Construct 1-5), each running whatever
-  construct the player put in it;
-- a chat menu (Configure Constructs, or /trigger gl_construct) to fill the slots;
-- the radial construct wheel lists the whole catalog.
+- every construct is formed from the radial construct wheel (hold its key, pick one with the mouse).
+
+Energy Blast and Scan aren't constructs: they sit on the ring's blast-mode bar (see gen_corps.py) and
+use the ring functions generated here (ring/<corps>/blast, ring/<corps>/scan).
 
 Held constructs are real items (sword, shield, mace, axe, drill, gatling...): they form in your hand,
-drain charge while you hold them, and dissolve when you press their slot again, run out of charge
-or take the ring off. Walls, domes and bridges are temporary hard-light blocks.
+drain charge while you hold them, and dissolve when you pick them on the wheel again, run out of
+charge or take the ring off. Walls, domes and bridges are temporary hard-light blocks.
 
 gen_corps.py adds the abilities to each corps' power (see construct_abilities there) and merges the
 datapack lines returned by generate().
@@ -20,12 +20,11 @@ NS = "greenlantern"
 STORAGE = f"{NS}:tmp"
 BAR = "ring_charge"
 
-CATEGORIES = [("melee", "Melee"), ("ranged", "Ranged"), ("defense", "Defense"), ("utility", "Utility")]
 
 # Skill-tree nodes of the construct branch: key -> (name, description, position, parents, xp)
 NODES = {
-    "constructs": ("Constructs", "Unlocks the construct wheel, the five construct slots and the basics: Sword, "
-                   "Tower Shield, Blast, Construct Blocks and Scan.", (6, 1), ["uniform"], 5),
+    "constructs": ("Constructs", "Unlocks the construct wheel and the basics: Sword, Tower Shield and Construct Blocks.",
+                   (6, 1), ["ring_root"], 5),
     "melee_1": ("Melee Constructs I", "Adds Sword & Shield, Mace and Battle Axe.", (4.5, 2), ["constructs"], 8),
     "melee_2": ("Melee Constructs II", "Adds Giant Fist and Hammer Slam.", (4.5, 3), ["melee_1"], 12),
     "ranged_1": ("Ranged Constructs I", "Adds the Gatling and the Missile Barrage.", (5.5, 2), ["constructs"], 8),
@@ -59,8 +58,6 @@ CATALOG = [
               "A giant fist punches whatever is in front of you into the air."),
     Construct("slam", "Hammer Slam", "melee", "melee_2", 120, 80, "instant", f"{NS}:construct_hammer",
               "A giant hammer slams the ground, hurting and launching everything within 6 blocks."),
-    Construct("blast", "Blast", "ranged", "constructs", 40, 15, "instant", "minecraft:arrow",
-              "Fire a bolt of hard light."),
     Construct("gatling", "Gatling", "ranged", "ranged_1", 40, 10, "held", f"{NS}:construct_gatling",
               "A gatling gun: hold right-click to fire. Each shot costs 3 charge."),
     Construct("missiles", "Missile Barrage", "ranged", "ranged_1", 120, 80, "instant", "minecraft:firework_rocket",
@@ -83,8 +80,6 @@ CATALOG = [
               "A drill that mines like a netherite pickaxe."),
     Construct("bridge", "Bridge", "utility", "utility_2", 80, 60, "instant", "minecraft:scaffolding",
               "A 3-wide bridge of hard light 16 blocks ahead of you for 30 seconds."),
-    Construct("scan", "Scan", "utility", "constructs", 10, 20, "instant", "minecraft:spyglass",
-              "Scan what you're looking at (up to 24 blocks): its health and armor. It glows for 10 seconds."),
 ]
 
 # One signature construct per corps, fitting its emotion. Unlocked by mastering all four branches.
@@ -208,13 +203,6 @@ def construct_cmds(corps_list, corps, shape, where, extra_tags=()):
 
 def all_constructs(corps):
     return CATALOG + [SIGNATURES[corps]]
-
-
-def construct_id(corps, key):
-    return [c.key for c in all_constructs(corps)].index(key) + 1
-
-
-SIG_ID = len(CATALOG) + 1
 
 
 class Gen:
@@ -359,9 +347,6 @@ class Gen:
                     f"execute as {around} run damage @s 8 minecraft:player_attack by @p[tag=gl_user]",
                     f"effect give {around} minecraft:levitation 1 5 true",
                     sound("minecraft:entity.generic.explode", 1.2)]
-        if k == "blast":
-            return [*self.projectile(self.laser(fx, 0.15, 8), 2.5),
-                    sound("minecraft:entity.firework_rocket.blast", 1.5)]
         if k == "missiles":
             nbt = self.laser(fx, 0.25, 6, life=80, particles="minecraft:smoke",
                              extra=',ExplosionRadius:1.5f,ExplosionCausesFire:0b,ExplosionBlockInteraction:"keep"')
@@ -410,18 +395,6 @@ class Gen:
             for rot, d in (("-45..45", "s"), ("135..-135", "n"), ("45..135", "w"), ("-135..-45", "e")):
                 lines.append(f"execute if entity @s[y_rotation={rot}] align xyz run function {NS}:construct/{corps}/bridge_{d}")
             return lines + [sound("minecraft:block.beacon.power_select", 1.0)]
-        if k == "scan":
-            ray = ["scoreboard players set #found gl_tmp 0", "tag @e[tag=gl_scanned] remove gl_scanned"]
-            for i in range(1, 49):  # every half block, up to 24 blocks; a 1-block box around the ray point
-                d = i / 2           # must touch the creature's hitbox, and solid blocks stop the ray
-                at = f"execute if score #found gl_tmp matches 0 anchored eyes positioned ^ ^ ^{d}"
-                ray.append(f"{at} positioned ~-0.5 ~-0.5 ~-0.5 as @e[type=!#{NS}:not_creatures,tag=!gl_user,dx=0,dy=0,dz=0,"
-                           f"limit=1,sort=nearest] run function {NS}:construct/scan_hit")
-                ray.append(f"{at} unless block ~ ~ ~ #minecraft:replaceable run scoreboard players set #found gl_tmp 2")
-            ray.append("execute unless score #found gl_tmp matches 1 run "
-                       + actionbar([{"text": "Scan found nothing in your line of sight.", "color": "gray"}]))
-            ray.append(f"execute if score #found gl_tmp matches 1 run function {NS}:construct/{corps}/scan_report")
-            return ray + [sound("minecraft:block.beacon.ambient", 2.0)]
         # signature constructs
         if k == "signature" and corps == "green":
             lines = [*construct_cmds(self.corps, corps, "train", "execute rotated ~ 0 positioned ^ ^0.3 ^1.5",
@@ -485,6 +458,49 @@ class Gen:
                     sound("minecraft:entity.wither.shoot", 0.6)]
         raise ValueError(f"no effect for {corps}/{k}")
 
+    # --- Energy Blast and Scan (the ring's blast-mode bar) -------------------------------------
+
+    BLAST_COST, SCAN_COST = 40, 10
+
+    def blast_lines(self, corps, where="execute anchored eyes positioned ^ ^ ^1.2"):
+        rgb = self.corps_table[corps]["color"]
+        fx = rgb if corps != "black" else (150, 155, 170)
+        return [*self.projectile(self.laser(fx, 0.15, 8), 2.5, where),
+                sound("minecraft:entity.firework_rocket.blast", 1.5)]
+
+    def scan_lines(self, corps):
+        """Scan what you're looking at, up to 24 blocks (run as and at the player, tagged gl_user)."""
+        ray = ["scoreboard players set #found gl_tmp 0", "tag @e[tag=gl_scanned] remove gl_scanned"]
+        for i in range(1, 49):  # every half block, up to 24 blocks; a 1-block box around the ray point
+            d = i / 2           # must touch the creature's hitbox, and solid blocks stop the ray
+            at = f"execute if score #found gl_tmp matches 0 anchored eyes positioned ^ ^ ^{d}"
+            ray.append(f"{at} positioned ~-0.5 ~-0.5 ~-0.5 as @e[type=!#{NS}:not_creatures,tag=!gl_user,dx=0,dy=0,dz=0,"
+                       f"limit=1,sort=nearest] run function {NS}:construct/scan_hit")
+            ray.append(f"{at} unless block ~ ~ ~ #minecraft:replaceable run scoreboard players set #found gl_tmp 2")
+        ray.append("execute unless score #found gl_tmp matches 1 run "
+                   + actionbar([{"text": "Scan found nothing in your line of sight.", "color": "gray"}]))
+        ray.append(f"execute if score #found gl_tmp matches 1 run function {NS}:construct/{corps}/scan_report")
+        return ray + [sound("minecraft:block.beacon.ambient", 2.0)]
+
+    def ring_functions(self, corps):
+        """ring/<corps>/blast and ring/<corps>/scan: check and spend the charge, then fire. The bar abilities
+        only add a cooldown, so a ring that's too low says so instead of greying the slot out.
+        blast_fire_right/left fire one bolt from that hand (two rings: one bolt from each)."""
+        power = f"{NS}:{corps}_lantern"
+        for key, cost, body in (("blast", self.BLAST_COST, self.blast_lines(corps)),
+                                ("scan", self.SCAN_COST, self.scan_lines(corps))):
+            self.fn[f"ring/{corps}/{key}"] = [
+                f"execute store result score #charge gl_tmp run energybar value get @s {power} {BAR}",
+                f"execute if score #charge gl_tmp matches ..{cost - 1} run function {NS}:construct/low_charge",
+                f"execute if score #charge gl_tmp matches {cost}.. run function {NS}:ring/{corps}/{key}_go",
+            ]
+            self.fn[f"ring/{corps}/{key}_go"] = [f"energybar value subtract @s {power} {BAR} {cost}",
+                                                  "tag @s add gl_user", *body, "tag @s remove gl_user"]
+        self.fn[f"ring/{corps}/scan_fire"] = ["tag @s add gl_user", *self.scan_lines(corps), "tag @s remove gl_user"]
+        for side, x in (("right", -0.35), ("left", 0.35)):
+            self.fn[f"ring/{corps}/blast_fire_{side}"] = self.blast_lines(
+                corps, f"execute anchored eyes positioned ^{x} ^-0.3 ^1.2")
+
     def held_items(self, corps, con):
         if con.key in HELD_OF:
             return HELD_OF[con.key]
@@ -523,6 +539,7 @@ class Gen:
     # --- per corps ------------------------------------------------------------------------------
 
     def corps_functions(self, corps):
+        self.ring_functions(corps)
         rgb = self.corps_table[corps]["color"]
         col = hexcolor(rgb if corps != "black" else (170, 175, 190))
         power = f"{NS}:{corps}_lantern"
@@ -531,7 +548,7 @@ class Gen:
         for con in all_constructs(corps):
             base = f"construct/{corps}/{con.key}"
             node_title = NODES[con.node][0] or con.name
-            self.fn[base] = [  # run as and at the player, from a slot or the wheel
+            self.fn[base] = [  # run as and at the player, from the construct wheel
                 f"execute unless entity @s[tag=gl_u_{corps}_{con.node}] run "
                 + actionbar([{"text": f"{con.name} isn't unlocked yet. Buy ", "color": "gray"},
                              {"text": node_title, "color": col}, {"text": " in the powers menu.", "color": "gray"}]),
@@ -610,16 +627,6 @@ class Gen:
             f"execute as @e[tag=gl_scanned] at @s run {burst(rgb, 1.0, '0.3 0.6 0.3', 30, '~ ~1 ~')}",
             "tag @e[tag=gl_scanned] remove gl_scanned",
         ]
-        # slot presses: run whatever the slot holds
-        for slot in range(1, 6):
-            press = [f"execute unless score @s gl_slotinit matches 1 run function {NS}:construct/default_slots",
-                     f"execute if score @s gl_slot{slot} matches 0 run "
-                     + actionbar([{"text": f"Construct slot {slot} is empty. Fill it with Configure Constructs.",
-                                   "color": "gray"}])]
-            for con in all_constructs(corps):
-                press.append(f"execute if score @s gl_slot{slot} matches {construct_id(corps, con.key)} run "
-                             f"function {NS}:construct/{corps}/{con.key}")
-            self.fn[f"construct/press/{corps}_{slot}"] = press
         self.fn[f"construct/{corps}/gatling_shot"] = [
             f"execute store result score #charge gl_tmp run energybar value get @s {power} {BAR}",
             f"execute if score #charge gl_tmp matches ..2 run function {NS}:construct/low_charge",
@@ -637,10 +644,7 @@ class Gen:
     def shared(self):
         corps = self.corps
         keys = [c.key for c in CATALOG] + ["signature"]
-        self.load += ["scoreboard objectives add gl_construct trigger", "scoreboard objectives add gl_slotinit dummy",
-                      "scoreboard objectives add gl_gat dummy",
-                      "scoreboard objectives add gl_cfgslot dummy", "scoreboard objectives add gl_cfgcat dummy",
-                      *[f"scoreboard objectives add gl_slot{i} dummy" for i in range(1, 6)],
+        self.load += ["scoreboard objectives add gl_gat dummy",
                       *[f"scoreboard objectives add gl_cc_{k} dummy" for k in keys]]
         self.tick += [f"scoreboard players remove @a[scores={{gl_cc_{k}=1..}}] gl_cc_{k} 1" for k in keys]
         self.fn["construct/low_charge"] = [
@@ -698,12 +702,6 @@ class Gen:
             "scoreboard players set #ok gl_tmp 0",
             actionbar([{"text": "Nothing within 12 blocks to use that on.", "color": "gray"}]),
         ]
-        self.fn["construct/default_slots"] = [  # a starter loadout of the basic constructs
-            "scoreboard players set @s gl_slotinit 1",
-            *[f"scoreboard players set @s gl_slot{i + 1} {construct_id('green', k)}"
-              for i, k in enumerate(["sword", "blast", "shield", "blocks", "scan"])],
-            "scoreboard players set @s gl_cfgslot 1", "scoreboard players set @s gl_cfgcat 1",
-        ]
         self.fn["construct/scan_hit"] = [  # as the scanned entity
             "scoreboard players set #found gl_tmp 1",
             "tag @s add gl_scanned",
@@ -734,7 +732,6 @@ class Gen:
             "translation:[0f,0f,13f],scale:[2.4f,2.4f,2.4f]}}",
             "tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_new",
             "tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_train_new",
-            f"execute as @a[scores={{gl_construct=1..}}] at @s run function {NS}:construct/menu_trigger",
         ]
         self.second += [
             # constructs only exist through a ring: they dissolve when you have none on you (worn, or
@@ -746,88 +743,7 @@ class Gen:
             f"clear @a[tag=!gl_carry] #{NS}:constructs",
             f"kill @e[type=minecraft:item,nbt={{Item:{{tag:{{gl_construct:1b}}}}}}]",
             *[f"tag @a[tag=gl_scuba_{c},tag=!gl_{c}] remove gl_scuba_{c}" for c in corps],
-            "scoreboard players enable @a gl_construct",
         ]
-        self.menu()
-
-    def menu(self):
-        """The Construct Configuration menu, in chat. Click a slot, then a category, then a construct."""
-        corps = self.corps
-        names = {construct_id("green", c.key): c for c in CATALOG}
-        fn = self.fn
-        fn["construct/menu_trigger"] = [
-            f"execute unless score @s gl_slotinit matches 1 run function {NS}:construct/default_slots",
-            "scoreboard players operation #v gl_tmp = @s gl_construct",
-            "scoreboard players set @s gl_construct 0",
-            "scoreboard players enable @s gl_construct",
-            "execute if score #v gl_tmp matches 1..5 run scoreboard players operation @s gl_cfgslot = #v gl_tmp",
-            "execute if score #v gl_tmp matches 11..14 run scoreboard players operation @s gl_cfgcat = #v gl_tmp",
-            "execute if score #v gl_tmp matches 11..14 run scoreboard players remove @s gl_cfgcat 10",
-            f"execute if score #v gl_tmp matches 99 run function {NS}:construct/assign_0",
-            *[f"execute if score #v gl_tmp matches {100 + i} run function {NS}:construct/assign_{i}"
-              for i in range(1, SIG_ID + 1)],
-            f"function {NS}:construct/menu",
-        ]
-        for i in range(0, SIG_ID + 1):
-            fn[f"construct/assign_{i}"] = [
-                *[f"execute if score @s gl_cfgslot matches {s} run scoreboard players set @s gl_slot{s} {i}"
-                  for s in range(1, 6)],
-                "playsound minecraft:ui.button.click player @s ~ ~ ~ 0.6 1.4",
-            ]
-
-        def label(i):
-            if i == 0:
-                return {"text": "(empty)", "color": "dark_gray"}
-            if i == SIG_ID:
-                return {"text": "Signature Construct", "color": "light_purple"}
-            return {"text": names[i].name, "color": "white"}
-
-        menu = [f"execute unless score @s gl_slotinit matches 1 run function {NS}:construct/default_slots",
-                "scoreboard players enable @s gl_construct",
-                tellraw("@s", [{"text": "\n⬢ Construct Configuration", "color": "green", "bold": True},
-                               {"text": "  click a slot, then a construct", "color": "dark_gray", "italic": True}])]
-        for s in range(1, 6):
-            for i in range(0, SIG_ID + 1):
-                for sel in (True, False):
-                    cond = "if" if sel else "unless"
-                    line = [{"text": " ▶ " if sel else "   ", "color": "yellow"},
-                            {"text": f"[Slot {s}]", "color": "yellow" if sel else "gray", "bold": sel,
-                             "clickEvent": {"action": "run_command", "value": f"/trigger gl_construct set {s}"},
-                             "hoverEvent": {"action": "show_text", "contents": f"Edit slot {s}"}},
-                            {"text": "  "}, label(i)]
-                    menu.append(f"execute {cond} score @s gl_cfgslot matches {s} if score @s gl_slot{s} matches {i} run "
-                                + tellraw("@s", line))
-        for ci, (cat, cat_name) in enumerate(CATEGORIES, 1):
-            tabs = []
-            for cj, (_, other_name) in enumerate(CATEGORIES, 1):
-                tabs.append({"text": f"[{other_name}]", "color": "aqua" if cj == ci else "gray", "bold": cj == ci,
-                             "clickEvent": {"action": "run_command", "value": f"/trigger gl_construct set {10 + cj}"}})
-                tabs.append({"text": " "})
-            menu.append(f"execute if score @s gl_cfgcat matches {ci} run " + tellraw("@s", [{"text": " "}, *tabs]))
-            buttons = [{"text": " "}]
-            for con in CATALOG:
-                if con.cat != cat:
-                    continue
-                node = NODES[con.node][0]
-                buttons += [{"text": f"[{con.name}]", "color": "green",
-                             "clickEvent": {"action": "run_command",
-                                            "value": f"/trigger gl_construct set {100 + construct_id('green', con.key)}"},
-                             "hoverEvent": {"action": "show_text", "contents": [
-                                 {"text": con.name + "\n", "color": "green", "bold": True},
-                                 {"text": con.desc + "\n", "color": "white"},
-                                 {"text": f"Cost {con.cost} charge. Unlock: {node}.", "color": "gray"}]}},
-                            {"text": " "}]
-            menu.append(f"execute if score @s gl_cfgcat matches {ci} run " + tellraw("@s", buttons))
-        menu.append(tellraw("@s", [
-            {"text": " "},
-            {"text": "[Signature Construct]", "color": "light_purple",
-             "clickEvent": {"action": "run_command", "value": f"/trigger gl_construct set {100 + SIG_ID}"},
-             "hoverEvent": {"action": "show_text", "contents": "Your corps' own construct (see the skill tree)."}},
-            {"text": "  "},
-            {"text": "[Clear slot]", "color": "red",
-             "clickEvent": {"action": "run_command", "value": "/trigger gl_construct set 99"}}]))
-        fn["construct/menu"] = menu
-
 
 # bridge boxes at y-1, from the block in front of you: south (+z), north, west (-x), east
 BRIDGE_BOXES = {"s": "~-1 ~-1 ~1 ~1 ~-1 ~16", "n": "~-1 ~-1 ~-16 ~1 ~-1 ~-1",

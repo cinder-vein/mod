@@ -300,7 +300,6 @@ execute as @a[scores={gl_recall=1..}] at @s run function greenlantern:recall/tri
 execute as @a[scores={gl_forge=1..}] at @s run function greenlantern:forge/trigger
 scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0
 scoreboard players set @a[scores={gl_forge=..-1}] gl_forge 0
-scoreboard players set @a[scores={gl_construct=..-1}] gl_construct 0
 execute as @a[tag=gl_offer_any] at @s run function greenlantern:offer/follow
 execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/accept_trigger
 execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger
@@ -321,13 +320,66 @@ effect clear @a[tag=gl_black] minecraft:wither
 effect clear @a[tag=gl_black] minecraft:poison
 execute as @a[tag=gl_indigo,scores={gl_hurt=1..}] at @s run effect give @e[type=#greenlantern:greed_prey,distance=..5] minecraft:weakness 5 1 true
 scoreboard players set @a[scores={gl_hurt=1..}] gl_hurt 0
+scoreboard players set @a gl_rings 0
+tag @a[tag=gl_p1_green] remove gl_p1_green
+tag @a[tag=gl_p2_green] remove gl_p2_green
+tag @a[tag=gl_p1_yellow] remove gl_p1_yellow
+tag @a[tag=gl_p2_yellow] remove gl_p2_yellow
+tag @a[tag=gl_p1_red] remove gl_p1_red
+tag @a[tag=gl_p2_red] remove gl_p2_red
+tag @a[tag=gl_p1_orange] remove gl_p1_orange
+tag @a[tag=gl_p2_orange] remove gl_p2_orange
+tag @a[tag=gl_p1_blue] remove gl_p1_blue
+tag @a[tag=gl_p2_blue] remove gl_p2_blue
+tag @a[tag=gl_p1_violet] remove gl_p1_violet
+tag @a[tag=gl_p2_violet] remove gl_p2_violet
+tag @a[tag=gl_p1_indigo] remove gl_p1_indigo
+tag @a[tag=gl_p2_indigo] remove gl_p2_indigo
+tag @a[tag=gl_p1_white] remove gl_p1_white
+tag @a[tag=gl_p2_white] remove gl_p2_white
+tag @a[tag=gl_p1_black] remove gl_p1_black
+tag @a[tag=gl_p2_black] remove gl_p2_black
+scoreboard players add @a[tag=gl_green] gl_rings 1
+tag @a[tag=gl_green,scores={gl_rings=1}] add gl_p1_green
+tag @a[tag=gl_green,scores={gl_rings=2}] add gl_p2_green
+scoreboard players add @a[tag=gl_yellow] gl_rings 1
+tag @a[tag=gl_yellow,scores={gl_rings=1}] add gl_p1_yellow
+tag @a[tag=gl_yellow,scores={gl_rings=2}] add gl_p2_yellow
+scoreboard players add @a[tag=gl_red] gl_rings 1
+tag @a[tag=gl_red,scores={gl_rings=1}] add gl_p1_red
+tag @a[tag=gl_red,scores={gl_rings=2}] add gl_p2_red
+scoreboard players add @a[tag=gl_orange] gl_rings 1
+tag @a[tag=gl_orange,scores={gl_rings=1}] add gl_p1_orange
+tag @a[tag=gl_orange,scores={gl_rings=2}] add gl_p2_orange
+scoreboard players add @a[tag=gl_blue] gl_rings 1
+tag @a[tag=gl_blue,scores={gl_rings=1}] add gl_p1_blue
+tag @a[tag=gl_blue,scores={gl_rings=2}] add gl_p2_blue
+scoreboard players add @a[tag=gl_violet] gl_rings 1
+tag @a[tag=gl_violet,scores={gl_rings=1}] add gl_p1_violet
+tag @a[tag=gl_violet,scores={gl_rings=2}] add gl_p2_violet
+scoreboard players add @a[tag=gl_indigo] gl_rings 1
+tag @a[tag=gl_indigo,scores={gl_rings=1}] add gl_p1_indigo
+tag @a[tag=gl_indigo,scores={gl_rings=2}] add gl_p2_indigo
+scoreboard players add @a[tag=gl_white] gl_rings 1
+tag @a[tag=gl_white,scores={gl_rings=1}] add gl_p1_white
+tag @a[tag=gl_white,scores={gl_rings=2}] add gl_p2_white
+scoreboard players add @a[tag=gl_black] gl_rings 1
+tag @a[tag=gl_black,scores={gl_rings=1}] add gl_p1_black
+tag @a[tag=gl_black,scores={gl_rings=2}] add gl_p2_black
+execute as @a[tag=!gl_dual,scores={gl_rings=2..}] at @s run function greenlantern:dual/bond
+execute as @a[tag=gl_dual,scores={gl_rings=..1}] run function greenlantern:dual/unbond
+scoreboard players add #t gl_dtick 1
+execute if score #t gl_dtick matches 4.. run scoreboard players set #t gl_dtick 0
+execute if score #t gl_dtick matches 0 as @a[tag=gl_dual] run function greenlantern:dual/mirror
+scoreboard players remove @a[scores={gl_kjs=1..}] gl_kjs 1
+tag @a[tag=gl_kjs,scores={gl_kjs=..0}] remove gl_ctrl
+tag @a[tag=gl_kjs,scores={gl_kjs=..0}] remove gl_kjs
 scoreboard players remove @a[scores={gl_cc_sword=1..}] gl_cc_sword 1
 scoreboard players remove @a[scores={gl_cc_sword_shield=1..}] gl_cc_sword_shield 1
 scoreboard players remove @a[scores={gl_cc_mace=1..}] gl_cc_mace 1
 scoreboard players remove @a[scores={gl_cc_axe=1..}] gl_cc_axe 1
 scoreboard players remove @a[scores={gl_cc_fist=1..}] gl_cc_fist 1
 scoreboard players remove @a[scores={gl_cc_slam=1..}] gl_cc_slam 1
-scoreboard players remove @a[scores={gl_cc_blast=1..}] gl_cc_blast 1
 scoreboard players remove @a[scores={gl_cc_gatling=1..}] gl_cc_gatling 1
 scoreboard players remove @a[scores={gl_cc_missiles=1..}] gl_cc_missiles 1
 scoreboard players remove @a[scores={gl_cc_cannon=1..}] gl_cc_cannon 1
@@ -339,7 +391,6 @@ scoreboard players remove @a[scores={gl_cc_blocks=1..}] gl_cc_blocks 1
 scoreboard players remove @a[scores={gl_cc_scuba=1..}] gl_cc_scuba 1
 scoreboard players remove @a[scores={gl_cc_drill=1..}] gl_cc_drill 1
 scoreboard players remove @a[scores={gl_cc_bridge=1..}] gl_cc_bridge 1
-scoreboard players remove @a[scores={gl_cc_scan=1..}] gl_cc_scan 1
 scoreboard players remove @a[scores={gl_cc_signature=1..}] gl_cc_signature 1
 scoreboard players remove @e[type=minecraft:marker,tag=gl_hl] gl_life 1
 execute as @e[type=minecraft:marker,tag=gl_hl,scores={gl_life=..0}] at @s run function greenlantern:construct/hardlight_end
@@ -347,4 +398,3 @@ scoreboard players set @e[type=minecraft:item_display,tag=gl_train_new] gl_life 
 execute as @e[type=minecraft:item_display,tag=gl_train_new] run data merge entity @s {start_interpolation:0,interpolation_duration:12,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,13f],scale:[2.4f,2.4f,2.4f]}}
 tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_new
 tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_train_new
-execute as @a[scores={gl_construct=1..}] at @s run function greenlantern:construct/menu_trigger

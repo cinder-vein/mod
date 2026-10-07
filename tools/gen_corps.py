@@ -12,11 +12,14 @@ re-run this script. Art lives in art.py.
 """
 import hashlib
 import json
+import os
 import shutil
 from pathlib import Path
 
 import art
 import constructs
+import icons
+import spectrum
 import systems
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,6 +27,11 @@ SRC = ROOT / "src"
 NS = "greenlantern"
 BAR = "ring_charge"
 BASE_CHARGE = 1000
+# Passive Recharge I-IV in the skill tree: (charge per pulse, ticks between pulses, tree icon). Rings don't
+# recharge on their own without them.
+RECHARGE_TIERS = [(1, 10, "minecraft:lantern"), (1, 5, "minecraft:soul_lantern"), (2, 5, "minecraft:sea_lantern"),
+                  (4, 5, NS + ":{c}_power_battery")]
+RECHARGE_XP = 60
 
 # --- corps table ------------------------------------------------------------------
 
@@ -90,7 +98,7 @@ CORPS = {
     },
     "black": {
         "name": "Black Lantern", "emotion": "Death", "color": (95, 98, 110),
-        "feeds_on_death": 200, "regen": False,  # recharged by killing, not over time
+        "feeds_on_death": 200,  # killing recharges it
         "gem": "minecraft:wither_skeleton_skull", "glass": "minecraft:black_stained_glass",
         "oath": ["The Blackest Night falls from the skies,", "The darkness grows as all light dies,",
                  "We crave your hearts and your demise,", "By my black hand, the dead shall rise!"],
@@ -104,6 +112,48 @@ OTHERS = "@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft
 NEAREST = OTHERS[:-1] + ",limit=1,sort=nearest]"
 ALLIES = "@a[distance=..{r}]"
 UNIFORM = {"type": "palladium:ability_enabled", "ability": "uniform"}
+SPECTRUM_POWER = f"{NS}:spectrum_lantern"
+
+
+def NOT(*conds):
+    return {"type": "palladium:not", "conditions": list(conds)}
+
+
+def OR(*conds):
+    return {"type": "palladium:or", "conditions": list(conds)}
+
+
+def AND(*conds):
+    return {"type": "palladium:and", "conditions": list(conds)}
+
+
+def has_tag(tag):
+    return {"type": "palladium:has_tag", "tag": tag}
+
+
+def has_power(corps):
+    return {"type": "palladium:has_power", "power": f"{NS}:{corps}_lantern"}
+
+
+# With two rings worn, the Spectrum Bond power takes over the shared abilities (see spectrum_power).
+NOT_DUAL = NOT({"type": "palladium:has_power", "power": SPECTRUM_POWER})
+# Blast mode (tag gl_mode) swaps Beam for Energy Blast and the Construct Wheel for Scan. While Ctrl is held
+# (gl_ctrl, sent by the KubeJS client script) the first slot shows Switch Mode; without KubeJS, sneak instead.
+MODE = has_tag("gl_mode")
+SWITCHING = OR(has_tag("gl_ctrl"), AND({"type": "palladium:crouching"}, NOT(has_tag("gl_kjs"))))
+
+# Ability-bar icons are pixel-art glyphs (tools/icons.py) rendered in each corps' colors.
+ICONS = {}  # texture file under assets/greenlantern/textures/gui/ability/ -> (glyph, rgb, accent rgb)
+
+
+def glyph_icon(glyph, key, rgb, accent=None):
+    if glyph not in icons.GLYPHS:
+        if not os.environ.get("GL_ICON_PLACEHOLDER"):  # set it to preview a build before every glyph is drawn
+            raise KeyError(f"no glyph '{glyph}' in tools/icon_glyphs")
+        ICONS[f"{glyph}_{key}.png"] = (sorted(icons.GLYPHS)[0], rgb, accent)
+        return f"{NS}:textures/gui/ability/{glyph}_{key}.png"
+    ICONS[f"{glyph}_{key}.png"] = (glyph, rgb, accent)
+    return f"{NS}:textures/gui/ability/{glyph}_{key}.png"
 
 # 3D hard-light shapes and the construct catalog live in constructs.py.
 SHAPES = constructs.SHAPES
@@ -178,15 +228,19 @@ class Kit:
 
     SPECIAL_COLUMN = 9.5
 
-    def __init__(self, corps, data):
+    def __init__(self, corps, data, accent=None):
         self.c = corps
         self.data = data
         self.rgb = data["color"]
+        self.accent = accent
         self.abilities = {}
         self.lang = {}
         self.specials = []
         self.attr_count = 0
         self.shapes = {**{s: s for s in SHAPES}, **data.get("shapes", {})}
+
+    def glyph(self, glyph):
+        return glyph_icon(glyph, self.c, self.rgb, self.accent)
 
     def tr(self, key, english, shared):
         lang_key = f"ability.{NS}.{key}" if shared else f"ability.{NS}.{self.c}.{key}"
@@ -209,8 +263,9 @@ class Kit:
                                          {"type": "palladium:experience_level_buyable", "xp_level": xp}]},
         }
 
-    def bar(self, key, ability, name, icon, index, node=None, cost=0, suit=False, extra=(), shared=True):
-        """An ability on the ability bar (hidden from the skill tree, which shows its node instead)."""
+    def bar(self, key, ability, name, icon, index, node=None, cost=0, suit=False, extra=(), shared=True, lang_key=None):
+        """An ability on the ability bar (hidden from the skill tree, which shows its node instead).
+        lang_key lets several abilities (e.g. one per ring pair) share one title."""
         conds = ability.get("conditions", {})
         unlocking = ([UNIFORM] if suit else []) + ([unlocked(node)] if node else []) + list(extra)
         if cost:
@@ -219,7 +274,7 @@ class Kit:
         if unlocking:
             conds = {"unlocking": one(unlocking), **conds}
         self.abilities[key] = {
-            **ability, "conditions": conds, "title": self.tr(key, name, shared), "icon": icon,
+            **ability, "conditions": conds, "title": self.tr(lang_key or key, name, shared), "icon": icon,
             "bar_color": "white", "hidden": True, "hidden_in_bar": False, "list_index": index,
         }
 
@@ -247,7 +302,8 @@ class Kit:
             ability["conditions"] = {"unlocking": one([unlocked(f"skill_{key}"), *extra])}
             self.hidden(key, ability)
         else:
-            self.bar(key, ability, name, icon, index + 5, node=f"skill_{key}", cost=cost, extra=extra, shared=False)
+            self.bar(key, ability, name, self.glyph(key), index + 5, node=f"skill_{key}", cost=cost, extra=extra,
+                     shared=False)
 
     def pulse(self, key, source, every, commands):
         """Runs commands every N ticks while `source` is enabled."""
@@ -257,7 +313,7 @@ class Kit:
         self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (self.SPECIAL_COLUMN, 2 + len(self.specials)),
                   [self.specials[-1]], 30, shared=False)
         self.bar(key, {**command(first=commands), "conditions": {"enabling": action(cooldown)}},
-                 name, icon, 14, node=f"skill_{key}", cost=cost, shared=False)
+                 name, self.glyph(key), 14, node=f"skill_{key}", cost=cost, shared=False)
 
 
 # --- the kit every corps shares -----------------------------------------------------
@@ -268,15 +324,25 @@ def shared_kit(k):
     earlier = [{"type": "palladium:has_power", "power": f"{NS}:{o}_lantern"} for o in list(CORPS)[:list(CORPS).index(c)]]
     obj = f"glmax_{c}"
 
-    # Suit Up: the root of the skill tree and the bottom slot of the first bar page.
+    # The root of the skill tree: always unlocked, so the tree stays bought while the shared abilities are
+    # locked (two rings worn: the Spectrum Bond takes them over).
+    k.abilities["ring_root"] = {
+        "type": "palladium:dummy", "title": k.tr("ring_root", "Lantern Ring", True),
+        "description": k.tr("ring_root.description",
+                            "Your ring's powers: buy upgrades with XP levels. Suit Up is the bottom slot of the first bar "
+                            "page. Hold Ctrl (or sneak, without KubeJS) and press the first ability key to switch between "
+                            "beam mode and blast mode.", True),
+        "icon": f"{NS}:{c}_lantern_ring", "hidden_in_bar": True, "gui_position": [0, 0],
+    }
+    # Suit Up: the bottom slot of the first bar page.
     k.abilities["uniform"] = {
-        "type": "palladium:dummy", "bar_color": "white", "list_index": 4,
+        "type": "palladium:dummy", "bar_color": "white", "list_index": 4, "hidden": True, "hidden_in_bar": False,
         "title": k.tr("uniform", "Suit Up", True),
         "description": k.tr("uniform.description",
                             "Toggle your corps' suit on or off. Pick the suit and mask in the accessories menu.", True),
-        "icon": f"{NS}:{c}_lantern_ring", "gui_position": [0, 0],
+        "icon": k.glyph("suit_up"),
         # with two rings worn, only one suit at a time: stay off while another ring's suit is up
-        "conditions": {"enabling": [toggle(), {"type": "palladium:not", "conditions": [
+        "conditions": {"unlocking": NOT_DUAL, "enabling": [toggle(), {"type": "palladium:not", "conditions": [
             {"type": "palladium:ability_enabled", "power": f"{NS}:{o}_lantern", "ability": "uniform"}
             for o in CORPS if o != c]}]},
     }
@@ -335,17 +401,17 @@ def shared_kit(k):
 
     # --- skill tree ---
     k.node("skill_health_1", "Vitality I", "+10 hearts while your ring is charged.",
-           "minecraft:golden_apple", (-5, 1), ["uniform"], 5)
+           "minecraft:golden_apple", (-5, 1), ["ring_root"], 5)
     k.node("skill_health_2", "Vitality II", "Another +10 hearts while your ring is charged.",
            "minecraft:enchanted_golden_apple", (-5, 2), ["skill_health_1"], 15)
 
     k.node("skill_combat_1", "Combat I", "+4 attack and punch damage while your ring is charged.",
-           "minecraft:iron_sword", (-3, 1), ["uniform"], 5)
+           "minecraft:iron_sword", (-3, 1), ["ring_root"], 5)
     k.node("skill_combat_2", "Combat II", "Another +4 attack and punch damage.",
            "minecraft:netherite_sword", (-3, 2), ["skill_combat_1"], 15)
 
     k.node("skill_charge_1", "Capacity I", "Your ring holds 1500 charge instead of 1000.",
-           "minecraft:glowstone", (-1, 1), ["uniform"], 5)
+           "minecraft:glowstone", (-1, 1), ["ring_root"], 5)
     k.node("skill_charge_2", "Capacity II", "Your ring holds 2000 charge.",
            "minecraft:beacon", (-1, 2), ["skill_charge_1"], 15)
     # The bar's max reads a per-corps scoreboard score (falls back to 1000).
@@ -356,8 +422,19 @@ def shared_kit(k):
     k.hidden("charge_2_apply", {**command(first=[setup, f"scoreboard players set @s {obj} 2000"]),
                                 "conditions": {"unlocking": unlocked("skill_charge_2")}})
 
+    # Passive recharge: rings only regain charge on their own once you buy it (each tier replaces the one before).
+    for i, (amount, every, icon) in enumerate(RECHARGE_TIERS, 1):
+        rate = amount * 20 // every
+        k.node(f"skill_recharge_{i}", f"Passive Recharge {['I', 'II', 'III', 'IV'][i - 1]}",
+               f"Your ring regains {rate} charge a second on its own, without a Power Battery."
+               + (" Replaces the tier before." if i > 1 else ""),
+               icon.format(c=c), (-7, i), ["ring_root" if i == 1 else f"skill_recharge_{i - 1}"], RECHARGE_XP)
+        highest = [unlocked(f"skill_recharge_{i}")] + ([NOT(unlocked(f"skill_recharge_{i + 1}"))] if i < 4 else [])
+        k.hidden(f"recharge_passive_{i}", {"type": "palladium:dummy", "energy_bar_usage": usage(-amount),
+                                           "conditions": {"unlocking": highest, "enabling": interval(every)}})
+
     k.node("skill_flight", "Flight", "Fly on the power of your ring, leaving a trail of light. Flying slowly drains charge.",
-           "minecraft:feather", (1, 1), ["uniform"], 5)
+           "minecraft:feather", (1, 1), ["ring_root"], 5)
     flying = [unlocked("skill_flight"), {"type": "palladium:is_flying"}]
     k.hidden("flight_trail", {"type": "palladium:trail", "trail": f"{NS}:{c}_trail", "conditions": {"enabling": flying}})
     k.hidden("flight_aura", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
@@ -366,11 +443,22 @@ def shared_kit(k):
     k.hidden("flight_drain", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
                               "conditions": {"enabling": [*flying, interval(5)]}})
 
-    # --- bar page 1: beam, constructs, force field, ring light, suit up ---
+    # --- bar page 1: beam, construct wheel, force field, ring light, suit up ---
+    # Blast mode swaps the first two for Energy Blast and Scan; holding Ctrl shows Switch Mode in the first slot.
+    # (With two rings worn these are all locked: the Spectrum Bond's bar replaces this page.)
     k.bar("beam", {
         "type": "palladium:energy_beam", "energy_beam": f"{NS}:{c}_beam", "damage": 2.0, "max_distance": 40.0,
         "speed": 0.6, "energy_bar_usage": usage(3), "conditions": {"enabling": held()},
-    }, f"{data['emotion']} Beam", "minecraft:blaze_rod", 0, cost=3, shared=False)
+    }, f"{data['emotion']} Beam", k.glyph("beam"), 0, cost=3, shared=False, extra=[NOT(SWITCHING), NOT(MODE), NOT_DUAL])
+    k.bar("blast", {**command(first=[f"function {NS}:ring/{c}/blast"]), "conditions": {"enabling": action(15)}},
+          "Energy Blast", k.glyph("blast"), 0, extra=[NOT(SWITCHING), MODE, NOT_DUAL])
+    k.lang[f"ability.{NS}.blast.description"] = (
+        f"Blast mode: fire a bolt of hard light where you look. Costs {constructs.Gen.BLAST_COST} charge.")
+    k.bar("switch_mode", {**command(first=[f"function {NS}:ring/mode"]), "conditions": {"enabling": action(10)}},
+          "Switch Mode", k.glyph("mode"), 0, extra=[SWITCHING, NOT_DUAL])
+    k.lang[f"ability.{NS}.switch_mode.description"] = (
+        "Hold Ctrl (or sneak, without KubeJS) and press this key: switch between beam mode (Beam, Construct Wheel) "
+        "and blast mode (Energy Blast, Scan).")
     # Point the ring hand at the target while beaming. The beam's origin follows the arm's pose
     # (BodyPart offset is applied after the arm's rotation), so it visibly leaves the hand.
     k.hidden("beam_aim", {"type": "palladium:aim", "arm": "right_arm", "time": 4,
@@ -382,12 +470,12 @@ def shared_kit(k):
     benefit_abilities(k)
 
     k.node("skill_force_field", "Force Field", "Unlocks a bubble that blocks projectiles, explosions and fire.",
-           "minecraft:shield", (Kit.SPECIAL_COLUMN, 1), ["uniform"], 5)
+           "minecraft:shield", (Kit.SPECIAL_COLUMN, 1), ["ring_root"], 5)
     k.bar("force_field", {
         "type": "palladium:damage_immunity",
         "damage_sources": ["minecraft:is_projectile", "minecraft:is_explosion", "minecraft:is_fire"],
         "energy_bar_usage": usage(2), "conditions": {"enabling": toggle()},
-    }, "Force Field", "minecraft:shield", 2, node="skill_force_field", cost=2)
+    }, "Force Field", k.glyph("force_field"), 2, node="skill_force_field", cost=2, extra=[NOT_DUAL])
     k.hidden("force_field_glow", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(rgb),
                                   "conditions": {"enabling": enabled("force_field")}})
 
@@ -417,18 +505,19 @@ def shared_kit(k):
         oath.append("tellraw @a[distance=..24] " + json.dumps(
             prefix + [{"translate": f"oath.{NS}.{c}.{i}", "color": hexcolor(rgb), "italic": True}], separators=(",", ":")))
     k.hidden("oath", {**command(first=oath + [
-        burst(rgb, 1.5, "0.6 1 0.6", 80), sound("minecraft:block.beacon.power_select", 1.2)]),
+        burst(rgb, 1.5, "0.6 1 0.6", 80), sound("minecraft:block.beacon.power_select", 1.2),
+        f"function {NS}:dual/twin_battery"]),  # Twin Batteries (Spectrum Bond tree) fills the other ring too
         "conditions": {"enabling": {"type": "palladium:or", "conditions": [
             enabled("recharge"), enabled("recharge_at_lantern")]}}})
 
     # Corps leaders (appointed by an admin) can revoke the ring of the nearest member.
     k.bar("revoke_ring", {**command(first=[f"function {NS}:leader/revoke_{c}"]),
                           "conditions": {"enabling": action(40)}},
-          "Revoke Ring", "minecraft:barrier", 17, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
+          "Revoke Ring", k.glyph("revoke"), 17, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
     k.lang[f"ability.{NS}.revoke_ring.description"] = "Leaders only: take the ring from the nearest member of your corps."
     k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision 30 0 true"],
                                    last=["effect clear @s minecraft:night_vision"]),
-                         "conditions": {"enabling": toggle()}}, "Ring Light", "minecraft:glowstone_dust", 3)
+                         "conditions": {"enabling": toggle()}}, "Ring Light", k.glyph("ring_light"), 3, extra=[NOT_DUAL])
     k.pulse("ring_light_pulse", "ring_light", 200, ["effect give @s minecraft:night_vision 30 0 true"])
 
     # Corps tags let rings react to each other (e.g. Blue Lanterns empower Green ones).
@@ -464,16 +553,28 @@ NODE_ICONS = {"constructs": "minecraft:emerald", "melee_1": f"{NS}:construct_swo
               "utility_1": "minecraft:turtle_helmet", "utility_2": "minecraft:scaffolding"}
 
 
+# glyph (tools/icon_glyphs) shown for each construct on the construct wheel
+CONSTRUCT_GLYPH = {"slam": "hammer"}
+SIGNATURE_GLYPH = {"green": "train", "yellow": "spikes", "red": "claws", "orange": "grasping_hands",
+                   "blue": "sanctuary", "violet": "crystal_spear", "indigo": "staff", "white": "aegis",
+                   "black": "black_hand"}
+
+
+def construct_glyph(corps, key):
+    return SIGNATURE_GLYPH[corps] if key == "signature" else CONSTRUCT_GLYPH.get(key, key)
+
+
 def construct_abilities(k):
-    """The construct branch of the skill tree, the five construct slots (bar page 2), the construct
-    wheel, Configure Constructs and the helpers held constructs need."""
+    """The construct branch of the skill tree, the construct wheel (every construct is formed from it)
+    and the helpers held constructs need."""
     c = k.c
+    earlier = [has_power(o) for o in list(CORPS)[:list(CORPS).index(c)]]
     sig = constructs.SIGNATURES[c]
     for node, (name, desc, pos, parents, xp) in constructs.NODES.items():
         icon = NODE_ICONS.get(node, sig.icon)
         if node == "signature":
             name, desc = f"Signature Construct: {sig.name}", sig.desc + " Needs all four construct branches."
-        k.node(f"skill_{node}", name, desc, icon, pos, [p if p == "uniform" else f"skill_{p}" for p in parents], xp,
+        k.node(f"skill_{node}", name, desc, icon, pos, [p if p == "ring_root" else f"skill_{p}" for p in parents], xp,
                shared=node != "signature")
         # the datapack checks these tags before running a construct
         k.hidden(f"unlocked_{node}", {**command(first=[f"tag @s add gl_u_{c}_{node}"],
@@ -484,30 +585,30 @@ def construct_abilities(k):
         shared = con.key != "signature"
         k.bar(f"cx_{con.key}", {**command(first=[f"function {NS}:construct/{c}/{con.key}"]),
                                 "conditions": {"enabling": {"type": "palladium:ability_wheel", "cooldown": 5}}},
-              con.name, con.icon, None, node=f"skill_{con.node}", shared=shared)
+              con.name, k.glyph(construct_glyph(c, con.key)), None, node=f"skill_{con.node}", shared=shared)
         k.abilities[f"cx_{con.key}"]["hidden_in_bar"] = True
         del k.abilities[f"cx_{con.key}"]["list_index"]
         k.abilities[f"cx_{con.key}"]["description"] = k.tr(
             f"cx_{con.key}.description", f"{con.desc} Costs {con.cost} charge.", shared)
     k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": [f"cx_{con.key}" for con in catalog],
                          "conditions": {"enabling": held()}},
-          "Construct Wheel", "minecraft:emerald", 1, node="skill_constructs")
-    for n in range(1, 6):
-        k.bar(f"construct_{n}", {**command(first=[f"function {NS}:construct/press/{c}_{n}"]),
-                                 "conditions": {"enabling": action(5)}},
-              f"Construct {n}", f"{NS}:textures/gui/construct_slot/{c}_{n}.png", 4 + n, node="skill_constructs")
-        k.lang[f"ability.{NS}.construct_{n}.description"] = (
-            f"Forms the construct in slot {n}. Choose it with Configure Constructs.")
-    k.bar("configure_constructs", {**command(first=[f"function {NS}:construct/menu"]),
-                                   "conditions": {"enabling": action(10)}},
-          "Configure Constructs", "minecraft:writable_book", 15, node="skill_constructs")
+          "Construct Wheel", k.glyph("constructs"), 1, node="skill_constructs", extra=[NOT(MODE), NOT_DUAL])
+    k.lang[f"ability.{NS}.constructs.description"] = (
+        "Hold the key and pick a construct with the mouse. Pick a held construct again to dismiss it.")
+    # blast mode puts Scan in the wheel's slot (listed after the wheel: a locked slot shows the wheel)
+    k.bar("scan", {**command(first=[f"function {NS}:ring/{c}/scan"]), "conditions": {"enabling": action(20)}},
+          "Scan", k.glyph("scan"), 1, extra=[MODE, NOT_DUAL])
+    k.lang[f"ability.{NS}.scan.description"] = (
+        f"Blast mode: scan what you're looking at (up to 24 blocks) for its health and armor; it glows for 10 seconds. "
+        f"Costs {constructs.Gen.SCAN_COST} charge.")
 
     # Upkeep and dissolving run in the datapack (constructs.py), per ring, after the charge is restored.
-    # The gatling fires while right-click is held (the datapack paces the shots and picks the ring).
+    # The gatling fires while right-click is held (the datapack paces the shots and picks the ring). Only the
+    # first ring worn (in CORPS order) runs it, so two rings never fire it twice as fast.
     k.hidden("gatling_fire", {**command(every=[f"function {NS}:construct/gatling_tick"]),
-                              "conditions": {"unlocking": {"type": "palladium:item_in_slot",
-                                                           "item": {"item": f"{NS}:construct_gatling"},
-                                                           "slot": "mainhand"},
+                              "conditions": {"unlocking": [{"type": "palladium:item_in_slot",
+                                                            "item": {"item": f"{NS}:construct_gatling"},
+                                                            "slot": "mainhand"}, *([NOT(OR(*earlier))] if earlier else [])],
                                              "enabling": {"type": "palladium:held", "key_type": "right_click"}}})
     # Scuba Gear: a diving helmet and air tank while the tag is set
     scuba = {"type": "palladium:has_tag", "tag": f"gl_scuba_{c}"}
@@ -975,7 +1076,7 @@ def specials_black(k):
            (1, 3), ["skill_flight"], 8, shared=False)
     k.bar("emotional_sight", {"type": "palladium:entity_glow", "mode": "others", "distance": 32.0,
                               "conditions": {"enabling": toggle()}},
-          "Emotional Sight", "minecraft:ender_eye", 10, node="skill_emotional_sight", shared=False)
+          "Emotional Sight", k.glyph("emotional_sight"), 10, node="skill_emotional_sight", shared=False)
     around = OTHERS.format(r=12)
     k.ultimate("blackest_night", "Blackest Night", "plunge everything within 12 blocks into death: darkness, withering and pain.",
                "minecraft:sculk_catalyst", [
@@ -987,8 +1088,7 @@ def specials_black(k):
 
 
 # --- dual rings: Spectrum Fusion ------------------------------------------------------
-# Wearing two rings at once gives a fusion ability that mixes both corps' signature effects.
-# The corps listed first in CORPS owns the ability, so a pair never gets it twice.
+# Spectrum Fusion (the Spectrum Bond's bar) mixes both bonded rings' signature effects; each pair has its own.
 
 FOE = OTHERS.format(r=10)
 FRIENDS = ALLIES.format(r=10)
@@ -1048,20 +1148,234 @@ def fusion_function(a, b):
     ]
 
 
-def fusion_ability(k):
-    """Adds Spectrum Fusion to corps k.c if it is the lower-ranked partner of any pair."""
-    partners = [b for a, b in fusion_pairs() if a == k.c]
-    if not partners:
-        return
-    k.bar("spectrum_fusion", {
-        **command(first=[f"execute if entity @s[tag=gl_{b}] run function {NS}:fusion/{k.c}_{b}" for b in partners]),
-        "energy_bar_usage": usage(FUSION_COST),
-        "conditions": {"enabling": action(600)},
-    }, "Spectrum Fusion", "minecraft:nether_star", 16, cost=FUSION_COST,
-        extra=[{"type": "palladium:or", "conditions": [
-            {"type": "palladium:has_power", "power": f"{NS}:{b}_lantern"} for b in partners]}])
-    k.lang[f"ability.{NS}.spectrum_fusion.description"] = (
-        "Wear two rings at once to fuse their powers. Each pair of corps has its own fusion.")
+# --- two rings: the Spectrum Bond ------------------------------------------------------
+# While two rings are worn the datapack (spectrum.py) grants greenlantern:spectrum_lantern. It locks the rings'
+# shared abilities (NOT_DUAL), so their first bar page disappears, and brings one merged bar of its own plus a skill
+# tree about wielding two rings. Each ring keeps its specials page. The first two rings in CORPS order bond: the
+# first is worn on the right hand, the second on the left.
+
+SPECTRUM_RGB = (235, 240, 255)     # white light: every color at once
+SPECTRUM_ACCENT = (255, 214, 90)   # second color of the bond's own (pair-independent) icons
+DUAL_NODES = [  # key, name, description, icon (item or glyph:<name>), position, parent, XP levels
+    ("shared_light", "Shared Light", "Every second, charge flows from the fuller ring into the emptier one (up to 10 a "
+     "second), keeping the two even.", "minecraft:glowstone_dust", (-4, 1), "bond", 5),
+    ("twin_batteries", "Twin Batteries", "Recharging either ring at its Power Battery fills both rings.",
+     "minecraft:lantern", (-4, 2), "shared_light", 10),
+    ("resonance", "Resonance", "The two lights feed each other: both rings regain 2 extra charge a second.",
+     "minecraft:amethyst_shard", (-4, 3), "twin_batteries", 15),
+    ("dual_vitality", "Dual Vitality", "+10 hearts while both rings are charged.", "minecraft:golden_apple",
+     (-2, 1), "bond", 8),
+    ("twin_strength", "Twin Strength", "+3 attack and punch damage while both rings are charged.",
+     "minecraft:netherite_sword", (-2, 2), "dual_vitality", 12),
+    ("spectrum_flight", "Spectrum Flight", "Fly 50% faster on two lights (needs Flight in either ring).",
+     "minecraft:elytra", (-2, 3), "twin_strength", 12),
+    ("fusion", "Spectrum Fusion", "Fuse both rings' powers in one burst around you; every pair of corps has its own "
+     f"fusion. Costs {spectrum.COSTS['fusion_1']} charge from each ring, every 30 seconds.", "glyph:fusion",
+     (2, 1), "bond", 8),
+    ("fusion_mastery", "Fusion Mastery", f"Spectrum Fusion recharges in 15 seconds and costs "
+     f"{spectrum.COSTS['fusion_2']} from each ring.", "minecraft:nether_star", (2, 2), "fusion", 15),
+    ("overload", "Spectrum Overload", "Ultimate: unleash both rings at once. Everything within "
+     f"{spectrum.OVERLOAD_RADIUS} blocks takes heavy damage and is thrown into the air, and you gain Strength II, "
+     f"Resistance II and Speed II for 15 seconds. Costs {spectrum.COSTS['overload']} charge from each ring, once a "
+     "minute.", "glyph:overload", (2, 3), "fusion_mastery", 30),
+    ("twin_constructs", "Twin Constructs", "Constructs cost a quarter less while you wear two rings: both rings share "
+     "the load.", "glyph:constructs", (4, 1), "bond", 8),
+    ("prismatic", "Prismatic Shield", "Your force field also takes the edge off every blow (Resistance II while it's "
+     "up) and shines in both colors. Needs Force Field in either ring.", "glyph:prismatic", (4, 2),
+     "twin_constructs", 12),
+    ("twin_signatures", "Twin Signatures", "The construct wheel also offers your second ring's signature construct.",
+     "minecraft:end_crystal", (4, 3), "prismatic", 15),
+]
+TAGGED_DUAL_NODES = ["shared_light", "twin_batteries", "resonance", "twin_constructs", "twin_signatures"]
+
+
+def bond(a, b):
+    """Conditions true while rings a and b are the bonded pair: both worn and no other ring before b in CORPS order
+    (so with three rings worn, exactly one pair matches)."""
+    order = list(CORPS)
+    others = [has_power(x) for x in order[:order.index(b)] if x != a]
+    return [has_power(a), has_power(b), *([NOT(OR(*others))] if others else [])]
+
+
+def ring_charge(corps, amount):
+    return {"type": "palladium:energy_bar", "power": f"{NS}:{corps}_lantern", "energy_bar": BAR, "min": amount}
+
+
+def ring_usage(corps, amount):
+    return {"energy_bar": f"{NS}:{corps}_lantern#{BAR}", "amount": amount}
+
+
+def every_ring_charged(amount):
+    return AND(*[OR(NOT(has_power(c)), ring_charge(c, amount)) for c in CORPS])
+
+
+def any_ring_unlocked(ability):
+    return OR(*[{"type": "palladium:ability_unlocked", "power": f"{NS}:{c}_lantern", "ability": ability} for c in CORPS])
+
+
+def first_worn(corps):
+    """True if `corps` is worn and is the first ring worn in CORPS order."""
+    before = [has_power(x) for x in list(CORPS)[:list(CORPS).index(corps)]]
+    return [has_power(corps), *([NOT(OR(*before))] if before else [])]
+
+
+def spectrum_power():
+    k = Kit("spectrum", {"color": SPECTRUM_RGB, "name": "Spectrum Bond", "emotion": "Spectrum"}, SPECTRUM_ACCENT)
+    pairs = fusion_pairs()
+    pair_icon = lambda glyph, a, b: glyph_icon(glyph, f"{a}_{b}", CORPS[a]["color"], CORPS[b]["color"])  # noqa: E731
+
+    # --- skill tree ---
+    k.abilities["bond"] = {
+        "type": "palladium:dummy", "title": k.tr("bond", "Spectrum Bond", False),
+        "description": k.tr("bond.description",
+                            "Two rings, two emotions, one light. While you wear two rings, their beams, constructs, force "
+                            "fields, ring light and suit merge into this bar; each ring keeps its own specials page. "
+                            "Merged powers draw on both rings, and the Spectrum Charge bar shows them together. What you "
+                            "buy here stays with you when you take a ring off.", False),
+        "icon": k.glyph("fusion"), "hidden_in_bar": True, "gui_position": [0, 0],
+    }
+    for key, name, desc, icon, pos, parent, xp in DUAL_NODES:
+        if icon.startswith("glyph:"):
+            icon = k.glyph(icon[6:])
+        k.node(f"skill_{key}", name, desc, icon, pos, [parent if parent == "bond" else f"skill_{parent}"], xp,
+               shared=False)
+    for key in TAGGED_DUAL_NODES:  # the datapack checks these tags
+        k.hidden(f"tag_{key}", {**command(first=[f"tag @s add gl_du_{key}"], last=[f"tag @s remove gl_du_{key}"]),
+                                "conditions": {"unlocking": unlocked(f"skill_{key}")}})
+
+    def attr(key, attribute, amount, conds):
+        k.hidden(key, {"type": "palladium:attribute_modifier", "attribute": attribute, "amount": amount,
+                       "operation": 0, "uuid": "6c7affee-1a2b-4c3d-8e4f-" + hashlib.md5(key.encode()).hexdigest()[:12],
+                       "conditions": {"unlocking": conds}})
+
+    charged = every_ring_charged(1)
+    attr("dual_vitality", "minecraft:generic.max_health", 20, [unlocked("skill_dual_vitality"), charged])
+    attr("twin_strength", "minecraft:generic.attack_damage", 3, [unlocked("skill_twin_strength"), charged])
+    attr("twin_strength_fists", "palladium:punch_damage", 3, [unlocked("skill_twin_strength"), charged])
+    attr("spectrum_flight", "palladium:flight_speed", 0.5,
+         [unlocked("skill_spectrum_flight"), any_ring_unlocked("skill_flight"), charged])
+
+    # --- bar page 1: Spectrum Beam / Twin Blast / Switch Mode, Construct Wheel / Scan, force field, light, suit ---
+    # A slot whose abilities are all locked shows its first one: these never-unlocked placeholders come first, so a
+    # locked slot shows the bond's own icon rather than some other pair's.
+    for key, name, glyph, index in (("beam", "Spectrum Beam", "twin_beam", 0), ("force_field", "Force Field",
+                                                                              "force_field", 2)):
+        k.bar(f"{key}_locked", {"type": "palladium:dummy"}, name, k.glyph(glyph), index, shared=False, lang_key=key,
+              extra=[{"type": "palladium:false"}])
+    for a, b in pairs:
+        k.bar(f"beam_{a}_{b}", {
+            "type": "palladium:energy_beam", "energy_beam": f"{NS}:{a}_beam", "damage": 2.0, "max_distance": 40.0,
+            "speed": 0.6, "energy_bar_usage": [ring_usage(a, 2)], "conditions": {"enabling": held()},
+        }, "Spectrum Beam", pair_icon("twin_beam", a, b), 0, shared=False, lang_key="beam",
+            extra=[*bond(a, b), ring_charge(a, 2), ring_charge(b, 2), NOT(SWITCHING), NOT(MODE)])
+        # the second ring's beam leaves the left hand alongside it
+        k.hidden(f"beam_left_{a}_{b}", {
+            "type": "palladium:energy_beam", "energy_beam": f"{NS}:{b}_beam_left", "damage": 2.0, "max_distance": 40.0,
+            "speed": 0.6, "energy_bar_usage": [ring_usage(b, 2)],
+            "conditions": {"unlocking": [*bond(a, b), ring_charge(b, 2)], "enabling": enabled(f"beam_{a}_{b}")}})
+    any_beam = OR(*[enabled(f"beam_{a}_{b}") for a, b in pairs])
+    for arm in ("right_arm", "left_arm"):
+        k.hidden(f"beam_aim_{arm}", {"type": "palladium:aim", "arm": arm, "time": 4,
+                                     "conditions": {"enabling": any_beam}})
+    k.hidden("beam_sound", {"type": "palladium:play_sound", "sound": "minecraft:block.beacon.ambient", "pitch": 1.3,
+                            "looping": True, "conditions": {"enabling": any_beam}})
+    k.bar("blast", {**command(first=[f"function {NS}:dual/blast"]), "conditions": {"enabling": action(15)}},
+          "Twin Blast", k.glyph("blast"), 0, shared=False, extra=[NOT(SWITCHING), MODE])
+    k.bar("switch_mode", {**command(first=[f"function {NS}:ring/mode"]), "conditions": {"enabling": action(10)}},
+          "Switch Mode", k.glyph("mode"), 0, extra=[SWITCHING])
+
+    catalog = [(con.key, con.name, con.node, construct_glyph("green", con.key)) for con in constructs.CATALOG]
+    catalog += [("sig_1", "Signature Construct", "signature", "emerald_nova"),
+                ("sig_2", "Second Signature Construct", "signature", "fusion")]
+    k.lang[f"ability.{NS}.spectrum.cx_sig_1.description"] = (
+        "Your first ring's signature construct (or the second's, if only it has one unlocked).")
+    k.lang[f"ability.{NS}.spectrum.cx_sig_2.description"] = (
+        "Your second ring's signature construct. Needs Twin Signatures.")
+    for key, name, node, glyph in catalog:
+        extra = [any_ring_unlocked(f"skill_{node}")] + ([unlocked("skill_twin_signatures")] if key == "sig_2" else [])
+        k.bar(f"cx_{key}", {**command(first=[f"function {NS}:dual/cx/{key}"]),
+                            "conditions": {"enabling": {"type": "palladium:ability_wheel", "cooldown": 5}}},
+              name, k.glyph(glyph), None, extra=extra, shared=not key.startswith("sig"))
+        k.abilities[f"cx_{key}"]["hidden_in_bar"] = True
+        del k.abilities[f"cx_{key}"]["list_index"]
+        k.abilities[f"cx_{key}"]["description"] = {  # catalog constructs share the rings' names and descriptions
+            "translate": f"ability.{NS}.{'spectrum.' if key.startswith('sig') else ''}cx_{key}.description"}
+    k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": [f"cx_{key}" for key, *_ in catalog],
+                         "conditions": {"enabling": held()}},
+          "Construct Wheel", k.glyph("constructs"), 1, extra=[NOT(MODE), any_ring_unlocked("skill_constructs")])
+    k.bar("scan", {**command(first=[f"function {NS}:dual/scan"]), "conditions": {"enabling": action(20)}},
+          "Scan", k.glyph("scan"), 1, extra=[MODE])
+
+    any_field = any_ring_unlocked("skill_force_field")
+    immunity = ["minecraft:is_projectile", "minecraft:is_explosion", "minecraft:is_fire"]
+    for a, b in pairs:
+        for key, name, glyph, which in (("force_field", "Force Field", "force_field", NOT(unlocked("skill_prismatic"))),
+                                        ("prismatic", "Prismatic Shield", "prismatic", unlocked("skill_prismatic"))):
+            k.bar(f"{key}_{a}_{b}", {
+                "type": "palladium:damage_immunity", "damage_sources": immunity,
+                "energy_bar_usage": [ring_usage(a, 1), ring_usage(b, 1)], "conditions": {"enabling": toggle()},
+            }, name, pair_icon(glyph, a, b), 2, shared=False, lang_key=key,
+                extra=[*bond(a, b), ring_charge(a, 1), ring_charge(b, 1), any_field, which])
+    field_on = OR(*[enabled(f"{key}_{a}_{b}") for a, b in pairs for key in ("force_field", "prismatic")])
+    prism_on = OR(*[enabled(f"prismatic_{a}_{b}") for a, b in pairs])
+    for c, data in CORPS.items():  # glow in the first ring's color; a prismatic shield shimmers in both
+        k.hidden(f"field_glow_{c}", {"type": "palladium:entity_glow", "mode": "self", "color": hexcolor(data["color"]),
+                                     "conditions": {"enabling": [field_on, *first_worn(c)]}})
+        k.hidden(f"prism_shimmer_{c}", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
+                                        "particle_type": "minecraft:dust", "options": dust(data["color"], 1.0),
+                                        "conditions": {"enabling": [prism_on, has_power(c), interval(4)]}})
+    k.hidden("prismatic_resistance", {**command(first=["effect give @s minecraft:resistance 3 1 true"]),
+                                      "conditions": {"enabling": [prism_on, interval(40)]}})
+
+    k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision 30 0 true"],
+                                   last=["effect clear @s minecraft:night_vision"]),
+                         "conditions": {"enabling": toggle()}}, "Ring Light", k.glyph("ring_light"), 3)
+    k.pulse("ring_light_pulse", "ring_light", 200, ["effect give @s minecraft:night_vision 30 0 true"])
+
+    k.abilities["suit_up"] = {
+        "type": "palladium:dummy", "bar_color": "white", "list_index": 4, "hidden": True, "hidden_in_bar": False,
+        "title": k.tr("suit_up", "Suit Up", False), "icon": k.glyph("suit_up"),
+        "conditions": {"enabling": toggle()},
+    }
+    suit = enabled("suit_up")
+    k.hidden("suit_layer", {"type": "palladium:render_layer_by_accessory_slot", "accessory_slot": f"{NS}:spectrum_suit",
+                            "default_layer": f"{NS}:spectrum_suit_{art.SPECTRUM_SUITS[0][0]}",
+                            "conditions": {"enabling": suit}})
+    k.hidden("mask_layer", {"type": "palladium:render_layer_by_accessory_slot", "accessory_slot": f"{NS}:spectrum_mask",
+                            "default_layer": f"{NS}:spectrum_mask_{art.SPECTRUM_MASKS[0][0]}",
+                            "conditions": {"enabling": suit}})
+    k.hidden("suit_hide_layers", {
+        "type": "palladium:hide_body_part", "affects_first_person": True,
+        "body_parts": ["chest_overlay", "right_arm_overlay", "left_arm_overlay", "right_leg_overlay", "left_leg_overlay"],
+        "conditions": {"enabling": suit}})
+    for c, data in CORPS.items():
+        k.hidden(f"suit_up_burst_{c}", {**command(first=[burst(data["color"], 2.0, "0.4 1.0 0.4", 70)]),
+                                        "conditions": {"enabling": [suit, has_power(c)]}})
+    k.hidden("suit_up_flash", {**command(first=["particle minecraft:flash ~ ~1 ~ 0 0 0 0 1 force",
+                                                sound("minecraft:block.beacon.activate", 1.2)]),
+                               "conditions": {"enabling": suit}})
+
+    # --- bar page 2: Spectrum Fusion, Spectrum Overload ---
+    k.bar("fusion_1", {**command(first=[f"function {NS}:dual/fusion_1"]), "conditions": {"enabling": action(600)}},
+          "Spectrum Fusion", k.glyph("fusion"), 5, shared=False, lang_key="fusion",
+          extra=[unlocked("skill_fusion"), NOT(unlocked("skill_fusion_mastery")),
+                 every_ring_charged(spectrum.COSTS["fusion_1"])])
+    k.bar("fusion_2", {**command(first=[f"function {NS}:dual/fusion_2"]), "conditions": {"enabling": action(300)}},
+          "Spectrum Fusion", k.glyph("fusion"), 5, shared=False, lang_key="fusion",
+          extra=[unlocked("skill_fusion_mastery"), every_ring_charged(spectrum.COSTS["fusion_2"])])
+    k.bar("overload", {**command(first=[f"function {NS}:dual/overload"]), "conditions": {"enabling": action(1200)}},
+          "Spectrum Overload", k.glyph("overload"), 6, shared=False,
+          extra=[unlocked("skill_overload"), every_ring_charged(spectrum.COSTS["overload"])])
+
+    return {
+        "name": {"translate": f"power.{NS}.spectrum_lantern"}, "icon": "minecraft:nether_star",
+        "background": f"{NS}:textures/gui/menu/spectrum.png", "gui_display_type": "tree",
+        "primary_color": hexcolor(SPECTRUM_RGB), "secondary_color": "#5A5A78", "persistent_data": True,
+        "energy_bars": {spectrum.SPECTRUM_BAR: {
+            "max": {"type": "score", "objective": "gl_dmax", "fallback": 2 * BASE_CHARGE},
+            "auto_increase_per_tick": 0, "color": hexcolor(SPECTRUM_RGB)}},
+        "abilities": k.abilities,
+    }, k.lang
 
 
 def base_power():
@@ -1183,11 +1497,60 @@ def save(img, rel):
     img.save(path)
 
 
+def spectrum_assets(lang):
+    """The Spectrum Bond power, its merged suits and masks, and the KubeJS scripts for the Ctrl key."""
+    power, power_lang = spectrum_power()
+    write(f"data/{NS}/palladium/powers/spectrum_lantern.json", power)
+    lang.update(power_lang)
+    lang[f"power.{NS}.spectrum_lantern"] = "Spectrum Bond"
+    save(art.spectrum_menu_background(), f"assets/{NS}/textures/gui/menu/spectrum.png")
+
+    suit_model = {"normal": f"{NS}:player#suit", "slim": f"{NS}:player#suit_slim"}
+    folder = f"{NS}:textures/models/spectrum"
+    save(art.spectrum_suit_glow(), f"assets/{NS}/textures/models/spectrum/suit_glow.png")
+    for kind, label, designs in (("suit", "Suit", art.SPECTRUM_SUITS), ("mask", "Mask", art.SPECTRUM_MASKS)):
+        write(f"addon/{NS}/accessory_slots/spectrum_{kind}.json", {
+            "icon": f"{NS}:textures/gui/accessory_slots/spectrum_{kind}.png",
+            "menu_visibility": {"type": "palladium:has_power", "power": SPECTRUM_POWER}})
+        save(art.spectrum_slot_icon(kind), f"assets/{NS}/textures/gui/accessory_slots/spectrum_{kind}.png")
+        lang[f"accessory_slot.{NS}.spectrum_{kind}"] = f"Spectrum {label}"
+        for design, design_name in designs:
+            layers = []
+            for a, b in fusion_pairs() if design != "none" else []:
+                name = f"{kind}_{design}_{a}_{b}"
+                ra, rb = CORPS[a]["color"], CORPS[b]["color"]
+                if kind == "suit":
+                    for slim in (False, True):
+                        save(art.spectrum_suit(a, ra, b, rb, design, slim),
+                             f"assets/{NS}/textures/models/spectrum/{name}{'_slim' if slim else ''}.png")
+                    layers.append({"model_layer": suit_model, "render_type": "solid", "conditions": bond(a, b),
+                                   "texture": {"normal": f"{folder}/{name}.png", "slim": f"{folder}/{name}_slim.png"}})
+                else:
+                    mask, glow = art.spectrum_mask(a, ra, b, rb, design)
+                    save(mask, f"assets/{NS}/textures/models/spectrum/{name}.png")
+                    save(glow, f"assets/{NS}/textures/models/spectrum/{name}_glow.png")
+                    layers.append({"type": "palladium:compound", "conditions": bond(a, b), "layers": [
+                        {"model_layer": suit_model, "texture": f"{folder}/{name}.png", "render_type": "solid"},
+                        {"model_layer": suit_model, "texture": f"{folder}/{name}_glow.png", "render_type": "glow"}]})
+            if kind == "suit":
+                layers.append({"model_layer": suit_model, "texture": f"{folder}/suit_glow.png", "render_type": "glow"})
+            write(f"assets/{NS}/palladium/render_layers/spectrum_{kind}_{design}.json",
+                  {"type": "palladium:compound", "layers": layers})
+            write(f"addon/{NS}/accessories/spectrum_{kind}_{design}.json", {
+                "type": "palladium:render_layer", "slot": f"{NS}:spectrum_{kind}",
+                "render_layer": f"{NS}:spectrum_{kind}_{design}", "disable_rendering": True})
+            lang[f"accessory.{NS}.spectrum_{kind}_{design}"] = design_name
+
+    write_text(f"assets/{NS}/kubejs_scripts/lantern_keys.js", spectrum.KUBEJS_CLIENT)
+    write_text(f"data/{NS}/kubejs_scripts/lantern_keys.js", spectrum.KUBEJS_SERVER.lstrip())
+
+
 GENERATED_DIRS = [
     f"addon/{NS}", f"data/{NS}/palladium", f"data/{NS}/recipes", f"data/{NS}/loot_tables", f"data/{NS}/curios",
     f"data/{NS}/functions", f"data/{NS}/tags", "data/minecraft/tags/functions",
     f"data/{NS}/predicates", f"data/{NS}/item_modifiers", f"data/{NS}/kubejs_scripts",
     f"assets/{NS}/models", f"assets/{NS}/blockstates", f"assets/{NS}/textures", f"assets/{NS}/palladium",
+    f"assets/{NS}/kubejs_scripts",
 ]
 
 
@@ -1251,7 +1614,6 @@ def main():
         k = Kit(c, data)
         shared_kit(k)
         SPECIALS[c](k)
-        fusion_ability(k)
         write(f"data/{NS}/palladium/powers/{c}_lantern.json", {
             "name": {"translate": f"power.{NS}.{c}_lantern"},
             "icon": f"{NS}:{ring}",
@@ -1262,8 +1624,8 @@ def main():
             "persistent_data": True,
             "energy_bars": {BAR: {
                 "max": {"type": "score", "objective": f"glmax_{c}", "fallback": BASE_CHARGE},
-                "auto_increase_per_tick": 1 if data.get("regen", True) else 0, "auto_increase_interval": 10,
-                "color": hexcolor(rgb)}},
+                # no passive recharge until Passive Recharge is bought in the skill tree
+                "auto_increase_per_tick": 0, "color": hexcolor(rgb)}},
             "abilities": k.abilities,
         })
         lang[f"power.{NS}.{c}_lantern"] = data["name"]
@@ -1330,8 +1692,6 @@ def main():
         write(f"assets/{NS}/palladium/render_layers/{c}_scuba.json", {
             "model_layer": f"{NS}:player#scuba", "texture": f"{NS}:textures/models/scuba/{c}.png",
             "render_type": "solid"})
-        for n in range(1, 6):
-            save(art.construct_slot_icon(c, rgb, n), f"assets/{NS}/textures/gui/construct_slot/{c}_{n}.png")
         # placeable construct blocks (Construct Blocks) and temporary hard light (walls, domes, bridges)
         for block, hardlight in ((f"{c}_construct_block", False), (f"{c}_hardlight", True)):
             write(f"addon/{NS}/blocks/{block}.json", {
@@ -1349,12 +1709,13 @@ def main():
                 write(f"assets/{NS}/models/item/{block}.json", {"parent": f"{NS}:block/{block}"})
                 lang[f"item.{NS}.{block}"] = name
         fx = rgb if c != "black" else (150, 155, 170)
-        write(f"assets/{NS}/palladium/energy_beams/{c}_beam.json", {
-            "type": "palladium:laser", "body_part": "right_arm", "offset": [-1, -11, 0],  # just past the knuckles
-            "glow_color": hexcolor(fx), "core_color": "#FFFFFF" if c != "black" else "#101014",
-            "glow_opacity": 0.9, "bloom": 3, "size": 1.4, "rotation_speed": 3,
-            "particles": [{"particle_type": "minecraft:dust", "options": dust(fx), "amount": 2,
-                           "offset_random": [0.2, 0.2, 0.2]}]})
+        for side, arm, x in (("", "right_arm", -1), ("_left", "left_arm", 1)):  # the left one: a second ring's beam
+            write(f"assets/{NS}/palladium/energy_beams/{c}_beam{side}.json", {
+                "type": "palladium:laser", "body_part": arm, "offset": [x, -11, 0],  # just past the knuckles
+                "glow_color": hexcolor(fx), "core_color": "#FFFFFF" if c != "black" else "#101014",
+                "glow_opacity": 0.9, "bloom": 3, "size": 1.4, "rotation_speed": 3,
+                "particles": [{"particle_type": "minecraft:dust", "options": dust(fx), "amount": 2,
+                               "offset_random": [0.2, 0.2, 0.2]}]})
         write(f"assets/{NS}/palladium/trails/{c}_trail.json",
               {"type": "palladium:gradient", "spacing": 2, "lifetime": 14, "color": hexcolor(fx)})
 
@@ -1383,6 +1744,8 @@ def main():
         "ingredients": [{"item": f"{NS}:{c}_lantern_ring"} for c in SPECTRUM]
                        + [{"item": "minecraft:nether_star"}, {"item": "minecraft:totem_of_undying"}],
         "result": {"item": f"{NS}:white_lantern_ring"}})
+
+    spectrum_assets(lang)
 
     write(f"addon/{NS}/items/_loading_order.json", items)
     write(f"addon/{NS}/creative_mode_tabs/lantern_corps.json", {"icon": f"{NS}:green_lantern_ring", "items": tab})
@@ -1513,6 +1876,11 @@ def main():
     g_functions["second"] += b_second
     write(f"data/{NS}/tags/entity_types/pets.json", {"replace": False, "values": [
         f"minecraft:{m}" for m in ("wolf", "cat", "parrot", "horse", "donkey", "mule", "llama", "allay", "fox", "axolotl")]})
+    d_load, d_tick, d_second, d_functions = spectrum.generate(CORPS, fusion_pairs())
+    g_load += d_load
+    g_tick += d_tick
+    g_functions["second"] += d_second
+    g_functions.update(d_functions)
     k_load, k_tick, k_second, k_functions, k_files = constructs.generate(CORPS)
     for path, data in k_files.items():
         write(f"data/{NS}/{path}", data)
@@ -1533,6 +1901,8 @@ def main():
     write("data/minecraft/tags/functions/load.json", {"values": [f"{NS}:load"]})
     save(art.rage_overlay(), f"assets/{NS}/textures/gui/rage_overlay.png")
 
+    for name, (glyph, rgb, accent) in sorted(ICONS.items()):
+        save(icons.render(glyph, rgb, accent), f"assets/{NS}/textures/gui/ability/{name}")
     write(f"assets/{NS}/lang/en_us.json", lang)
     save(art.logo_texture([CORPS[c]["color"] for c in SPECTRUM]), "pack.png")
     print(f"Generated {len(CORPS)} corps")

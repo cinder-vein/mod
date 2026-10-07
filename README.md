@@ -7,10 +7,11 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
 ## Install
 
 1. Use a Forge **1.20.1** profile (Forge 47.x) with **Palladium 4.x** (+ PalladiumCore).
-2. Put `dist/greenlantern-9.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
+2. Put `dist/greenlantern-10.0.0-forge-1.20.1.jar` in the `mods` folder. Remove any older version.
 3. Optional:
    - **Curios** gives you two ring slots.
-   - **KubeJS** adds the `/lantern` admin command and lets players answer a ring by typing *yes* / *no*.
+   - **KubeJS** adds the `/lantern` admin command and lets players answer a ring by typing *yes* / *no*. Installed on
+     the client too, it lets you switch ring modes with **Ctrl** (otherwise you sneak instead).
 
 ## The corps
 
@@ -64,17 +65,19 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
   - The new ring is **unbound** and remembers who forged it. It never binds to you, so it can't replace or darken your
     own ring. You can carry it; drop it (Q) for your recruit. It binds to the next player who holds it.
   - Admins: `/lantern forging on|off` and `/lantern forgecooldown <seconds>`.
-- **Two rings at once:** wear two rings (both hands, or two Curios ring slots) and you get **Spectrum Fusion**.
-  - Every pair of corps has its own fusion. For example *Hope Ignites Will* (Green + Blue) and
-    *Life and Death* (White + Black).
-  - Each fusion combines both rings' signature effects.
-  - Hearts and armor don't stack. Only one suit can be up at a time.
-  - Press **X** to switch between the two rings' ability bars.
+- **Two rings at once** merge into the **Spectrum Bond**, with its own bar and skill tree (see below).
 - **Recharging:**
   - **Right-click** with your corps' Power Battery in your main hand, or **right-click a placed battery**.
     Either way the ring charges fully and you recite the oath.
+  - A ring doesn't recharge on its own until you buy **Passive Recharge** in its skill tree (see Skill tree).
   - Charge is kept when you take the ring off or log out.
 - **Beams** fire from the ring hand. Your arm raises and points where you look.
+- **Beam mode and blast mode:** hold **Ctrl** and press the first ability key (default **V**). The first slot turns
+  into *Switch Mode* while Ctrl is held.
+  - **Beam mode** (the default): Beam and the Construct Wheel.
+  - **Blast mode:** **Energy Blast** (a bolt of hard light, 40 charge) and **Scan** (the health and armor of what
+    you look at, up to 24 blocks; it glows for 10 seconds; 10 charge).
+  - Ctrl needs KubeJS installed on your client and the server. Without it, sneak and press the first ability key.
 
 ## The ring chooses you
 
@@ -141,18 +144,13 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function 
 
 Constructs work like the Green Lantern mod showcase:
 
-- **Five construct slots.** The second page of the ability bar holds *Construct 1* to *Construct 5*. Each one forms
-  whatever construct you put in that slot. Press **X** (Palladium's "switch list" key) to reach the page, and rebind
-  the keys in Controls like any Palladium ability.
-- **Configure Constructs** (fourth bar page, or `/trigger gl_construct`) opens the *Construct Configuration* menu in
-  chat. Click a slot, pick a category tab (Melee, Ranged, Defense, Utility), then click a construct. New players start
-  with Sword, Blast, Tower Shield, Construct Blocks and Scan.
-- **The Construct Wheel** (first page) lists the whole catalog. Hold its key and pick one with the mouse.
+- **The Construct Wheel** (second slot of the first page) holds every construct. Hold its key and pick one with the
+  mouse. Constructs you haven't unlocked are greyed out.
 - **Held constructs** are real weapons and tools. They form in your empty hand, or the item in that hand moves to a
   free slot. A ring held in your hand is never moved: the construct goes to your inventory instead. Wear the ring in a
   Curios slot or your other hand to wield constructs. If there's no room, nothing forms and no charge is spent.
-  - Press the slot again to dismiss them.
-  - Each one (and Scuba Gear) costs its ring 3 charge a second, a little more than the ring regains.
+  - Pick them on the wheel again to dismiss them.
+  - Each one (and Scuba Gear) costs its ring 3 charge a second.
   - They dissolve when that ring runs dry, when you have no ring on you at all, or when they're dropped.
   - Weapons and tools wear out like netherite gear; form a fresh one when they break.
 - **Hard light** (Barrier Wall, Dome, Bridge) only fills air and vanishes on its own. While it lasts it can't be
@@ -163,13 +161,12 @@ Constructs work like the Green Lantern mod showcase:
 | Melee | Sword | 30 | Constructs |
 | Melee | Sword & Shield, Mace, Battle Axe | 40-50 | Melee Constructs I |
 | Melee | Giant Fist, Hammer Slam | 100-120 | Melee Constructs II |
-| Ranged | Blast | 40 | Constructs |
 | Ranged | Gatling (hold right-click; 3 charge a shot), Missile Barrage | 40-120 | Ranged Constructs I |
 | Ranged | Cannon | 150 | Ranged Constructs II |
 | Defense | Tower Shield | 30 | Constructs |
 | Defense | Barrier Wall (15 s), Cage | 100-150 | Defense Constructs I |
 | Defense | Dome (15 s) | 200 | Defense Constructs II |
-| Utility | Construct Blocks (64 placeable blocks), Scan (health and armor of what you look at) | 10-60 | Constructs |
+| Utility | Construct Blocks (64 placeable blocks) | 60 | Constructs |
 | Utility | Scuba Gear (breathe, see and swim underwater; toggle), Mining Drill | 20-30 | Utility Constructs I |
 | Utility | Bridge (16 blocks, 30 s) | 80 | Utility Constructs II |
 
@@ -191,7 +188,7 @@ Every corps also has a **signature construct**, unlocked after all four branches
 
 ## Ring benefits
 
-Passive gifts, with or without the suit. The skill tree lists them next to Suit Up.
+Passive gifts, with or without the suit. The skill tree lists them on either side of its root.
 
 - **Every ring (while charged):**
   - 40 hearts and netherite-level armor.
@@ -220,6 +217,14 @@ Open Palladium's **accessories menu** to choose:
   `tools/templates/suit_base.png` and recolored for each corps.
 - **Mask** slot: *Corps Mask*, *Domino Mask*, *Lens Goggles*, *Gem Cowl* or *No Mask*. Black also has
   *Deathly Pallor*.
+- While you wear two rings, the **Spectrum Suit** and **Spectrum Mask** slots hold merged suits in both rings'
+  colors. "First ring" means the one on your right hand, "second" the one on your left:
+  - **Split Light:** your right side in the first ring's colors, your left side in the second's.
+  - **Fusion Uniform:** the first ring's panels, with the second ring's gloves, emblem and under-suit.
+  - **Fusion Uniform (Reversed):** the same, colors swapped.
+  - **Twin Halves:** the first ring's colors above the belt, the second's below.
+  - **Spectrum Shadow:** *Split Light* on a pitch-black under-suit.
+  - Masks: *Split Mask*, *Twin Domino*, *Twin Lens Goggles*, *Twin Gem Cowl* or *No Mask*.
 
 ## Skill tree
 
@@ -230,18 +235,51 @@ Open Palladium's powers menu and spend **XP levels**:
 | Vitality | +10 hearts (5) → +10 more (15) |
 | Combat | +4 damage (5) → +4 more (15) |
 | Capacity | 1500 charge (5) → 2000 charge (15) |
+| Passive Recharge | I: 2 charge a second (60) → II: 4 (60) → III: 8 (60) → IV: 16 (60). Each tier replaces the last |
 | Flight | Flight with trail and aura (5) |
-| Constructs | Constructs (5): slots, wheel and basics → one branch each for Melee, Ranged, Defense and Utility: I (8) → II (12) → Signature construct (20, needs all four) |
+| Constructs | Constructs (5): the wheel and the basics → one branch each for Melee, Ranged, Defense and Utility: I (8) → II (12) → Signature construct (20, needs all four) |
 | Force Field | Projectile, explosion and fire immunity (5) |
 | Corps specials | After Force Field: each special in order (8, 12, 16), then the Ultimate (30) |
 
-Beam, Ring Light, Suit Up and recharging are available from the start.
+Beam, Energy Blast, Scan, Ring Light, Suit Up and recharging at a battery are available from the start.
 
-The ability bar has four pages (switch with **X**):
-1. Beam, Construct Wheel, Force Field, Ring Light, Suit Up.
-2. Construct 1 to 5.
-3. Your corps' specials and Ultimate (plus Emotional Sight for Black).
-4. Configure Constructs, Spectrum Fusion, and Revoke Ring for leaders.
+The ability bar's pages (switch with **X**):
+1. Beam / Energy Blast, Construct Wheel / Scan, Force Field, Ring Light, Suit Up.
+2. Your corps' specials and Ultimate (plus Emotional Sight for Black).
+3. Revoke Ring (leaders only).
+
+Every ability slot has its own icon in the corps' colors.
+
+## Two rings: the Spectrum Bond
+
+Wear two rings (both hands, or two Curios ring slots) and they bond. The first ring in this order is your **first
+ring** (right hand): green, yellow, red, orange, blue, violet, indigo, white, black. The other is your **second
+ring** (left hand). With three rings, the first two in that order bond.
+
+- **One merged bar** replaces both rings' first page; each ring keeps its own specials page.
+  - **Spectrum Beam:** a beam from each hand, each in its ring's color. Each ring pays for its own beam.
+  - **Twin Blast** in blast mode: one bolt from each hand (20 charge from each ring). **Scan** costs 5 from each.
+  - **Construct Wheel:** every construct either ring has unlocked. It forms from your first ring if that ring has
+    it, otherwise from your second, in that ring's color and at its cost. The wheel also has your **Signature
+    Construct** (and, with *Twin Signatures*, your second ring's).
+  - **Force Field:** needs Force Field in either ring; it drains both rings.
+  - **Ring Light** and **Suit Up**: Suit Up wears your merged suit (see Suits and masks).
+  - Page 2: **Spectrum Fusion** and **Spectrum Overload** once you've bought them.
+- **Spectrum Charge:** the bond's bar shows both rings' charge added together. Each ring still has its own charge.
+- **Its own skill tree** (powers menu, *Spectrum Bond*), bought with XP levels. It's kept when you take a ring off:
+
+| Branch | Upgrades (XP levels) |
+|---|---|
+| Harmony | Shared Light: charge flows from the fuller ring to the emptier one (5) → Twin Batteries: recharging either ring at its battery fills both (10) → Resonance: both rings regain 2 extra charge a second (15) |
+| Body | Dual Vitality: +10 hearts (8) → Twin Strength: +3 attack and punch damage (12) → Spectrum Flight: fly 50% faster (12) |
+| Fusion | Spectrum Fusion (8) → Fusion Mastery: every 15 s instead of 30, and cheaper (15) → Spectrum Overload, the ultimate (30) |
+| Twin Constructs | Twin Constructs: constructs cost a quarter less (8) → Prismatic Shield: the force field also gives Resistance II (12) → Twin Signatures: your second ring's signature construct on the wheel (15) |
+
+- **Spectrum Fusion** costs 125 charge from each ring. Every pair of corps has its own fusion, combining both rings'
+  signature effects, for example *Hope Ignites Will* (Green + Blue) or *Life and Death* (White + Black).
+- **Spectrum Overload** costs 400 from each ring, once a minute. It hits everything within 12 blocks for heavy damage
+  and throws it into the air, and gives you Strength II, Resistance II and Speed II for 15 seconds.
+- Hearts and armor from the rings themselves don't stack.
 
 ## Crafting
 
@@ -260,10 +298,16 @@ The ability bar has four pages (switch with **X**):
 
 ## Editing
 
-- `tools/gen_corps.py`: the corps table, oaths, shared kit, skill tree, specials, fusions and the datapack wiring.
-- `tools/constructs.py`: the construct catalog, slots, configuration menu and every construct's effect.
+- `tools/gen_corps.py`: the corps table, oaths, shared kit, skill tree, specials, the Spectrum Bond power, fusions and
+  the datapack wiring.
+- `tools/constructs.py`: the construct catalog, every construct's effect, and Energy Blast and Scan.
+- `tools/spectrum.py`: the Spectrum Bond's datapack side (bonding, merged constructs, fusions, Harmony skills), ring
+  modes, and the KubeJS scripts for the Ctrl key.
+- `tools/icons.py` and `tools/icon_glyphs/`: the ability icons, drawn as 32x32 pixel-art maps and recolored per corps.
+  `python3 tools/icons.py preview.png` renders them all.
 - `tools/systems.py`: ownership, emotions, ring offers, leaders, admin functions and the KubeJS script.
-- `tools/art.py`: logos, suit recoloring, masks, the worn ring, ring icons, the lantern and construct models.
+- `tools/art.py`: logos, suit recoloring, masks, merged suits, the worn ring, ring icons, the lantern and construct
+  models.
 - **To rebuild:** run `python3 tools/gen_corps.py`, then `python3 tools/build.py`. The build checks every
   cross-reference and builds the jar.
 - `python3 tools/lint_commands.py` (needs `pip install mecha`) syntax-checks every command against Minecraft's

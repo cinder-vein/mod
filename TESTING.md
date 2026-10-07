@@ -1,4 +1,4 @@
-# In-game test checklist (Lantern Corps 9.0)
+# In-game test checklist (Lantern Corps 10.0)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change.
@@ -12,6 +12,13 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 - [ ] Hold the beam key: your right arm points forward and the beam leaves the hand.
 - [ ] **Suit Up** (bottom slot of the first page): the suit appears and your face stays visible. Suit and mask
       choices are in the accessories menu.
+- [ ] Every slot on the bar has its own pixel-art icon in the ring's colors (no vanilla item icons).
+- [ ] **Modes** (KubeJS on client and server): hold **Ctrl**. The first slot turns into *Switch Mode*. Press the first
+      ability key (V): the actionbar says *Blast mode*. Release Ctrl: the first two slots are now **Energy Blast** and
+      **Scan**.
+  - Energy Blast fires a bolt (40 charge). Scan on a mob prints its health and armor, and it glows.
+  - Ctrl + V again: back to *Beam mode* (Beam and Construct Wheel).
+  - Without KubeJS: sneak instead of Ctrl. With KubeJS, sneaking doesn't change the first slot.
 
 ## 2. Lantern (Power Battery) and charge
 - [ ] Place a Green Power Battery. It's a small green lantern with a glowing glass chamber (logo inside), glowing side
@@ -19,27 +26,25 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 - [ ] Right-click it with an empty hand, or right-click while holding it: the ring charges fully and the oath plays.
 - [ ] `/energybar value get @s greenlantern:green_lantern ring_charge` shows the charge. Take the ring off and put it
       back on (or relog): the charge stays the same.
+- [ ] Spend some charge and wait: the ring does **not** recharge on its own.
+- [ ] Buy **Passive Recharge I** (60 levels, `/xp add @s 300 levels`): it regains 2 charge a second. Tier IV gives 16
+      a second. Each tier needs the one before.
 
 ## 3. Constructs
-- [ ] Buy **Constructs** in the powers menu. Press **X** to reach page 2: *Construct 1* to *Construct 5*.
-- [ ] Construct 1 (Sword) forms a green hard-light sword in your empty hand. Press it again: the sword dissolves.
-- [ ] Hold a stack of dirt and press Construct 1: the dirt moves to a free slot and the sword takes its place. Holding
-      the ring in your main hand instead puts the sword in your inventory, and the ring stays in your hand.
-- [ ] Construct 2 (Blast) fires a bolt where you look. Construct 3 (Tower Shield) appears in the offhand and blocks with
-      right-click. Construct 4 gives 64 Construct Blocks you can place. Construct 5 (Scan) on a mob prints its health
-      and armor, and the mob glows.
-- [ ] **Configure Constructs** (page 4) or `/trigger gl_construct`: click *[Slot 2]*, then *[Defense]*, then
-      *[Barrier Wall]*. Slot 2 now shows Barrier Wall. It's locked until you buy *Defense Constructs I*: pressing the slot
-      says so.
+- [ ] Buy **Constructs** in the powers menu. There's no construct page any more: the **Construct Wheel** (second slot
+      of the first page) holds every construct, and locked ones are grey.
+- [ ] Pick Sword on the wheel: a green hard-light sword forms in your empty hand. Pick it again: the sword dissolves.
+- [ ] Hold a stack of dirt and pick Sword: the dirt moves to a free slot and the sword takes its place. Holding the ring
+      in your main hand instead puts the sword in your inventory, and the ring stays in your hand.
+- [ ] Tower Shield appears in the offhand and blocks with right-click. Construct Blocks gives 64 blocks you can place.
 - [ ] Buy the branches and try each construct:
   - Barrier Wall: a 5×4 wall 3 blocks ahead, gone after 15 s.
   - Dome: a dome around you, gone after 15 s.
   - Bridge: 16 blocks long, gone after 30 s. Hard light only replaces air.
-  - Gatling: hold right-click to fire.
+  - Gatling: hold right-click to fire. With two rings worn it fires at the same rate.
   - Missiles and Cannon: they explode without breaking blocks.
-  - Scuba Gear: a helmet bubble and tank; you breathe underwater. Press again to remove it.
-  - Mining Drill, Mace, Battle Axe, Sword & Shield.
-- [ ] The **Construct Wheel** (page 1) lists every construct. Locked ones are grey.
+  - Scuba Gear: a helmet bubble and tank; you breathe underwater. Pick it again to remove it.
+  - Mining Drill, Mace, Battle Axe, Sword & Shield, Giant Fist, Hammer Slam, Cage.
 - [ ] Drop a held construct with Q: it vanishes. Take the ring off: held constructs and leftover construct blocks vanish.
 - [ ] Let the ring run dry while holding a construct: it dissolves.
 - [ ] Signature constructs (after all four branches):
@@ -55,16 +60,35 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 
 ## 4. Ring benefits
 - [ ] With a charged ring, a villager's prices drop (Hero of the Village).
-- [ ] Each corps' gift (shown next to Suit Up in the skill tree):
+- [ ] Each corps' gift (shown beside the root of the skill tree):
   - Green: `/effect give @s darkness` is cleared at once.
   - Red: you can stand in lava.
   - Orange: XP orbs fly to you.
   - Blue: you regenerate below 10 hearts.
   - White and Black: you never get hungry.
 
-## 5. Two rings
-- [ ] With green and blue worn, Spectrum Fusion is on page 4 of Green's bar. Your hearts don't double, and only one suit
-      can be up at a time.
+## 5. Two rings: the Spectrum Bond
+- [ ] Wear green (hand or Curios) and blue. Within a moment the actionbar says *Spectrum Bond: Willpower + Hope*, and the
+      first time a chat message explains the bond.
+- [ ] Press **X** through the pages:
+  - The Spectrum Bond's bar: Spectrum Beam, Construct Wheel, Force Field, Ring Light, Suit Up.
+  - Green's specials page and Blue's specials page.
+  - Neither ring's own first page shows.
+- [ ] Hold the beam key: a green beam from your right hand and a blue beam from your left. Each ring's charge drops.
+- [ ] The Spectrum Charge bar shows both charges added together (2000 when both are full).
+- [ ] Construct Wheel: a construct only Blue has unlocked forms in blue and costs Blue's charge. One Green has forms in
+      green.
+- [ ] Ctrl + V: **Twin Blast** fires a green and a blue bolt. Scan works.
+- [ ] Open the powers menu: a **Spectrum Bond** tree. Buy *Spectrum Fusion* (8 levels): page 2 of the bond's bar has it.
+      Using it shows *Hope Ignites Will*.
+- [ ] Try *Shared Light* (one ring nearly empty: they even out), *Twin Batteries* (recharge one ring at its battery: both
+      fill), *Prismatic Shield* (force field gives Resistance II and shimmers in both colors), *Twin Signatures*
+      (second ring's signature on the wheel) and *Spectrum Overload*.
+- [ ] Accessories menu: **Spectrum Suit** and **Spectrum Mask** slots. *Split Light* is green on your right side and
+      blue on your left. Try the other designs with Suit Up on.
+- [ ] Take the blue ring off: the bond's bar goes, Green's own first page comes back, and the merged suit comes off.
+      Put it back on: the bond's skills are still bought.
+- [ ] Your hearts don't double with two rings.
 
 ## 6. Ownership
 - [ ] A second player picks up your bound ring and holds it: it jumps out of their hand and flies to you, even if you're
@@ -108,7 +132,7 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 
 ## 8. Leaders
 - [ ] `/lantern leader <you> green`. A member wearing a green ring (in a hand or a Curios slot) stands near you. Use
-      **Revoke Ring** (page 4): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; drop it
+      **Revoke Ring** (last page): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; drop it
       and your recruit can pick it up and bind it. The revoked member can't wield it.
 - [ ] `/trigger gl_roster` lists members; `/trigger gl_revoke set <id>` revokes remotely.
 

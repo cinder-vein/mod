@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "greenlantern:spectrum_suit",
+  "render_layer": "greenlantern:spectrum_suit_halves",
+  "disable_rendering": true
+}

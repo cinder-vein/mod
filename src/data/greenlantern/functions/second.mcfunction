@@ -27,6 +27,12 @@ tag @a[tag=gl_reser,scores={gl_reser=..0}] remove gl_reser
 scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1
 function greenlantern:charge/save
 execute at @a[tag=gl_yellow] run effect give @e[type=#greenlantern:greed_prey,distance=..8] minecraft:weakness 2 0 true
+execute as @a[tag=gl_dual] run superpower add greenlantern:spectrum_lantern @s
+execute as @a[tag=!gl_dual] run superpower remove greenlantern:spectrum_lantern @s
+scoreboard players add #s gl_dtick 1
+execute if score #s gl_dtick matches 5.. run scoreboard players set @a gl_dlast -1
+execute if score #s gl_dtick matches 5.. run scoreboard players set #s gl_dtick 0
+execute as @a[tag=gl_dual] run function greenlantern:dual/second
 execute as @a[tag=gl_green,tag=gl_cr_green] if predicate greenlantern:construct_held/green_mainhand run function greenlantern:construct/green/upkeep
 execute as @a[tag=gl_green,tag=gl_cr_green] if predicate greenlantern:construct_held/green_offhand run function greenlantern:construct/green/upkeep
 execute as @a[tag=gl_green,tag=gl_cr_green,tag=gl_scuba_green] run function greenlantern:construct/green/upkeep
@@ -69,4 +75,3 @@ tag @a[tag=gl_scuba_violet,tag=!gl_violet] remove gl_scuba_violet
 tag @a[tag=gl_scuba_indigo,tag=!gl_indigo] remove gl_scuba_indigo
 tag @a[tag=gl_scuba_white,tag=!gl_white] remove gl_scuba_white
 tag @a[tag=gl_scuba_black,tag=!gl_black] remove gl_scuba_black
-scoreboard players enable @a gl_construct

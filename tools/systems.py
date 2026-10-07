@@ -1026,7 +1026,6 @@ def generate(corps_table, write, write_text):
         f"execute as @a[scores={{gl_forge=1..}}] at @s run function {NS}:forge/trigger",
         "scoreboard players set @a[scores={gl_recall=..-1}] gl_recall 0",
         "scoreboard players set @a[scores={gl_forge=..-1}] gl_forge 0",
-        "scoreboard players set @a[scores={gl_construct=..-1}] gl_construct 0",
         f"execute as @a[tag=gl_offer_any] at @s run function {NS}:offer/follow",
         f"execute as @a[scores={{gl_accept=1..}}] at @s run function {NS}:offer/accept_trigger",
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",

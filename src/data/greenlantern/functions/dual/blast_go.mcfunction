@@ -1,0 +1,19 @@
+function greenlantern:dual/spend_20
+execute if entity @s[tag=gl_p1_green] run function greenlantern:ring/green/blast_fire_right
+execute if entity @s[tag=gl_p1_yellow] run function greenlantern:ring/yellow/blast_fire_right
+execute if entity @s[tag=gl_p1_red] run function greenlantern:ring/red/blast_fire_right
+execute if entity @s[tag=gl_p1_orange] run function greenlantern:ring/orange/blast_fire_right
+execute if entity @s[tag=gl_p1_blue] run function greenlantern:ring/blue/blast_fire_right
+execute if entity @s[tag=gl_p1_violet] run function greenlantern:ring/violet/blast_fire_right
+execute if entity @s[tag=gl_p1_indigo] run function greenlantern:ring/indigo/blast_fire_right
+execute if entity @s[tag=gl_p1_white] run function greenlantern:ring/white/blast_fire_right
+execute if entity @s[tag=gl_p1_black] run function greenlantern:ring/black/blast_fire_right
+execute if entity @s[tag=gl_p2_green] run function greenlantern:ring/green/blast_fire_left
+execute if entity @s[tag=gl_p2_yellow] run function greenlantern:ring/yellow/blast_fire_left
+execute if entity @s[tag=gl_p2_red] run function greenlantern:ring/red/blast_fire_left
+execute if entity @s[tag=gl_p2_orange] run function greenlantern:ring/orange/blast_fire_left
+execute if entity @s[tag=gl_p2_blue] run function greenlantern:ring/blue/blast_fire_left
+execute if entity @s[tag=gl_p2_violet] run function greenlantern:ring/violet/blast_fire_left
+execute if entity @s[tag=gl_p2_indigo] run function greenlantern:ring/indigo/blast_fire_left
+execute if entity @s[tag=gl_p2_white] run function greenlantern:ring/white/blast_fire_left
+execute if entity @s[tag=gl_p2_black] run function greenlantern:ring/black/blast_fire_left

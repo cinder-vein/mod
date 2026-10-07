@@ -1,1 +1,0 @@
-function greenlantern:construct/indigo/scan_check

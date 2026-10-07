@@ -1,0 +1,2143 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_yellow.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_yellow_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_red.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_red_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_orange.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_orange_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_blue.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_blue_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_violet.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_violet_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:green_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_green_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_red.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_red_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_orange.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_orange_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_blue.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_blue_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_violet.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_violet_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:yellow_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_yellow_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_orange.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_orange_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_blue.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_blue_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_violet.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_violet_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:red_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_red_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_blue.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_blue_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_violet.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_violet_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:orange_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_orange_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_violet.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_violet_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:blue_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_blue_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_indigo.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_indigo_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:violet_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_violet_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_indigo_white.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_indigo_white_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:indigo_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:white_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_indigo_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_indigo_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    },
+    {
+      "type": "palladium:compound",
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:white_lantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "greenlantern:black_lantern"
+        },
+        {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:green_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:yellow_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:red_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:orange_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:blue_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:violet_lantern"
+                },
+                {
+                  "type": "palladium:has_power",
+                  "power": "greenlantern:indigo_lantern"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_white_black.png",
+          "render_type": "solid"
+        },
+        {
+          "model_layer": {
+            "normal": "greenlantern:player#suit",
+            "slim": "greenlantern:player#suit_slim"
+          },
+          "texture": "greenlantern:textures/models/spectrum/mask_goggles_white_black_glow.png",
+          "render_type": "glow"
+        }
+      ]
+    }
+  ]
+}

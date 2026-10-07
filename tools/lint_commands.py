@@ -52,7 +52,11 @@ def main():
     errors = []
     commands = list(collect())
     for where, cmd in commands:
-        if cmd.startswith(("curios ", "energybar ")) or " run curios " in cmd or " run energybar " in cmd:
+        sp = re.search(r"(?:^| run )superpower (.*)$", cmd)
+        if sp and not re.fullmatch(r"(?:add|remove) [a-z0-9_.-]+:[a-z0-9_/.-]+ @[aeprs](?:\[[^\]]*\])?", sp.group(1)):
+            errors.append(f"{where}: {cmd[:160]}\n      expected 'superpower add|remove <power> <selector>'")
+        if cmd.startswith(("curios ", "energybar ", "superpower ")) or any(
+                f" run {c} " in cmd for c in ("curios", "energybar", "superpower")):
             continue  # Curios' and Palladium's own commands aren't in vanilla's command tree
         try:
             mc.parse(cmd + "\n", multiline=True)

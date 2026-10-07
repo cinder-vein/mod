@@ -153,7 +153,13 @@ def validate():
                 check_ref("emitter", e, w)
             usages = ab.get("energy_bar_usage", [])
             for u in usages if isinstance(usages, list) else [usages]:
-                if u["energy_bar"] not in bars:
+                pid, _, bar_name = u["energy_bar"].rpartition("#")  # "<power>#<bar>" uses another power's bar
+                if pid:
+                    ns, _, pname = pid.partition(":")
+                    other_path = SRC / "data" / ns / "palladium" / "powers" / f"{pname}.json"
+                    if not other_path.exists() or bar_name not in json.loads(other_path.read_text()).get("energy_bars", {}):
+                        err(f"{w}: unknown energy bar '{u['energy_bar']}'")
+                elif bar_name not in bars:
                     err(f"{w}: unknown energy bar '{u['energy_bar']}'")
             for cond in walk(ab.get("conditions", {})):
                 if "ability" in cond:
@@ -168,6 +174,8 @@ def validate():
                         err(f"{w}: condition references unknown ability '{cond['ability']}'")
                 if cond.get("type") == "palladium:energy_bar" and not cond.get("power") and cond["energy_bar"] not in bars:
                     err(f"{w}: unknown energy bar '{cond['energy_bar']}'")
+                if cond.get("type") == "palladium:has_power":
+                    check_ref("power", cond["power"], w)
                 item = cond.get("item")
                 if isinstance(item, dict) and "item" in item:
                     check_ref("item", item["item"], w)

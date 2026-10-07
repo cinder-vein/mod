@@ -1,1 +1,0 @@
-function greenlantern:construct/yellow/scan_check
