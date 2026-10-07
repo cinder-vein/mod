@@ -1,6 +1,5 @@
 scoreboard players set #second gl_cfg 0
 execute if score #enabled gl_cfg matches 1 as @a run function greenlantern:emotion/feed
-execute as @a at @s if data entity @s ForgeCaps."curios:inventory" run function #greenlantern:curios_check
 execute if score #enabled gl_cfg matches 1 run function greenlantern:offer/scan
 scoreboard players remove @a[scores={gl_cd_green=1..}] gl_cd_green 1
 scoreboard players remove @a[scores={gl_cd_yellow=1..}] gl_cd_yellow 1
@@ -19,3 +18,16 @@ scoreboard players enable @a[tag=gl_leader_any] gl_revoke
 scoreboard players enable @a[tag=gl_leader_any] gl_roster
 scoreboard players enable @a gl_emotions
 function greenlantern:charge/save
+execute at @a[tag=gl_yellow] run effect give @e[type=#greenlantern:greed_prey,distance=..8] minecraft:weakness 2 0 true
+clear @a[tag=!gl_ring] #greenlantern:constructs
+kill @e[type=minecraft:item,nbt={Item:{tag:{gl_construct:1b}}}]
+tag @a[tag=gl_scuba_green,tag=!gl_green] remove gl_scuba_green
+tag @a[tag=gl_scuba_yellow,tag=!gl_yellow] remove gl_scuba_yellow
+tag @a[tag=gl_scuba_red,tag=!gl_red] remove gl_scuba_red
+tag @a[tag=gl_scuba_orange,tag=!gl_orange] remove gl_scuba_orange
+tag @a[tag=gl_scuba_blue,tag=!gl_blue] remove gl_scuba_blue
+tag @a[tag=gl_scuba_violet,tag=!gl_violet] remove gl_scuba_violet
+tag @a[tag=gl_scuba_indigo,tag=!gl_indigo] remove gl_scuba_indigo
+tag @a[tag=gl_scuba_white,tag=!gl_white] remove gl_scuba_white
+tag @a[tag=gl_scuba_black,tag=!gl_black] remove gl_scuba_black
+scoreboard players enable @a gl_construct

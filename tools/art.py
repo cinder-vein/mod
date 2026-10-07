@@ -486,49 +486,59 @@ def slot_icon(corps, rgb, kind="suit"):
 
 # --- ring worn on the hand ------------------------------------------------------------------
 
-# Model UVs are divided by (texture size x texture_scale), so 0.1 makes each model unit of
-# the tiny plate cover 10 texture pixels: its 1.2-unit front face shows pixels 2..14.
+# Model UVs are divided by (texture size x texture_scale), so 0.1 makes each model unit cover
+# 10 texture pixels: the 1.2-unit signet face shows a 12-pixel picture. texture_offset is in
+# model units (integers), so the band's strip starts 30 pixels down.
 RING_TEX_SCALE = 0.1
+RING_TEX = 64
 
 
-def ring_model(slim):
-    """A small square signet plate with the corps logo on the front of the right hand,
-    like A New Corps (not a band around the wrist).
-
-    The arm box runs from y=-2 (shoulder) to y=10 (fingertips), so the plate at y 8.5-9.7
-    sits on the hand itself. Its front (z=-2.45) is in front of the suit's outer layer
-    (which reaches z=-2.3), so gauntlets and gloves never cover it."""
-    x0 = -2 if slim else -3  # outer side of the right arm
+def ring_model(slim, left=False):
+    """The ring on the hand, where the Green Lantern mod showcase wears it: a signet with the
+    corps logo on the outside of the hand, over the base of the fingers (y 8.3-9.5 of the arm,
+    which runs from the shoulder at -2 to the fingertips at 10), and a thin band wrapping across
+    the front of the hand around the index finger. Both sit just outside the suit's outer layer
+    (0.3 beyond the arm), so gloves never hide them. The first ring you wear shows on the right
+    hand, a second one on the left."""
+    aw = 3 if slim else 4
     empty = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {}}
-    return {
-        "texture_width": 16, "texture_height": 16,
-        "mesh": {
-            "head": empty, "hat": empty, "body": empty, "left_arm": empty, "right_leg": empty, "left_leg": empty,
-            "right_arm": {
-                "part_pose": {"offset": [-5, 2.5 if slim else 2, 0], "rotation": [0, 0, 0]},
-                "cubes": [{"origin": [x0 + 0.55, 8.5, -2.45], "dimensions": [1.2, 1.2, 0.2],
-                           "texture_offset": [0, 0], "texture_scale": [RING_TEX_SCALE, RING_TEX_SCALE]}],
-                "children": {},
-            },
-        },
+    scale = [RING_TEX_SCALE, RING_TEX_SCALE]
+    if left:
+        outer = aw - 1  # +x side of the left arm box (-1 .. aw-1)
+        signet, band = [outer + 0.3, 8.3, -2.5], [outer - 0.8, 8.75, -2.5]
+    else:
+        outer = 1 - aw  # -x side of the right arm box (1-aw .. 1)
+        signet, band = [outer - 0.5, 8.3, -2.5], [outer - 0.5, 8.75, -2.5]
+    arm = {
+        "part_pose": {"offset": [5 if left else -5, 2.5 if slim else 2, 0], "rotation": [0, 0, 0]},
+        "cubes": [{"origin": signet, "dimensions": [0.2, 1.2, 1.2], "texture_offset": [0, 0], "texture_scale": scale},
+                  {"origin": band, "dimensions": [1.3, 0.3, 0.2], "texture_offset": [0, 3], "texture_scale": scale}],
+        "children": {},
     }
+    mesh = {part: empty for part in ("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg")}
+    mesh["left_arm" if left else "right_arm"] = arm
+    return {"texture_width": RING_TEX, "texture_height": RING_TEX, "mesh": mesh}
 
 
 def ring_textures(corps, rgb):
-    """(plate, glow) 16x16 textures for ring_model. The plate's front face covers
-    pixels (2..14, 2..14); its edges use the strips around it."""
+    """(metal, glow) 64x64 textures for ring_model. The signet's outer faces are the 12x12
+    squares at (0, 12) (right hand) and (14, 12) (left hand); the band is the strip at y 30-35."""
     p = palette(corps, rgb)
-    plate = Image.new("RGBA", (16, 16), p["dark"])
-    glow = Image.new("RGBA", (16, 16), CLEAR)
-    d = ImageDraw.Draw(plate)
-    d.rectangle((2, 2, 13, 13), fill=p["disc"])
-    d.rectangle((2, 2, 13, 13), outline=p["main"])
-    for y, row in enumerate(LOGOS[corps]):
-        for x, ch in enumerate(row):
-            if ch == "#":
-                glow.putpixel((2 + x, 2 + y), p["glow"])
-                plate.putpixel((2 + x, 2 + y), p["glow"])
-    return plate, glow
+    metal = Image.new("RGBA", (RING_TEX, RING_TEX), CLEAR)
+    glow = Image.new("RGBA", (RING_TEX, RING_TEX), CLEAR)
+    d = ImageDraw.Draw(metal)
+    d.rectangle((0, 0, 27, 23), fill=p["metal_dark"])          # signet edges
+    d.rectangle((0, 30, 29, 34), fill=p["metal"])              # band
+    d.line((0, 32, 29, 32), fill=shade(p["metal"][:3], 1.3))   # its shine
+    for x0 in (0, 14):
+        d.rectangle((x0, 12, x0 + 11, 23), fill=p["disc"])
+        d.rectangle((x0, 12, x0 + 11, 23), outline=p["main"])
+        for y, row in enumerate(LOGOS[corps]):
+            for x, ch in enumerate(row):
+                if ch == "#":
+                    metal.putpixel((x0 + x, 12 + y), p["glow"])
+                    glow.putpixel((x0 + x, 12 + y), p["glow"])
+    return metal, glow
 
 
 # --- items ---
@@ -561,46 +571,55 @@ def ring_item(corps, rgb):
 # --- power battery lantern ---------------------------------------------------------------
 
 def battery_textures(corps, rgb):
-    """16x16 block textures: stone body, metal frame, glowing lens and the logo plate."""
+    """16x16 block textures for the lantern: painted metal, a lighter trim, translucent glowing
+    glass, the logo core and the wire handle."""
     p = palette(corps, rgb)
-    base = {"white": (206, 210, 218), "black": (30, 31, 36)}.get(corps, tuple(int(36 + v * 0.12) for v in rgb))
-    stone = Image.new("RGBA", (16, 16))
-    for y in range(16):
-        for x in range(16):
-            n = ((x * 7 + y * 13) ^ (x * y)) % 5
-            seam = y % 8 == 7 or (x + (y // 8) * 4) % 8 == 0  # brick-like blocks
-            c = tuple(max(0, v - 16) if seam else v - 6 + n * 4 for v in base)
-            stone.putpixel((x, y), c + (255,))
-    for x in range(16):
-        stone.putpixel((x, 3), p["glow"] if x % 4 else stone.getpixel((x, 3)))  # glowing seam
     metal = Image.new("RGBA", (16, 16))
     for y in range(16):
         for x in range(16):
-            metal.putpixel((x, y), p["metal"] if (x + y) % 4 else p["metal_dark"])
-    lens = Image.new("RGBA", (16, 16))
+            edge = x in (0, 15) or y in (0, 15)
+            hi = (x + y) % 7 == 0
+            c = p["dark"] if edge else (p["light"] if hi else p["main"])
+            metal.putpixel((x, y), c)
+    trim = Image.new("RGBA", (16, 16))
     for y in range(16):
         for x in range(16):
-            r = ((x - 7.5) ** 2 + (y - 7.5) ** 2) ** 0.5
-            lens.putpixel((x, y), p["glow"] if r < 2.5 else (p["light"] if r < 5 else (p["main"] if r < 7 else p["dark"])))
-    core = Image.new("RGBA", (16, 16), p["disc"])
+            trim.putpixel((x, y), p["light"] if y % 4 else p["main"])
+    glass = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            edge = x in (0, 15) or y in (0, 15)
+            streak = (x - y) % 9 == 0
+            c = p["glow"][:3]
+            glass.putpixel((x, y), c + ((230,) if edge else (200,) if streak else (120,)))
+    core = Image.new("RGBA", (16, 16), mix(p["disc"], p["main"], 0.25))
     d = ImageDraw.Draw(core)
-    d.ellipse((0, 0, 15, 15), outline=p["main"], width=1)
+    d.rectangle((0, 0, 15, 15), outline=p["light"])
     for y, row in enumerate(LOGOS[corps]):
         for x, ch in enumerate(row):
             if ch == "#":
-                core.putpixel((2 + x, 2 + y), p["glow"])
-    return {"stone": stone, "metal": metal, "lens": lens, "core": core}
+                core.putpixel((2 + x, 2 + y), WHITE if corps not in ("white",) else p["symbol"])
+    handle_rgb = {"white": (222, 178, 76), "black": (185, 190, 200)}.get(corps, (238, 240, 236))
+    handle = Image.new("RGBA", (16, 16), handle_rgb + (255,))
+    ear = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            r = ((x - 7.5) ** 2 + (y - 7.5) ** 2) ** 0.5
+            ear.putpixel((x, y), WHITE if r < 3 else (p["glow"] if r < 6 else p["light"]))
+    return {"metal": metal, "trim": trim, "glass": glass, "core": core, "handle": handle, "ear": ear}
 
 
 def battery_model(corps):
-    """The lantern from the reference art: a round stone body on a pedestal, a big glowing
-    lens on the front, logo plates on the sides, a carrying arch and a glowing core column."""
+    """The Power Battery, after the lantern in the Green Lantern mod showcase: a small lantern
+    standing on a foot, a translucent glowing chamber with the corps logo inside, corner posts,
+    two glowing side ears, a flared cap and a thin wire handle on top."""
     t = lambda name: f"greenlantern:block/{corps}_battery_{name}"  # noqa: E731
     bright = {"block_light": 15, "sky_light": 15}
+    faces6 = ("north", "south", "east", "west", "up", "down")
 
-    def cube(frm, to, tex, faces=("north", "south", "east", "west", "up", "down"), glow=False):
+    def cube(frm, to, tex, glow=False, faces=faces6):
         e = {"from": frm, "to": to, "faces": {f: {"texture": f"#{tex}"} for f in faces}}
-        if tex in ("lens", "core"):  # show the whole picture on each face, not a slice of it
+        if tex in ("core", "ear", "glass"):  # the whole picture on each face, not a slice of it
             for face in e["faces"].values():
                 face["uv"] = [0, 0, 16, 16]
         if glow:
@@ -609,40 +628,47 @@ def battery_model(corps):
         return e
 
     elements = [
-        # pedestal
-        cube([3, 0, 3], [13, 1, 13], "stone"),
-        cube([4, 1, 4], [12, 2, 12], "stone"),
-        # rounded body: two crossed boxes plus a core
-        cube([3, 2, 4], [13, 11, 12], "stone"),
-        cube([4, 2, 3], [12, 11, 13], "stone"),
-        cube([4, 11, 4], [12, 12, 12], "stone"),
-        # front lens with a metal rim
-        cube([4, 3, 2.5], [12, 10, 3], "metal"),
-        cube([5, 4, 2], [11, 9, 2.5], "lens", glow=True),
-        # back lens
-        cube([5, 4, 13], [11, 9, 13.5], "lens", glow=True),
-        # logo plates on both sides
-        cube([12.8, 4, 5], [13.4, 10, 11], "core", ("east", "west", "north", "south", "up", "down"), glow=True),
-        cube([2.6, 4, 5], [3.2, 10, 11], "core", ("east", "west", "north", "south", "up", "down"), glow=True),
-        # glowing core column and cap
-        cube([7, 12, 7], [9, 14, 9], "lens", glow=True),
-        cube([5.5, 14, 5.5], [10.5, 15, 10.5], "metal"),
-        # carrying arch over the top
-        cube([1.5, 10.5, 7], [2.5, 13, 9], "metal"),
-        cube([2.5, 10.5, 7], [3, 11.5, 9], "metal"),
-        cube([2, 13, 7], [4, 14.5, 9], "metal"),
-        cube([4, 14.5, 7], [12, 15.5, 9], "metal"),
-        cube([12, 13, 7], [14, 14.5, 9], "metal"),
-        cube([13.5, 10.5, 7], [14.5, 13, 9], "metal"),
-        cube([13, 10.5, 7], [13.5, 11.5, 9], "metal"),
-        cube([6.5, 15.5, 6.5], [9.5, 16, 9.5], "stone"),
+        # foot and base
+        cube([5.5, 0, 5.5], [10.5, 1, 10.5], "metal"),
+        cube([4.5, 1, 4.5], [11.5, 2.5, 11.5], "metal"),
+        cube([4.5, 2.5, 4.5], [11.5, 3.5, 11.5], "trim"),
+        # the glowing core with the logo, inside a glass chamber
+        cube([5.5, 4, 5.5], [10.5, 9, 10.5], "core", glow=True),
+        cube([4.6, 3.5, 4.6], [11.4, 9.5, 11.4], "glass", glow=True),
+        # corner posts
+        cube([4, 3.5, 4], [5, 9.5, 5], "metal"),
+        cube([11, 3.5, 4], [12, 9.5, 5], "metal"),
+        cube([4, 3.5, 11], [5, 9.5, 12], "metal"),
+        cube([11, 3.5, 11], [12, 9.5, 12], "metal"),
+        # side ears with glowing lenses
+        cube([1.5, 5, 6.5], [4, 8, 9.5], "metal"),
+        cube([1.2, 5.5, 7], [1.5, 7.5, 9], "ear", glow=True),
+        cube([12, 5, 6.5], [14.5, 8, 9.5], "metal"),
+        cube([14.5, 5.5, 7], [14.8, 7.5, 9], "ear", glow=True),
+        # cap
+        cube([4.5, 9.5, 4.5], [11.5, 10.5, 11.5], "trim"),
+        cube([5, 10.5, 5], [11, 11.5, 11], "metal"),
+        cube([6, 11.5, 6], [10, 12.5, 10], "metal"),
+        cube([7, 12.5, 7], [9, 13.5, 9], "trim"),
+        # wire handle
+        cube([5.5, 11, 7.7], [6, 15.2, 8.3], "handle"),
+        cube([10, 11, 7.7], [10.5, 15.2, 8.3], "handle"),
+        cube([5.5, 15.2, 7.7], [10.5, 15.7, 8.3], "handle"),
     ]
     return {
         "parent": "minecraft:block/block",
-        "render_type": "minecraft:cutout",
-        "textures": {"particle": t("stone"), "stone": t("stone"), "metal": t("metal"), "lens": t("lens"),
-                     "core": t("core")},
+        "render_type": "minecraft:translucent",
+        "textures": {"particle": t("metal"), **{n: t(n) for n in ("metal", "trim", "glass", "core", "handle", "ear")}},
         "elements": elements,
+        "display": {
+            "thirdperson_righthand": {"rotation": [0, 45, 0], "translation": [0, 1.5, 1], "scale": [0.5, 0.5, 0.5]},
+            "thirdperson_lefthand": {"rotation": [0, 45, 0], "translation": [0, 1.5, 1], "scale": [0.5, 0.5, 0.5]},
+            "firstperson_righthand": {"rotation": [0, 45, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+            "firstperson_lefthand": {"rotation": [0, 45, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+            "gui": {"rotation": [20, 225, 0], "translation": [0, 0.5, 0], "scale": [0.8, 0.8, 0.8]},
+            "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.5, 0.5, 0.5]},
+            "fixed": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [0.8, 0.8, 0.8]},
+        },
     }
 
 
@@ -670,14 +696,15 @@ def _box(frm, to):
 
 
 def construct_shapes():
-    """Shape name -> list of elements in a 16x16x16 box, centered on (8, 8, 8)."""
+    """Shape name -> list of elements in a 16x16x16 box, centered on (8, 8, 8). Shapes face +z
+    (the display entity's facing direction)."""
     fist = [
         _box([3, 3, 5], [13, 11, 13]),     # back of the hand
         _box([3, 11, 4], [5.4, 14, 11]),   # four curled fingers
         _box([5.6, 11, 4], [8, 14.5, 11]),
         _box([8.2, 11, 4], [10.6, 14.5, 11]),
         _box([10.8, 11, 4], [13, 14, 11]),
-        _box([3, 9, 2], [13, 11.5, 5]),    # knuckle ridge, facing forward
+        _box([3, 9, 2], [13, 11.5, 5]),    # knuckle ridge
         _box([12.5, 5, 6], [15, 10, 11]),  # thumb
         _box([5, 0, 6], [11, 3, 12]),      # wrist
     ]
@@ -710,7 +737,181 @@ def construct_shapes():
         _box([11, 0, 9], [14, 10, 12]), _box([11.8, 10, 9.8], [13.2, 12, 11.2]),
         _box([9, 0, 2], [11, 6, 4]), _box([4, 0, 11], [7, 7, 14]),
     ]
-    return {"fist": fist, "hammer": hammer, "cage": cage, "wall": wall, "claw": claw, "crystal": crystal}
+    spike = [_box([5.5, 0, 5.5], [10.5, 6, 10.5]), _box([6.5, 6, 6.5], [9.5, 11, 9.5]),
+             _box([7.25, 11, 7.25], [8.75, 15, 8.75]), _box([7.6, 15, 7.6], [8.4, 16, 8.4])]
+    hand = [_box([3, 2, 6], [13, 10, 10]),                       # palm, reaching out
+            _box([5, -1, 6.5], [11, 2, 9.5]),                    # wrist
+            _box([13, 4, 6.5], [15.5, 9, 9.5]), _box([14.5, 9, 6.5], [16, 11, 9.5])]   # thumb
+    for x0, x1 in ((3, 5.2), (5.6, 7.8), (8.2, 10.4), (10.8, 13)):  # grasping fingers
+        hand += [_box([x0, 10, 6.5], [x1, 15, 9.5]), _box([x0, 15, 9.5], [x1, 16.5, 12.5])]
+    train = [_box([2, 0, -4], [14, 2, 20]),                       # chassis
+             _box([3, 2, -4], [13, 12, 4]), _box([2, 12, -5], [14, 13, 5]),    # cab and roof
+             _box([4, 2, 4], [12, 10, 18]),                      # boiler
+             _box([6.5, 10, 13], [9.5, 15, 16]),                 # smokestack
+             _box([3, 0, 18], [13, 3, 21]),                      # cowcatcher
+             _box([6, 5, 18], [10, 8, 18.5])]                    # headlamp
+    for z in (-2, 6, 14):
+        train += [_box([1, -2, z], [2, 2, z + 4]), _box([14, -2, z], [15, 2, z + 4])]  # wheels
+    ball = [_box([3, 3, 3], [13, 13, 13]), _box([5, 1, 5], [11, 15, 11]),
+            _box([1, 5, 5], [15, 11, 11]), _box([5, 5, 1], [11, 11, 15])]
+    return {"fist": fist, "hammer": hammer, "cage": cage, "wall": wall, "claw": claw, "crystal": crystal,
+            "spike": spike, "hand": hand, "train": train, "ball": ball}
+
+
+def _glow_box(frm, to, angle=-45):
+    """A bright hard-light box, rotated about the model center like a handheld item's diagonal."""
+    e = _box(frm, to)
+    e["shade"] = False
+    e["forge_data"] = {"block_light": 15, "sky_light": 15}
+    if angle:
+        e["rotation"] = {"angle": angle, "axis": "z", "origin": [8, 8, 8]}
+    return e
+
+
+# Display transforms of vanilla item/handheld (with item/generated), for 3D models laid out in
+# the same plane as a handheld sprite: the grip at the bottom left, the tip at the top right.
+HANDHELD_DISPLAY = {
+    "thirdperson_righthand": {"rotation": [0, -90, 55], "translation": [0, 4.0, 0.5], "scale": [0.85, 0.85, 0.85]},
+    "thirdperson_lefthand": {"rotation": [0, 90, -55], "translation": [0, 4.0, 0.5], "scale": [0.85, 0.85, 0.85]},
+    "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+    "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+    "head": {"rotation": [0, 180, 0], "translation": [0, 13, 7], "scale": [1, 1, 1]},
+    "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [1, 1, 1]},
+    "gui": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [0.85, 0.85, 0.85]},
+}
+# vanilla shield.json / shield_blocking.json; the plate is laid out like the shield's builtin model
+SHIELD_DISPLAY = {
+    "thirdperson_righthand": {"rotation": [0, 90, 0], "translation": [10, 6, -4], "scale": [1, 1, 1]},
+    "thirdperson_lefthand": {"rotation": [0, 90, 0], "translation": [10, 6, 12], "scale": [1, 1, 1]},
+    "firstperson_righthand": {"rotation": [0, 180, 5], "translation": [-10, 2, -10], "scale": [1.25, 1.25, 1.25]},
+    "firstperson_lefthand": {"rotation": [0, 180, 5], "translation": [10, 0, -10], "scale": [1.25, 1.25, 1.25]},
+    "gui": {"rotation": [15, -25, -5], "translation": [2, 3, 0], "scale": [0.65, 0.65, 0.65]},
+    "fixed": {"rotation": [0, 180, 0], "translation": [-2, 4, -5], "scale": [0.5, 0.5, 0.5]},
+    "ground": {"rotation": [0, 0, 0], "translation": [4, 4, 2], "scale": [0.25, 0.25, 0.25]},
+}
+SHIELD_BLOCKING_DISPLAY = {
+    **SHIELD_DISPLAY,
+    "thirdperson_righthand": {"rotation": [45, 135, 0], "translation": [3.51, 11, -2], "scale": [1, 1, 1]},
+    "thirdperson_lefthand": {"rotation": [45, 135, 0], "translation": [13.51, 3, 5], "scale": [1, 1, 1]},
+    "firstperson_righthand": {"rotation": [0, 180, -5], "translation": [-15, 5, -11], "scale": [1.25, 1.25, 1.25]},
+    "firstperson_lefthand": {"rotation": [0, 180, -5], "translation": [5, 5, -11], "scale": [1.25, 1.25, 1.25]},
+}
+
+
+def held_construct_models():
+    """Item -> (elements, display) for the constructs you hold. Weapons are built upright along
+    +y (grip at the bottom), then turned -45 degrees so they lie like a handheld sprite."""
+    g = _glow_box
+    sword = [g([7, -3, 7], [9, -1, 9]), g([7.5, -1, 7.5], [8.5, 4, 8.5]), g([4.5, 4, 7], [11.5, 5.5, 9]),
+             g([7, 5.5, 7.5], [9, 17, 8.5]), g([7.5, 17, 7.6], [8.5, 19, 8.4]), g([7.8, 6, 7.3], [8.2, 16, 8.7])]
+    mace = [g([7.5, -3, 7.5], [8.5, 8, 8.5]), g([7, 7, 7], [9, 8.5, 9]), g([5, 8.5, 5], [11, 14.5, 11]),
+            g([3.8, 10.5, 7.4], [5, 12.5, 8.6]), g([11, 10.5, 7.4], [12.2, 12.5, 8.6]),
+            g([7.4, 14.5, 7.4], [8.6, 16, 8.6]), g([7.4, 10.5, 3.8], [8.6, 12.5, 5]), g([7.4, 10.5, 11], [8.6, 12.5, 12.2])]
+    axe = [g([7.5, -3, 7.5], [8.5, 16, 8.5]), g([8.5, 9, 7.6], [12.5, 15.5, 8.4]), g([12.5, 8, 7.7], [13.6, 16.5, 8.3]),
+           g([5, 11, 7.7], [7.5, 13, 8.3]), g([7, 15, 7], [9, 16.5, 9])]
+    drill = [g([7.5, -3, 7.5], [8.5, 6, 8.5]), g([5.5, 6, 5.5], [10.5, 10, 10.5]), g([6.5, 10, 6.5], [9.5, 13, 9.5]),
+             g([7, 13, 7], [9, 16, 9]), g([7.5, 16, 7.5], [8.5, 18.5, 8.5]), g([5.2, 7, 7.5], [5.5, 9, 8.5])]
+    gatling = [g([7.5, -2, 7], [9, 3, 9]), g([6, 3, 6], [10, 8, 10]),
+               g([6.5, 8, 7], [7.5, 18, 8]), g([8.5, 8, 7], [9.5, 18, 8]), g([7.5, 8, 8.2], [8.5, 18, 9.2]),
+               g([7.5, 8, 5.8], [8.5, 18, 6.8]), g([5.8, 15, 5.8], [10.2, 16, 10.2]), g([5.8, 10, 5.8], [10.2, 11, 10.2])]
+    claws = [g([7, -2, 7], [9, 4, 9]), g([5, 4, 7], [11, 6, 9]),
+             g([5.2, 6, 7.6], [6.2, 16, 8.4]), g([7.5, 6, 7.6], [8.5, 18, 8.4]), g([9.8, 6, 7.6], [10.8, 16, 8.4])]
+    staff = [g([7.5, -8, 7.5], [8.5, 17, 8.5]), g([6, 17, 7.5], [10, 18, 8.5]), g([6, 18, 7.5], [7, 22, 8.5]),
+             g([9, 18, 7.5], [10, 22, 8.5]), g([6, 22, 7.5], [10, 23, 8.5]), g([7, 18.5, 7], [9, 21, 9]),
+             g([7, -9, 7], [9, -8, 9])]
+    shield = [g([-6, -11, 1], [6, 11, 2], 0), g([-1, -3, -5], [1, 3, 1], 0),
+              g([-6.5, -11.5, 0.8], [6.5, -10.5, 2.2], 0), g([-6.5, 10.5, 0.8], [6.5, 11.5, 2.2], 0),
+              g([-6.5, -10.5, 0.8], [-5.5, 10.5, 2.2], 0), g([5.5, -10.5, 0.8], [6.5, 10.5, 2.2], 0),
+              g([-2.5, -2.5, 2], [2.5, 2.5, 2.6], 0)]
+    return {"construct_sword": (sword, HANDHELD_DISPLAY), "construct_mace": (mace, HANDHELD_DISPLAY),
+            "construct_axe": (axe, HANDHELD_DISPLAY), "construct_drill": (drill, HANDHELD_DISPLAY),
+            "construct_gatling": (gatling, HANDHELD_DISPLAY), "construct_claws": (claws, HANDHELD_DISPLAY),
+            "construct_staff": (staff, HANDHELD_DISPLAY), "construct_shield": (shield, SHIELD_DISPLAY)}
+
+
+def construct_block_texture(corps, rgb, hardlight=False):
+    """Placeable construct blocks: a bright frame around soft light. Hard-light walls (barrier,
+    dome, bridge) get a lattice so they read as a force field."""
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (16, 16))
+    dark = corps == "black"
+    for y in range(16):
+        for x in range(16):
+            edge = x in (0, 15) or y in (0, 15)
+            inner = x in (1, 14) or y in (1, 14)
+            lattice = hardlight and ((x + y) % 5 == 0 or (x - y) % 5 == 0)
+            if dark:
+                c, a = ((190, 196, 210), 235) if edge or lattice else ((24, 24, 30), 190)
+            elif edge:
+                c, a = p["light"][:3], 240
+            elif inner or lattice:
+                c, a = p["glow"][:3], 200
+            else:
+                c, a = p["main"][:3], 110 if hardlight else 140
+            img.putpixel((x, y), c + (a,))
+    return img
+
+
+def construct_block_model(texture):
+    bright = {"block_light": 15, "sky_light": 15}
+    return {
+        "parent": "minecraft:block/block",
+        "render_type": "minecraft:translucent",
+        "textures": {"all": texture, "particle": texture},
+        "elements": [{"from": [0, 0, 0], "to": [16, 16, 16], "shade": False, "forge_data": bright,
+                      "faces": {d: {"texture": "#all", "cullface": d}
+                                for d in ("north", "south", "east", "west", "up", "down")}}],
+    }
+
+
+def scuba_model():
+    """Scuba Gear: a hard-light diving bubble around the head and an air tank on the back."""
+    empty = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {}}
+    mesh = {part: empty for part in ("hat", "right_arm", "left_arm", "right_leg", "left_leg")}
+    mesh["head"] = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "children": {},
+                    "cubes": [{"origin": [-5, -9.5, -5], "dimensions": [10, 10, 10], "texture_offset": [0, 0]}]}
+    mesh["body"] = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "children": {},
+                    "cubes": [{"origin": [-3, 1, 2.6], "dimensions": [6, 7, 3], "texture_offset": [0, 20]},
+                              {"origin": [-1, -1, 3.1], "dimensions": [2, 2, 2], "texture_offset": [20, 20]}]}
+    return {"texture_width": 64, "texture_height": 32, "mesh": mesh}
+
+
+def scuba_texture(corps, rgb):
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (64, 32), CLEAR)
+    for y in range(20):
+        for x in range(40):  # the bubble: faint glass with bright rims
+            u, v = x % 10, y % 10
+            rim = u in (0, 9) or v in (0, 9)
+            img.putpixel((x, y), p["glow"][:3] + ((200,) if rim else (60,)))
+    for y in range(20, 30):
+        for x in range(18):  # the tank: solid light with bands
+            band = (y - 20) % 4 == 0
+            img.putpixel((x, y), (p["light"] if band else p["main"])[:3] + (230,))
+    for y in range(20, 24):
+        for x in range(20, 28):  # valve
+            img.putpixel((x, y), p["metal"][:3] + (255,))
+    return img
+
+
+DIGITS = {"1": [".#.", "##.", ".#.", ".#.", "###"], "2": ["##.", "..#", ".#.", "#..", "###"],
+          "3": ["##.", "..#", ".#.", "..#", "##."], "4": ["#.#", "#.#", "###", "..#", "..#"],
+          "5": ["###", "#..", "##.", "..#", "##."]}
+
+
+def construct_slot_icon(corps, rgb, n):
+    """16x16 icon for Construct n on the ability bar: a hard-light diamond with the slot number."""
+    p = palette(corps, rgb)
+    img = Image.new("RGBA", (16, 16), CLEAR)
+    d = ImageDraw.Draw(img)
+    d.polygon([(8, 0), (15, 7), (8, 15), (1, 7)], fill=p["dark"], outline=p["glow"])
+    d.polygon([(8, 3), (12, 7), (8, 12), (4, 7)], fill=p["main"])
+    for y, row in enumerate(DIGITS[str(n)]):
+        for x, ch in enumerate(row):
+            if ch == "#":
+                img.putpixel((7 + x, 5 + y), WHITE)
+    return img
 
 
 def construct_texture(corps, rgb):

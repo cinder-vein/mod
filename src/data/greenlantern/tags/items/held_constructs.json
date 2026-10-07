@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "greenlantern:construct_sword",
+    "greenlantern:construct_shield",
+    "greenlantern:construct_mace",
+    "greenlantern:construct_axe",
+    "greenlantern:construct_drill",
+    "greenlantern:construct_gatling",
+    "greenlantern:construct_claws",
+    "greenlantern:construct_staff"
+  ]
+}

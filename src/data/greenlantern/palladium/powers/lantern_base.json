@@ -1795,6 +1795,82 @@
         }
       }
     },
+    "universal_translator": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:hero_of_the_village 15 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:or",
+          "conditions": [
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:green_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:yellow_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:red_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:orange_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:blue_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:violet_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:indigo_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:white_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            },
+            {
+              "type": "palladium:energy_bar",
+              "power": "greenlantern:black_lantern",
+              "energy_bar": "ring_charge",
+              "min": 1
+            }
+          ]
+        },
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 99
+        }
+      }
+    },
     "ring_protection": {
       "type": "palladium:damage_immunity",
       "hidden": true,

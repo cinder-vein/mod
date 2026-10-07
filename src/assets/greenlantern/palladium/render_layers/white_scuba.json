@@ -1,0 +1,5 @@
+{
+  "model_layer": "greenlantern:player#scuba",
+  "texture": "greenlantern:textures/models/scuba/white.png",
+  "render_type": "solid"
+}

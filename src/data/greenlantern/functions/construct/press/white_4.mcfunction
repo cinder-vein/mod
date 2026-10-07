@@ -1,0 +1,22 @@
+execute unless score @s gl_slotinit matches 1 run function greenlantern:construct/default_slots
+execute if score @s gl_slot4 matches 0 run title @s actionbar [{"text":"Construct slot 4 is empty. Fill it with Configure Constructs.","color":"gray"}]
+execute if score @s gl_slot4 matches 1 run function greenlantern:construct/white/sword
+execute if score @s gl_slot4 matches 2 run function greenlantern:construct/white/sword_shield
+execute if score @s gl_slot4 matches 3 run function greenlantern:construct/white/mace
+execute if score @s gl_slot4 matches 4 run function greenlantern:construct/white/axe
+execute if score @s gl_slot4 matches 5 run function greenlantern:construct/white/fist
+execute if score @s gl_slot4 matches 6 run function greenlantern:construct/white/slam
+execute if score @s gl_slot4 matches 7 run function greenlantern:construct/white/blast
+execute if score @s gl_slot4 matches 8 run function greenlantern:construct/white/gatling
+execute if score @s gl_slot4 matches 9 run function greenlantern:construct/white/missiles
+execute if score @s gl_slot4 matches 10 run function greenlantern:construct/white/cannon
+execute if score @s gl_slot4 matches 11 run function greenlantern:construct/white/shield
+execute if score @s gl_slot4 matches 12 run function greenlantern:construct/white/barrier
+execute if score @s gl_slot4 matches 13 run function greenlantern:construct/white/cage
+execute if score @s gl_slot4 matches 14 run function greenlantern:construct/white/dome
+execute if score @s gl_slot4 matches 15 run function greenlantern:construct/white/blocks
+execute if score @s gl_slot4 matches 16 run function greenlantern:construct/white/scuba
+execute if score @s gl_slot4 matches 17 run function greenlantern:construct/white/drill
+execute if score @s gl_slot4 matches 18 run function greenlantern:construct/white/bridge
+execute if score @s gl_slot4 matches 19 run function greenlantern:construct/white/scan
+execute if score @s gl_slot4 matches 20 run function greenlantern:construct/white/signature

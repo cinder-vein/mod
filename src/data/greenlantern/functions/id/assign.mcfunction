@@ -1,2 +1,2 @@
-scoreboard players add #next gl_id 1
-scoreboard players operation @s gl_id = #next gl_id
+execute if entity @s[tag=gl_hasid] run function greenlantern:id/from_tags
+execute unless entity @s[tag=gl_hasid] run function greenlantern:id/new

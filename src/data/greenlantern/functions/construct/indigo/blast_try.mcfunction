@@ -1,0 +1,1 @@
+function greenlantern:construct/indigo/blast_check

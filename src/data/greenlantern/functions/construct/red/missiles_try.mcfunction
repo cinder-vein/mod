@@ -1,0 +1,1 @@
+function greenlantern:construct/red/missiles_check

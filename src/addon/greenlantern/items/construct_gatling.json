@@ -1,0 +1,10 @@
+{
+  "max_stack_size": 1,
+  "is_fire_resistant": true,
+  "tooltip": [
+    {
+      "translate": "tooltip.greenlantern.construct",
+      "color": "gray"
+    }
+  ]
+}

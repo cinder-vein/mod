@@ -113,8 +113,9 @@ def validate():
             check_ref("item", power["icon"], where)
         for name, ab in abilities.items():
             w = f"{where}/{name}"
-            if isinstance(ab.get("icon"), str):
-                check_ref("item", ab["icon"], w)
+            if isinstance(ab.get("icon"), str):  # an item id, or a texture path ending in .png
+                check_ref("texture" if ab["icon"].endswith(".png") else "item",
+                          ab["icon"], w)
             if "render_layer" in ab:
                 check_ref("render_layer", ab["render_layer"], w)
             if "energy_beam" in ab:

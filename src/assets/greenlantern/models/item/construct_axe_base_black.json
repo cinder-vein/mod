@@ -1,0 +1,7 @@
+{
+  "parent": "greenlantern:item/construct_axe_base",
+  "textures": {
+    "0": "greenlantern:item/construct/black",
+    "particle": "greenlantern:item/construct/black"
+  }
+}

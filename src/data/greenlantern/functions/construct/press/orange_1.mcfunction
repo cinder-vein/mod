@@ -1,0 +1,22 @@
+execute unless score @s gl_slotinit matches 1 run function greenlantern:construct/default_slots
+execute if score @s gl_slot1 matches 0 run title @s actionbar [{"text":"Construct slot 1 is empty. Fill it with Configure Constructs.","color":"gray"}]
+execute if score @s gl_slot1 matches 1 run function greenlantern:construct/orange/sword
+execute if score @s gl_slot1 matches 2 run function greenlantern:construct/orange/sword_shield
+execute if score @s gl_slot1 matches 3 run function greenlantern:construct/orange/mace
+execute if score @s gl_slot1 matches 4 run function greenlantern:construct/orange/axe
+execute if score @s gl_slot1 matches 5 run function greenlantern:construct/orange/fist
+execute if score @s gl_slot1 matches 6 run function greenlantern:construct/orange/slam
+execute if score @s gl_slot1 matches 7 run function greenlantern:construct/orange/blast
+execute if score @s gl_slot1 matches 8 run function greenlantern:construct/orange/gatling
+execute if score @s gl_slot1 matches 9 run function greenlantern:construct/orange/missiles
+execute if score @s gl_slot1 matches 10 run function greenlantern:construct/orange/cannon
+execute if score @s gl_slot1 matches 11 run function greenlantern:construct/orange/shield
+execute if score @s gl_slot1 matches 12 run function greenlantern:construct/orange/barrier
+execute if score @s gl_slot1 matches 13 run function greenlantern:construct/orange/cage
+execute if score @s gl_slot1 matches 14 run function greenlantern:construct/orange/dome
+execute if score @s gl_slot1 matches 15 run function greenlantern:construct/orange/blocks
+execute if score @s gl_slot1 matches 16 run function greenlantern:construct/orange/scuba
+execute if score @s gl_slot1 matches 17 run function greenlantern:construct/orange/drill
+execute if score @s gl_slot1 matches 18 run function greenlantern:construct/orange/bridge
+execute if score @s gl_slot1 matches 19 run function greenlantern:construct/orange/scan
+execute if score @s gl_slot1 matches 20 run function greenlantern:construct/orange/signature

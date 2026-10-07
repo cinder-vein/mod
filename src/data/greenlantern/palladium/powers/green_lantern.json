@@ -557,7 +557,7 @@
       "icon": "minecraft:emerald",
       "hidden_in_bar": true,
       "gui_position": [
-        3,
+        6,
         1
       ],
       "conditions": {
@@ -573,18 +573,36 @@
         ]
       }
     },
-    "skill_fist": {
+    "unlocked_constructs": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_constructs"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_constructs"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_melee_1": {
       "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.skill_fist"
+        "translate": "ability.greenlantern.skill_melee_1"
       },
       "description": {
-        "translate": "ability.greenlantern.skill_fist.description"
+        "translate": "ability.greenlantern.skill_melee_1.description"
       },
-      "icon": "minecraft:iron_block",
+      "icon": "greenlantern:construct_sword",
       "hidden_in_bar": true,
       "gui_position": [
-        3,
+        4.5,
         2
       ],
       "conditions": {
@@ -600,52 +618,43 @@
         ]
       }
     },
-    "skill_cage": {
+    "unlocked_melee_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_melee_1"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_melee_1"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_melee_2": {
       "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.skill_cage"
+        "translate": "ability.greenlantern.skill_melee_2"
       },
       "description": {
-        "translate": "ability.greenlantern.skill_cage.description"
+        "translate": "ability.greenlantern.skill_melee_2.description"
       },
-      "icon": "minecraft:iron_bars",
+      "icon": "greenlantern:construct_fist",
       "hidden_in_bar": true,
       "gui_position": [
-        3,
+        4.5,
         3
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_fist"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
-    },
-    "skill_slam": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.greenlantern.skill_slam"
-      },
-      "description": {
-        "translate": "ability.greenlantern.skill_slam.description"
-      },
-      "icon": "minecraft:anvil",
-      "hidden_in_bar": true,
-      "gui_position": [
-        3,
-        4
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_cage"
+            "ability": "skill_melee_1"
           },
           {
             "type": "palladium:experience_level_buyable",
@@ -654,41 +663,934 @@
         ]
       }
     },
-    "skill_wall": {
+    "unlocked_melee_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_melee_2"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_melee_2"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_ranged_1": {
       "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.skill_wall"
+        "translate": "ability.greenlantern.skill_ranged_1"
       },
       "description": {
-        "translate": "ability.greenlantern.skill_wall.description"
+        "translate": "ability.greenlantern.skill_ranged_1.description"
       },
-      "icon": "minecraft:shield",
+      "icon": "greenlantern:construct_gatling",
       "hidden_in_bar": true,
       "gui_position": [
-        3,
-        5
+        5.5,
+        2
       ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_slam"
+            "ability": "skill_constructs"
           },
           {
             "type": "palladium:experience_level_buyable",
-            "xp_level": 10
+            "xp_level": 8
           }
         ]
+      }
+    },
+    "unlocked_ranged_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_ranged_1"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_ranged_1"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_ranged_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_ranged_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_ranged_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_ranged_2.description"
+      },
+      "icon": "greenlantern:construct_ball",
+      "hidden_in_bar": true,
+      "gui_position": [
+        5.5,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_ranged_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 12
+          }
+        ]
+      }
+    },
+    "unlocked_ranged_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_ranged_2"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_ranged_2"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_ranged_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_defense_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_defense_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_defense_1.description"
+      },
+      "icon": "greenlantern:construct_wall",
+      "hidden_in_bar": true,
+      "gui_position": [
+        6.5,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "unlocked_defense_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_defense_1"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_defense_1"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_defense_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_defense_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_defense_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_defense_2.description"
+      },
+      "icon": "minecraft:glass",
+      "hidden_in_bar": true,
+      "gui_position": [
+        6.5,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_defense_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 12
+          }
+        ]
+      }
+    },
+    "unlocked_defense_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_defense_2"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_defense_2"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_defense_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_utility_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_utility_1"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_utility_1.description"
+      },
+      "icon": "minecraft:turtle_helmet",
+      "hidden_in_bar": true,
+      "gui_position": [
+        7.5,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "unlocked_utility_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_utility_1"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_utility_1"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_utility_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_utility_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.skill_utility_2"
+      },
+      "description": {
+        "translate": "ability.greenlantern.skill_utility_2.description"
+      },
+      "icon": "minecraft:scaffolding",
+      "hidden_in_bar": true,
+      "gui_position": [
+        7.5,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_utility_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 12
+          }
+        ]
+      }
+    },
+    "unlocked_utility_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_utility_2"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_utility_2"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_utility_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_signature": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.greenlantern.green.skill_signature"
+      },
+      "description": {
+        "translate": "ability.greenlantern.green.skill_signature.description"
+      },
+      "icon": "minecraft:minecart",
+      "hidden_in_bar": true,
+      "gui_position": [
+        6,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_melee_2"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_ranged_2"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_defense_2"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_utility_2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "unlocked_signature": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_u_green_signature"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_u_green_signature"
+      ],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_signature"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "cx_sword": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/sword"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_sword"
+      },
+      "icon": "greenlantern:construct_sword",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_sword.description"
+      }
+    },
+    "cx_sword_shield": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/sword_shield"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_sword_shield"
+      },
+      "icon": "greenlantern:construct_shield",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_sword_shield.description"
+      }
+    },
+    "cx_mace": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/mace"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_mace"
+      },
+      "icon": "greenlantern:construct_mace",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_mace.description"
+      }
+    },
+    "cx_axe": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/axe"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_axe"
+      },
+      "icon": "greenlantern:construct_axe",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_axe.description"
+      }
+    },
+    "cx_fist": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/fist"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_2"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_fist"
+      },
+      "icon": "greenlantern:construct_fist",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_fist.description"
+      }
+    },
+    "cx_slam": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/slam"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_melee_2"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_slam"
+      },
+      "icon": "greenlantern:construct_hammer",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_slam.description"
+      }
+    },
+    "cx_blast": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/blast"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_blast"
+      },
+      "icon": "minecraft:arrow",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_blast.description"
+      }
+    },
+    "cx_gatling": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/gatling"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_ranged_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_gatling"
+      },
+      "icon": "greenlantern:construct_gatling",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_gatling.description"
+      }
+    },
+    "cx_missiles": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/missiles"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_ranged_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_missiles"
+      },
+      "icon": "minecraft:firework_rocket",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_missiles.description"
+      }
+    },
+    "cx_cannon": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/cannon"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_ranged_2"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_cannon"
+      },
+      "icon": "greenlantern:construct_ball",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_cannon.description"
+      }
+    },
+    "cx_shield": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/shield"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_shield"
+      },
+      "icon": "greenlantern:construct_shield",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_shield.description"
+      }
+    },
+    "cx_barrier": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/barrier"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_defense_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_barrier"
+      },
+      "icon": "greenlantern:construct_wall",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_barrier.description"
+      }
+    },
+    "cx_cage": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/cage"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_defense_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_cage"
+      },
+      "icon": "greenlantern:construct_cage",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_cage.description"
+      }
+    },
+    "cx_dome": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/dome"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_defense_2"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_dome"
+      },
+      "icon": "minecraft:glass",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_dome.description"
+      }
+    },
+    "cx_blocks": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/blocks"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_blocks"
+      },
+      "icon": "minecraft:lime_stained_glass",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_blocks.description"
+      }
+    },
+    "cx_scuba": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/scuba"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_utility_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_scuba"
+      },
+      "icon": "minecraft:turtle_helmet",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_scuba.description"
+      }
+    },
+    "cx_drill": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/drill"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_utility_1"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_drill"
+      },
+      "icon": "greenlantern:construct_drill",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_drill.description"
+      }
+    },
+    "cx_bridge": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/bridge"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_utility_2"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_bridge"
+      },
+      "icon": "minecraft:scaffolding",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_bridge.description"
+      }
+    },
+    "cx_scan": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/scan"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.cx_scan"
+      },
+      "icon": "minecraft:spyglass",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.cx_scan.description"
+      }
+    },
+    "cx_signature": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/green/signature"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_signature"
+        },
+        "enabling": {
+          "type": "palladium:ability_wheel",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.green.cx_signature"
+      },
+      "icon": "minecraft:minecart",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": {
+        "translate": "ability.greenlantern.green.cx_signature.description"
       }
     },
     "constructs": {
       "type": "palladium:ability_wheel",
       "abilities": [
-        "construct_blast",
-        "construct_fist",
-        "construct_cage",
-        "construct_slam",
-        "construct_wall"
+        "cx_sword",
+        "cx_sword_shield",
+        "cx_mace",
+        "cx_axe",
+        "cx_fist",
+        "cx_slam",
+        "cx_blast",
+        "cx_gatling",
+        "cx_missiles",
+        "cx_cannon",
+        "cx_shield",
+        "cx_barrier",
+        "cx_cage",
+        "cx_dome",
+        "cx_blocks",
+        "cx_scuba",
+        "cx_drill",
+        "cx_bridge",
+        "cx_scan",
+        "cx_signature"
       ],
       "conditions": {
         "unlocking": {
@@ -708,236 +1610,339 @@
       "hidden_in_bar": false,
       "list_index": 1
     },
-    "construct_blast": {
-      "type": "palladium:projectile",
-      "entity_type": "palladium:custom_projectile",
-      "velocity": 2.5,
-      "inaccuracy": 0.0,
-      "entity_data": {
-        "Damage": 8,
-        "Gravity": 0.0,
-        "Size": 0.4,
-        "Lifetime": 100,
-        "DieOnEntityHit": true,
-        "DieOnBlockHit": true,
-        "Appearances": [
+    "construct_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/press/green_1"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_1"
+      },
+      "icon": "greenlantern:textures/gui/construct_slot/green_1.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 5
+    },
+    "construct_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/press/green_2"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_2"
+      },
+      "icon": "greenlantern:textures/gui/construct_slot/green_2.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 6
+    },
+    "construct_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/press/green_3"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_3"
+      },
+      "icon": "greenlantern:textures/gui/construct_slot/green_3.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 7
+    },
+    "construct_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/press/green_4"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_4"
+      },
+      "icon": "greenlantern:textures/gui/construct_slot/green_4.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8
+    },
+    "construct_5": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/press/green_5"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 5
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.construct_5"
+      },
+      "icon": "greenlantern:textures/gui/construct_slot/green_5.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 9
+    },
+    "configure_constructs": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function greenlantern:construct/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 10
+        }
+      },
+      "title": {
+        "translate": "ability.greenlantern.configure_constructs"
+      },
+      "icon": "minecraft:writable_book",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 15
+    },
+    "construct_upkeep_mainhand": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 1
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:item_in_slot",
+          "item": {
+            "tag": "greenlantern:held_constructs"
+          },
+          "slot": "mainhand"
+        },
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 19
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_upkeep_offhand": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 1
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:item_in_slot",
+          "item": {
+            "tag": "greenlantern:held_constructs"
+          },
+          "slot": "offhand"
+        },
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 19
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_dissolve": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "clear @s #greenlantern:held_constructs",
+        "tag @s remove gl_scuba_green",
+        "title @s actionbar {\"text\": \"Your ring is out of charge: your constructs dissolve.\", \"color\": \"gray\"}"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:energy_bar",
+          "energy_bar": "ring_charge",
+          "min": 0,
+          "max": 0
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "gatling_fire": {
+      "type": "palladium:command",
+      "first_tick_commands": [],
+      "commands": [
+        "function greenlantern:construct/green/gatling_tick"
+      ],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:item_in_slot",
+          "item": {
+            "item": "greenlantern:construct_gatling"
+          },
+          "slot": "mainhand"
+        },
+        "enabling": {
+          "type": "palladium:held",
+          "key_type": "right_click"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "scuba_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "greenlantern:green_scuba",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_scuba_green"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "scuba_effects": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:water_breathing 15 0 true",
+        "effect give @s minecraft:conduit_power 15 0 true",
+        "effect give @s minecraft:dolphins_grace 15 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": [
           {
-            "Type": "laser",
-            "Thickness": 0.15,
-            "Color": "#2EC846"
+            "type": "palladium:has_tag",
+            "tag": "gl_scuba_green"
           },
           {
-            "Type": "particles",
-            "ParticleType": "minecraft:end_rod",
-            "Spread": 0.3
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 99
           }
         ]
       },
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 40
-          }
-        ],
-        "enabling": {
-          "type": "palladium:ability_wheel",
-          "cooldown": 15
-        }
-      },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 40
-      },
-      "title": {
-        "translate": "ability.greenlantern.construct_blast"
-      },
-      "icon": "minecraft:arrow",
-      "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_blast_sound": {
-      "type": "palladium:play_sound",
-      "sound": "minecraft:entity.firework_rocket.blast",
-      "pitch": 1.5,
+    "scuba_upkeep": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "ring_charge",
+        "amount": 1
+      },
       "conditions": {
-        "enabling": {
-          "type": "palladium:ability_enabled",
-          "ability": "construct_blast"
-        }
+        "enabling": [
+          {
+            "type": "palladium:has_tag",
+            "tag": "gl_scuba_green"
+          },
+          {
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 39
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_fist": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "execute anchored eyes positioned ^ ^-0.4 ^2.6 run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_fist\"],item:{id:\"greenlantern:construct_fist\",Count:1b,tag:{CustomModelData:1}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
-        "execute anchored eyes positioned ^ ^-0.4 ^2.6 run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
-        "execute anchored eyes positioned ^ ^ ^3 run particle minecraft:dust 0.18 0.78 0.27 2.5 ~ ~ ~ 0.8 0.8 0.8 0 60 force",
-        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run damage @s 12 minecraft:player_attack",
-        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run effect give @s minecraft:levitation 1 3 true",
-        "playsound minecraft:entity.iron_golem.attack player @a[distance=..24] ~ ~ ~ 1 0.6"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fist"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 100
-          }
-        ],
-        "enabling": {
-          "type": "palladium:ability_wheel",
-          "cooldown": 60
-        }
-      },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 100
-      },
+    "ring_benefits": {
+      "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.construct_fist"
+        "translate": "ability.greenlantern.ring_benefits"
       },
-      "icon": "minecraft:iron_block",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": true
+      "description": {
+        "translate": "ability.greenlantern.ring_benefits.description"
+      },
+      "icon": "minecraft:nether_star",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        0
+      ]
     },
-    "construct_cage": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] positioned ~ ~1 ~ run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_cage\"],item:{id:\"greenlantern:construct_cage\",Count:1b,tag:{CustomModelData:1}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
-        "execute at @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] positioned ~ ~1 ~ run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] at @s run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~1 ~ 0.6 1.0 0.6 0 120 force",
-        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:slowness 6 6 true",
-        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:weakness 6 2 true",
-        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..12,limit=1,sort=nearest] minecraft:glowing 6 0 true",
-        "playsound minecraft:block.amethyst_block.resonate player @a[distance=..24] ~ ~ ~ 1 0.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_cage"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 150
-          }
-        ],
-        "enabling": {
-          "type": "palladium:ability_wheel",
-          "cooldown": 100
-        }
-      },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 150
-      },
+    "corps_gift": {
+      "type": "palladium:dummy",
       "title": {
-        "translate": "ability.greenlantern.construct_cage"
+        "translate": "ability.greenlantern.green.corps_gift"
       },
-      "icon": "minecraft:iron_bars",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_slam": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "execute positioned ~ ~3.4 ~ run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_hammer\"],item:{id:\"greenlantern:construct_hammer\",Count:1b,tag:{CustomModelData:1}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
-        "execute positioned ~ ~3.4 ~ run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
-        "particle minecraft:dust 0.18 0.78 0.27 2.5 ~ ~0.2 ~ 3 0.2 3 0 200 force",
-        "execute as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] run damage @s 8 minecraft:player_attack",
-        "effect give @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=0.5..6] minecraft:levitation 1 5 true",
-        "playsound minecraft:entity.generic.explode player @a[distance=..24] ~ ~ ~ 1 1.2"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_slam"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 120
-          }
-        ],
-        "enabling": {
-          "type": "palladium:ability_wheel",
-          "cooldown": 80
-        }
+      "description": {
+        "translate": "ability.greenlantern.green.corps_gift.description"
       },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 120
-      },
-      "title": {
-        "translate": "ability.greenlantern.construct_slam"
-      },
-      "icon": "minecraft:anvil",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_wall": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "execute anchored eyes positioned ^ ^-0.4 ^2.4 run summon minecraft:item_display ~ ~ ~ {Tags:[\"gl_construct\",\"gl_new\",\"gl_wall\"],item:{id:\"greenlantern:construct_wall\",Count:1b,tag:{CustomModelData:1}},item_display:\"none\",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}",
-        "execute anchored eyes positioned ^ ^-0.4 ^2.4 run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0",
-        "effect give @s minecraft:resistance 5 2 true",
-        "execute anchored eyes positioned ^ ^ ^3 as @e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5] run effect give @s minecraft:slowness 5 3 true",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 0.7"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_wall"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "ring_charge",
-            "min": 100
-          }
-        ],
-        "enabling": {
-          "type": "palladium:ability_wheel",
-          "cooldown": 120
-        }
-      },
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 100
-      },
-      "title": {
-        "translate": "ability.greenlantern.construct_wall"
-      },
-      "icon": "minecraft:shield",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": true
+      "icon": "greenlantern:green_lantern_ring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        0
+      ]
     },
     "skill_force_field": {
       "type": "palladium:dummy",
@@ -950,7 +1955,7 @@
       "icon": "minecraft:shield",
       "hidden_in_bar": true,
       "gui_position": [
-        5,
+        9.5,
         1
       ],
       "conditions": {
@@ -1126,12 +2131,12 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 11
+      "list_index": 17
     },
     "ring_light": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "effect give @s minecraft:night_vision infinite 0 true"
+        "effect give @s minecraft:night_vision 30 0 true"
       ],
       "commands": [],
       "last_tick_commands": [
@@ -1150,6 +2155,29 @@
       "hidden": true,
       "hidden_in_bar": false,
       "list_index": 3
+    },
+    "ring_light_pulse": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:night_vision 30 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_light"
+          },
+          {
+            "type": "palladium:interval",
+            "active_ticks": 1,
+            "disabled_ticks": 199
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
     },
     "corps_tag": {
       "type": "palladium:command",
@@ -1267,7 +2295,7 @@
       "icon": "minecraft:goat_horn",
       "hidden_in_bar": true,
       "gui_position": [
-        5,
+        9.5,
         2
       ],
       "conditions": {
@@ -1321,7 +2349,7 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 6
+      "list_index": 11
     },
     "skill_emerald_nova": {
       "type": "palladium:dummy",
@@ -1334,7 +2362,7 @@
       "icon": "minecraft:emerald_block",
       "hidden_in_bar": true,
       "gui_position": [
-        5,
+        9.5,
         3
       ],
       "conditions": {
@@ -1389,7 +2417,7 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 9
+      "list_index": 14
     },
     "spectrum_fusion": {
       "type": "palladium:command",
@@ -1466,7 +2494,7 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 10
+      "list_index": 16
     }
   }
 }

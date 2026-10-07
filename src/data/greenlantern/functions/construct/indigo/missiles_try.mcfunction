@@ -1,0 +1,1 @@
+function greenlantern:construct/indigo/missiles_check

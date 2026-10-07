@@ -1,0 +1,1 @@
+function greenlantern:construct/indigo/bridge_check

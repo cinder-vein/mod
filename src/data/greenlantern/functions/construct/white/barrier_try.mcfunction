@@ -1,0 +1,1 @@
+function greenlantern:construct/white/barrier_check

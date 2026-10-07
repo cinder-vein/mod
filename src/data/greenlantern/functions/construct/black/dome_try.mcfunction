@@ -1,0 +1,1 @@
+function greenlantern:construct/black/dome_check

@@ -1,0 +1,59 @@
+{
+  "parent": "greenlantern:item/construct_staff_base",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "greenlantern:item/construct_staff_base_green"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "greenlantern:item/construct_staff_base_yellow"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "greenlantern:item/construct_staff_base_red"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "greenlantern:item/construct_staff_base_orange"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "greenlantern:item/construct_staff_base_blue"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "greenlantern:item/construct_staff_base_violet"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "greenlantern:item/construct_staff_base_indigo"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "greenlantern:item/construct_staff_base_white"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "greenlantern:item/construct_staff_base_black"
+    }
+  ]
+}

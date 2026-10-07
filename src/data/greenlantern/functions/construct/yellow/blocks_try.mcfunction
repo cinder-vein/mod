@@ -1,0 +1,1 @@
+function greenlantern:construct/yellow/blocks_check

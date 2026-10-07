@@ -48,6 +48,8 @@ SOURCES = {
 EMOTIONS = list(SOURCES)
 
 OFFER_SECONDS = 60
+ID_BITS = 16  # player ids up to 65 535
+CURIOS_SLOTS = 16  # ring slots checked (Curios merges slot counts from every pack)
 DECLINE_COOLDOWN = 3600  # seconds before a declined corps asks again
 DEFAULT_THRESHOLD = 20000
 
@@ -97,124 +99,230 @@ def generate(corps_table, write, write_text):
                 load.append(f"scoreboard players set #w{abs(w)} gl_cfg {abs(w)}")
 
     # ---------------------------------------------------------------- ids
-    fn["id/assign"] = ["scoreboard players add #next gl_id 1", "scoreboard players operation @s gl_id = #next gl_id"]
-    tick.append(f"execute as @a unless score @s gl_id matches 1.. run function {NS}:id/assign")
+    # gl_id is a scoreboard score, and scores are keyed by player name. Every player also carries
+    # their id as tags (gl_b0..gl_b15; tags live on the UUID-keyed entity), so a renamed player
+    # gets the same id back, and a bound ring can be checked against them with cheap item predicates
+    # instead of reading the player's NBT every tick.
+    load.append("scoreboard players set #2 gl_cfg 2")
+    fn["id/assign"] = [  # run when a player has no gl_id score: a new player, or a renamed one
+        f"execute if entity @s[tag=gl_hasid] run function {NS}:id/from_tags",
+        f"execute unless entity @s[tag=gl_hasid] run function {NS}:id/new",
+    ]
+    fn["id/new"] = ["scoreboard players add #next gl_id 1", "scoreboard players operation @s gl_id = #next gl_id",
+                    f"function {NS}:id/to_tags"]
+    fn["id/from_tags"] = ["scoreboard players set @s gl_id 0"] + [
+        f"execute if entity @s[tag=gl_b{i}] run scoreboard players add @s gl_id {2 ** i}" for i in range(ID_BITS)]
+    to_tags = ["scoreboard players operation #v gl_tmp = @s gl_id"]
+    for i in range(ID_BITS):
+        to_tags += [f"tag @s remove gl_b{i}",
+                    "scoreboard players operation #bit gl_tmp = #v gl_tmp",
+                    "scoreboard players operation #bit gl_tmp %= #2 gl_cfg",
+                    f"execute if score #bit gl_tmp matches 1 run tag @s add gl_b{i}",
+                    "scoreboard players operation #v gl_tmp /= #2 gl_cfg"]
+    fn["id/to_tags"] = to_tags + ["tag @s add gl_hasid"]
+    tick += [
+        f"execute as @a unless score @s gl_id matches 1.. run function {NS}:id/assign",
+        # players from before 9.0 have an id but no tags yet
+        f"execute as @a[tag=!gl_hasid] run function {NS}:id/to_tags",
+    ]
 
     # ---------------------------------------------------------------- binding
-    # item tag of all rings, predicates for unbound / bound rings in each hand
+    # A bound ring stores its bearer three ways: gl_owner (their id), gl_ob (the id's bits, checked
+    # against the bearer's gl_b tags by predicates) and gl_owner_uuid (so a ring thrown out of a
+    # thief's hand can only be picked up by its bearer). An unbound ring may carry gl_gv/gl_giver:
+    # the player who handed it on (a leader after a revoke, or an admin unbind) doesn't bind it.
     write(f"data/{NS}/tags/items/lantern_rings.json", {"replace": False, "values": [ring(c) for c in corps]})
+
+    def held_pred(hand, nbt=None):
+        item = {"tag": f"{NS}:lantern_rings"}
+        if nbt:
+            item["nbt"] = nbt
+        return {"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"equipment": {hand: item}}}
+
+    def inverted(term):
+        return {"condition": "minecraft:inverted", "term": term}
+
     for hand in ("mainhand", "offhand"):
-        held = {"condition": "minecraft:entity_properties", "entity": "this",
-                "predicate": {"equipment": {hand: {"tag": f"{NS}:lantern_rings"}}}}
-        bound = {"condition": "minecraft:entity_properties", "entity": "this",
-                 "predicate": {"equipment": {hand: {"tag": f"{NS}:lantern_rings", "nbt": "{gl_bound:1b}"}}}}
-        write(f"data/{NS}/predicates/unbound_ring_{hand}.json",
-              [held, {"condition": "minecraft:inverted", "term": bound}])
+        bound = held_pred(hand, "{gl_bound:1b}")
+        write(f"data/{NS}/predicates/unbound_ring_{hand}.json", [held_pred(hand), inverted(bound)])
         write(f"data/{NS}/predicates/bound_ring_{hand}.json", bound)
+        write(f"data/{NS}/predicates/ring_{hand}.json", held_pred(hand))
+        write(f"data/{NS}/predicates/giver_ring_{hand}.json", [held_pred(hand, "{gl_gv:1b}"), inverted(bound)])
+        # bound before 9.0: no owner bits yet
+        write(f"data/{NS}/predicates/legacy_ring_{hand}.json", [
+            bound, inverted(held_pred(hand, "{gl_ob:{b0:0b}}")), inverted(held_pred(hand, "{gl_ob:{b0:1b}}"))])
+        for i in range(ID_BITS):
+            for v in (0, 1):
+                write(f"data/{NS}/predicates/ob/{hand}_{i}_{v}.json", held_pred(hand, f"{{gl_ob:{{b{i}:{v}b}}}}"))
     bind_functions = [
-        {"function": "minecraft:set_nbt", "tag": "{gl_bound:1b}"},
+        {"function": "minecraft:set_nbt", "tag": "{gl_bound:1b,gl_gv:0b,gl_giver:0}"},
         {"function": "minecraft:copy_nbt", "source": {"type": "minecraft:storage", "source": STORAGE},
-         "ops": [{"source": "owner", "target": "gl_owner", "op": "replace"}]},
+         "ops": [{"source": "owner", "target": "gl_owner", "op": "replace"},
+                 {"source": "bits", "target": "gl_ob", "op": "replace"}]},
+        {"function": "minecraft:copy_nbt", "source": "this",
+         "ops": [{"source": "UUID", "target": "gl_owner_uuid", "op": "replace"}]},
         {"function": "minecraft:set_lore", "entity": "this", "replace": True, "lore": [
             {"text": "Bound to ", "color": "gray", "italic": False, "extra": [{"selector": "@s", "color": "white"}]}]},
     ]
+    giver_functions = [  # unbound, but the giver (in storage) can carry it without binding it
+        {"function": "minecraft:set_nbt", "tag": "{gl_bound:0b,gl_gv:1b}"},
+        {"function": "minecraft:copy_nbt", "source": {"type": "minecraft:storage", "source": STORAGE},
+         "ops": [{"source": "giver", "target": "gl_giver", "op": "replace"}]},
+        {"function": "minecraft:set_lore", "replace": True, "lore": [
+            {"text": "Unbound: it will choose the next bearer", "color": "gray", "italic": True}]},
+    ]
     write(f"data/{NS}/item_modifiers/bind.json", bind_functions)
-    write(f"data/{NS}/item_modifiers/unbind.json", [
-        {"function": "minecraft:set_nbt", "tag": "{gl_bound:0b,gl_owner:0}"},
-        {"function": "minecraft:set_lore", "replace": True, "lore": []},
-    ])
+    write(f"data/{NS}/item_modifiers/unbind.json", giver_functions)
     for c in corps:
-        write(f"data/{NS}/loot_tables/rings/{c}.json", {
-            "type": "minecraft:chest",
-            "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": ring(c), "functions": bind_functions}]}],
-        })
+        for name, functions in ((c, bind_functions), (f"giver_{c}", giver_functions)):
+            write(f"data/{NS}/loot_tables/rings/{name}.json", {
+                "type": "minecraft:chest",  # `loot give ... loot` rolls tables with the chest context
+                "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": ring(c), "functions": functions}]}],
+            })
 
-    store_owner = f"execute store result storage {STORAGE} owner int 1 run scoreboard players get @s gl_id"
+    # owner id and id bits of @s, for the bind modifier
+    fn["ring/store_owner"] = [
+        f"execute store result storage {STORAGE} owner int 1 run scoreboard players get @s gl_id",
+        f"data modify storage {STORAGE} bits set value {{{','.join(f'b{i}:0b' for i in range(ID_BITS))}}}",
+        *[f"execute if entity @s[tag=gl_b{i}] run data modify storage {STORAGE} bits.b{i} set value 1b"
+          for i in range(ID_BITS)],
+    ]
+    fn["ring/store_giver"] = [f"execute store result storage {STORAGE} giver int 1 run scoreboard players get @s gl_id"]
+
+    def give_ring(table):
+        """Gives a ring from a loot table; drops it at your feet when your inventory is full."""
+        return [f"execute store result score #given gl_tmp run loot give @s loot {NS}:rings/{table}",
+                f"execute if score #given gl_tmp matches 0 at @s run loot spawn ~ ~ ~ loot {NS}:rings/{table}"]
+
+    newest_eject = "@e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest]"
+    eject_summon = ('summon minecraft:item ~ ~1 ~ {Tags:["gl_eject"],PickupDelay:20s,Age:-32768s,'
+                    'Motion:[0.0d,0.3d,0.0d],Item:{id:"minecraft:stone",Count:1b}}')
+    eject_message = [
+        "particle minecraft:end_rod ~ ~1 ~ 0.2 0.2 0.2 0.05 20 force",
+        tellraw("@s", [{"text": "This ring has already chosen its bearer. It returns to them.", "color": "gray",
+                        "italic": True}]),
+        "playsound minecraft:entity.enderman.teleport player @a[distance=..16] ~ ~ ~ 1 1.4",
+    ]
+    # an ejected ring flies to its bearer if they're online (any dimension); otherwise it waits where
+    # it fell. It never despawns, and only its bearer can pick it up.
+    fn["ring/return_to_owner"] = [  # run as the bearer, at the bearer
+        "tp @e[type=minecraft:item,tag=gl_eject] ~ ~0.5 ~",
+        "data merge entity @e[type=minecraft:item,tag=gl_eject,limit=1] {PickupDelay:0s}",
+        "particle minecraft:end_rod ~ ~1 ~ 0.3 0.5 0.3 0.05 20 force",
+        tellraw("@s", [{"text": "Your ring returns to you.", "color": "gray", "italic": True}]),
+    ]
     for hand, slot, path in (("mainhand", "weapon.mainhand", "SelectedItem"),
                              ("offhand", "weapon.offhand", "Inventory[{Slot:-106b}]")):
         held_ring = (lambda c: f'SelectedItem{{id:"{ring(c)}"}}') if hand == "mainhand" else (
             lambda c: f'Inventory[{{Slot:-106b,id:"{ring(c)}"}}]')
-        join = [f"execute if data entity @s {held_ring(c)} run tag @s add gl_member_{c}" for c in corps]
         fn[f"ring/claim_{hand}"] = [
-            store_owner,
-            f"item modify entity @s {slot} {NS}:bind",
-            *join,
+            "scoreboard players set #giver gl_tmp 0",
+            f"execute if predicate {NS}:giver_ring_{hand} store result score #giver gl_tmp run "
+            f"data get entity @s {path}.tag.gl_giver",
+            f"execute unless score #giver gl_tmp = @s gl_id run function {NS}:ring/bind_{hand}",
+        ]
+        fn[f"ring/bind_{hand}"] = [
+            f"function {NS}:ring/rebind_{hand}",
+            *[f"execute if data entity @s {held_ring(c)} run tag @s add gl_member_{c}" for c in corps],
             tellraw("@s", [{"text": "The ring is now bound to you.", "color": "gray", "italic": True}]),
             "playsound minecraft:block.beacon.power_select player @s ~ ~ ~ 1 1.6",
         ]
-        fn[f"ring/check_{hand}"] = [
-            f"execute store result score @s gl_tmp run data get entity @s {path}.tag.gl_owner",
-            f"execute unless score @s gl_tmp = @s gl_id run function {NS}:ring/eject_{hand}",
+        fn[f"ring/rebind_{hand}"] = [f"function {NS}:ring/store_owner", f"item modify entity @s {slot} {NS}:bind"]
+        check = [f"execute if predicate {NS}:legacy_ring_{hand} run function {NS}:ring/legacy_{hand}"]
+        for i in range(ID_BITS):
+            check += [f"execute if entity @s[tag=gl_b{i}] if predicate {NS}:ob/{hand}_{i}_0 run function {NS}:ring/eject_{hand}",
+                      f"execute if entity @s[tag=!gl_b{i}] if predicate {NS}:ob/{hand}_{i}_1 run function {NS}:ring/eject_{hand}"]
+        fn[f"ring/check_{hand}"] = check
+        fn[f"ring/legacy_{hand}"] = [  # a pre-9.0 ring: compare ids once, then upgrade it or throw it out
+            f"execute store result score #owner gl_tmp run data get entity @s {path}.tag.gl_owner",
+            f"execute if score #owner gl_tmp = @s gl_id run function {NS}:ring/rebind_{hand}",
+            f"execute unless score #owner gl_tmp = @s gl_id run function {NS}:ring/eject_{hand}",
         ]
-        fn[f"ring/eject_{hand}"] = [
-            "scoreboard players operation #owner gl_tmp = @s gl_tmp",
-            'summon minecraft:item ~ ~1.4 ~ {Tags:["gl_eject"],PickupDelay:40s,Item:{id:"minecraft:stone",Count:1b}}',
-            f"data modify entity @e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest] Item set from entity @s {path}",
+        fn[f"ring/eject_{hand}"] = [  # run as the holder, at the holder
+            f"execute store result score #owner gl_tmp run data get entity @s {path}.tag.gl_owner",
+            eject_summon,
+            f"data modify entity {newest_eject} Item set from entity @s {path}",
+            f"data modify entity {newest_eject} Owner set from entity @s {path}.tag.gl_owner_uuid",
             f"item replace entity @s {slot} with minecraft:air",
-            "data merge entity @e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest] {Motion:[0.0d,0.45d,0.0d]}",
-            "execute as @a if score @s gl_id = #owner gl_tmp at @s run tp @e[type=minecraft:item,tag=gl_eject] ~ ~1 ~",
-            "particle minecraft:end_rod ~ ~1.4 ~ 0.2 0.2 0.2 0.05 20 force",
+            *eject_message,
+            f"execute as @a if score @s gl_id = #owner gl_tmp at @s run function {NS}:ring/return_to_owner",
             "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
-            tellraw("@s", [{"text": "This ring has already chosen its bearer. It returns to them.", "color": "gray",
-                            "italic": True}]),
-            "playsound minecraft:entity.enderman.teleport player @s ~ ~ ~ 1 1.4",
         ]
-    # Rings worn in Curios ring slots (2 slots). Curios has no /item slot names, so these use the
-    # /curios command; they live in their own function, reached through a function tag whose entry is
-    # optional, so the rest of the pack still loads when Curios isn't installed.
-    curios_path = 'ForgeCaps."curios:inventory".Curios[{Identifier:"ring"}].StacksHandler.Stacks.Items[{Slot:%d}]'
-    curios_check = []
-    for i in (0, 1):
-        path = curios_path % i
-        curios_check += [
-            f"execute if data entity @s {path}.tag{{gl_bound:1b}} run function {NS}:ring/curios_owner_{i}",
-            *[f'execute unless data entity @s {path}.tag{{gl_bound:1b}} if data entity @s '
-              f'{path[:-2]},id:"{ring(c)}"}}] run function {NS}:ring/curios_unbound_{i}' for c in corps],
-        ]
-        pop = [
-            'summon minecraft:item ~ ~1.4 ~ {Tags:["gl_eject"],PickupDelay:40s,Item:{id:"minecraft:stone",Count:1b}}',
-            f"data modify entity @e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest] Item set from entity @s {path}",
-            f"data remove entity @e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest] Item.Slot",
-            f"curios replace ring {i} @s with minecraft:air",
-            "data merge entity @e[type=minecraft:item,tag=gl_eject,limit=1,sort=nearest] {Motion:[0.0d,0.45d,0.0d]}",
-        ]
-        fn[f"ring/curios_owner_{i}"] = [
-            f"execute store result score @s gl_tmp run data get entity @s {path}.tag.gl_owner",
-            f"execute unless score @s gl_tmp = @s gl_id run function {NS}:ring/curios_eject_{i}",
-        ]
-        fn[f"ring/curios_eject_{i}"] = [
-            "scoreboard players operation #owner gl_tmp = @s gl_tmp",
-            *pop,
-            "execute as @a if score @s gl_id = #owner gl_tmp at @s run tp @e[type=minecraft:item,tag=gl_eject] ~ ~1 ~",
-            "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
-            tellraw("@s", [{"text": "This ring has already chosen its bearer. It returns to them.", "color": "gray",
-                            "italic": True}]),
-        ]
-        fn[f"ring/curios_unbound_{i}"] = [
-            *pop,
-            "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
-            tellraw("@s", [{"text": "Hold a new ring in your hand once to bind it to you, then wear it.",
-                            "color": "gray", "italic": True}]),
-        ]
-    fn["ring/curios_check"] = curios_check
-    # remove the rings of corps #strip (an index) from both Curios ring slots, counting them in #stripped
-    curios_strip = []
-    for c in corps:
-        for i in (0, 1):
-            has = f'if data entity @s {(curios_path % i)[:-2]},id:"{ring(c)}"}}]'
-            curios_strip += [f"execute if score #strip gl_tmp matches {idx[c]} {has} run scoreboard players add #stripped gl_tmp 1",
-                             f"execute if score #strip gl_tmp matches {idx[c]} {has} run curios replace ring {i} @s with minecraft:air"]
-    fn["ring/curios_strip"] = curios_strip
-    write(f"data/{NS}/tags/functions/curios_strip.json",
-          {"values": [{"id": f"{NS}:ring/curios_strip", "required": False}]})
-    write(f"data/{NS}/tags/functions/curios_check.json",
-          {"values": [{"id": f"{NS}:ring/curios_check", "required": False}]})
-
-    fn["ring/bind_check"] = [
+    fn["ring/bind_check"] = [  # every tick, as and at every player
         f"execute if predicate {NS}:unbound_ring_mainhand run function {NS}:ring/claim_mainhand",
         f"execute if predicate {NS}:unbound_ring_offhand run function {NS}:ring/claim_offhand",
         f"execute if predicate {NS}:bound_ring_mainhand run function {NS}:ring/check_mainhand",
         f"execute if predicate {NS}:bound_ring_offhand run function {NS}:ring/check_offhand",
+    ]
+
+    # Rings worn in Curios ring slots. Curios items can't be read with predicates, so twice a second
+    # each player wearing a ring power gets one snapshot of their ring slots into storage, and every
+    # check runs against that. Curios' own commands (/curios replace) live in a function reached
+    # through a function tag whose entry is optional, so the pack still loads without Curios.
+    curios_items = 'ForgeCaps."curios:inventory".Curios[{Identifier:"ring"}].StacksHandler.Stacks.Items'
+    is_lantern = [f'execute if data storage {STORAGE} cur{{id:"{ring(c)}"}} run scoreboard players set #lantern gl_tmp 1'
+                  for c in corps]
+    fn["ring/curios_check"] = [  # as and at a player
+        f"data remove storage {STORAGE} rings",
+        f"data modify storage {STORAGE} rings set from entity @s {curios_items}",
+        f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_next",
+    ]
+    fn["ring/curios_next"] = [
+        f"data modify storage {STORAGE} cur set from storage {STORAGE} rings[0]",
+        f"data remove storage {STORAGE} rings[0]",
+        "scoreboard players set #lantern gl_tmp 0",
+        *is_lantern,
+        f"execute if score #lantern gl_tmp matches 1 run function {NS}:ring/curios_item",
+        f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_next",
+    ]
+    fn["ring/curios_item"] = [
+        f"execute store result score #slot gl_tmp run data get storage {STORAGE} cur.Slot",
+        f"execute if data storage {STORAGE} cur.tag{{gl_bound:1b}} run function {NS}:ring/curios_bound",
+        f"execute unless data storage {STORAGE} cur.tag{{gl_bound:1b}} run function {NS}:ring/curios_unbound",
+    ]
+    fn["ring/curios_bound"] = [
+        f"execute store result score #owner gl_tmp run data get storage {STORAGE} cur.tag.gl_owner",
+        f"execute unless score #owner gl_tmp = @s gl_id run function {NS}:ring/curios_eject",
+    ]
+    fn["ring/curios_pop"] = [  # throw the ring in storage `cur` out of its Curios slot (#slot)
+        eject_summon,
+        f"data modify entity {newest_eject} Item set from storage {STORAGE} cur",
+        f"data remove entity {newest_eject} Item.Slot",
+        f"data modify entity {newest_eject} Owner set from storage {STORAGE} cur.tag.gl_owner_uuid",
+        f"function #{NS}:curios_clear_slot",
+    ]
+    fn["ring/curios_eject"] = [
+        f"function {NS}:ring/curios_pop",
+        *eject_message,
+        f"execute as @a if score @s gl_id = #owner gl_tmp at @s run function {NS}:ring/return_to_owner",
+        "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
+    ]
+    fn["ring/curios_unbound"] = [
+        f"function {NS}:ring/curios_pop",
+        "tag @e[type=minecraft:item,tag=gl_eject] remove gl_eject",
+        tellraw("@s", [{"text": "Hold a new ring in your hand once to bind it to you, then wear it.",
+                        "color": "gray", "italic": True}]),
+    ]
+    fn["ring/curios_clear_slot"] = [f"execute if score #slot gl_tmp matches {i} run curios replace ring {i} @s with minecraft:air"
+                                    for i in range(CURIOS_SLOTS)]
+    write(f"data/{NS}/tags/functions/curios_clear_slot.json",
+          {"values": [{"id": f"{NS}:ring/curios_clear_slot", "required": False}]})
+    # remove every ring of corps #strip (an index) from the Curios ring slots, counting them in #stripped
+    fn["ring/curios_strip"] = [
+        f"data remove storage {STORAGE} rings",
+        f"data modify storage {STORAGE} rings set from entity @s {curios_items}",
+        f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_strip_next",
+    ]
+    fn["ring/curios_strip_next"] = [
+        f"data modify storage {STORAGE} cur set from storage {STORAGE} rings[0]",
+        f"data remove storage {STORAGE} rings[0]",
+        "scoreboard players set #lantern gl_tmp 0",
+        *[f'execute if score #strip gl_tmp matches {idx[c]} if data storage {STORAGE} cur{{id:"{ring(c)}"}} '
+          f"run scoreboard players set #lantern gl_tmp 1" for c in corps],
+        f"execute if score #lantern gl_tmp matches 1 store result score #slot gl_tmp run data get storage {STORAGE} cur.Slot",
+        f"execute if score #lantern gl_tmp matches 1 run function #{NS}:curios_clear_slot",
+        "execute if score #lantern gl_tmp matches 1 run scoreboard players add #stripped gl_tmp 1",
+        f"execute if data storage {STORAGE} rings[0] run function {NS}:ring/curios_strip_next",
     ]
 
     # ---------------------------------------------------------------- emotions
@@ -287,8 +395,10 @@ def generate(corps_table, write, write_text):
                 {"text": "   (or type yes / no in chat)", "color": "dark_gray", "italic": True}]),
         ]
         fn[f"offer/accept_{c}"] = [
-            store_owner,
-            f"loot give @s loot {NS}:rings/{c}",
+            f"function {NS}:ring/store_owner",
+            *give_ring(c),
+            # the ring brings its power battery with it (/give drops it at your feet if you're full)
+            f"give @s {NS}:{c}_power_battery",
             f"tag @s add gl_member_{c}",
             f"function {NS}:offer/clear",
             f"title @s times 10 60 20",
@@ -298,6 +408,9 @@ def generate(corps_table, write, write_text):
             "playsound minecraft:ui.toast.challenge_complete player @s ~ ~ ~ 1 1",
             tellraw("@a", [{"selector": "@s", "color": col}, {"text": f" has been chosen by the {CORPS_TITLE[c]}!",
                                                               "color": "white"}]),
+            tellraw("@s", [{"text": "Your ring brought its Power Battery. ", "color": col},
+                           {"text": "Right-click it (placed, or held in your hand) to recharge your ring.",
+                            "color": "gray"}]),
         ]
         fn[f"offer/decline_{c}"] = [
             f"scoreboard players set @s gl_cd_{c} {DECLINE_COOLDOWN}",
@@ -348,11 +461,11 @@ def generate(corps_table, write, write_text):
     for c in corps:
         rgb = corps_table[c]["color"]
         col = color(rgb if c != "black" else (170, 175, 190))
-        # strip: take every ring of this corps from the player (inventory, hands; Curios if it hooks /clear)
+        # strip: take every ring of this corps from the player (inventory, hands and Curios ring slots)
         fn[f"ring/strip_{c}"] = [
             f"execute store result score #stripped gl_tmp run clear @s {ring(c)}",
             f"scoreboard players set #strip gl_tmp {idx[c]}",
-            f"function #{NS}:curios_strip",
+            f"function {NS}:ring/curios_strip",
             f"tag @s remove gl_member_{c}",
             f"tag @s remove gl_leader_{c}",
         ]
@@ -370,13 +483,16 @@ def generate(corps_table, write, write_text):
         fn[f"leader/revoke_do_{c}"] = [  # leaders can't revoke each other
             f"function {NS}:ring/strip_{c}",
             "tag @s add gl_revoked",
-            f"execute if score #stripped gl_tmp matches 1.. run give @a[tag=gl_revoker,limit=1] {ring(c)}",
+            f"execute if score #stripped gl_tmp matches 1.. as @a[tag=gl_revoker,limit=1] at @s run "
+            f"function {NS}:leader/give_revoked_{c}",
             tellraw("@s", [{"text": "Your corps leader has revoked your ring.", "color": col}]),
             tellraw("@a[tag=gl_revoker]", [{"text": "You revoked the ring of ", "color": col}, {"selector": "@s"},
-                                           {"text": ". It is unbound and yours to pass on.", "color": col}]),
+                                           {"text": ". It is unbound and won't bind to you: hand it to your next "
+                                                    "recruit.", "color": col}]),
             "particle minecraft:end_rod ~ ~1 ~ 0.3 0.6 0.3 0.05 30 force",
             "playsound minecraft:block.beacon.deactivate player @a[distance=..16] ~ ~ ~ 1 1",
         ]
+        fn[f"leader/give_revoked_{c}"] = [f"function {NS}:ring/store_giver", *give_ring(f"giver_{c}")]
         fn[f"leader/revoke_id_{c}"] = [  # run as the leader with #target gl_tmp set
             "tag @s add gl_revoker",
             f"execute as @a if score @s gl_id = #target gl_tmp run function {NS}:leader/revoke_target_{c}",
@@ -408,7 +524,7 @@ def generate(corps_table, write, write_text):
     # ---------------------------------------------------------------- admin (run "as <player>")
     for c in corps:
         col = color(corps_table[c]["color"] if c != "black" else (170, 175, 190))
-        fn[f"admin/give/{c}"] = [store_owner, f"loot give @s loot {NS}:rings/{c}", f"tag @s add gl_member_{c}"]
+        fn[f"admin/give/{c}"] = [f"function {NS}:ring/store_owner", *give_ring(c), f"tag @s add gl_member_{c}"]
         fn[f"admin/give_unbound/{c}"] = [f"give @s {ring(c)}"]
         fn[f"admin/battery/{c}"] = [f"give @s {NS}:{c}_power_battery"]
         fn[f"admin/leader/{c}"] = [
@@ -425,8 +541,15 @@ def generate(corps_table, write, write_text):
             [f"scoreboard players operation @s gl_e_{e} = #threshold gl_cfg" for e in EMOTIONS] if c == "white"
             else [f"scoreboard players operation @s gl_e_{EMOTION_OF[c]} = #threshold gl_cfg"])
     fn["admin/remove_all"] = [f"function {NS}:ring/strip_{c}" for c in corps] + [f"function {NS}:leader/update_any"]
-    fn["admin/unbind"] = [f"item modify entity @s weapon.mainhand {NS}:unbind",
-                          tellraw("@s", [{"text": "The ring in your hand is unbound.", "color": "gray"}])]
+    fn["admin/unbind"] = [  # the holder won't re-bind it: it binds to the next player who holds it
+        f"execute unless predicate {NS}:ring_mainhand run "
+        + tellraw("@s", [{"text": "Hold the ring in your main hand to unbind it.", "color": "gray"}]),
+        f"execute if predicate {NS}:ring_mainhand run function {NS}:ring/store_giver",
+        f"execute if predicate {NS}:ring_mainhand run item modify entity @s weapon.mainhand {NS}:unbind",
+        f"execute if predicate {NS}:ring_mainhand run "
+        + tellraw("@s", [{"text": "The ring in your hand is unbound. It will bind to the next player who holds it.",
+                          "color": "gray"}]),
+    ]
     fn["admin/reset_emotions"] = [f"scoreboard players set @s gl_e_{e} 0" for e in EMOTIONS]
     fn["admin/reset_cooldowns"] = [f"scoreboard players set @s gl_cd_{c} 0" for c in corps]
     fn["admin/show"] = [
@@ -453,7 +576,10 @@ def generate(corps_table, write, write_text):
 
     # ---------------------------------------------------------------- tick wiring
     tick += [
-        f"execute as @a run function {NS}:ring/bind_check",
+        f"execute as @a at @s run function {NS}:ring/bind_check",
+        # rings worn in Curios slots, twice a second, for players a ring is powering
+        f"execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function {NS}:ring/curios_check",
+        f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/curios_check",
         f"execute as @a[tag=gl_offer_any] at @s run function {NS}:offer/follow",
         f"execute as @a[scores={{gl_accept=1..}}] at @s run function {NS}:offer/accept_trigger",
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",
@@ -472,7 +598,6 @@ def generate(corps_table, write, write_text):
     fn["second"] = [
         "scoreboard players set #second gl_cfg 0",
         f"execute if score #enabled gl_cfg matches 1 as @a run function {NS}:emotion/feed",
-        f"execute as @a at @s if data entity @s ForgeCaps.\"curios:inventory\" run function #{NS}:curios_check",
         f"execute if score #enabled gl_cfg matches 1 run function {NS}:offer/scan",
         *[f"scoreboard players remove @a[scores={{gl_cd_{c}=1..}}] gl_cd_{c} 1" for c in corps],
         "scoreboard players remove @a[tag=gl_offer_any] gl_offer 1",

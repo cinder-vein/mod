@@ -1,0 +1,59 @@
+{
+  "parent": "greenlantern:item/construct_spike_base",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "greenlantern:item/construct_spike_green"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "greenlantern:item/construct_spike_yellow"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "greenlantern:item/construct_spike_red"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "greenlantern:item/construct_spike_orange"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "greenlantern:item/construct_spike_blue"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "greenlantern:item/construct_spike_violet"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "greenlantern:item/construct_spike_indigo"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "greenlantern:item/construct_spike_white"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "greenlantern:item/construct_spike_black"
+    }
+  ]
+}

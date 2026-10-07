@@ -1,0 +1,1 @@
+function greenlantern:construct/white/blocks_check

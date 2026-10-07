@@ -1,0 +1,1 @@
+function greenlantern:construct/green/blast_check

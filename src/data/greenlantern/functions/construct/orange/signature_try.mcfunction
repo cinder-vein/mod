@@ -1,0 +1,1 @@
+function greenlantern:construct/orange/signature_check

@@ -1,0 +1,22 @@
+execute unless score @s gl_slotinit matches 1 run function greenlantern:construct/default_slots
+execute if score @s gl_slot4 matches 0 run title @s actionbar [{"text":"Construct slot 4 is empty. Fill it with Configure Constructs.","color":"gray"}]
+execute if score @s gl_slot4 matches 1 run function greenlantern:construct/red/sword
+execute if score @s gl_slot4 matches 2 run function greenlantern:construct/red/sword_shield
+execute if score @s gl_slot4 matches 3 run function greenlantern:construct/red/mace
+execute if score @s gl_slot4 matches 4 run function greenlantern:construct/red/axe
+execute if score @s gl_slot4 matches 5 run function greenlantern:construct/red/fist
+execute if score @s gl_slot4 matches 6 run function greenlantern:construct/red/slam
+execute if score @s gl_slot4 matches 7 run function greenlantern:construct/red/blast
+execute if score @s gl_slot4 matches 8 run function greenlantern:construct/red/gatling
+execute if score @s gl_slot4 matches 9 run function greenlantern:construct/red/missiles
+execute if score @s gl_slot4 matches 10 run function greenlantern:construct/red/cannon
+execute if score @s gl_slot4 matches 11 run function greenlantern:construct/red/shield
+execute if score @s gl_slot4 matches 12 run function greenlantern:construct/red/barrier
+execute if score @s gl_slot4 matches 13 run function greenlantern:construct/red/cage
+execute if score @s gl_slot4 matches 14 run function greenlantern:construct/red/dome
+execute if score @s gl_slot4 matches 15 run function greenlantern:construct/red/blocks
+execute if score @s gl_slot4 matches 16 run function greenlantern:construct/red/scuba
+execute if score @s gl_slot4 matches 17 run function greenlantern:construct/red/drill
+execute if score @s gl_slot4 matches 18 run function greenlantern:construct/red/bridge
+execute if score @s gl_slot4 matches 19 run function greenlantern:construct/red/scan
+execute if score @s gl_slot4 matches 20 run function greenlantern:construct/red/signature

@@ -11,6 +11,10 @@ scoreboard players set @e[type=minecraft:item_display,tag=gl_new,tag=gl_claw] gl
 execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_claw] run data merge entity @s {start_interpolation:0,interpolation_duration:5,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[2.8f,2.8f,2.8f]}}
 scoreboard players set @e[type=minecraft:item_display,tag=gl_new,tag=gl_crystal] gl_life 160
 execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_crystal] run data merge entity @s {start_interpolation:0,interpolation_duration:5,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[2.6f,2.6f,2.6f]}}
+scoreboard players set @e[type=minecraft:item_display,tag=gl_new,tag=gl_spike] gl_life 40
+execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_spike] run data merge entity @s {start_interpolation:0,interpolation_duration:5,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[2.2f,2.2f,2.2f]}}
+scoreboard players set @e[type=minecraft:item_display,tag=gl_new,tag=gl_hand] gl_life 30
+execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_hand] run data merge entity @s {start_interpolation:0,interpolation_duration:5,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[2.8f,2.8f,2.8f]}}
 tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new
 scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1
 kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]
@@ -276,8 +280,21 @@ tag @a[tag=gl_white,scores={gl_t_white=..0}] remove gl_white
 scoreboard players add @a[tag=gl_black] gl_t_black 0
 scoreboard players remove @a[scores={gl_t_black=1..}] gl_t_black 1
 tag @a[tag=gl_black,scores={gl_t_black=..0}] remove gl_black
+tag @a[tag=gl_ring] remove gl_ring
+tag @a[tag=gl_green] add gl_ring
+tag @a[tag=gl_yellow] add gl_ring
+tag @a[tag=gl_red] add gl_ring
+tag @a[tag=gl_orange] add gl_ring
+tag @a[tag=gl_blue] add gl_ring
+tag @a[tag=gl_violet] add gl_ring
+tag @a[tag=gl_indigo] add gl_ring
+tag @a[tag=gl_white] add gl_ring
+tag @a[tag=gl_black] add gl_ring
 execute as @a unless score @s gl_id matches 1.. run function greenlantern:id/assign
-execute as @a run function greenlantern:ring/bind_check
+execute as @a[tag=!gl_hasid] run function greenlantern:id/to_tags
+execute as @a at @s run function greenlantern:ring/bind_check
+execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function greenlantern:ring/curios_check
+execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function greenlantern:ring/curios_check
 execute as @a[tag=gl_offer_any] at @s run function greenlantern:offer/follow
 execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/accept_trigger
 execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger
@@ -290,3 +307,38 @@ scoreboard players remove @e[type=minecraft:item_display,tag=gl_leave_go] gl_tmp
 kill @e[type=minecraft:item_display,tag=gl_leave_go,scores={gl_tmp=..0}]
 scoreboard players add #second gl_cfg 1
 execute if score #second gl_cfg matches 20.. run function greenlantern:second
+effect clear @a[tag=gl_green] minecraft:darkness
+effect clear @a[tag=gl_green] minecraft:blindness
+effect clear @a[tag=gl_green] minecraft:nausea
+effect clear @a[tag=gl_red] minecraft:poison
+effect clear @a[tag=gl_black] minecraft:wither
+effect clear @a[tag=gl_black] minecraft:poison
+execute as @a[tag=gl_indigo,scores={gl_hurt=1..}] at @s run effect give @e[type=#greenlantern:greed_prey,distance=..5] minecraft:weakness 5 1 true
+scoreboard players set @a[scores={gl_hurt=1..}] gl_hurt 0
+scoreboard players remove @a[scores={gl_cc_sword=1..}] gl_cc_sword 1
+scoreboard players remove @a[scores={gl_cc_sword_shield=1..}] gl_cc_sword_shield 1
+scoreboard players remove @a[scores={gl_cc_mace=1..}] gl_cc_mace 1
+scoreboard players remove @a[scores={gl_cc_axe=1..}] gl_cc_axe 1
+scoreboard players remove @a[scores={gl_cc_fist=1..}] gl_cc_fist 1
+scoreboard players remove @a[scores={gl_cc_slam=1..}] gl_cc_slam 1
+scoreboard players remove @a[scores={gl_cc_blast=1..}] gl_cc_blast 1
+scoreboard players remove @a[scores={gl_cc_gatling=1..}] gl_cc_gatling 1
+scoreboard players remove @a[scores={gl_cc_missiles=1..}] gl_cc_missiles 1
+scoreboard players remove @a[scores={gl_cc_cannon=1..}] gl_cc_cannon 1
+scoreboard players remove @a[scores={gl_cc_shield=1..}] gl_cc_shield 1
+scoreboard players remove @a[scores={gl_cc_barrier=1..}] gl_cc_barrier 1
+scoreboard players remove @a[scores={gl_cc_cage=1..}] gl_cc_cage 1
+scoreboard players remove @a[scores={gl_cc_dome=1..}] gl_cc_dome 1
+scoreboard players remove @a[scores={gl_cc_blocks=1..}] gl_cc_blocks 1
+scoreboard players remove @a[scores={gl_cc_scuba=1..}] gl_cc_scuba 1
+scoreboard players remove @a[scores={gl_cc_drill=1..}] gl_cc_drill 1
+scoreboard players remove @a[scores={gl_cc_bridge=1..}] gl_cc_bridge 1
+scoreboard players remove @a[scores={gl_cc_scan=1..}] gl_cc_scan 1
+scoreboard players remove @a[scores={gl_cc_signature=1..}] gl_cc_signature 1
+scoreboard players remove @e[type=minecraft:marker,tag=gl_hl] gl_life 1
+execute as @e[type=minecraft:marker,tag=gl_hl,scores={gl_life=..0}] at @s run function greenlantern:construct/hardlight_end
+scoreboard players set @e[type=minecraft:item_display,tag=gl_train_new] gl_life 14
+execute as @e[type=minecraft:item_display,tag=gl_train_new] run data merge entity @s {start_interpolation:0,interpolation_duration:12,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,13f],scale:[2.4f,2.4f,2.4f]}}
+tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_new
+tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_train_new
+execute as @a[scores={gl_construct=1..}] at @s run function greenlantern:construct/menu_trigger

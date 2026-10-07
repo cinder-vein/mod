@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "greenlantern:green_hardlight",
+    "greenlantern:yellow_hardlight",
+    "greenlantern:red_hardlight",
+    "greenlantern:orange_hardlight",
+    "greenlantern:blue_hardlight",
+    "greenlantern:violet_hardlight",
+    "greenlantern:indigo_hardlight",
+    "greenlantern:white_hardlight",
+    "greenlantern:black_hardlight"
+  ]
+}

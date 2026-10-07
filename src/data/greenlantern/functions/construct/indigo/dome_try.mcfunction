@@ -1,0 +1,1 @@
+function greenlantern:construct/indigo/dome_check

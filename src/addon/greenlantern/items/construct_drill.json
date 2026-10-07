@@ -1,0 +1,14 @@
+{
+  "type": "palladium:pickaxe",
+  "tier": "minecraft:netherite",
+  "base_damage": 1,
+  "attack_speed": -2.8,
+  "max_stack_size": 1,
+  "is_fire_resistant": true,
+  "tooltip": [
+    {
+      "translate": "tooltip.greenlantern.construct",
+      "color": "gray"
+    }
+  ]
+}

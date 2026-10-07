@@ -1,0 +1,14 @@
+{
+  "type": "palladium:sword",
+  "tier": "minecraft:netherite",
+  "base_damage": 8,
+  "attack_speed": -3.2,
+  "max_stack_size": 1,
+  "is_fire_resistant": true,
+  "tooltip": [
+    {
+      "translate": "tooltip.greenlantern.construct",
+      "color": "gray"
+    }
+  ]
+}

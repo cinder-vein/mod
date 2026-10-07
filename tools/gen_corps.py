@@ -16,6 +16,7 @@ import shutil
 from pathlib import Path
 
 import art
+import constructs
 import systems
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -99,28 +100,13 @@ NEAREST = OTHERS[:-1] + ",limit=1,sort=nearest]"
 ALLIES = "@a[distance=..{r}]"
 UNIFORM = {"type": "palladium:ability_enabled", "ability": "uniform"}
 
-# 3D hard-light constructs: item models shown by item_display entities that grow in,
-# then are removed by the datapack tick function after `life` ticks.
-SHAPES = {
-    "fist": {"name": "Fist", "scale": 2.6, "life": 24},
-    "hammer": {"name": "Hammer", "scale": 3.2, "life": 24},
-    "cage": {"name": "Cage", "scale": 2.4, "life": 120},
-    "wall": {"name": "Wall", "scale": 3.2, "life": 100},
-    "claw": {"name": "Claw", "scale": 2.8, "life": 24},
-    "crystal": {"name": "Crystal", "scale": 2.6, "life": 160},
-}
+# 3D hard-light shapes and the construct catalog live in constructs.py.
+SHAPES = constructs.SHAPES
 
 
 def construct_cmds(corps, shape, where):
-    """Commands that spawn a construct. `where` is an `execute ...` prefix that sets the position."""
-    n = list(CORPS).index(corps) + 1
-    nbt = ('{Tags:["gl_construct","gl_new","gl_%s"],item:{id:"%s:construct_%s",Count:1b,tag:{CustomModelData:%d}},'
-           'item_display:"none",brightness:{sky:15,block:15},view_range:2f,'
-           'transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],'
-           'scale:[0.2f,0.2f,0.2f]}}') % (shape, NS, shape, n)
-    newest = "@e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest]"
-    return [f"{where} run summon minecraft:item_display ~ ~ ~ {nbt}",
-            f"{where} run tp {newest} ~ ~ ~ ~ 0"]
+    """Commands that spawn a display construct. `where` is an `execute ...` prefix that sets the position."""
+    return constructs.construct_cmds(list(CORPS), corps, shape, where)
 
 
 def hexcolor(rgb):
@@ -185,7 +171,7 @@ def one(conds):
 class Kit:
     """Builds one corps' power: bar abilities, skill-tree nodes and hidden helpers."""
 
-    SPECIAL_COLUMN = 5
+    SPECIAL_COLUMN = 9.5
 
     def __init__(self, corps, data):
         self.c = corps
@@ -256,7 +242,7 @@ class Kit:
             ability["conditions"] = {"unlocking": one([unlocked(f"skill_{key}"), *extra])}
             self.hidden(key, ability)
         else:
-            self.bar(key, ability, name, icon, index, node=f"skill_{key}", cost=cost, extra=extra, shared=False)
+            self.bar(key, ability, name, icon, index + 5, node=f"skill_{key}", cost=cost, extra=extra, shared=False)
 
     def pulse(self, key, source, every, commands):
         """Runs commands every N ticks while `source` is enabled."""
@@ -266,7 +252,7 @@ class Kit:
         self.node(f"skill_{key}", name, "Ultimate: " + desc, icon, (self.SPECIAL_COLUMN, 2 + len(self.specials)),
                   [self.specials[-1]], 30, shared=False)
         self.bar(key, {**command(first=commands), "conditions": {"enabling": action(cooldown)}},
-                 name, icon, 9, node=f"skill_{key}", cost=cost, shared=False)
+                 name, icon, 14, node=f"skill_{key}", cost=cost, shared=False)
 
 
 # --- the kit every corps shares -----------------------------------------------------
@@ -306,9 +292,16 @@ def shared_kit(k):
         "body_parts": ["chest_overlay", "right_arm_overlay", "left_arm_overlay", "right_leg_overlay", "left_leg_overlay"],
         "conditions": {"enabling": UNIFORM},
     })
-    # the ring is always visible on your hand while you wear it
-    k.hidden("ring_band", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_band"})
-    k.hidden("ring_gem", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_gem"})
+    # The ring is always visible on your hand while you wear it: the first ring (in CORPS order) on
+    # the right hand, a second ring on the left.
+    earlier = [{"type": "palladium:has_power", "power": f"{NS}:{o}_lantern"} for o in list(CORPS)[:list(CORPS).index(c)]]
+    for part in ("band", "gem"):
+        right = {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_{part}"}
+        if earlier:
+            right["conditions"] = {"enabling": {"type": "palladium:not", "conditions": earlier}}
+            k.hidden(f"ring_{part}_left", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_ring_{part}_left",
+                                           "conditions": {"enabling": {"type": "palladium:or", "conditions": earlier}}})
+        k.hidden(f"ring_{part}", right)
     k.hidden("ring_aura", {
         "type": "palladium:particles", "emitter": [f"{NS}:ring_hand"], "particle_type": "minecraft:dust",
         "options": dust(rgb, 0.8), "conditions": {"enabling": interval(4)},
@@ -375,70 +368,11 @@ def shared_kit(k):
     k.hidden("beam_sound", {"type": "palladium:play_sound", "sound": "minecraft:block.beacon.ambient", "pitch": 1.6,
                             "looping": True, "conditions": {"enabling": enabled("beam")}})
 
-    k.node("skill_constructs", "Constructs", "Unlocks the construct wheel and the Blast construct.",
-           "minecraft:emerald", (3, 1), ["uniform"], 5)
-    k.node("skill_fist", "Construct: Giant Fist", "Adds the Giant Fist to the construct wheel.",
-           "minecraft:iron_block", (3, 2), ["skill_constructs"], 8)
-    k.node("skill_cage", "Construct: Cage", "Adds the Cage to the construct wheel.",
-           "minecraft:iron_bars", (3, 3), ["skill_fist"], 10)
-    k.node("skill_slam", "Construct: Hammer Slam", "Adds the Hammer Slam to the construct wheel.",
-           "minecraft:anvil", (3, 4), ["skill_cage"], 12)
-    k.node("skill_wall", "Construct: Wall", "Adds the Wall to the construct wheel.",
-           "minecraft:shield", (3, 5), ["skill_slam"], 10)
-    constructs = ["construct_blast", "construct_fist", "construct_cage", "construct_slam", "construct_wall"]
-    k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": constructs,
-                         "conditions": {"enabling": held()}},
-          "Constructs", "minecraft:emerald", 1, node="skill_constructs")
-    wheel = {"type": "palladium:ability_wheel"}
-
-    def construct(key, name, icon, node, cost, cooldown, ability):
-        k.bar(key, {**ability, "conditions": {"enabling": {**wheel, "cooldown": cooldown}}},
-              name, icon, None, node=node, cost=cost)
-        k.abilities[key]["hidden_in_bar"] = True
-        del k.abilities[key]["list_index"]
-
-    construct("construct_blast", "Construct: Blast", "minecraft:arrow", "skill_constructs", 40, 15, {
-        "type": "palladium:projectile", "entity_type": "palladium:custom_projectile", "velocity": 2.5,
-        "inaccuracy": 0.0,
-        "entity_data": {"Damage": 8, "Gravity": 0.0, "Size": 0.4, "Lifetime": 100, "DieOnEntityHit": True,
-                        "DieOnBlockHit": True, "Appearances": [
-                            {"Type": "laser", "Thickness": 0.15, "Color": hexcolor(rgb)},
-                            {"Type": "particles", "ParticleType": "minecraft:end_rod", "Spread": 0.3}]},
-    })
-    k.hidden("construct_blast_sound", {"type": "palladium:play_sound", "sound": "minecraft:entity.firework_rocket.blast",
-                                       "pitch": 1.5, "conditions": {"enabling": enabled("construct_blast")}})
-    front = "execute anchored eyes positioned ^ ^ ^3"
-    # everything near the point 3 blocks ahead (you stand ~3 blocks away, so you're never hit)
-    hit = "@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,distance=..2.5]"
-    construct("construct_fist", "Construct: Giant Fist", "minecraft:iron_block", "skill_fist", 100, 60, command(first=[
-        *construct_cmds(c, k.shapes["fist"], "execute anchored eyes positioned ^ ^-0.4 ^2.6"),
-        f"{front} run {burst(rgb, 2.5, '0.8 0.8 0.8', 60, '~ ~ ~')}",
-        f"{front} as {hit} run damage @s 12 minecraft:player_attack",
-        f"{front} as {hit} run effect give @s minecraft:levitation 1 3 true",
-        sound("minecraft:entity.iron_golem.attack", 0.6)]))
-    target = NEAREST.format(r=12)
-    construct("construct_cage", "Construct: Cage", "minecraft:iron_bars", "skill_cage", 150, 100, command(first=[
-        *construct_cmds(c, k.shapes["cage"], f"execute at {target} positioned ~ ~1 ~"),
-        f"execute as {target} at @s run {burst(rgb, 2.0, '0.6 1.0 0.6', 120, '~ ~1 ~')}",
-        f"effect give {target} minecraft:slowness 6 6 true",
-        f"effect give {target} minecraft:weakness 6 2 true",
-        f"effect give {target} minecraft:glowing 6 0 true",
-        sound("minecraft:block.amethyst_block.resonate", 0.8)]))
-    around = OTHERS.format(r=6)
-    construct("construct_slam", "Construct: Hammer Slam", "minecraft:anvil", "skill_slam", 120, 80, command(first=[
-        *construct_cmds(c, k.shapes["hammer"], "execute positioned ~ ~3.4 ~"),
-        burst(rgb, 2.5, "3 0.2 3", 200, "~ ~0.2 ~"),
-        f"execute as {around} run damage @s 8 minecraft:player_attack",
-        f"effect give {around} minecraft:levitation 1 5 true",
-        sound("minecraft:entity.generic.explode", 1.2)]))
-    construct("construct_wall", "Construct: Wall", "minecraft:shield", "skill_wall", 100, 120, command(first=[
-        *construct_cmds(c, k.shapes["wall"], "execute anchored eyes positioned ^ ^-0.4 ^2.4"),
-        "effect give @s minecraft:resistance 5 2 true",
-        f"{front} as {hit} run effect give @s minecraft:slowness 5 3 true",
-        sound("minecraft:block.beacon.power_select", 0.7)]))
+    construct_abilities(k)
+    benefit_abilities(k)
 
     k.node("skill_force_field", "Force Field", "Unlocks a bubble that blocks projectiles, explosions and fire.",
-           "minecraft:shield", (5, 1), ["uniform"], 5)
+           "minecraft:shield", (Kit.SPECIAL_COLUMN, 1), ["uniform"], 5)
     k.bar("force_field", {
         "type": "palladium:damage_immunity",
         "damage_sources": ["minecraft:is_projectile", "minecraft:is_explosion", "minecraft:is_fire"],
@@ -480,11 +414,12 @@ def shared_kit(k):
     # Corps leaders (appointed by an admin) can revoke the ring of the nearest member.
     k.bar("revoke_ring", {**command(first=[f"function {NS}:leader/revoke_{c}"]),
                           "conditions": {"enabling": action(40)}},
-          "Revoke Ring", "minecraft:barrier", 11, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
+          "Revoke Ring", "minecraft:barrier", 17, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
     k.lang[f"ability.{NS}.revoke_ring.description"] = "Leaders only: take the ring from the nearest member of your corps."
-    k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision infinite 0 true"],
+    k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision 30 0 true"],
                                    last=["effect clear @s minecraft:night_vision"]),
                          "conditions": {"enabling": toggle()}}, "Ring Light", "minecraft:glowstone_dust", 3)
+    k.pulse("ring_light_pulse", "ring_light", 200, ["effect give @s minecraft:night_vision 30 0 true"])
 
     # Corps tags let rings react to each other (e.g. Blue Lanterns empower Green ones).
     k.hidden("corps_tag", {**command(first=[f"tag @s add gl_{c}"],
@@ -509,6 +444,154 @@ def shared_kit(k):
                                       "conditions": {"unlocking": [unlocked("skill_empowered"), near]}})
         k.attribute("empowered_damage", "minecraft:generic.attack_damage", 4, [unlocked("skill_empowered"), near])
         k.attribute("empowered_armor", "minecraft:generic.armor_toughness", 4, [unlocked("skill_empowered"), near])
+
+
+# --- constructs (catalog and datapack in constructs.py) ------------------------------
+
+NODE_ICONS = {"constructs": "minecraft:emerald", "melee_1": f"{NS}:construct_sword", "melee_2": f"{NS}:construct_fist",
+              "ranged_1": f"{NS}:construct_gatling", "ranged_2": f"{NS}:construct_ball",
+              "defense_1": f"{NS}:construct_wall", "defense_2": "minecraft:glass",
+              "utility_1": "minecraft:turtle_helmet", "utility_2": "minecraft:scaffolding"}
+
+
+def construct_abilities(k):
+    """The construct branch of the skill tree, the five construct slots (bar page 2), the construct
+    wheel, Configure Constructs and the helpers held constructs need."""
+    c = k.c
+    sig = constructs.SIGNATURES[c]
+    for node, (name, desc, pos, parents, xp) in constructs.NODES.items():
+        icon = NODE_ICONS.get(node, sig.icon)
+        if node == "signature":
+            name, desc = f"Signature Construct: {sig.name}", sig.desc + " Needs all four construct branches."
+        k.node(f"skill_{node}", name, desc, icon, pos, [p if p == "uniform" else f"skill_{p}" for p in parents], xp,
+               shared=node != "signature")
+        # the datapack checks these tags before running a construct
+        k.hidden(f"unlocked_{node}", {**command(first=[f"tag @s add gl_u_{c}_{node}"],
+                                                last=[f"tag @s remove gl_u_{c}_{node}"]),
+                                      "conditions": {"unlocking": unlocked(f"skill_{node}")}})
+    catalog = constructs.all_constructs(c)
+    for con in catalog:
+        shared = con.key != "signature"
+        k.bar(f"cx_{con.key}", {**command(first=[f"function {NS}:construct/{c}/{con.key}"]),
+                                "conditions": {"enabling": {"type": "palladium:ability_wheel", "cooldown": 5}}},
+              con.name, con.icon, None, node=f"skill_{con.node}", shared=shared)
+        k.abilities[f"cx_{con.key}"]["hidden_in_bar"] = True
+        del k.abilities[f"cx_{con.key}"]["list_index"]
+        k.abilities[f"cx_{con.key}"]["description"] = k.tr(
+            f"cx_{con.key}.description", f"{con.desc} Costs {con.cost} charge.", shared)
+    k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": [f"cx_{con.key}" for con in catalog],
+                         "conditions": {"enabling": held()}},
+          "Construct Wheel", "minecraft:emerald", 1, node="skill_constructs")
+    for n in range(1, 6):
+        k.bar(f"construct_{n}", {**command(first=[f"function {NS}:construct/press/{c}_{n}"]),
+                                 "conditions": {"enabling": action(5)}},
+              f"Construct {n}", f"{NS}:textures/gui/construct_slot/{c}_{n}.png", 4 + n, node="skill_constructs")
+        k.lang[f"ability.{NS}.construct_{n}.description"] = (
+            f"Forms the construct in slot {n}. Choose it with Configure Constructs.")
+    k.bar("configure_constructs", {**command(first=[f"function {NS}:construct/menu"]),
+                                   "conditions": {"enabling": action(10)}},
+          "Configure Constructs", "minecraft:writable_book", 15, node="skill_constructs")
+
+    held_item = lambda hand: {"type": "palladium:item_in_slot", "item": {"tag": f"{NS}:held_constructs"},  # noqa: E731
+                              "slot": hand}
+    # held constructs drain the ring slowly, and dissolve when it runs dry
+    for hand in ("mainhand", "offhand"):
+        k.hidden(f"construct_upkeep_{hand}", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
+                                              "conditions": {"unlocking": held_item(hand), "enabling": interval(20)}})
+    k.hidden("construct_dissolve", {**command(first=[
+        f"clear @s #{NS}:held_constructs", f"tag @s remove gl_scuba_{c}",
+        "title @s actionbar " + json.dumps({"text": "Your ring is out of charge: your constructs dissolve.",
+                                            "color": "gray"})]),
+        "conditions": {"unlocking": {"type": "palladium:energy_bar", "energy_bar": BAR, "min": 0, "max": 0}}})
+    # the gatling fires while right-click is held (the datapack paces the shots)
+    k.hidden("gatling_fire", {**command(every=[f"function {NS}:construct/{c}/gatling_tick"]),
+                              "conditions": {"unlocking": {"type": "palladium:item_in_slot",
+                                                           "item": {"item": f"{NS}:construct_gatling"},
+                                                           "slot": "mainhand"},
+                                             "enabling": {"type": "palladium:held", "key_type": "right_click"}}})
+    # Scuba Gear: a diving helmet and air tank while the tag is set
+    scuba = {"type": "palladium:has_tag", "tag": f"gl_scuba_{c}"}
+    k.hidden("scuba_layer", {"type": "palladium:render_layer", "render_layer": f"{NS}:{c}_scuba",
+                             "conditions": {"enabling": scuba}})
+    # short effects, refreshed: nothing lingers if you log out wearing it
+    effects = ["minecraft:water_breathing", "minecraft:conduit_power", "minecraft:dolphins_grace"]
+    k.hidden("scuba_effects", {**command(first=[f"effect give @s {e} 15 0 true" for e in effects]),
+                               "conditions": {"enabling": [scuba, interval(100)]}})
+    k.hidden("scuba_upkeep", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
+                              "conditions": {"enabling": [scuba, interval(40)]}})
+    if c == "indigo":  # the staff soothes everyone around its bearer
+        k.hidden("staff_aura", {**command(first=["effect give @a[distance=..6] minecraft:regeneration 3 0 true",
+                                                 burst(k.rgb, 1.0, "2 0.5 2", 20)]),
+                                "conditions": {"unlocking": {"type": "palladium:item_in_slot",
+                                                             "item": {"item": f"{NS}:construct_staff"},
+                                                             "slot": "mainhand"},
+                                               "enabling": interval(40)}})
+
+
+# --- ring benefits ------------------------------------------------------------------
+# Passive gifts from canon: every ring keeps you alive anywhere and translates every language;
+# each corps adds a gift of its own emotion. They work with or without the suit.
+
+BENEFITS = {
+    "green": ("Fearless Will", "Willpower overcomes fear: you can't be blinded, darkened or made dizzy."),
+    "yellow": ("Terror Aura", "Hostile mobs within 8 blocks of you are weakened by fear."),
+    "red": ("Burning Blood", "Your blood is napalm: fire and lava can't burn you, and poison can't touch you."),
+    "orange": ("Avarice", "Experience orbs within 8 blocks fly to you, and your luck is higher (better loot)."),
+    "blue": ("Hope Springs Eternal", "Below 10 hearts you keep regenerating."),
+    "violet": ("Love's Bond", "You, the players and the pets around you (8 blocks) slowly regenerate."),
+    "indigo": ("Empathic Link", "Whatever hurts you feels it too: hostile mobs within 5 blocks are weakened."),
+    "white": ("Font of Life", "You regenerate constantly and never go hungry."),
+    "black": ("Undead Body", "The dead don't hunger, wither or sicken: no hunger, wither or poison."),
+}
+RING_BENEFITS = ("Ring Benefits", "While charged: 40 hearts and netherite-level armor; no drowning, falling or "
+                 "freezing damage; and the ring translates every language, so villagers trade with you as a Hero of "
+                 "the Village.")
+
+
+def benefit_abilities(k):
+    c = k.c
+    name, desc = BENEFITS[c]
+    # info nodes beside Suit Up (always unlocked)
+    for key, (title, text), pos, shared in (("ring_benefits", RING_BENEFITS, (-3, 0), True),
+                                            ("corps_gift", (f"{k.data['emotion']}: {name}", desc), (3, 0), False)):
+        k.abilities[key] = {"type": "palladium:dummy", "title": k.tr(key, title, shared),
+                            "description": k.tr(key + ".description", text, shared),
+                            "icon": f"{NS}:{c}_lantern_ring" if key == "corps_gift" else "minecraft:nether_star",
+                            "hidden_in_bar": True, "gui_position": list(pos)}
+    pulse = lambda key, every, cmds, *conds: k.hidden(key, {  # noqa: E731
+        **command(first=cmds), "conditions": {"enabling": [*conds, interval(every)]}})
+    if c == "red":
+        pulse("burning_blood", 100, ["effect give @s minecraft:fire_resistance 15 0 true"])
+    if c == "orange":
+        k.attribute("avarice_luck", "minecraft:generic.luck", 3, [charge(1)])
+        pulse("avarice_xp", 10, ["tp @e[type=minecraft:experience_orb,distance=..8] @s"])
+    if c == "blue":
+        pulse("hope_regen", 40, ["effect give @s minecraft:regeneration 3 0 true"],
+              {"type": "palladium:health", "min_health": 0, "max_health": 20})
+    if c == "violet":
+        pets = ("@e[type=#" + NS + ":pets,distance=..8]")
+        pulse("loves_bond", 60, ["effect give @a[distance=..8] minecraft:regeneration 4 0 true",
+                                 f"effect give {pets} minecraft:regeneration 4 0 true",
+                                 "particle minecraft:heart ~ ~2 ~ 1 0.3 1 0 2 force"])
+    if c == "white":
+        pulse("font_of_life", 50, ["effect give @s minecraft:regeneration 3 0 true"])
+    if c in ("white", "black"):
+        pulse("no_hunger", 200, ["effect give @s minecraft:saturation 1 0 true"])
+
+
+def benefit_ticks():
+    """Datapack lines for the gifts that clear effects or react to damage (cheap tag selectors)."""
+    tick = [*[f"effect clear @a[tag=gl_green] minecraft:{e}" for e in ("darkness", "blindness", "nausea")],
+            "effect clear @a[tag=gl_red] minecraft:poison",
+            "effect clear @a[tag=gl_black] minecraft:wither",
+            "effect clear @a[tag=gl_black] minecraft:poison",
+            f"execute as @a[tag=gl_indigo,scores={{gl_hurt=1..}}] at @s run effect give "
+            f"@e[type=#{NS}:greed_prey,distance=..5] minecraft:weakness 5 1 true",
+            "scoreboard players set @a[scores={gl_hurt=1..}] gl_hurt 0"]
+    second = [f"execute at @a[tag=gl_yellow] run effect give @e[type=#{NS}:greed_prey,distance=..8] "
+              f"minecraft:weakness 2 0 true"]
+    load = ["scoreboard objectives add gl_hurt minecraft.custom:minecraft.damage_taken"]
+    return load, tick, second
 
 
 # --- what makes each corps different ------------------------------------------------
@@ -885,13 +968,13 @@ def specials_black(k):
         "conditions": {"unlocking": [unlocked("skill_undying"), charge(500),
                                      {"type": "palladium:health", "max_health": 1.5}]},
     })
-    # Emotional Sight sits on the free slot at the start of the second bar page.
+    # Emotional Sight sits on the free slot at the start of the third bar page.
     k.node("skill_emotional_sight", "Emotional Sight",
            "Toggle: see every living thing within 32 blocks glowing through walls.", "minecraft:ender_eye",
            (1, 3), ["skill_flight"], 8, shared=False)
     k.bar("emotional_sight", {"type": "palladium:entity_glow", "mode": "others", "distance": 32.0,
                               "conditions": {"enabling": toggle()}},
-          "Emotional Sight", "minecraft:ender_eye", 5, node="skill_emotional_sight", shared=False)
+          "Emotional Sight", "minecraft:ender_eye", 10, node="skill_emotional_sight", shared=False)
     around = OTHERS.format(r=12)
     k.ultimate("blackest_night", "Blackest Night", "plunge everything within 12 blocks into death: darkness, withering and pain.",
                "minecraft:sculk_catalyst", [
@@ -973,7 +1056,7 @@ def fusion_ability(k):
         **command(first=[f"execute if entity @s[tag=gl_{b}] run function {NS}:fusion/{k.c}_{b}" for b in partners]),
         "energy_bar_usage": usage(FUSION_COST),
         "conditions": {"enabling": action(600)},
-    }, "Spectrum Fusion", "minecraft:nether_star", 10, cost=FUSION_COST,
+    }, "Spectrum Fusion", "minecraft:nether_star", 16, cost=FUSION_COST,
         extra=[{"type": "palladium:or", "conditions": [
             {"type": "palladium:has_power", "power": f"{NS}:{b}_lantern"} for b in partners]}])
     k.lang[f"ability.{NS}.spectrum_fusion.description"] = (
@@ -1016,6 +1099,10 @@ def base_power():
     attr("flight", "palladium:flight_speed", 1.0, flight)
     attr("flight_flexibility", "palladium:flight_flexibility", 5, flight)
     attr("heroic_flight", "palladium:heroic_flight_type", 1, flight)
+    abilities["universal_translator"] = {  # villagers understand you: Hero of the Village prices
+        **command(first=["effect give @s minecraft:hero_of_the_village 15 0 true"]),
+        "hidden": True, "hidden_in_bar": True,
+        "conditions": {"unlocking": any_ring(charged), "enabling": interval(100)}}
     abilities["ring_protection"] = {
         "type": "palladium:damage_immunity", "hidden": True, "hidden_in_bar": True,
         "damage_sources": ["minecraft:is_drowning", "minecraft:is_fall", "minecraft:is_freezing"],
@@ -1133,7 +1220,7 @@ def main():
         # power battery: a placeable lantern block with its own item
         write(f"addon/{NS}/blocks/{battery}.json", {
             "sound_type": "minecraft:lantern", "destroy_time": 2.0, "explosion_resistance": 6.0,
-            "no_occlusion": True, "render_type": "cutout", "register_item": False,
+            "no_occlusion": True, "render_type": "translucent", "register_item": False,
         })
         write(f"addon/{NS}/items/{battery}.json", {
             "type": "palladium:block_item", "block": f"{NS}:{battery}", "max_stack_size": 1, "rarity": "rare",
@@ -1227,9 +1314,34 @@ def main():
         save(band, f"assets/{NS}/textures/models/ring/{c}_band.png")
         save(gem, f"assets/{NS}/textures/models/ring/{c}_gem.png")
         for part, render_type in (("band", "solid"), ("gem", "glow")):
-            write(f"assets/{NS}/palladium/render_layers/{c}_ring_{part}.json", {
-                "model_layer": {"normal": f"{NS}:player#lantern_ring", "slim": f"{NS}:player#lantern_ring_slim"},
-                "texture": f"{NS}:textures/models/ring/{c}_{part}.png", "render_type": render_type})
+            for side in ("", "_left"):
+                write(f"assets/{NS}/palladium/render_layers/{c}_ring_{part}{side}.json", {
+                    "model_layer": {"normal": f"{NS}:player#lantern_ring{side}",
+                                    "slim": f"{NS}:player#lantern_ring{side}_slim"},
+                    "texture": f"{NS}:textures/models/ring/{c}_{part}.png", "render_type": render_type})
+        # Scuba Gear construct
+        save(art.scuba_texture(c, rgb), f"assets/{NS}/textures/models/scuba/{c}.png")
+        write(f"assets/{NS}/palladium/render_layers/{c}_scuba.json", {
+            "model_layer": f"{NS}:player#scuba", "texture": f"{NS}:textures/models/scuba/{c}.png",
+            "render_type": "solid"})
+        for n in range(1, 6):
+            save(art.construct_slot_icon(c, rgb, n), f"assets/{NS}/textures/gui/construct_slot/{c}_{n}.png")
+        # placeable construct blocks (Construct Blocks) and temporary hard light (walls, domes, bridges)
+        for block, hardlight in ((f"{c}_construct_block", False), (f"{c}_hardlight", True)):
+            write(f"addon/{NS}/blocks/{block}.json", {
+                "sound_type": "minecraft:amethyst", "destroy_time": 4.0 if hardlight else 0.3,
+                "explosion_resistance": 1200.0 if hardlight else 1.0, "no_occlusion": True,
+                "render_type": "translucent", "register_item": not hardlight,
+                **({} if hardlight else {"creative_mode_tab": f"{NS}:lantern_corps"})})
+            save(art.construct_block_texture(c, rgb, hardlight), f"assets/{NS}/textures/block/{block}.png")
+            write(f"assets/{NS}/blockstates/{block}.json", {"variants": {"": {"model": f"{NS}:block/{block}"}}})
+            write(f"assets/{NS}/models/block/{block}.json", art.construct_block_model(f"{NS}:block/{block}"))
+            write(f"data/{NS}/loot_tables/blocks/{block}.json", {"type": "minecraft:block", "pools": []})  # no drops
+            name = f"{data['name']} {'Hard Light' if hardlight else 'Construct Block'}"
+            lang[f"block.{NS}.{block}"] = name
+            if not hardlight:
+                write(f"assets/{NS}/models/item/{block}.json", {"parent": f"{NS}:block/{block}"})
+                lang[f"item.{NS}.{block}"] = name
         fx = rgb if c != "black" else (150, 155, 170)
         write(f"assets/{NS}/palladium/energy_beams/{c}_beam.json", {
             "type": "palladium:laser", "body_part": "right_arm", "offset": [-1, -11, 0],  # just past the knuckles
@@ -1272,6 +1384,9 @@ def main():
     write(f"assets/{NS}/palladium/model_layers/suit/player.json", art.suit_model(False))
     write(f"assets/{NS}/palladium/model_layers/suit_slim/player.json", art.suit_model(True))
     write(f"assets/{NS}/palladium/model_layers/lantern_ring_slim/player.json", art.ring_model(True))
+    write(f"assets/{NS}/palladium/model_layers/lantern_ring_left/player.json", art.ring_model(False, left=True))
+    write(f"assets/{NS}/palladium/model_layers/lantern_ring_left_slim/player.json", art.ring_model(True, left=True))
+    write(f"assets/{NS}/palladium/model_layers/scuba/player.json", art.scuba_model())
     write(f"assets/{NS}/palladium/particle_emitters/ring_hand.json", {
         "body_part": "right_arm", "amount": 1, "offset": [-1, -10, 0], "offset_random": [1, 1, 1],
         "motion": [0, 0.5, 0], "motion_random": [0.3, 0.3, 0.3], "visible_in_first_person": False})
@@ -1303,9 +1418,46 @@ def main():
                 "textures": {"0": f"{NS}:item/construct/{c}", "particle": f"{NS}:item/construct/{c}"}})
     items += [f"construct_{shape}" for shape in SHAPES]
 
+    # Held constructs: real weapons and tools, colored per corps by CustomModelData.
+    def colored(item, display, base_name):
+        write(f"assets/{NS}/models/item/{base_name}.json", {
+            "render_type": "minecraft:translucent", "gui_light": "front",
+            "textures": {"0": f"{NS}:item/construct/green", "particle": f"{NS}:item/construct/green"},
+            "elements": elements, "display": display})
+        for c in CORPS:
+            write(f"assets/{NS}/models/item/{base_name}_{c}.json", {
+                "parent": f"{NS}:item/{base_name}",
+                "textures": {"0": f"{NS}:item/construct/{c}", "particle": f"{NS}:item/construct/{c}"}})
+
+    for item, (elements, display) in art.held_construct_models().items():
+        spec, name = constructs.HELD_ITEMS[item]
+        write(f"addon/{NS}/items/{item}.json", {**spec, "max_stack_size": 1, "is_fire_resistant": True,
+                                               "tooltip": [{"translate": f"tooltip.{NS}.construct", "color": "gray"}]})
+        lang[f"item.{NS}.{item}"] = name
+        colored(item, display, f"{item}_base")
+        overrides = []
+        if item == "construct_shield":
+            colored(item, art.SHIELD_BLOCKING_DISPLAY, f"{item}_blocking")
+            overrides.append({"predicate": {"blocking": 1}, "model": f"{NS}:item/{item}_blocking"})
+        for i, c in enumerate(CORPS):
+            overrides.append({"predicate": {"custom_model_data": i + 1}, "model": f"{NS}:item/{item}_base_{c}"})
+            if item == "construct_shield":
+                overrides.append({"predicate": {"custom_model_data": i + 1, "blocking": 1},
+                                  "model": f"{NS}:item/{item}_blocking_{c}"})
+        write(f"assets/{NS}/models/item/{item}.json", {"parent": f"{NS}:item/{item}_base", "overrides": overrides})
+        items.append(item)
+    lang[f"tooltip.{NS}.construct"] = "Hard light: dissolves without its ring"
+    held = [f"{NS}:{item}" for item in constructs.HELD_ITEMS]
+    write(f"data/{NS}/tags/items/held_constructs.json", {"replace": False, "values": held})
+    write(f"data/{NS}/tags/items/constructs.json", {"replace": False, "values": held + [
+        f"{NS}:{c}_construct_block" for c in CORPS]})
+    write(f"data/{NS}/tags/blocks/hardlight.json", {"replace": False, "values": [f"{NS}:{c}_hardlight" for c in CORPS]})
+    write(f"data/{NS}/tags/blocks/empty.json", {"replace": False, "values": ["minecraft:air", "minecraft:cave_air"]})
+
     # Datapack: grows new constructs in and removes them when their time is up.
     tick = ["# Generated by tools/gen_corps.py"]
-    for shape, cfg in SHAPES.items():
+    for shape in constructs.GROWING:
+        cfg = SHAPES[shape]
         sel = f"@e[type=minecraft:item_display,tag=gl_new,tag=gl_{shape}]"
         sc = f"{cfg['scale']}f"
         tick += [
@@ -1332,6 +1484,8 @@ def main():
         g_tick += [f"scoreboard players add @a[tag=gl_{c}] gl_t_{c} 0",
                    f"scoreboard players remove @a[scores={{gl_t_{c}=1..}}] gl_t_{c} 1",
                    f"tag @a[tag=gl_{c},scores={{gl_t_{c}=..0}}] remove gl_{c}"]
+    # gl_ring: wearing any ring
+    g_tick += ["tag @a[tag=gl_ring] remove gl_ring"] + [f"tag @a[tag=gl_{c}] add gl_ring" for c in CORPS]
     for a, b in fusion_pairs():
         g_functions[f"fusion/{a}_{b}"] = fusion_function(a, b)
     s_load, s_tick, s_functions = systems.generate(CORPS, write, write_text)
@@ -1339,6 +1493,17 @@ def main():
     g_tick += s_tick
     g_functions.update(s_functions)
     g_functions["second"].append(f"function {NS}:charge/save")
+    b_load, b_tick, b_second = benefit_ticks()
+    g_load += b_load
+    g_tick += b_tick
+    g_functions["second"] += b_second
+    write(f"data/{NS}/tags/entity_types/pets.json", {"replace": False, "values": [
+        f"minecraft:{m}" for m in ("wolf", "cat", "parrot", "horse", "donkey", "mule", "llama", "allay", "fox", "axolotl")]})
+    k_load, k_tick, k_second, k_functions = constructs.generate(CORPS)
+    g_load += k_load
+    g_tick += k_tick
+    g_functions["second"] += k_second
+    g_functions.update(k_functions)
     tick += g_tick
     for path, lines in g_functions.items():
         (SRC / f"data/{NS}/functions/{path}.mcfunction").parent.mkdir(parents=True, exist_ok=True)

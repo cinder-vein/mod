@@ -1,7 +1,7 @@
 [
   {
     "function": "minecraft:set_nbt",
-    "tag": "{gl_bound:1b}"
+    "tag": "{gl_bound:1b,gl_gv:0b,gl_giver:0}"
   },
   {
     "function": "minecraft:copy_nbt",
@@ -13,6 +13,22 @@
       {
         "source": "owner",
         "target": "gl_owner",
+        "op": "replace"
+      },
+      {
+        "source": "bits",
+        "target": "gl_ob",
+        "op": "replace"
+      }
+    ]
+  },
+  {
+    "function": "minecraft:copy_nbt",
+    "source": "this",
+    "ops": [
+      {
+        "source": "UUID",
+        "target": "gl_owner_uuid",
         "op": "replace"
       }
     ]

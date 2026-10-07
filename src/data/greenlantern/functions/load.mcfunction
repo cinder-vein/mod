@@ -152,3 +152,35 @@ scoreboard objectives add gl_s_death0 totalKillCount
 scoreboard players set #w100 gl_cfg 100
 scoreboard objectives add gl_s_death1 minecraft.custom:minecraft.deaths
 scoreboard players set #w300 gl_cfg 300
+scoreboard players set #2 gl_cfg 2
+scoreboard objectives add gl_hurt minecraft.custom:minecraft.damage_taken
+scoreboard objectives add gl_construct trigger
+scoreboard objectives add gl_slotinit dummy
+scoreboard objectives add gl_gat dummy
+scoreboard objectives add gl_cfgslot dummy
+scoreboard objectives add gl_cfgcat dummy
+scoreboard objectives add gl_slot1 dummy
+scoreboard objectives add gl_slot2 dummy
+scoreboard objectives add gl_slot3 dummy
+scoreboard objectives add gl_slot4 dummy
+scoreboard objectives add gl_slot5 dummy
+scoreboard objectives add gl_cc_sword dummy
+scoreboard objectives add gl_cc_sword_shield dummy
+scoreboard objectives add gl_cc_mace dummy
+scoreboard objectives add gl_cc_axe dummy
+scoreboard objectives add gl_cc_fist dummy
+scoreboard objectives add gl_cc_slam dummy
+scoreboard objectives add gl_cc_blast dummy
+scoreboard objectives add gl_cc_gatling dummy
+scoreboard objectives add gl_cc_missiles dummy
+scoreboard objectives add gl_cc_cannon dummy
+scoreboard objectives add gl_cc_shield dummy
+scoreboard objectives add gl_cc_barrier dummy
+scoreboard objectives add gl_cc_cage dummy
+scoreboard objectives add gl_cc_dome dummy
+scoreboard objectives add gl_cc_blocks dummy
+scoreboard objectives add gl_cc_scuba dummy
+scoreboard objectives add gl_cc_drill dummy
+scoreboard objectives add gl_cc_bridge dummy
+scoreboard objectives add gl_cc_scan dummy
+scoreboard objectives add gl_cc_signature dummy

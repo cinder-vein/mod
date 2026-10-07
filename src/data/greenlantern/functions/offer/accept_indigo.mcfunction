@@ -1,5 +1,7 @@
-execute store result storage greenlantern:binding owner int 1 run scoreboard players get @s gl_id
-loot give @s loot greenlantern:rings/indigo
+function greenlantern:ring/store_owner
+execute store result score #given gl_tmp run loot give @s loot greenlantern:rings/indigo
+execute if score #given gl_tmp matches 0 at @s run loot spawn ~ ~ ~ loot greenlantern:rings/indigo
+give @s greenlantern:indigo_power_battery
 tag @s add gl_member_indigo
 function greenlantern:offer/clear
 title @s times 10 60 20
@@ -8,3 +10,4 @@ title @s title {"text": "Welcome to the Indigo Tribe", "color": "#693CE6"}
 particle minecraft:dust 0.41 0.24 0.90 2 ~ ~1 ~ 0.6 1 0.6 0 120 force
 playsound minecraft:ui.toast.challenge_complete player @s ~ ~ ~ 1 1
 tellraw @a [{"selector":"@s","color":"#693CE6"},{"text":" has been chosen by the Indigo Tribe!","color":"white"}]
+tellraw @s [{"text":"Your ring brought its Power Battery. ","color":"#693CE6"},{"text":"Right-click it (placed, or held in your hand) to recharge your ring.","color":"gray"}]

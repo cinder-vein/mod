@@ -1,0 +1,16 @@
+execute if score #slot gl_tmp matches 0 run curios replace ring 0 @s with minecraft:air
+execute if score #slot gl_tmp matches 1 run curios replace ring 1 @s with minecraft:air
+execute if score #slot gl_tmp matches 2 run curios replace ring 2 @s with minecraft:air
+execute if score #slot gl_tmp matches 3 run curios replace ring 3 @s with minecraft:air
+execute if score #slot gl_tmp matches 4 run curios replace ring 4 @s with minecraft:air
+execute if score #slot gl_tmp matches 5 run curios replace ring 5 @s with minecraft:air
+execute if score #slot gl_tmp matches 6 run curios replace ring 6 @s with minecraft:air
+execute if score #slot gl_tmp matches 7 run curios replace ring 7 @s with minecraft:air
+execute if score #slot gl_tmp matches 8 run curios replace ring 8 @s with minecraft:air
+execute if score #slot gl_tmp matches 9 run curios replace ring 9 @s with minecraft:air
+execute if score #slot gl_tmp matches 10 run curios replace ring 10 @s with minecraft:air
+execute if score #slot gl_tmp matches 11 run curios replace ring 11 @s with minecraft:air
+execute if score #slot gl_tmp matches 12 run curios replace ring 12 @s with minecraft:air
+execute if score #slot gl_tmp matches 13 run curios replace ring 13 @s with minecraft:air
+execute if score #slot gl_tmp matches 14 run curios replace ring 14 @s with minecraft:air
+execute if score #slot gl_tmp matches 15 run curios replace ring 15 @s with minecraft:air

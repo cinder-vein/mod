@@ -1,0 +1,168 @@
+{
+  "texture_width": 64,
+  "texture_height": 32,
+  "mesh": {
+    "hat": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "cubes": [],
+      "children": {}
+    },
+    "right_arm": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "cubes": [],
+      "children": {}
+    },
+    "left_arm": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "cubes": [],
+      "children": {}
+    },
+    "right_leg": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "cubes": [],
+      "children": {}
+    },
+    "left_leg": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "cubes": [],
+      "children": {}
+    },
+    "head": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "children": {},
+      "cubes": [
+        {
+          "origin": [
+            -5,
+            -9.5,
+            -5
+          ],
+          "dimensions": [
+            10,
+            10,
+            10
+          ],
+          "texture_offset": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "body": {
+      "part_pose": {
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "children": {},
+      "cubes": [
+        {
+          "origin": [
+            -3,
+            1,
+            2.6
+          ],
+          "dimensions": [
+            6,
+            7,
+            3
+          ],
+          "texture_offset": [
+            0,
+            20
+          ]
+        },
+        {
+          "origin": [
+            -1,
+            -1,
+            3.1
+          ],
+          "dimensions": [
+            2,
+            2,
+            2
+          ],
+          "texture_offset": [
+            20,
+            20
+          ]
+        }
+      ]
+    }
+  }
+}
