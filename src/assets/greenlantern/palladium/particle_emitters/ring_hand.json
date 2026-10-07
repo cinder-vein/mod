@@ -2,7 +2,7 @@
   "body_part": "right_arm",
   "amount": 1,
   "offset": [
-    0,
+    -1,
     -10,
     0
   ],

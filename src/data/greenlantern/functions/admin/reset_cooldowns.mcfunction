@@ -1,0 +1,9 @@
+scoreboard players set @s gl_cd_green 0
+scoreboard players set @s gl_cd_yellow 0
+scoreboard players set @s gl_cd_red 0
+scoreboard players set @s gl_cd_orange 0
+scoreboard players set @s gl_cd_blue 0
+scoreboard players set @s gl_cd_violet 0
+scoreboard players set @s gl_cd_indigo 0
+scoreboard players set @s gl_cd_white 0
+scoreboard players set @s gl_cd_black 0

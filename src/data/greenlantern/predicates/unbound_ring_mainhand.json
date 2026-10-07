@@ -1,0 +1,28 @@
+[
+  {
+    "condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+      "equipment": {
+        "mainhand": {
+          "tag": "greenlantern:lantern_rings"
+        }
+      }
+    }
+  },
+  {
+    "condition": "minecraft:inverted",
+    "term": {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "equipment": {
+          "mainhand": {
+            "tag": "greenlantern:lantern_rings",
+            "nbt": "{gl_bound:1b}"
+          }
+        }
+      }
+    }
+  }
+]

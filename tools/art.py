@@ -5,6 +5,8 @@ with its own logo. Replace any generated PNG with hand-drawn art if you like,
 but it will be overwritten the next time gen_corps.py runs unless you remove
 that step there.
 """
+from pathlib import Path
+
 from PIL import Image, ImageDraw
 
 CLEAR = (0, 0, 0, 0)
@@ -186,15 +188,17 @@ MINI = {
 }
 
 # Suit designs (id, name); the first is the default. Every corps gets all three.
-DESIGNS = {c: [("armored", "Corps Armor"), ("classic", "Classic"), ("stealth", "Stealth")] for c in LOGOS}
+# Suit designs (id, name); the first is the default. All are recolors of the hand-made
+# template in tools/templates/suit_base.png, so they keep its shading.
+DESIGNS = {c: [("uniform", "Corps Uniform"), ("shadow", "Shadow"), ("classic", "Classic")] for c in LOGOS}
 
-# Mask designs (id, name); "none" removes the mask. DEFAULT_MASK is used until one is picked.
-MASKS = [("domino", "Domino Mask"), ("goggles", "Lens Goggles"), ("cowl", "Gem Cowl"), ("none", "No Mask")]
+# Mask designs (id, name). "corps" is the template's own mask; "none" removes it.
+MASKS = [("corps", "Corps Mask"), ("domino", "Domino Mask"), ("goggles", "Lens Goggles"), ("cowl", "Gem Cowl"),
+         ("none", "No Mask")]
 MASK_EXTRAS = {"black": [("deathly", "Deathly Pallor")]}  # corps-only masks
-DEFAULT_MASK = {c: "domino" for c in LOGOS}
+DEFAULT_MASK = {c: "corps" for c in LOGOS}
 DEFAULT_MASK.update(violet="cowl", white="goggles", indigo="none", black="none")
 
-# Texture offsets of the standard skin layout: part -> (inner uv, outer uv, w, h, d)
 PARTS = {
     "head": ((0, 0), (32, 0), 8, 8, 8),
     "body": ((16, 16), (16, 32), 8, 12, 4),
@@ -256,140 +260,111 @@ def paint_box(imgs, colors, u, v, w, h, d, painter):
                 suit.putpixel(pos, scale(c, f))
 
 
-def emblem(corps, x, y, ox=1, oy=1, bg="main"):
-    """Chest emblem pixels: "symbol" on the logo, `bg` around it, None outside."""
-    m = MINI[corps]
-    lx, ly = x - ox, y - oy
-    if 0 <= ly < len(m) and 0 <= lx < len(m[0]):
-        return "symbol" if m[ly][lx] == "#" else bg
-    return None
+# --- the suit template -----------------------------------------------------------------------
+
+TEMPLATE = Path(__file__).resolve().parent / "templates" / "suit_base.png"
+
+# The template's three color families, lightest first. Each maps shade-for-shade onto a corps palette.
+T_PRIMARY = [(1, 137, 86), (1, 120, 78), (1, 103, 70), (0, 86, 61), (0, 69, 50)]       # green panels
+T_BASE = [(22, 31, 58), (20, 28, 53), (18, 25, 48), (16, 22, 42), (14, 19, 37)]          # navy under-suit
+T_LIGHT = [(255, 255, 255), (231, 231, 231), (213, 213, 213), (195, 195, 195), (178, 178, 178),
+           (160, 160, 160)]                                                                # gloves, emblem, lenses
+T_GLOW = {(9, 12), (10, 12), (13, 12), (14, 12), (23, 22), (22, 38)}  # mask lenses and chest emblem
+HEAD_ROWS = 16  # rows 0-15 hold the head and hat layers: they become the mask, not the suit
 
 
-def design_armored(corps):
-    """Black under-suit with raised corps-colored armor: shoulder pads, a chest plate
-    carrying the emblem, gauntlets, knee guards and boots. Hands stay bare."""
-    tassets = corps == "violet"
-
-    def paint(part, layer, f, x, y, w, h):
-        if part == "head":
-            return None
-        if layer == "inner":
-            if part == "body":
-                if f == "top":
-                    return "main"
-                if f == "front":
-                    if y == 9:
-                        return "trim2"  # belt
-                    return "main" if 2 <= x <= 5 and y < 9 else "trim"
-                return "trim2" if y == 9 else "trim"
-            if part.endswith("arm"):
-                if y == h - 1 and f not in ("top", "bottom"):
-                    return None  # bare hand
-                if f == "bottom":
-                    return None
-                return "main" if 7 <= y <= 9 else "trim"
-            if part.endswith("leg"):
-                if y >= 9 or f == "bottom":
-                    return "dark" if y == 9 else "main"  # boots
-                if tassets and f == "front" and y <= 5:
-                    return "main"
-                return "trim"
-        # outer layer: armor pieces
-        if part == "body":
-            if f == "front":
-                e = emblem(corps, x, y)
-                if e:
-                    return e
-                if y == 0 and 1 <= x <= 6:
-                    return "light"
-                if y == 6 and 2 <= x <= 5 or y == 7 and 3 <= x <= 4:
-                    return "main"  # plate narrows to a point
-                if y == 10 and 3 <= x <= 4:
-                    return "light"  # buckle
-                return None
-            if f == "back" and y <= 4 and 1 <= x <= 6:
-                return "main"
-            if f == "top":
-                return "main"
-            return None
-        if part.endswith("arm"):
-            if f == "top" or (y <= 2 and f != "bottom"):
-                return "light" if y == 0 and f != "top" else "main"  # shoulder pad
-            if 7 <= y <= 9 and f != "bottom":
-                return "dark" if y == 7 else "main"  # gauntlet
-            return None
-        if part.endswith("leg"):
-            if 4 <= y <= 6 and f == "front":
-                return "main"  # knee guard
-            if y in (8, 9) and f not in ("top", "bottom"):
-                return "light" if y == 8 else "main"  # boot cuff
-            if tassets and f in ("front", "right", "left") and y <= 3:
-                return "main" if y < 3 else "dark"
-            return None
-
-    return paint
+def _shades(top, family):
+    """Scale a corps color by the template family's own light-to-dark ratios."""
+    ref = max(family[0])
+    return [tuple(max(0, min(255, round(v * max(f) / ref))) for v in top) for f in family]
 
 
-def design_classic(corps):
-    """The comic-book look: corps color with black sides, full gloves and boots."""
-    def paint(part, layer, f, x, y, w, h):
-        if part == "head":
-            return None
-        if layer == "outer":
-            if part == "body" and f == "front":
-                e = emblem(corps, x, y)
-                return e
-            return None
-        if part == "body":
-            if f == "top":
-                return "main"
-            if y == 9:
-                return "trim2"
-            if f in ("front", "back"):
-                return "main" if 1 <= x <= 6 else "trim"
-            return "trim"
-        if part.endswith("arm"):
-            if y <= 2 or f == "top":
-                return "main"
-            if y >= 8:
-                return "dark" if y == 8 else "main"  # gloves
-            return "trim"
-        if part.endswith("leg"):
-            if y >= 9 or f == "bottom":
-                return "dark" if y == 9 else "main"
-            if f in ("right", "left"):
-                return "trim"
-            return "main"
-    return paint
+def _families(corps, rgb, design):
+    """(primary, base, light) shade lists for a corps and design."""
+    if corps == "green":
+        primary = list(T_PRIMARY)  # the template is the Green Lantern uniform
+    elif corps == "black":
+        primary = _shades((112, 116, 128), T_PRIMARY)
+    elif corps == "white":
+        primary = _shades((246, 248, 252), T_PRIMARY)
+    else:
+        primary = _shades(rgb, T_PRIMARY)
+    base, light = list(T_BASE), list(T_LIGHT)
+    if corps == "black":
+        base = _shades((20, 20, 24), T_BASE)
+    if corps == "white":
+        base = _shades((200, 205, 216), T_BASE)
+    if design == "shadow":   # pitch-black under-suit, gloves in the corps color
+        base = _shades((24, 24, 28) if corps != "black" else (10, 10, 12), T_BASE)
+        light = [primary[min(i, 4)] for i in range(len(T_LIGHT))]
+    if design == "classic":  # the under-suit takes a deep shade of the corps color
+        deep = tuple(int(v * 0.32) for v in (primary[0] if corps != "white" else (120, 128, 146)))
+        base = _shades(deep, T_BASE)
+    return primary, base, light
 
 
-def design_stealth(corps):
-    """Black on black with glowing corps-colored seams."""
-    def paint(part, layer, f, x, y, w, h):
-        if part == "head":
-            return None
-        if layer == "outer":
-            if part == "body" and f == "front":
-                return emblem(corps, x, y, bg="disc")
-            if part.endswith("arm") and f in ("right", "left") and 1 <= y <= 9 and x == 1:
-                return "line"
-            return None
-        if part == "body":
-            if f == "front" and y == 9:
-                return "line"
-            return "trim2" if f == "top" else "trim"
-        if part.endswith("arm"):
-            if y == h - 1 and f not in ("top", "bottom"):
-                return None
-            return "line" if y == 8 and f != "bottom" else "trim"
-        if part.endswith("leg"):
-            if f == "front" and x in (1, 2) and y <= 8:
-                return "line" if x == 1 else "trim"
-            return "dark" if y >= 10 else "trim"
-    return paint
+def _recolor(img, corps, rgb, design):
+    primary, base, light = _families(corps, rgb, design)
+    mapping = {}
+    for src, dst in zip(T_PRIMARY, primary):
+        mapping[src] = dst
+    for src, dst in zip(T_BASE, base):
+        mapping[src] = dst
+    for src, dst in zip(T_LIGHT, light):
+        mapping[src] = dst
+    out = Image.new("RGBA", img.size, CLEAR)
+    glow = Image.new("RGBA", img.size, CLEAR)
+    p = palette(corps, rgb)
+    for y in range(img.size[1]):
+        for x in range(img.size[0]):
+            c = img.getpixel((x, y))
+            if c[3] == 0:
+                continue
+            out.putpixel((x, y), mapping.get(c[:3], c[:3]) + (255,))
+            if (x, y) in T_GLOW:
+                glow.putpixel((x, y), (255, 255, 255, 255) if corps != "black" else p["glow"])
+    return out, glow
 
 
-DESIGN_FUNCS = {"armored": design_armored, "classic": design_classic, "stealth": design_stealth}
+def _to_slim(img):
+    """Convert 4-pixel-wide arms to the 3-pixel slim layout by dropping one middle column."""
+    out = img.copy()
+    for u, v in ((40, 16), (40, 32), (32, 48), (48, 48)):  # right arm, right sleeve, left arm, left sleeve
+        out.paste(CLEAR, (u, v, u + 16, v + 16))
+        src = img.crop((u, v, u + 16, v + 16))
+
+        def face(sx, sy, w, h, dx, dy, drop=True):
+            region = src.crop((sx, sy, sx + w, sy + h))
+            if drop and w == 4:
+                cols = [region.crop((i, 0, i + 1, h)) for i in (0, 1, 3)]
+                region = Image.new("RGBA", (3, h), CLEAR)
+                for i, col in enumerate(cols):
+                    region.paste(col, (i, 0))
+            out.paste(region, (u + dx, v + dy))
+
+        face(4, 0, 4, 4, 4, 0)            # top
+        face(8, 0, 4, 4, 7, 0)            # bottom
+        face(0, 4, 4, 12, 0, 4, False)    # outer side
+        face(4, 4, 4, 12, 4, 4)           # front
+        face(8, 4, 4, 12, 7, 4, False)    # inner side
+        face(12, 4, 4, 12, 11, 4)         # back
+    return out
+
+
+def suit(corps, rgb, design, slim):
+    """(suit, glow) 64x64 textures for suit_model: the template recolored, without its head."""
+    tpl = Image.open(TEMPLATE).convert("RGBA")
+    tpl.paste(CLEAR, (0, 0, 64, HEAD_ROWS))
+    if slim:
+        tpl = _to_slim(tpl)
+    return _recolor(tpl, corps, rgb, design)
+
+
+def corps_mask(corps, rgb):
+    """(mask, glow): the template's own mask (head rows only), recolored."""
+    tpl = Image.open(TEMPLATE).convert("RGBA")
+    tpl.paste(CLEAR, (0, HEAD_ROWS, 64, 64))
+    return _recolor(tpl, corps, rgb, "uniform")
 
 
 def mask_painter(corps, mask):
@@ -460,13 +435,10 @@ def _paint_layers(corps, rgb, painter, slim):
     return imgs
 
 
-def suit(corps, rgb, design, slim):
-    """(suit, glow) 64x64 textures for suit_model."""
-    return _paint_layers(corps, rgb, DESIGN_FUNCS[design](corps), slim)
-
-
 def mask(corps, rgb, mask_id):
     """(mask, glow) 64x64 textures for the head of suit_model."""
+    if mask_id == "corps":
+        return corps_mask(corps, rgb)
     return _paint_layers(corps, rgb, mask_painter(corps, mask_id), False)
 
 
@@ -521,7 +493,11 @@ RING_TEX_SCALE = 0.1
 
 def ring_model(slim):
     """A small square signet plate with the corps logo on the front of the right hand,
-    like A New Corps (not a band around the wrist)."""
+    like A New Corps (not a band around the wrist).
+
+    The arm box runs from y=-2 (shoulder) to y=10 (fingertips), so the plate at y 8.5-9.7
+    sits on the hand itself. Its front (z=-2.45) is in front of the suit's outer layer
+    (which reaches z=-2.3), so gauntlets and gloves never cover it."""
     x0 = -2 if slim else -3  # outer side of the right arm
     empty = {"part_pose": {"offset": [0, 0, 0], "rotation": [0, 0, 0]}, "cubes": [], "children": {}}
     return {
@@ -530,7 +506,7 @@ def ring_model(slim):
             "head": empty, "hat": empty, "body": empty, "left_arm": empty, "right_leg": empty, "left_leg": empty,
             "right_arm": {
                 "part_pose": {"offset": [-5, 2.5 if slim else 2, 0], "rotation": [0, 0, 0]},
-                "cubes": [{"origin": [x0 + 0.55, 7.0, -2.25], "dimensions": [1.2, 1.2, 0.2],
+                "cubes": [{"origin": [x0 + 0.55, 8.5, -2.45], "dimensions": [1.2, 1.2, 0.2],
                            "texture_offset": [0, 0], "texture_scale": [RING_TEX_SCALE, RING_TEX_SCALE]}],
                 "children": {},
             },

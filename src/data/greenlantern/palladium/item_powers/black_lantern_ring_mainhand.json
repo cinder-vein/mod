@@ -1,5 +1,8 @@
 {
   "slot": "mainhand",
   "item": "greenlantern:black_lantern_ring",
-  "power": "greenlantern:black_lantern"
+  "power": [
+    "greenlantern:black_lantern",
+    "greenlantern:lantern_base"
+  ]
 }

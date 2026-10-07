@@ -1,0 +1,2 @@
+function greenlantern:ring/strip_white
+function greenlantern:leader/update_any

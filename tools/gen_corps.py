@@ -10,11 +10,13 @@ a full-body uniform, a beam, a flight trail, recipes and translations.
 To tweak a corps, edit its entry in CORPS or its specials function and
 re-run this script. Art lives in art.py.
 """
+import hashlib
 import json
 import shutil
 from pathlib import Path
 
 import art
+import systems
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
@@ -41,7 +43,7 @@ CORPS = {
     },
     "red": {
         "name": "Red Lantern", "emotion": "Rage", "color": (220, 30, 35),
-        "health": 40, "bonus_damage": 4,  # rage: fewer hearts, more strength
+        "health_penalty": 20, "bonus_damage": 4,  # rage: fewer hearts, more strength
         "shapes": {"fist": "claw"},
         "gem": "minecraft:redstone_block", "glass": "minecraft:red_stained_glass",
         "oath": ["With blood and rage of crimson red,", "Ripped from a corpse so freshly dead,",
@@ -230,13 +232,18 @@ class Kit:
             "bar_color": "white", "hidden": True, "hidden_in_bar": False, "list_index": index,
         }
 
-    def attribute(self, key, attr, amount, unlocking):
-        self.attr_count += 1
-        n = list(CORPS).index(self.c)
+    def attribute(self, key, attr, amount, unlocking, shared=False):
+        """Shared modifiers use the same UUID in every corps, so wearing two rings never
+        stacks them (Minecraft only applies one modifier per UUID)."""
+        if shared:
+            uuid = "6c7affff-1a2b-4c3d-8e4f-" + hashlib.md5(key.encode()).hexdigest()[:12]
+        else:
+            self.attr_count += 1
+            n = list(CORPS).index(self.c)
+            uuid = f"6c7a{n:04x}-1a2b-4c3d-8e4f-{self.attr_count:012x}"
         self.hidden(key, {
             "type": "palladium:attribute_modifier", "attribute": attr, "amount": amount, "operation": 0,
-            "uuid": f"6c7a{n:04x}-1a2b-4c3d-8e4f-{self.attr_count:012x}",
-            "conditions": {"unlocking": one(unlocking)},
+            "uuid": uuid, "conditions": {"unlocking": one(unlocking)},
         })
 
     def special(self, key, name, desc, icon, ability, cost=0, xp=8, index=None, extra=()):
@@ -275,7 +282,10 @@ def shared_kit(k):
         "description": k.tr("uniform.description",
                             "Toggle your corps' suit on or off. Pick the suit and mask in the accessories menu.", True),
         "icon": f"{NS}:{c}_lantern_ring", "gui_position": [0, 0],
-        "conditions": {"enabling": toggle()},
+        # with two rings worn, only one suit at a time: stay off while another ring's suit is up
+        "conditions": {"enabling": [toggle(), {"type": "palladium:not", "conditions": [
+            {"type": "palladium:ability_enabled", "power": f"{NS}:{o}_lantern", "ability": "uniform"}
+            for o in CORPS if o != c]}]},
     }
     k.hidden("suit_up_burst", {**command(first=[
         burst(rgb, 2.0, "0.4 1.0 0.4", 120), "particle minecraft:flash ~ ~1 ~ 0 0 0 0 1 force",
@@ -305,35 +315,31 @@ def shared_kit(k):
     })
 
     # A charged ring alone makes you far tougher: 40 hearts and netherite-level armor.
+    # Hearts, armor, protection and the shared skill bonuses live in the hidden lantern_base power
+    # (see base_power), which every ring grants, so two rings never stack them. Only corps-specific
+    # modifiers stay here, with UUIDs unique to this corps.
     charged = [charge(1)]
-    k.attribute("ring_health", "minecraft:generic.max_health", data.get("health", 60), charged)
-    k.attribute("ring_armor", "minecraft:generic.armor", 20, charged)
-    k.attribute("ring_toughness", "minecraft:generic.armor_toughness", 12, charged)
-    k.attribute("ring_knockback", "minecraft:generic.knockback_resistance", 0.4, charged)
-    k.attribute("ring_fists", "palladium:punch_damage", 4 + data.get("bonus_damage", 0), charged)
+    if data.get("health_penalty"):
+        k.attribute("ring_health_penalty", "minecraft:generic.max_health", -data["health_penalty"], charged)
     if data.get("bonus_damage"):
+        k.attribute("ring_rage_fists", "palladium:punch_damage", data["bonus_damage"], charged)
         k.attribute("ring_strength", "minecraft:generic.attack_damage", data["bonus_damage"], charged)
-    k.hidden("ring_protection", {
-        "type": "palladium:damage_immunity",
-        "damage_sources": ["minecraft:is_drowning", "minecraft:is_fall", "minecraft:is_freezing"],
-        "conditions": {"unlocking": charge(1)},
-    })
+
+    # Palladium resets a ring's charge to 0 whenever the ring is re-equipped or the player relogs, so
+    # the charge is mirrored to a scoreboard every second and put back when the ring comes back.
+    k.hidden("charge_restore", {**command(first=[f"function {NS}:charge/restore_{c}"],
+                                          last=[f"tag @s remove gl_cr_{c}"])})
 
     # --- skill tree ---
     k.node("skill_health_1", "Vitality I", "+10 hearts while your ring is charged.",
            "minecraft:golden_apple", (-5, 1), ["uniform"], 5)
     k.node("skill_health_2", "Vitality II", "Another +10 hearts while your ring is charged.",
            "minecraft:enchanted_golden_apple", (-5, 2), ["skill_health_1"], 15)
-    k.attribute("health_1", "minecraft:generic.max_health", 20, [unlocked("skill_health_1"), charge(1)])
-    k.attribute("health_2", "minecraft:generic.max_health", 20, [unlocked("skill_health_2"), charge(1)])
 
     k.node("skill_combat_1", "Combat I", "+4 attack and punch damage while your ring is charged.",
            "minecraft:iron_sword", (-3, 1), ["uniform"], 5)
     k.node("skill_combat_2", "Combat II", "Another +4 attack and punch damage.",
            "minecraft:netherite_sword", (-3, 2), ["skill_combat_1"], 15)
-    for i in (1, 2):
-        k.attribute(f"combat_{i}", "minecraft:generic.attack_damage", 4, [unlocked(f"skill_combat_{i}"), charge(1)])
-        k.attribute(f"combat_{i}_fists", "palladium:punch_damage", 4, [unlocked(f"skill_combat_{i}"), charge(1)])
 
     k.node("skill_charge_1", "Capacity I", "Your ring holds 1500 charge instead of 1000.",
            "minecraft:glowstone", (-1, 1), ["uniform"], 5)
@@ -349,10 +355,6 @@ def shared_kit(k):
 
     k.node("skill_flight", "Flight", "Fly on the power of your ring, leaving a trail of light. Flying slowly drains charge.",
            "minecraft:feather", (1, 1), ["uniform"], 5)
-    flight = [unlocked("skill_flight"), charge(1)]
-    k.attribute("flight", "palladium:flight_speed", 1.0, flight)
-    k.attribute("flight_flexibility", "palladium:flight_flexibility", 5, flight)
-    k.attribute("heroic_flight", "palladium:heroic_flight_type", 1, flight)
     flying = [unlocked("skill_flight"), {"type": "palladium:is_flying"}]
     k.hidden("flight_trail", {"type": "palladium:trail", "trail": f"{NS}:{c}_trail", "conditions": {"enabling": flying}})
     k.hidden("flight_aura", {"type": "palladium:particles", "emitter": [f"{NS}:flight_aura"],
@@ -366,6 +368,10 @@ def shared_kit(k):
         "type": "palladium:energy_beam", "energy_beam": f"{NS}:{c}_beam", "damage": 2.0, "max_distance": 40.0,
         "speed": 0.6, "energy_bar_usage": usage(3), "conditions": {"enabling": held()},
     }, f"{data['emotion']} Beam", "minecraft:blaze_rod", 0, cost=3, shared=False)
+    # Point the ring hand at the target while beaming. The beam's origin follows the arm's pose
+    # (BodyPart offset is applied after the arm's rotation), so it visibly leaves the hand.
+    k.hidden("beam_aim", {"type": "palladium:aim", "arm": "right_arm", "time": 4,
+                          "conditions": {"enabling": enabled("beam")}})
     k.hidden("beam_sound", {"type": "palladium:play_sound", "sound": "minecraft:block.beacon.ambient", "pitch": 1.6,
                             "looping": True, "conditions": {"enabling": enabled("beam")}})
 
@@ -445,11 +451,8 @@ def shared_kit(k):
     # These only unlock while that's possible, so they never steal ordinary right-clicks.
     battery = f"{NS}:{c}_power_battery"
     right_click = {"type": "palladium:action", "key_type": "right_click", "cooldown": 20}
-    looking_at = [
-        {"type": "palladium:command_result", "comparison": "==", "compare_to": 1,
-         "command": f"execute anchored eyes positioned ^ ^ ^{d / 2} if block ~ ~ ~ {battery}"}
-        for d in range(1, 10)
-    ]
+    # gl_look_<corps> is set by the datapack while you look at a placed battery of this corps
+    looking_at = {"type": "palladium:has_tag", "tag": f"gl_look_{c}"}
     k.hidden("recharge", {
         "type": "palladium:dummy", "energy_bar_usage": usage(-1_000_000),
         "conditions": {"unlocking": {"type": "palladium:item_in_slot", "item": {"item": battery}, "slot": "mainhand"},
@@ -460,7 +463,7 @@ def shared_kit(k):
         "conditions": {"unlocking": [
             {"type": "palladium:not", "conditions": [{"type": "palladium:item_in_slot", "item": {"item": battery},
                                                       "slot": "mainhand"}]},
-            {"type": "palladium:or", "conditions": looking_at}],
+            looking_at],
             "enabling": right_click},
     })
     oath = []
@@ -474,16 +477,22 @@ def shared_kit(k):
         "conditions": {"enabling": {"type": "palladium:or", "conditions": [
             enabled("recharge"), enabled("recharge_at_lantern")]}}})
 
+    # Corps leaders (appointed by an admin) can revoke the ring of the nearest member.
+    k.bar("revoke_ring", {**command(first=[f"function {NS}:leader/revoke_{c}"]),
+                          "conditions": {"enabling": action(40)}},
+          "Revoke Ring", "minecraft:barrier", 11, extra=[{"type": "palladium:has_tag", "tag": f"gl_leader_{c}"}])
+    k.lang[f"ability.{NS}.revoke_ring.description"] = "Leaders only: take the ring from the nearest member of your corps."
     k.bar("ring_light", {**command(first=["effect give @s minecraft:night_vision infinite 0 true"],
                                    last=["effect clear @s minecraft:night_vision"]),
                          "conditions": {"enabling": toggle()}}, "Ring Light", "minecraft:glowstone_dust", 3)
 
     # Corps tags let rings react to each other (e.g. Blue Lanterns empower Green ones).
-    k.hidden("corps_tag", {**command(first=[f"tag @s remove gl_{o}" for o in CORPS if o != c] + [f"tag @s add gl_{c}"],
+    k.hidden("corps_tag", {**command(first=[f"tag @s add gl_{c}"],
+                                     every=[f"tag @s add gl_{c}", f"scoreboard players set @s gl_t_{c} 5"],
                                      last=[f"tag @s remove gl_{c}"])})
     if data.get("feeds_on_death"):
-        kills = {"type": "palladium:command_result", "comparison": "==", "compare_to": 1,
-                 "command": "execute if score @s gl_bkills matches 1.."}
+        kills = {"type": "palladium:objective_score", "objective": "gl_bkills", "min_score": 1,
+                 "max_score": 2147483647}
         k.hidden("death_feed", {
             **command(first=["scoreboard players set @s gl_bkills 0",
                              "particle minecraft:soul ~ ~1 ~ 0.4 0.6 0.4 0.03 25 force",
@@ -493,8 +502,7 @@ def shared_kit(k):
         })
     ally = data.get("empowered_by")
     if ally:
-        near = {"type": "palladium:command_result", "comparison": ">=", "compare_to": 1,
-                "command": f"execute if entity @a[tag=gl_{ally},distance=0.1..12]"}
+        near = {"type": "palladium:has_tag", "tag": f"gl_near_{ally}"}  # set by the datapack
         k.node("skill_empowered", data["empowered_name"], data["empowered_desc"], f"{NS}:{ally}_lantern_ring",
                (1, 2), ["skill_flight"], 8)
         k.hidden("empowered_charge", {"type": "palladium:dummy", "energy_bar_usage": usage(-2),
@@ -711,7 +719,7 @@ def specials_yellow(k):
                   f"effect give {target} minecraft:nausea 10 0 true",
                   f"effect give {target} minecraft:blindness 6 0 true",
                   f"effect give {target} minecraft:mining_fatigue 10 2 true",
-                  f"title {target} title {WHISPER}",
+                  f"execute as {target} if entity @s[type=minecraft:player] run title @s title {WHISPER}",
                   sound("minecraft:entity.warden.heartbeat", 1.0)]),
                   "conditions": {"enabling": action(120)}}, cost=100, xp=12, index=7)
     around = OTHERS.format(r=12)
@@ -894,6 +902,168 @@ def specials_black(k):
                    sound("minecraft:entity.wither.spawn", 0.8)])
 
 
+# --- dual rings: Spectrum Fusion ------------------------------------------------------
+# Wearing two rings at once gives a fusion ability that mixes both corps' signature effects.
+# The corps listed first in CORPS owns the ability, so a pair never gets it twice.
+
+FOE = OTHERS.format(r=10)
+FRIENDS = ALLIES.format(r=10)
+SIGNATURE = {
+    "green": [f"execute as {FOE} run damage @s 10 minecraft:player_attack", f"effect give {FOE} minecraft:levitation 1 3 true"],
+    "yellow": [f"effect give {FOE} minecraft:darkness 8 0 true", f"effect give {FOE} minecraft:slowness 8 2 true"],
+    "red": [f"execute as {FOE} run damage @s 6 minecraft:magic", f"effect give {FOE} minecraft:wither 6 1 true",
+            f"execute at {FOE} run particle minecraft:flame ~ ~1 ~ 0.3 0.6 0.3 0.02 20 force"],
+    "orange": [f"execute as {FOE} run damage @s 6 minecraft:magic", "effect give @s minecraft:instant_health 1 1 true",
+               "effect give @s minecraft:absorption 30 2 true"],
+    "blue": [f"effect give {FRIENDS} minecraft:regeneration 10 2 true", f"effect give {FRIENDS} minecraft:absorption 30 1 true"],
+    "violet": [f"effect give {FOE} minecraft:slowness 4 255 true", f"effect give {FOE} minecraft:jump_boost 4 250 true",
+               f"effect give {FOE} minecraft:glowing 6 0 true"],
+    "indigo": [f"effect give {FOE} minecraft:weakness 8 254 true", f"effect give {FRIENDS} minecraft:instant_health 1 0 true"],
+    "white": [f"effect give {FRIENDS} minecraft:instant_health 1 2 true",
+              "effect give @e[distance=..10,type=!minecraft:item,type=!minecraft:experience_orb] minecraft:instant_health 1 1 true"],
+    "black": [f"effect give {FOE} minecraft:wither 8 2 true", f"effect give {FOE} minecraft:darkness 6 0 true"],
+}
+FUSION_NAMES = {
+    ("green", "yellow"): "Will Over Fear", ("green", "red"): "Righteous Fury", ("green", "orange"): "Unbreakable Grasp",
+    ("green", "blue"): "Hope Ignites Will", ("green", "violet"): "Heart's Resolve", ("green", "indigo"): "Steadfast Mercy",
+    ("green", "white"): "Emerald Dawn", ("green", "black"): "Brightest Day, Blackest Night",
+    ("yellow", "red"): "Terror and Fury", ("yellow", "orange"): "Greed for Terror", ("yellow", "blue"): "Courage Under Fear",
+    ("yellow", "violet"): "Love's Dread", ("yellow", "indigo"): "Empathic Terror", ("yellow", "white"): "Fear of Life",
+    ("yellow", "black"): "Dread of the Grave",
+    ("red", "orange"): "Burning Greed", ("red", "blue"): "Rage Tempered by Hope", ("red", "violet"): "Crimson Passion",
+    ("red", "indigo"): "Rage Understood", ("red", "white"): "Blood of Life", ("red", "black"): "Blood and Bone",
+    ("orange", "blue"): "Hope Hoarded", ("orange", "violet"): "Covetous Heart", ("orange", "indigo"): "Shared Fortune",
+    ("orange", "white"): "Abundance", ("orange", "black"): "Hoard of the Dead",
+    ("blue", "violet"): "Hopeful Heart", ("blue", "indigo"): "Gentle Light", ("blue", "white"): "Radiant Hope",
+    ("blue", "black"): "Hope in Darkness",
+    ("violet", "indigo"): "Tender Embrace", ("violet", "white"): "Love Eternal", ("violet", "black"): "Love Beyond Death",
+    ("indigo", "white"): "Mercy of Life", ("indigo", "black"): "Last Rites",
+    ("white", "black"): "Life and Death",
+}
+FUSION_COST = 250
+
+
+def fusion_pairs():
+    order = list(CORPS)
+    return [(a, b) for i, a in enumerate(order) for b in order[i + 1:]]
+
+
+def fusion_function(a, b):
+    """Commands for the a+b fusion, run as the ring bearer."""
+    name = FUSION_NAMES[(a, b)]
+    ca, cb = CORPS[a]["color"], CORPS[b]["color"]
+    return [
+        "title @s times 5 40 10",
+        "title @s subtitle " + json.dumps({"text": f"{CORPS[a]['emotion']} + {CORPS[b]['emotion']}", "color": "gray"}),
+        "title @s title " + json.dumps([{"text": name.split(" ")[0] + " ", "color": hexcolor(ca)},
+                                        {"text": " ".join(name.split(" ")[1:]), "color": hexcolor(cb)}]),
+        burst(ca, 2.5, "4 1.5 4", 220), burst(cb, 2.5, "4 1.5 4", 220),
+        "particle minecraft:flash ~ ~1 ~ 0 0 0 0 2 force",
+        *SIGNATURE[a], *SIGNATURE[b],
+        sound("minecraft:block.beacon.power_select", 0.8), sound("minecraft:entity.illusioner.cast_spell", 1.2),
+    ]
+
+
+def fusion_ability(k):
+    """Adds Spectrum Fusion to corps k.c if it is the lower-ranked partner of any pair."""
+    partners = [b for a, b in fusion_pairs() if a == k.c]
+    if not partners:
+        return
+    k.bar("spectrum_fusion", {
+        **command(first=[f"execute if entity @s[tag=gl_{b}] run function {NS}:fusion/{k.c}_{b}" for b in partners]),
+        "energy_bar_usage": usage(FUSION_COST),
+        "conditions": {"enabling": action(600)},
+    }, "Spectrum Fusion", "minecraft:nether_star", 10, cost=FUSION_COST,
+        extra=[{"type": "palladium:or", "conditions": [
+            {"type": "palladium:has_power", "power": f"{NS}:{b}_lantern"} for b in partners]}])
+    k.lang[f"ability.{NS}.spectrum_fusion.description"] = (
+        "Wear two rings at once to fuse their powers. Each pair of corps has its own fusion.")
+
+
+def base_power():
+    """The hidden power every ring also grants. It holds the bonuses that must not stack when two
+    rings are worn: Palladium keeps one holder per power, however many rings grant it. It keeps no
+    saved state (no energy bars, no buyables), reading each corps' charge and skills instead."""
+    def any_ring(*per_corps):
+        return {"type": "palladium:or", "conditions": [
+            {"type": "palladium:and", "conditions": [f(c) for f in per_corps]} if len(per_corps) > 1 else per_corps[0](c)
+            for c in CORPS]}
+
+    def charged(c):
+        return {"type": "palladium:energy_bar", "power": f"{NS}:{c}_lantern", "energy_bar": BAR, "min": 1}
+
+    def skill(name):
+        return lambda c: {"type": "palladium:ability_unlocked", "power": f"{NS}:{c}_lantern", "ability": name}
+
+    abilities = {}
+
+    def attr(key, attribute, amount, cond):
+        abilities[key] = {
+            "type": "palladium:attribute_modifier", "attribute": attribute, "amount": amount, "operation": 0,
+            "uuid": "6c7affff-1a2b-4c3d-8e4f-" + hashlib.md5(key.encode()).hexdigest()[:12],
+            "hidden": True, "hidden_in_bar": True, "conditions": {"unlocking": cond}}
+
+    attr("ring_health", "minecraft:generic.max_health", 60, any_ring(charged))       # 40 hearts
+    attr("ring_armor", "minecraft:generic.armor", 20, any_ring(charged))             # netherite-level
+    attr("ring_toughness", "minecraft:generic.armor_toughness", 12, any_ring(charged))
+    attr("ring_knockback", "minecraft:generic.knockback_resistance", 0.4, any_ring(charged))
+    attr("ring_fists", "palladium:punch_damage", 4, any_ring(charged))
+    for i in (1, 2):
+        attr(f"health_{i}", "minecraft:generic.max_health", 20, any_ring(skill(f"skill_health_{i}"), charged))
+        attr(f"combat_{i}", "minecraft:generic.attack_damage", 4, any_ring(skill(f"skill_combat_{i}"), charged))
+        attr(f"combat_{i}_fists", "palladium:punch_damage", 4, any_ring(skill(f"skill_combat_{i}"), charged))
+    flight = any_ring(skill("skill_flight"), charged)
+    attr("flight", "palladium:flight_speed", 1.0, flight)
+    attr("flight_flexibility", "palladium:flight_flexibility", 5, flight)
+    attr("heroic_flight", "palladium:heroic_flight_type", 1, flight)
+    abilities["ring_protection"] = {
+        "type": "palladium:damage_immunity", "hidden": True, "hidden_in_bar": True,
+        "damage_sources": ["minecraft:is_drowning", "minecraft:is_fall", "minecraft:is_freezing"],
+        "conditions": {"unlocking": any_ring(charged)}}
+    return {"name": {"translate": f"power.{NS}.lantern_base"}, "icon": f"{NS}:green_lantern_ring",
+            "hidden": True, "abilities": abilities}
+
+
+def charge_functions():
+    """Save every worn ring's charge each second; restore it when the ring is equipped again."""
+    fns, load, second = {}, [], []
+    for c in CORPS:
+        power = f"{NS}:{c}_lantern"
+        load.append(f"scoreboard objectives add gl_ch_{c} dummy")
+        restore = [f"scoreboard players add @s gl_ch_{c} 0",
+                   f"scoreboard players operation @s gl_tmp = @s gl_ch_{c}",
+                   f"energybar value set @s {power} {BAR} 0"]
+        for bit in (2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1):  # no macros in 1.20.1: add it bit by bit
+            restore += [f"execute if score @s gl_tmp matches {bit}.. run energybar value add @s {power} {BAR} {bit}",
+                        f"execute if score @s gl_tmp matches {bit}.. run scoreboard players remove @s gl_tmp {bit}"]
+        restore.append(f"tag @s add gl_cr_{c}")
+        fns[f"charge/restore_{c}"] = restore
+        second += [f"execute as @a[tag=gl_cr_{c}] store success score @s gl_ok store result score @s gl_tmp run "
+                   f"energybar value get @s {power} {BAR}",
+                   f"execute as @a[tag=gl_cr_{c},scores={{gl_ok=1}}] run scoreboard players operation @s gl_ch_{c} = @s gl_tmp"]
+    load.append("scoreboard objectives add gl_ok dummy")
+    fns["charge/save"] = second
+    return fns, load
+
+
+def sense_tags():
+    """Tick lines that set cheap tags used by ability conditions (instead of per-tick commands)."""
+    tick = []
+    for c in CORPS:
+        battery = f"{NS}:{c}_power_battery"
+        tick.append(f"tag @a[tag=gl_look_{c}] remove gl_look_{c}")
+        for d in range(1, 10):  # looking at your corps' placed battery, up to 4.5 blocks away
+            tick.append(f"execute as @a[tag=gl_{c},tag=!gl_look_{c}] at @s anchored eyes positioned ^ ^ ^{d / 2} "
+                        f"if block ~ ~ ~ {battery} run tag @s add gl_look_{c}")
+    for c, data in CORPS.items():
+        ally = data.get("empowered_by")
+        if ally:
+            tick += [f"tag @a[tag=gl_near_{ally}] remove gl_near_{ally}",
+                     f"execute as @a[tag=gl_{c}] at @s if entity @a[tag=gl_{ally},distance=0.1..12] "
+                     f"run tag @s add gl_near_{ally}"]
+    return tick
+
+
 SPECIALS = {
     "green": specials_green, "yellow": specials_yellow, "red": specials_red, "orange": specials_orange,
     "blue": specials_blue, "violet": specials_violet, "indigo": specials_indigo, "white": specials_white,
@@ -908,6 +1078,12 @@ def write(rel, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def write_text(rel, text):
+    path = SRC / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
 def save(img, rel):
     path = SRC / rel
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -917,6 +1093,7 @@ def save(img, rel):
 GENERATED_DIRS = [
     f"addon/{NS}", f"data/{NS}/palladium", f"data/{NS}/recipes", f"data/{NS}/loot_tables", f"data/{NS}/curios",
     f"data/{NS}/functions", f"data/{NS}/tags", "data/minecraft/tags/functions",
+    f"data/{NS}/predicates", f"data/{NS}/item_modifiers", f"data/{NS}/kubejs_scripts",
     f"assets/{NS}/models", f"assets/{NS}/blockstates", f"assets/{NS}/textures", f"assets/{NS}/palladium",
 ]
 
@@ -981,6 +1158,7 @@ def main():
         k = Kit(c, data)
         shared_kit(k)
         SPECIALS[c](k)
+        fusion_ability(k)
         write(f"data/{NS}/palladium/powers/{c}_lantern.json", {
             "name": {"translate": f"power.{NS}.{c}_lantern"},
             "icon": f"{NS}:{ring}",
@@ -1001,7 +1179,7 @@ def main():
         lang.update(k.lang)
         for slot in ("mainhand", "offhand", "curios:ring"):
             write(f"data/{NS}/palladium/item_powers/{ring}_{slot.replace(':', '_')}.json",
-                  {"slot": slot, "item": f"{NS}:{ring}", "power": f"{NS}:{c}_lantern"})
+                  {"slot": slot, "item": f"{NS}:{ring}", "power": [f"{NS}:{c}_lantern", f"{NS}:lantern_base"]})
 
         # Suits and masks: one accessory slot each in the accessories menu, shown while you
         # wear this corps' ring. Both render on the two-layer suit model.
@@ -1054,7 +1232,7 @@ def main():
                 "texture": f"{NS}:textures/models/ring/{c}_{part}.png", "render_type": render_type})
         fx = rgb if c != "black" else (150, 155, 170)
         write(f"assets/{NS}/palladium/energy_beams/{c}_beam.json", {
-            "type": "palladium:laser", "body_part": "right_arm", "offset": [0, -11, 0],
+            "type": "palladium:laser", "body_part": "right_arm", "offset": [-1, -11, 0],  # just past the knuckles
             "glow_color": hexcolor(fx), "core_color": "#FFFFFF" if c != "black" else "#101014",
             "glow_opacity": 0.9, "bloom": 3, "size": 1.4, "rotation_speed": 3,
             "particles": [{"particle_type": "minecraft:dust", "options": dust(fx), "amount": 2,
@@ -1095,13 +1273,15 @@ def main():
     write(f"assets/{NS}/palladium/model_layers/suit_slim/player.json", art.suit_model(True))
     write(f"assets/{NS}/palladium/model_layers/lantern_ring_slim/player.json", art.ring_model(True))
     write(f"assets/{NS}/palladium/particle_emitters/ring_hand.json", {
-        "body_part": "right_arm", "amount": 1, "offset": [0, -10, 0], "offset_random": [1, 1, 1],
+        "body_part": "right_arm", "amount": 1, "offset": [-1, -10, 0], "offset_random": [1, 1, 1],
         "motion": [0, 0.5, 0], "motion_random": [0.3, 0.3, 0.3], "visible_in_first_person": False})
     write(f"assets/{NS}/palladium/particle_emitters/flight_aura.json", {
-        "body_part": "body", "amount": 2, "offset": [0, -6, 0], "offset_random": [6, 12, 6],
+        "body_part": "chest", "amount": 2, "offset": [0, -6, 0], "offset_random": [6, 12, 6],
         "motion_random": [0.2, 0.2, 0.2], "visible_in_first_person": False})
     write("data/curios/tags/items/ring.json", {"replace": False, "values": [f"{NS}:{c}_lantern_ring" for c in CORPS]})
     write(f"data/{NS}/curios/entities/lantern_ring.json", {"entities": ["player"], "slots": ["ring"]})
+    # Two ring slots so you can wear two rings (Curios merges sizes with max(), so this never shrinks it)
+    write(f"data/{NS}/curios/slots/ring.json", {"size": 2})
     # Constructs: one hidden item per shape; CustomModelData picks the corps color.
     for shape, elements in art.construct_shapes().items():
         item = f"construct_{shape}"
@@ -1140,7 +1320,25 @@ def main():
         "kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]",
     ]
     (SRC / f"data/{NS}/functions").mkdir(parents=True, exist_ok=True)
+    write(f"data/{NS}/palladium/powers/lantern_base.json", base_power())
+    lang[f"power.{NS}.lantern_base"] = "Lantern Ring"
     g_load, g_tick, g_functions = army_functions()
+    c_fns, c_load = charge_functions()
+    g_functions.update(c_fns)
+    g_load += c_load
+    g_tick += sense_tags()
+    for c in CORPS:  # a corps tag lasts while that ring's power keeps refreshing it
+        g_load.append(f"scoreboard objectives add gl_t_{c} dummy")
+        g_tick += [f"scoreboard players add @a[tag=gl_{c}] gl_t_{c} 0",
+                   f"scoreboard players remove @a[scores={{gl_t_{c}=1..}}] gl_t_{c} 1",
+                   f"tag @a[tag=gl_{c},scores={{gl_t_{c}=..0}}] remove gl_{c}"]
+    for a, b in fusion_pairs():
+        g_functions[f"fusion/{a}_{b}"] = fusion_function(a, b)
+    s_load, s_tick, s_functions = systems.generate(CORPS, write, write_text)
+    g_load += s_load
+    g_tick += s_tick
+    g_functions.update(s_functions)
+    g_functions["second"].append(f"function {NS}:charge/save")
     tick += g_tick
     for path, lines in g_functions.items():
         (SRC / f"data/{NS}/functions/{path}.mcfunction").parent.mkdir(parents=True, exist_ok=True)

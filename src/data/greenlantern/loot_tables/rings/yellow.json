@@ -1,0 +1,52 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "greenlantern:yellow_lantern_ring",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{gl_bound:1b}"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": {
+                "type": "minecraft:storage",
+                "source": "greenlantern:binding"
+              },
+              "ops": [
+                {
+                  "source": "owner",
+                  "target": "gl_owner",
+                  "op": "replace"
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_lore",
+              "entity": "this",
+              "replace": true,
+              "lore": [
+                {
+                  "text": "Bound to ",
+                  "color": "gray",
+                  "italic": false,
+                  "extra": [
+                    {
+                      "selector": "@s",
+                      "color": "white"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

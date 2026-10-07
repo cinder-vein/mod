@@ -2,7 +2,7 @@
   "type": "palladium:laser",
   "body_part": "right_arm",
   "offset": [
-    0,
+    -1,
     -11,
     0
   ],

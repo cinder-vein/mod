@@ -151,9 +151,17 @@ def validate():
                 if u["energy_bar"] not in bars:
                     err(f"{w}: unknown energy bar '{u['energy_bar']}'")
             for cond in walk(ab.get("conditions", {})):
-                if "ability" in cond and cond["ability"] not in abilities:
-                    err(f"{w}: condition references unknown ability '{cond['ability']}'")
-                if cond.get("type") == "palladium:energy_bar" and cond["energy_bar"] not in bars:
+                if "ability" in cond:
+                    other = abilities
+                    if cond.get("power"):  # cross-power reference
+                        ns, _, pid = cond["power"].partition(":")
+                        other_path = SRC / "data" / ns / "palladium" / "powers" / f"{pid}.json"
+                        other = json.loads(other_path.read_text())["abilities"] if other_path.exists() else {}
+                        if not other_path.exists():
+                            err(f"{w}: condition references unknown power '{cond['power']}'")
+                    if cond["ability"] not in other:
+                        err(f"{w}: condition references unknown ability '{cond['ability']}'")
+                if cond.get("type") == "palladium:energy_bar" and not cond.get("power") and cond["energy_bar"] not in bars:
                     err(f"{w}: unknown energy bar '{cond['energy_bar']}'")
                 item = cond.get("item")
                 if isinstance(item, dict) and "item" in item:
@@ -182,6 +190,13 @@ def validate():
             tex = layer.get("texture")
             for t in tex.values() if isinstance(tex, dict) else [tex] if tex else []:
                 check_ref("texture", t, path.name)
+
+    body_parts = {"head", "head_overlay", "chest", "chest_overlay", "right_arm", "right_arm_overlay", "left_arm",
+                  "left_arm_overlay", "right_leg", "right_leg_overlay", "left_leg", "left_leg_overlay", "cape"}
+    for path in (SRC / "assets" / NS / "palladium").rglob("*.json"):
+        for obj in walk(load(path)):
+            if "body_part" in obj and obj["body_part"] not in body_parts:
+                err(f"{path.name}: unknown body_part '{obj['body_part']}'")
 
     for path in (SRC / "addon" / NS / "accessory_slots").glob("*.json"):
         check_ref("texture", load(path)["icon"], path.name)

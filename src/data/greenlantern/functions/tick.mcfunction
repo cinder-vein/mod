@@ -155,3 +155,138 @@ scoreboard players set @a[scores={gl_k_blaze=1..}] gl_k_blaze 0
 scoreboard players set @a[scores={gl_k_zombified_piglin=1..}] gl_k_zombified_piglin 0
 scoreboard players set @a[scores={gl_k_piglin_brute=1..}] gl_k_piglin_brute 0
 scoreboard players set @a[tag=!gl_black] gl_bkills 0
+tag @a[tag=gl_look_green] remove gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+execute as @a[tag=gl_green,tag=!gl_look_green] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:green_power_battery run tag @s add gl_look_green
+tag @a[tag=gl_look_yellow] remove gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+execute as @a[tag=gl_yellow,tag=!gl_look_yellow] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:yellow_power_battery run tag @s add gl_look_yellow
+tag @a[tag=gl_look_red] remove gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+execute as @a[tag=gl_red,tag=!gl_look_red] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:red_power_battery run tag @s add gl_look_red
+tag @a[tag=gl_look_orange] remove gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+execute as @a[tag=gl_orange,tag=!gl_look_orange] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:orange_power_battery run tag @s add gl_look_orange
+tag @a[tag=gl_look_blue] remove gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+execute as @a[tag=gl_blue,tag=!gl_look_blue] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:blue_power_battery run tag @s add gl_look_blue
+tag @a[tag=gl_look_violet] remove gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+execute as @a[tag=gl_violet,tag=!gl_look_violet] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:violet_power_battery run tag @s add gl_look_violet
+tag @a[tag=gl_look_indigo] remove gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+execute as @a[tag=gl_indigo,tag=!gl_look_indigo] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:indigo_power_battery run tag @s add gl_look_indigo
+tag @a[tag=gl_look_white] remove gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+execute as @a[tag=gl_white,tag=!gl_look_white] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:white_power_battery run tag @s add gl_look_white
+tag @a[tag=gl_look_black] remove gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^0.5 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^1.0 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^1.5 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^2.0 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^2.5 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^3.0 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^3.5 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^4.0 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+execute as @a[tag=gl_black,tag=!gl_look_black] at @s anchored eyes positioned ^ ^ ^4.5 if block ~ ~ ~ greenlantern:black_power_battery run tag @s add gl_look_black
+tag @a[tag=gl_near_blue] remove gl_near_blue
+execute as @a[tag=gl_green] at @s if entity @a[tag=gl_blue,distance=0.1..12] run tag @s add gl_near_blue
+tag @a[tag=gl_near_green] remove gl_near_green
+execute as @a[tag=gl_blue] at @s if entity @a[tag=gl_green,distance=0.1..12] run tag @s add gl_near_green
+scoreboard players add @a[tag=gl_green] gl_t_green 0
+scoreboard players remove @a[scores={gl_t_green=1..}] gl_t_green 1
+tag @a[tag=gl_green,scores={gl_t_green=..0}] remove gl_green
+scoreboard players add @a[tag=gl_yellow] gl_t_yellow 0
+scoreboard players remove @a[scores={gl_t_yellow=1..}] gl_t_yellow 1
+tag @a[tag=gl_yellow,scores={gl_t_yellow=..0}] remove gl_yellow
+scoreboard players add @a[tag=gl_red] gl_t_red 0
+scoreboard players remove @a[scores={gl_t_red=1..}] gl_t_red 1
+tag @a[tag=gl_red,scores={gl_t_red=..0}] remove gl_red
+scoreboard players add @a[tag=gl_orange] gl_t_orange 0
+scoreboard players remove @a[scores={gl_t_orange=1..}] gl_t_orange 1
+tag @a[tag=gl_orange,scores={gl_t_orange=..0}] remove gl_orange
+scoreboard players add @a[tag=gl_blue] gl_t_blue 0
+scoreboard players remove @a[scores={gl_t_blue=1..}] gl_t_blue 1
+tag @a[tag=gl_blue,scores={gl_t_blue=..0}] remove gl_blue
+scoreboard players add @a[tag=gl_violet] gl_t_violet 0
+scoreboard players remove @a[scores={gl_t_violet=1..}] gl_t_violet 1
+tag @a[tag=gl_violet,scores={gl_t_violet=..0}] remove gl_violet
+scoreboard players add @a[tag=gl_indigo] gl_t_indigo 0
+scoreboard players remove @a[scores={gl_t_indigo=1..}] gl_t_indigo 1
+tag @a[tag=gl_indigo,scores={gl_t_indigo=..0}] remove gl_indigo
+scoreboard players add @a[tag=gl_white] gl_t_white 0
+scoreboard players remove @a[scores={gl_t_white=1..}] gl_t_white 1
+tag @a[tag=gl_white,scores={gl_t_white=..0}] remove gl_white
+scoreboard players add @a[tag=gl_black] gl_t_black 0
+scoreboard players remove @a[scores={gl_t_black=1..}] gl_t_black 1
+tag @a[tag=gl_black,scores={gl_t_black=..0}] remove gl_black
+execute as @a unless score @s gl_id matches 1.. run function greenlantern:id/assign
+execute as @a run function greenlantern:ring/bind_check
+execute as @a[tag=gl_offer_any] at @s run function greenlantern:offer/follow
+execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/accept_trigger
+execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger
+execute as @a[scores={gl_revoke=1..}] at @s run function greenlantern:leader/revoke_trigger
+execute as @a[scores={gl_roster=1..}] run function greenlantern:leader/roster_trigger
+execute as @a[scores={gl_emotions=1..}] run function greenlantern:emotion/show
+scoreboard players set @a[scores={gl_emotions=1..}] gl_emotions 0
+execute as @e[type=minecraft:item_display,tag=gl_leave_go] at @s run tp @s ~ ~0.6 ~
+scoreboard players remove @e[type=minecraft:item_display,tag=gl_leave_go] gl_tmp 1
+kill @e[type=minecraft:item_display,tag=gl_leave_go,scores={gl_tmp=..0}]
+scoreboard players add #second gl_cfg 1
+execute if score #second gl_cfg matches 20.. run function greenlantern:second

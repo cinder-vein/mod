@@ -1,0 +1,11 @@
+[
+  {
+    "function": "minecraft:set_nbt",
+    "tag": "{gl_bound:0b,gl_owner:0}"
+  },
+  {
+    "function": "minecraft:set_lore",
+    "replace": true,
+    "lore": []
+  }
+]
