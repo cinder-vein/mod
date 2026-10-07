@@ -84,6 +84,19 @@ Use a creative test world with cheats on, plus a second account or a friend for 
   - If the ring is already on you, it says so.
 - [ ] A member whose ring was revoked runs `/trigger gl_recall`: *"No ring has chosen you yet."*
 
+## 6c. Forging a ring by oath
+- [ ] Wear a charged green ring and type the Green Lantern oath in chat (KubeJS):
+  *In brightest day, in blackest night, no evil shall escape my sight. Let those who worship evil's might, beware my
+  power... Green Lantern's light!*
+  - A title says *"A new Green Lantern ring is forged"*, 500 charge is spent, and you get an unbound ring.
+  - Nearby players see the oath and the announcement.
+- [ ] Hold the forged ring: it doesn't bind to you. Drop it (Q); a second player picks it up and holds it: it binds
+      to them. Your own ring keeps working.
+- [ ] Forge again right away: it says to wait (5 minutes). `/lantern forgecooldown 0` removes the wait.
+- [ ] Without the ring on, the oath says *"no ring answers"*. Type only half the oath: nothing happens.
+- [ ] `/trigger gl_forge` (and `/ring forge green` with KubeJS) recites the oath for you and forges.
+- [ ] `/lantern forging off`: forging is refused.
+
 ## 7. Ring offers
 - [ ] `/lantern emotion <you> will set 20000` in survival. Within a second a ring hovers in front of you and asks.
 - [ ] Click **[ACCEPT]**: you get a bound ring **and its Power Battery**. Try it with a full inventory: both drop at your
@@ -92,8 +105,8 @@ Use a creative test world with cheats on, plus a second account or a friend for 
 
 ## 8. Leaders
 - [ ] `/lantern leader <you> green`. A member wearing a green ring (in a hand or a Curios slot) stands near you. Use
-      **Revoke Ring** (page 4): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; your
-      recruit can bind it.
+      **Revoke Ring** (page 4): their ring is gone, and you get it unbound. Holding it doesn't bind it to you; drop it
+      and your recruit can pick it up and bind it. The revoked member can't wield it.
 - [ ] `/trigger gl_roster` lists members; `/trigger gl_revoke set <id>` revokes remotely.
 
 ## 9. Admin

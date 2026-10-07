@@ -51,6 +51,8 @@ OFFER_SECONDS = 60
 ID_BITS = 16  # player ids up to 65 535
 CURIOS_SLOTS = 16  # ring slots checked (Curios merges slot counts from every pack)
 DECLINE_COOLDOWN = 3600  # seconds before a declined corps asks again
+FORGE_COST = 500  # charge spent forging a new ring
+FORGE_COOLDOWN = 300  # seconds between forgings (/lantern forgecooldown)
 DEFAULT_THRESHOLD = 20000
 
 # Main-inventory slot numbers -> /item slot names (for leader revokes and admin removal we use /clear).
@@ -232,7 +234,29 @@ def generate(corps_table, write, write_text):
             "scoreboard players set #giver gl_tmp 0",
             f"execute if predicate {NS}:giver_ring_{hand} store result score #giver gl_tmp run "
             f"data get entity @s {path}.tag.gl_giver",
+            f"execute if score #giver gl_tmp = @s gl_id run function {NS}:ring/giver_held_{hand}",
             f"execute unless score #giver gl_tmp = @s gl_id run function {NS}:ring/bind_{hand}",
+        ]
+        # A ring being handed on (forged, revoked or unbound) doesn't bind to the one handing it on. A
+        # valid bearer of that corps (a leader, a forger) may carry it; anyone else (revoked, or unbound
+        # by an admin) can't wield it, or it would be a power source a revoke can't reach: it drops at
+        # their feet for its new bearer.
+        keep = ["scoreboard players set #keep gl_tmp 0", *[f"scoreboard players add @s gl_ser_{c} 0" for c in corps]]
+        for c in corps:
+            keep += [f"execute if predicate {NS}:held/{c}_{hand} if score @s gl_ser_{c} matches 1.. run "
+                     "scoreboard players set #keep gl_tmp 1",
+                     f"execute if predicate {NS}:held/{c}_{hand} if score @s gl_ser_{c} matches 0 if entity "
+                     f"@s[tag=gl_member_{c}] run scoreboard players set #keep gl_tmp 1"]
+        fn[f"ring/giver_held_{hand}"] = keep + [
+            f"execute if score #keep gl_tmp matches 0 run function {NS}:ring/giver_drop_{hand}"]
+        fn[f"ring/giver_drop_{hand}"] = [
+            'summon minecraft:item ~ ~0.5 ~ {Tags:["gl_drop"],PickupDelay:40s,Age:-32768s,'
+            'Item:{id:"minecraft:stone",Count:1b}}',
+            f"data modify entity @e[type=minecraft:item,tag=gl_drop,limit=1,sort=nearest] Item set from entity @s {path}",
+            f"item replace entity @s {slot} with minecraft:air",
+            "tag @e[type=minecraft:item,tag=gl_drop] remove gl_drop",
+            "title @s actionbar " + json.dumps({"text": "This ring won't serve you: drop it for the one it should choose. "
+                                                        "It binds to the next player who holds it.", "color": "gray"}),
         ]
         fn[f"ring/bind_{hand}"] = [
             f"function {NS}:ring/rebind_{hand}",
@@ -501,6 +525,91 @@ def generate(corps_table, write, write_text):
                            {"text": "The ring you left behind has gone dark.", "color": "gray", "italic": True}]),
         ]
 
+    # ---------------------------------------------------------------- forging
+    # A bearer can forge a new ring for a recruit by speaking their corps' oath: in chat with KubeJS
+    # (the words must match the oath), or with /trigger gl_forge or /ring forge, which recite it for
+    # them. They must wear a valid ring of that corps; it costs FORGE_COST charge and the forge then
+    # rests for #forge_cd seconds. The new ring is unbound and marked with its maker, so it never binds
+    # to them (it can't replace or darken their own ring); it binds to the next player who holds it.
+    load += ["scoreboard objectives add gl_forge trigger", "scoreboard objectives add gl_fcd dummy",
+             "execute unless score #forge gl_cfg matches 0.. run scoreboard players set #forge gl_cfg 1",
+             f"execute unless score #forge_cd gl_cfg matches 0.. run scoreboard players set #forge_cd gl_cfg {FORGE_COOLDOWN}"]
+    fn["forge/trigger"] = [
+        "scoreboard players operation #v gl_tmp = @s gl_forge",
+        "scoreboard players set @s gl_forge 0",
+        "scoreboard players enable @s gl_forge",
+        f"execute if score #v gl_tmp matches 1 run function {NS}:forge/recite_any",
+        *[f"execute if score #v gl_tmp matches {10 + idx[c]} run function {NS}:forge/recite_{c}" for c in corps],
+    ]
+    fn["forge/recite_any"] = [  # the first corps whose ring you wear
+        "scoreboard players set #done gl_tmp 0",
+        *[f"execute if score #done gl_tmp matches 0 if entity @s[tag=gl_{c}] run function {NS}:forge/recite_{c}"
+          for c in corps],
+        "execute if score #done gl_tmp matches 0 run "
+        + tellraw("@s", [{"text": "Wear your ring to forge another.", "color": "gray"}]),
+    ]
+    for c in corps:
+        rgb = corps_table[c]["color"]
+        col = color(rgb if c != "black" else (170, 175, 190))
+        name = corps_table[c]["name"]
+        power = f"{NS}:{c}_lantern"
+        oath = corps_table[c]["oath"]
+        recite = [tellraw("@a[distance=..24]", ([{"selector": "@s", "color": col}, {"text": ": ", "color": "gray"}]
+                                                if i == 0 else [{"text": "   "}])
+                          + [{"translate": f"oath.{NS}.{c}.{i + 1}", "color": col, "italic": True}])
+                  for i in range(len(oath))]
+        fn[f"forge/recite_{c}"] = ["scoreboard players set #done gl_tmp 1", *recite, f"function {NS}:forge/request_{c}"]
+        fn[f"forge/request_{c}"] = [  # the oath has been spoken: as and at the bearer
+            f"execute if score #forge gl_cfg matches 0 run "
+            + tellraw("@s", [{"text": "Forging new rings is turned off on this server.", "color": "gray"}]),
+            f"execute if score #forge gl_cfg matches 1.. run function {NS}:forge/try_{c}",
+        ]
+        fn[f"forge/try_{c}"] = [
+            "scoreboard players set #ok gl_tmp 1",
+            f"scoreboard players add @s gl_ser_{c} 0",
+            f"execute unless entity @s[tag=gl_{c}] run scoreboard players set #ok gl_tmp 0",
+            f"execute if score @s gl_ser_{c} matches -1 run scoreboard players set #ok gl_tmp 0",
+            f"execute if score @s gl_ser_{c} matches 0 unless entity @s[tag=gl_member_{c}] run scoreboard players set #ok gl_tmp 0",
+            f"execute if score #ok gl_tmp matches 0 run "
+            + tellraw("@s", [{"text": f"Your words echo, but no ring answers. Wear your own {name} ring to forge another.",
+                              "color": "gray", "italic": True}]),
+            f"execute if score #ok gl_tmp matches 1 if score @s gl_fcd matches 1.. run function {NS}:forge/resting",
+            f"execute if score #ok gl_tmp matches 1 store result score #charge gl_tmp run energybar value get @s {power} ring_charge",
+            f"execute if score #ok gl_tmp matches 1 if score #charge gl_tmp matches ..{FORGE_COST - 1} run "
+            f"function {NS}:forge/low_charge",
+            f"execute if score #ok gl_tmp matches 1 run function {NS}:forge/do_{c}",
+        ]
+        fn[f"forge/do_{c}"] = [
+            f"energybar value subtract @s {power} ring_charge {FORGE_COST}",
+            "scoreboard players operation @s gl_fcd = #forge_cd gl_cfg",
+            f"function {NS}:ring/store_giver",
+            *give_ring(f"giver_{c}"),
+            f"particle minecraft:dust {rgb[0] / 255:.2f} {rgb[1] / 255:.2f} {rgb[2] / 255:.2f} 2 ~ ~1.2 ~ 0.5 0.8 0.5 0 150 force",
+            "particle minecraft:flash ~ ~1.2 ~ 0 0 0 0 1 force",
+            "playsound minecraft:block.anvil.use player @a[distance=..24] ~ ~ ~ 0.6 1.6",
+            "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.2",
+            "title @s times 10 50 15",
+            "title @s subtitle " + json.dumps({"text": "Give it to someone worthy: it binds to the next one who holds it.",
+                                               "color": "gray"}),
+            "title @s title " + json.dumps({"text": f"A new {name} ring is forged", "color": col}),
+            tellraw("@a[distance=0.1..24]", [{"selector": "@s", "color": col},
+                                             {"text": f" forged a new {name} ring!", "color": "white"}]),
+        ]
+    fn["forge/resting"] = [
+        "scoreboard players set #ok gl_tmp 0",
+        tellraw("@s", [{"text": "Your ring is still recovering from the last forging. Try again in ", "color": "gray"},
+                       {"score": {"name": "@s", "objective": "gl_fcd"}, "color": "white"}, {"text": " s.", "color": "gray"}]),
+    ]
+    fn["forge/low_charge"] = [
+        "scoreboard players set #ok gl_tmp 0",
+        tellraw("@s", [{"text": f"Forging a ring takes {FORGE_COST} charge. Recharge at your Power Battery first.",
+                        "color": "gray"}]),
+    ]
+    for state, value in (("on", 1), ("off", 0)):
+        fn[f"admin/forging_{state}"] = [
+            f"scoreboard players set #forge gl_cfg {value}",
+            tellraw("@s", [{"text": f"Ring forging is {state.upper()}.", "color": "green" if value else "red"}])]
+
     # ---------------------------------------------------------------- emotions
     feed = []
     for e in EMOTIONS:
@@ -752,6 +861,8 @@ def generate(corps_table, write, write_text):
         "/lantern unbind <player>  -  unbinds the ring in their main hand",
         "/lantern threshold <n>  -  scoreboard players set #threshold gl_cfg <n>",
         "Players: /trigger gl_recall (or /ring recall [corps], or 'ring, come to me' in chat) calls their rings back",
+        f"Players: say their corps' oath (or /trigger gl_forge, /ring forge) to forge an unbound ring ({FORGE_COST} charge)",
+        "/lantern forging on|off  |  /lantern forgecooldown <seconds>  -  ring forging",
         "/lantern reset <player> | show <player> | enable | disable",
         "corps: " + ", ".join(corps),
     ])]
@@ -763,6 +874,7 @@ def generate(corps_table, write, write_text):
         f"execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
         f"execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function {NS}:ring/serial_check",
         f"execute as @a[scores={{gl_recall=1..}}] at @s run function {NS}:recall/trigger",
+        f"execute as @a[scores={{gl_forge=1..}}] at @s run function {NS}:forge/trigger",
         f"execute as @a[tag=gl_offer_any] at @s run function {NS}:offer/follow",
         f"execute as @a[scores={{gl_accept=1..}}] at @s run function {NS}:offer/accept_trigger",
         f"execute as @a[scores={{gl_decline=1..}}] at @s run function {NS}:offer/decline_trigger",
@@ -791,17 +903,20 @@ def generate(corps_table, write, write_text):
         "scoreboard players enable @a[tag=gl_leader_any] gl_roster",
         "scoreboard players enable @a gl_emotions",
         "scoreboard players enable @a gl_recall",
+        "scoreboard players enable @a gl_forge",
+        "scoreboard players remove @a[scores={gl_fcd=1..}] gl_fcd 1",
         "scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1",
     ]
     fn["offer/scan"] = offer_scan
 
-    write_kubejs(corps, write_text)
+    write_kubejs(corps, {c: corps_table[c]["oath"] for c in corps}, write_text)
     return load, tick, fn
 
 
-def write_kubejs(corps, write_text):
+def write_kubejs(corps, oaths, write_text):
     """Optional /lantern command and chat replies when KubeJS is installed."""
-    script = KUBEJS_TEMPLATE.replace("__CORPS__", json.dumps(corps)).replace("__EMOTIONS__", json.dumps(EMOTIONS))
+    script = (KUBEJS_TEMPLATE.replace("__CORPS__", json.dumps(corps)).replace("__EMOTIONS__", json.dumps(EMOTIONS))
+              .replace("__OATHS__", json.dumps({c: " ".join(oaths[c]) for c in corps}, indent=2)))
     write_text(f"data/{NS}/kubejs_scripts/lantern_commands.js", script)
 
 
@@ -810,6 +925,7 @@ KUBEJS_TEMPLATE = r"""// Lantern Corps: /lantern admin command and chat replies 
 // same features are available through /function greenlantern:admin/... and /trigger.
 const CORPS = __CORPS__
 const EMOTIONS = __EMOTIONS__
+const OATHS = __OATHS__
 
 ServerEvents.commandRegistry(event => {
   const { commands: Commands, arguments: Arguments } = event
@@ -818,13 +934,24 @@ ServerEvents.commandRegistry(event => {
     ctx.source.server.runCommandSilent(cmd)
     return 1
   }
+  // run a function as the player who typed the command (by UUID), or directly from the console
+  const runSelf = (ctx, fn) => {
+    const player = ctx.source.player
+    return run(ctx, player ? `execute as ${player.getStringUUID()} at @s run function ${fn}` : `function ${fn}`)
+  }
+  // corps names, filtered by what has been typed
+  const suggestCorps = (builder) => {
+    const typed = String(builder.getRemaining()).toLowerCase()
+    CORPS.forEach(c => { if (c.indexOf(typed) === 0) builder.suggest(c) })
+    return builder.buildFuture()
+  }
   const playerName = (ctx) => Arguments.PLAYER.getResult(ctx, 'player').getGameProfile().getName()
   const corpsArg = (then) => Commands.argument('corps', Arguments.WORD.create(event))
-    .suggests((ctx, builder) => { CORPS.forEach(c => builder.suggest(c)); return builder.buildFuture() })
+    .suggests((ctx, builder) => suggestCorps(builder))
     .executes(then)
   const asPlayer = (ctx, fn) => run(ctx, `execute as ${playerName(ctx)} at @s run function greenlantern:${fn}`)
   const checkCorps = (ctx) => {
-    const c = Arguments.WORD.getResult(ctx, 'corps')
+    const c = String(Arguments.WORD.getResult(ctx, 'corps')).toLowerCase()
     if (CORPS.indexOf(c) < 0) {
       ctx.source.sendFailure(Text.of(`Unknown corps '${c}'. Use one of: ${CORPS.join(', ')}`))
       return null
@@ -841,7 +968,7 @@ ServerEvents.commandRegistry(event => {
 
   event.register(Commands.literal('lantern')
     .requires(src => src.hasPermission(2))
-    .executes(ctx => run(ctx, `execute as ${ctx.source.textName} run function greenlantern:admin/help`))
+    .executes(ctx => runSelf(ctx, 'greenlantern:admin/help'))
     .then(perCorps('give', 'admin/give'))
     .then(perCorps('unbound', 'admin/give_unbound'))
     .then(perCorps('battery', 'admin/battery'))
@@ -863,8 +990,13 @@ ServerEvents.commandRegistry(event => {
           run(ctx, `scoreboard players add ${playerName(ctx)} gl_e_${Arguments.WORD.getResult(ctx, 'emotion')} ${Arguments.INTEGER.getResult(ctx, 'amount')}`)))))))
     .then(Commands.literal('threshold').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
       run(ctx, `scoreboard players set #threshold gl_cfg ${Arguments.INTEGER.getResult(ctx, 'amount')}`))))
-    .then(Commands.literal('enable').executes(ctx => run(ctx, `execute as ${ctx.source.textName} run function greenlantern:admin/enable`)))
-    .then(Commands.literal('disable').executes(ctx => run(ctx, `execute as ${ctx.source.textName} run function greenlantern:admin/disable`)))
+    .then(Commands.literal('forging')
+      .then(Commands.literal('on').executes(ctx => runSelf(ctx, 'greenlantern:admin/forging_on')))
+      .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'greenlantern:admin/forging_off'))))
+    .then(Commands.literal('forgecooldown').then(Commands.argument('seconds', Arguments.INTEGER.create(event)).executes(ctx =>
+      run(ctx, `scoreboard players set #forge_cd gl_cfg ${Math.max(0, Arguments.INTEGER.getResult(ctx, 'seconds'))}`))))
+    .then(Commands.literal('enable').executes(ctx => runSelf(ctx, 'greenlantern:admin/enable')))
+    .then(Commands.literal('disable').executes(ctx => runSelf(ctx, 'greenlantern:admin/disable')))
   )
 
   // /ring recall [corps]: anyone can call their own rings back (no permission needed)
@@ -881,12 +1013,31 @@ ServerEvents.commandRegistry(event => {
     callRing(ctx.source.server, player, corps)
     return 1
   }
+  // /ring forge [corps]: recite your corps' oath and forge a new ring for a recruit
+  const forge = (ctx, corps) => {
+    const player = ctx.source.player
+    if (!player) {
+      ctx.source.sendFailure(Text.of('Only players can forge rings.'))
+      return 0
+    }
+    if (corps && CORPS.indexOf(corps) < 0) {
+      ctx.source.sendFailure(Text.of(`Unknown corps '${corps}'. Use one of: ${CORPS.join(', ')}`))
+      return 0
+    }
+    const fn = corps ? `greenlantern:forge/recite_${corps}` : 'greenlantern:forge/recite_any'
+    ctx.source.server.runCommandSilent(`execute as ${player.getStringUUID()} at @s run function ${fn}`)
+    return 1
+  }
+  const corpsArgument = (then) => Commands.argument('corps', Arguments.WORD.create(event))
+    .suggests((ctx, builder) => suggestCorps(builder))
+    .executes(then)
   event.register(Commands.literal('ring')
     .then(Commands.literal('recall')
       .executes(ctx => recall(ctx, null))
-      .then(Commands.argument('corps', Arguments.WORD.create(event))
-        .suggests((ctx, builder) => { CORPS.forEach(c => builder.suggest(c)); return builder.buildFuture() })
-        .executes(ctx => recall(ctx, Arguments.WORD.getResult(ctx, 'corps')))))
+      .then(corpsArgument(ctx => recall(ctx, String(Arguments.WORD.getResult(ctx, 'corps')).toLowerCase()))))
+    .then(Commands.literal('forge')
+      .executes(ctx => forge(ctx, null))
+      .then(corpsArgument(ctx => forge(ctx, String(Arguments.WORD.getResult(ctx, 'corps')).toLowerCase()))))
   )
 })
 
@@ -896,32 +1047,88 @@ const callRing = (server, player, corps) => {
   server.runCommandSilent(`execute as ${player.getStringUUID()} at @s run function ${fn}`)
 }
 
-// Chat phrases that call your ring: "ring", plus a calling word ("ring, come to me", "return to me,
-// green ring", "I summon my ring"). Naming a corps or its emotion calls only that ring.
-const CALL_WORDS = /\b(come|return|recall|summon|back|answer|to me)\b/
-const CORPS_WORDS = {
-  green: ['green', 'will', 'willpower'], yellow: ['yellow', 'sinestro', 'fear'], red: ['red', 'rage'],
-  orange: ['orange', 'greed', 'avarice'], blue: ['blue', 'hope'], violet: ['violet', 'star sapphire', 'sapphire', 'love'],
-  indigo: ['indigo', 'compassion'], white: ['white', 'life'], black: ['black', 'death']
+// Chat phrases that call your ring. The whole message must be a call (punctuation ignored), so
+// ordinary talk about rings never triggers it:
+//   "ring, come to me" / "green ring, come back" / "my star sapphire ring, return"
+//   "return to me, green ring" / "come back, blue ring"
+//   "I summon my ring" / "I call my red ring"      "ring, to me"
+// Naming a corps (or, failing that, its emotion) calls only that ring.
+const CALLS = [
+  /^(?:(?:my|the|o)\s+)?(?:\w+\s+){0,2}ring\s+(?:come|return)(?:\s+back)?(?:\s+(?:to\s+me|here))?(?:\s+now)?$/,
+  /^(?:come\s+back|come|return)(?:\s+to\s+me)?\s+(?:(?:my|the)\s+)?(?:\w+\s+){0,2}ring$/,
+  /^i\s+(?:summon|call)\s+(?:(?:my|the)\s+)?(?:\w+\s+){0,2}ring(?:\s+to\s+me)?$/,
+  /^(?:(?:my|the)\s+)?(?:\w+\s+){0,2}ring\s+to\s+me$/
+]
+const normalized = (text) => String(text).toLowerCase().replace(/[^a-z ]+/g, ' ').replace(/\s+/g, ' ').trim()
+const isCall = (text) => {
+  const t = normalized(text)
+  return CALLS.some(re => re.test(t))
 }
-const namedCorps = (msg) => {
+const CORPS_NAMES = {
+  green: ['green'], yellow: ['yellow', 'sinestro'], red: ['red'], orange: ['orange'], blue: ['blue'],
+  violet: ['violet', 'star sapphire', 'sapphire'], indigo: ['indigo'], white: ['white'], black: ['black']
+}
+const EMOTION_NAMES = {
+  green: ['will', 'willpower'], yellow: ['fear'], red: ['rage'], orange: ['greed', 'avarice'], blue: ['hope'],
+  violet: ['love'], indigo: ['compassion'], white: ['life'], black: ['death']
+}
+const namedIn = (t, names) => {
   let found = null
   CORPS.forEach(c => {
-    if (found) return
-    const words = CORPS_WORDS[c] || [c]
-    words.forEach(w => {
-      if (!found && new RegExp('\\b' + w + '\\b').test(msg)) found = c
+    (names[c] || []).forEach(w => {
+      if (!found && (' ' + t + ' ').indexOf(' ' + w + ' ') >= 0) found = c
     })
   })
   return found
 }
+const namedCorps = (text) => {
+  const t = normalized(text)
+  return namedIn(t, CORPS_NAMES) || namedIn(t, EMOTION_NAMES)
+}
 
-// Answer a ring's offer by typing yes / no in chat, or call your ring with a phrase.
+// Speaking your corps' oath forges a new ring. Small slips are fine: the words must match at least
+// OATH_MATCH of the oath, in order (punctuation and capitals don't matter).
+const OATH_MATCH = 0.8
+const oathWords = (text) => String(text).toLowerCase().replace(/[^a-z ]+/g, ' ').split(' ').filter(w => w.length > 0)
+const OATH_WORDS = {}
+CORPS.forEach(c => { OATH_WORDS[c] = oathWords(OATHS[c]) })
+const inOrder = (a, b) => {  // longest common subsequence of two word lists
+  let prev = []
+  for (let j = 0; j <= b.length; j++) prev.push(0)
+  for (let i = 1; i <= a.length; i++) {
+    let cur = [0]  // not const: the KubeJS Rhino fork keeps a loop-body const's first value
+    for (let j = 1; j <= b.length; j++) {
+      cur.push(a[i - 1] === b[j - 1] ? prev[j - 1] + 1 : Math.max(prev[j], cur[j - 1]))
+    }
+    prev = cur
+  }
+  return prev[b.length]
+}
+const spokenOath = (msg) => {
+  const words = oathWords(msg)
+  let best = null
+  let bestScore = 0
+  CORPS.forEach(c => {
+    const oath = OATH_WORDS[c]
+    if (words.length < oath.length * OATH_MATCH) return
+    const score = inOrder(words, oath) / oath.length
+    if (score > bestScore) { bestScore = score; best = c }
+  })
+  return bestScore >= OATH_MATCH ? best : null
+}
+
+// Answer a ring's offer by typing yes / no in chat, call your ring with a phrase, or forge a ring
+// by speaking your oath.
 PlayerEvents.chat(event => {
   const player = event.player
   const server = player.server
   const msg = String(event.message).trim().toLowerCase()
-  if (/\bring\b/.test(msg) && CALL_WORDS.test(msg)) {
+  const oath = spokenOath(msg)
+  if (oath) {  // the oath stays in chat for everyone to hear
+    server.runCommandSilent(`execute as ${player.getStringUUID()} at @s run function greenlantern:forge/request_${oath}`)
+    return
+  }
+  if (isCall(msg)) {
     callRing(server, player, namedCorps(msg))  // the words still show in chat
     return
   }

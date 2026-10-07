@@ -1,0 +1,12 @@
+{
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "equipment": {
+      "offhand": {
+        "tag": "greenlantern:held_constructs",
+        "nbt": "{CustomModelData:1}"
+      }
+    }
+  }
+}

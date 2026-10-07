@@ -1,5 +1,6 @@
 {
   "sound_type": "minecraft:amethyst",
+  "map_color": "minecraft:color_green",
   "destroy_time": 0.3,
   "explosion_resistance": 1.0,
   "no_occlusion": true,

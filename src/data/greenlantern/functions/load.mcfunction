@@ -165,6 +165,10 @@ scoreboard objectives add gl_ser_white dummy
 scoreboard objectives add gl_ser_black dummy
 scoreboard objectives add gl_recall trigger
 scoreboard objectives add gl_rcd dummy
+scoreboard objectives add gl_forge trigger
+scoreboard objectives add gl_fcd dummy
+execute unless score #forge gl_cfg matches 0.. run scoreboard players set #forge gl_cfg 1
+execute unless score #forge_cd gl_cfg matches 0.. run scoreboard players set #forge_cd gl_cfg 300
 scoreboard objectives add gl_hurt minecraft.custom:minecraft.damage_taken
 scoreboard objectives add gl_construct trigger
 scoreboard objectives add gl_slotinit dummy

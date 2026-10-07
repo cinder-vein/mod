@@ -8,5 +8,7 @@ tellraw @s [{"text":"/lantern offer <player> <corps>  -  makes that corps' ring 
 tellraw @s [{"text":"/lantern unbind <player>  -  unbinds the ring in their main hand","color":"gray"}]
 tellraw @s [{"text":"/lantern threshold <n>  -  scoreboard players set #threshold gl_cfg <n>","color":"gray"}]
 tellraw @s [{"text":"Players: /trigger gl_recall (or /ring recall [corps], or 'ring, come to me' in chat) calls their rings back","color":"gray"}]
+tellraw @s [{"text":"Players: say their corps' oath (or /trigger gl_forge, /ring forge) to forge an unbound ring (500 charge)","color":"gray"}]
+tellraw @s [{"text":"/lantern forging on|off  |  /lantern forgecooldown <seconds>  -  ring forging","color":"gray"}]
 tellraw @s [{"text":"/lantern reset <player> | show <player> | enable | disable","color":"gray"}]
 tellraw @s [{"text":"corps: green, yellow, red, orange, blue, violet, indigo, white, black","color":"gray"}]

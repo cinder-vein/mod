@@ -16,8 +16,8 @@ execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_spike] run data merg
 scoreboard players set @e[type=minecraft:item_display,tag=gl_new,tag=gl_hand] gl_life 30
 execute as @e[type=minecraft:item_display,tag=gl_new,tag=gl_hand] run data merge entity @s {start_interpolation:0,interpolation_duration:5,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[2.8f,2.8f,2.8f]}}
 tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new
-scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1
-kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]
+scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new] gl_life 1
+kill @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new,scores={gl_life=..0}]
 scoreboard players add #timer gl_life 1
 execute if score #timer gl_life matches 20.. run scoreboard players set #timer gl_life 0
 scoreboard players add @a[tag=gl_orange] gl_hoard 0
@@ -296,6 +296,7 @@ execute as @a at @s run function greenlantern:ring/bind_check
 execute if score #second gl_cfg matches 5 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
 execute if score #second gl_cfg matches 15 as @a[tag=gl_ring] at @s run function greenlantern:ring/serial_check
 execute as @a[scores={gl_recall=1..}] at @s run function greenlantern:recall/trigger
+execute as @a[scores={gl_forge=1..}] at @s run function greenlantern:forge/trigger
 execute as @a[tag=gl_offer_any] at @s run function greenlantern:offer/follow
 execute as @a[scores={gl_accept=1..}] at @s run function greenlantern:offer/accept_trigger
 execute as @a[scores={gl_decline=1..}] at @s run function greenlantern:offer/decline_trigger

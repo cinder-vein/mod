@@ -89,6 +89,10 @@ def validate():
         model = SRC / "assets" / NS / "models" / "item" / path.name
         if not model.exists():
             err(f"{path.name}: missing item model")
+        for mods in item.get("attribute_modifiers", {}).values():  # items are built before modded attributes exist
+            for m in mods:
+                if not m["attribute"].startswith("minecraft:"):
+                    err(f"{path.name}: item attribute {m['attribute']} isn't registered when items are built")
         tabs = item.get("creative_mode_tab", [])
         for tab in tabs if isinstance(tabs, list) else [tabs]:
             check_ref("creative_tab", tab if isinstance(tab, str) else tab["tab"], rl)
@@ -220,6 +224,8 @@ def validate():
             if not (SRC / "assets" / ns / "models" / f"{p}.json").exists():
                 err(f"blockstate {path.name}: missing model {variant['model']}")
     for path in (SRC / "addon" / NS / "blocks").glob("*.json"):
+        if "map_color" not in load(path):  # Palladium leaves it null, and maps crash on a null map color
+            err(f"block {path.stem}: missing map_color")
         if not (SRC / "assets" / NS / "blockstates" / path.name).exists():
             err(f"block {path.stem}: missing blockstate")
         if not (SRC / "data" / NS / "loot_tables" / "blocks" / path.name).exists():

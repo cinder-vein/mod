@@ -48,6 +48,16 @@ The Lantern Corps of the emotional spectrum for **Minecraft Java 1.20.1 (Forge)*
     forms on you, and the one you left behind **goes dark for good**. It crumbles to dust if anyone wears it, so rings
     never duplicate.
   - There's a 10-second wait between calls. A ring revoked by a leader or removed by an admin can't be called back.
+- **Forging a new ring (for a recruit):** speak your corps' oath while wearing your ring, and your ring forges a new
+  one.
+  - With KubeJS, type the oath in chat. It's shown in chat every time you recharge. Capitals and punctuation don't
+    matter, and small slips are fine.
+  - Without KubeJS, use `/trigger gl_forge`. With KubeJS you can also use `/ring forge [corps]`. Both recite the oath
+    for you.
+  - It costs **500 charge**, and the ring needs **5 minutes** to rest before forging again.
+  - The new ring is **unbound** and remembers who forged it. It never binds to you, so it can't replace or darken your
+    own ring. You can carry it; drop it (Q) for your recruit. It binds to the next player who holds it.
+  - Admins: `/lantern forging on|off` and `/lantern forgecooldown <seconds>`.
 - **Two rings at once:** wear two rings (both hands, or two Curios ring slots) and you get **Spectrum Fusion**.
   - Every pair of corps has its own fusion. For example *Hope Ignites Will* (Green + Blue) and
     *Life and Death* (White + Black).
@@ -91,7 +101,9 @@ their own corps, in two ways:
 - the **Revoke Ring** ability, which takes the ring of the nearest member within 8 blocks;
 - `/trigger gl_roster`, which lists online members with their ids, then `/trigger gl_revoke set <id>`.
 
-The revoked ring goes to the leader, unbound. It won't bind to the leader, so they can hand it to a new recruit.
+The revoked ring goes to the leader, unbound. It won't bind to the leader, so they can drop it for a new recruit.
+Anyone who isn't a valid bearer of that corps (a revoked member, or after `/lantern unbind`) can't wield an unbound
+ring they handed on: it drops at their feet.
 Leaders can't revoke each other. Revoking also reaches rings worn in Curios slots.
 
 ## Admin commands
@@ -112,6 +124,7 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function 
 | `/lantern reset <player>` / `cooldowns <player>` / `show <player>` | reset emotions, clear decline cooldowns, show emotions |
 | `/lantern threshold <n>` | change the threshold (`scoreboard players set #threshold gl_cfg <n>`) |
 | `/lantern enable` / `disable` | turn emotions and ring offers on or off |
+| `/lantern forging on\|off`, `/lantern forgecooldown <seconds>` | allow forging rings by oath; time between forgings (default 300) |
 
 - **Emotion names:** will, fear, rage, greed, hope, love, compassion, death.
 - **Corps names:** green, yellow, red, orange, blue, violet, indigo, white, black.
@@ -130,9 +143,11 @@ Constructs work like the Green Lantern mod showcase:
   with Sword, Blast, Tower Shield, Construct Blocks and Scan.
 - **The Construct Wheel** (first page) lists the whole catalog. Hold its key and pick one with the mouse.
 - **Held constructs** are real weapons and tools. They form in your empty hand, or the item in that hand moves to a
-  free slot. A ring held in your hand is never moved: the construct goes to your inventory instead. Press the slot again
-  to dismiss them. They drain 1 charge a second, and they dissolve when the ring runs dry, when you take the ring off,
-  or if they're dropped.
+  free slot. A ring held in your hand is never moved: the construct goes to your inventory instead. Wear the ring in a
+  Curios slot or your other hand to wield constructs. If there's no room, nothing forms and no charge is spent.
+  - Press the slot again to dismiss them.
+  - Each one (and Scuba Gear) costs its ring 3 charge a second, a little more than the ring regains.
+  - They dissolve when that ring runs dry, when you have no ring on you at all, or when they're dropped.
 - **Hard light** (Barrier Wall, Dome, Bridge) only fills air and vanishes on its own.
 
 | Category | Construct | Charge | Unlocked by |

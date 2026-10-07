@@ -27,6 +27,11 @@ BASE_CHARGE = 1000
 
 # --- corps table ------------------------------------------------------------------
 
+# map color of each corps' blocks (Palladium BlockMaterialRegistry ids)
+MAP_COLOR = {"green": "minecraft:color_green", "yellow": "minecraft:color_yellow", "red": "minecraft:color_red",
+             "orange": "minecraft:color_orange", "blue": "minecraft:color_blue", "violet": "minecraft:color_magenta",
+             "indigo": "minecraft:color_purple", "white": "minecraft:snow", "black": "minecraft:color_black"}
+
 CORPS = {
     "green": {
         "name": "Green Lantern", "emotion": "Willpower", "color": (46, 200, 70),
@@ -492,19 +497,9 @@ def construct_abilities(k):
                                    "conditions": {"enabling": action(10)}},
           "Configure Constructs", "minecraft:writable_book", 15, node="skill_constructs")
 
-    held_item = lambda hand: {"type": "palladium:item_in_slot", "item": {"tag": f"{NS}:held_constructs"},  # noqa: E731
-                              "slot": hand}
-    # held constructs drain the ring slowly, and dissolve when it runs dry
-    for hand in ("mainhand", "offhand"):
-        k.hidden(f"construct_upkeep_{hand}", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
-                                              "conditions": {"unlocking": held_item(hand), "enabling": interval(20)}})
-    k.hidden("construct_dissolve", {**command(first=[
-        f"clear @s #{NS}:held_constructs", f"tag @s remove gl_scuba_{c}",
-        "title @s actionbar " + json.dumps({"text": "Your ring is out of charge: your constructs dissolve.",
-                                            "color": "gray"})]),
-        "conditions": {"unlocking": {"type": "palladium:energy_bar", "energy_bar": BAR, "min": 0, "max": 0}}})
-    # the gatling fires while right-click is held (the datapack paces the shots)
-    k.hidden("gatling_fire", {**command(every=[f"function {NS}:construct/{c}/gatling_tick"]),
+    # Upkeep and dissolving run in the datapack (constructs.py), per ring, after the charge is restored.
+    # The gatling fires while right-click is held (the datapack paces the shots and picks the ring).
+    k.hidden("gatling_fire", {**command(every=[f"function {NS}:construct/gatling_tick"]),
                               "conditions": {"unlocking": {"type": "palladium:item_in_slot",
                                                            "item": {"item": f"{NS}:construct_gatling"},
                                                            "slot": "mainhand"},
@@ -517,9 +512,10 @@ def construct_abilities(k):
     effects = ["minecraft:water_breathing", "minecraft:conduit_power", "minecraft:dolphins_grace"]
     k.hidden("scuba_effects", {**command(first=[f"effect give @s {e} 15 0 true" for e in effects]),
                                "conditions": {"enabling": [scuba, interval(100)]}})
-    k.hidden("scuba_upkeep", {"type": "palladium:dummy", "energy_bar_usage": usage(1),
-                              "conditions": {"enabling": [scuba, interval(40)]}})
-    if c == "indigo":  # the staff soothes everyone around its bearer
+    if c == "indigo":  # the staff reaches further, and soothes everyone around its bearer
+        k.attribute("staff_reach", "forge:entity_reach", 2, [{"type": "palladium:item_in_slot",
+                                                             "item": {"item": f"{NS}:construct_staff"},
+                                                             "slot": "mainhand"}])
         k.hidden("staff_aura", {**command(first=["effect give @a[distance=..6] minecraft:regeneration 3 0 true",
                                                  burst(k.rgb, 1.0, "2 0.5 2", 20)]),
                                 "conditions": {"unlocking": {"type": "palladium:item_in_slot",
@@ -1219,7 +1215,7 @@ def main():
 
         # power battery: a placeable lantern block with its own item
         write(f"addon/{NS}/blocks/{battery}.json", {
-            "sound_type": "minecraft:lantern", "destroy_time": 2.0, "explosion_resistance": 6.0,
+            "sound_type": "minecraft:lantern", "map_color": MAP_COLOR[c], "destroy_time": 2.0, "explosion_resistance": 6.0,
             "no_occlusion": True, "render_type": "translucent", "register_item": False,
         })
         write(f"addon/{NS}/items/{battery}.json", {
@@ -1329,7 +1325,7 @@ def main():
         # placeable construct blocks (Construct Blocks) and temporary hard light (walls, domes, bridges)
         for block, hardlight in ((f"{c}_construct_block", False), (f"{c}_hardlight", True)):
             write(f"addon/{NS}/blocks/{block}.json", {
-                "sound_type": "minecraft:amethyst", "destroy_time": 4.0 if hardlight else 0.3,
+                "sound_type": "minecraft:amethyst", "map_color": MAP_COLOR[c], "destroy_time": 4.0 if hardlight else 0.3,
                 "explosion_resistance": 1200.0 if hardlight else 1.0, "no_occlusion": True,
                 "render_type": "translucent", "register_item": not hardlight,
                 **({} if hardlight else {"creative_mode_tab": f"{NS}:lantern_corps"})})
@@ -1453,6 +1449,8 @@ def main():
         f"{NS}:{c}_construct_block" for c in CORPS]})
     write(f"data/{NS}/tags/blocks/hardlight.json", {"replace": False, "values": [f"{NS}:{c}_hardlight" for c in CORPS]})
     write(f"data/{NS}/tags/blocks/empty.json", {"replace": False, "values": ["minecraft:air", "minecraft:cave_air"]})
+    write(f"data/{NS}/tags/entity_types/not_creatures.json", {"replace": False, "values": [
+        t if t.startswith("minecraft:") else {"id": t, "required": False} for t in constructs.NOT_CREATURES]})
 
     # Datapack: grows new constructs in and removes them when their time is up.
     tick = ["# Generated by tools/gen_corps.py"]
@@ -1468,8 +1466,9 @@ def main():
         ]
     tick += [
         "tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new",
-        "scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1",
-        "kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]",
+        # (a new train gets its life later in this tick, from constructs.py)
+        "scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new] gl_life 1",
+        "kill @e[type=minecraft:item_display,tag=gl_construct,tag=!gl_train_new,scores={gl_life=..0}]",
     ]
     (SRC / f"data/{NS}/functions").mkdir(parents=True, exist_ok=True)
     write(f"data/{NS}/palladium/powers/lantern_base.json", base_power())
@@ -1499,7 +1498,9 @@ def main():
     g_functions["second"] += b_second
     write(f"data/{NS}/tags/entity_types/pets.json", {"replace": False, "values": [
         f"minecraft:{m}" for m in ("wolf", "cat", "parrot", "horse", "donkey", "mule", "llama", "allay", "fox", "axolotl")]})
-    k_load, k_tick, k_second, k_functions = constructs.generate(CORPS)
+    k_load, k_tick, k_second, k_functions, k_files = constructs.generate(CORPS)
+    for path, data in k_files.items():
+        write(f"data/{NS}/{path}", data)
     g_load += k_load
     g_tick += k_tick
     g_functions["second"] += k_second

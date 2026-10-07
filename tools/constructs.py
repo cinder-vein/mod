@@ -128,11 +128,9 @@ HELD_ITEMS = {
     "construct_gatling": ({}, "Construct Gatling"),
     "construct_claws": ({"type": "palladium:sword", "tier": "minecraft:netherite", "base_damage": 3,
                          "attack_speed": -1.6}, "Blood Claws"),
+    # its +2 reach comes from the Indigo power (forge:entity_reach isn't registered yet when items are built)
     "construct_staff": ({"type": "palladium:sword", "tier": "minecraft:netherite", "base_damage": 5,
-                         "attack_speed": -2.6,
-                         "attribute_modifiers": {"mainhand": [
-                             {"attribute": "forge:entity_reach", "amount": 2.0, "operation": 0,
-                              "uuid": "6c7affff-2b3c-4d5e-8f60-000000000001"}]}}, "Indigo Staff"),
+                         "attack_speed": -2.6}, "Indigo Staff"),
 }
 HELD_OF = {"sword": ["construct_sword"], "sword_shield": ["construct_sword", "construct_shield"],
            "mace": ["construct_mace"], "axe": ["construct_axe"], "gatling": ["construct_gatling"],
@@ -155,11 +153,20 @@ SHAPES = {
 }
 GROWING = [s for s in SHAPES if s not in ("train", "ball")]  # the train slides instead; the ball is a projectile
 
-HOSTILE = f"@e[type=#{NS}:greed_prey,distance=..{{r}}]"
-# living things near a point, never the construct's user (tagged gl_user while it runs)
-TARGETS = ("@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:armor_stand,type=!minecraft:marker,"
-           "type=!minecraft:item_display,type=!minecraft:block_display,type=!minecraft:text_display,"
-           "type=!minecraft:interaction,type=!palladium:custom_projectile,tag=!gl_user,distance=..{r}")
+# your own Greed Constructs and Black Lantern revenants are never targets
+OWN_ARMY = "tag=!gl_greed_minion,tag=!gl_dead_minion"
+HOSTILE = f"@e[type=#{NS}:greed_prey,{OWN_ARMY},distance=..{{r}}]"
+# creatures near a point (not items, frames, paintings, boats, minecarts or projectiles: see NOT_CREATURES),
+# never the construct's user (tagged gl_user while it runs) or their own army
+TARGETS = f"@e[type=!#{NS}:not_creatures,tag=!gl_user,{OWN_ARMY},distance=..{{r}}"
+NOT_CREATURES = [f"minecraft:{t}" for t in (
+    "area_effect_cloud", "armor_stand", "arrow", "block_display", "boat", "chest_boat", "chest_minecart",
+    "command_block_minecart", "dragon_fireball", "egg", "end_crystal", "ender_pearl", "evoker_fangs",
+    "experience_bottle", "experience_orb", "eye_of_ender", "falling_block", "fireball", "firework_rocket",
+    "fishing_bobber", "furnace_minecart", "glow_item_frame", "hopper_minecart", "interaction", "item", "item_display",
+    "item_frame", "leash_knot", "lightning_bolt", "llama_spit", "marker", "minecart", "painting", "potion",
+    "shulker_bullet", "small_fireball", "snowball", "spawner_minecart", "spectral_arrow", "text_display", "tnt",
+    "tnt_minecart", "trident", "wither_skull")] + ["palladium:custom_projectile"]
 
 
 def hexcolor(rgb):
@@ -217,6 +224,7 @@ class Gen:
         self.corps_table = corps_table
         self.corps = list(corps_table)
         self.fn = {}
+        self.files = {}  # extra data files: path under data/greenlantern/ -> json
         self.load = []
         self.tick = []
         self.second = []
@@ -280,8 +288,9 @@ class Gen:
             f"execute if score #free gl_tmp matches 1 run item replace entity @s {slot} with {full}",
             f"execute if score #free gl_tmp matches 0 run give @s {full}",
             f"execute if score #free gl_tmp matches 0 run "
-            + tellraw("@s", [{"text": "Your hand is busy, so the construct formed in your inventory.",
-                               "color": "gray", "italic": True}]),
+            + tellraw("@s", [{"text": "Your ring is in that hand, so the construct formed in your inventory. Wear the "
+                                      "ring in a Curios ring slot (or the other hand) to wield constructs.",
+                              "color": "gray", "italic": True}]),
         ]
 
     def hand_functions(self):
@@ -310,7 +319,10 @@ class Gen:
         return [*fill_cmds,
                 f'summon minecraft:marker ~ ~ ~ {{Tags:["gl_hl","gl_hl_new","gl_hl_{shape}"]}}',
                 f"scoreboard players set @e[type=minecraft:marker,tag=gl_hl_new] gl_life {life}",
-                "tag @e[type=minecraft:marker,tag=gl_hl_new] remove gl_hl_new"]
+                "tag @e[type=minecraft:marker,tag=gl_hl_new] remove gl_hl_new",
+                # structures it may overlap last as long as it does, so an expiring one never clears it early
+                f"scoreboard players set @e[type=minecraft:marker,tag=gl_hl,distance=..24,scores={{gl_life=..{life}}}] "
+                f"gl_life {life}"]
 
     # --- the effect of each construct ----------------------------------------------------------
 
@@ -400,14 +412,14 @@ class Gen:
             return lines + [sound("minecraft:block.beacon.power_select", 1.0)]
         if k == "scan":
             ray = ["scoreboard players set #found gl_tmp 0", "tag @e[tag=gl_scanned] remove gl_scanned"]
-            for i in range(1, 49):  # every half block, up to 24 blocks
-                d = i / 2
-                ray.append(f"execute if score #found gl_tmp matches 0 anchored eyes positioned ^ ^ ^{d} as "
-                           f"@e[type=!minecraft:item,type=!minecraft:experience_orb,type=!minecraft:marker,"
-                           f"type=!minecraft:item_display,tag=!gl_user,distance=..1,limit=1,sort=nearest] "
-                           f"run function {NS}:construct/scan_hit")
-            ray.append("execute if score #found gl_tmp matches 0 run "
-                       + actionbar([{"text": "Nothing to scan.", "color": "gray"}]))
+            for i in range(1, 49):  # every half block, up to 24 blocks; a 1-block box around the ray point
+                d = i / 2           # must touch the creature's hitbox, and solid blocks stop the ray
+                at = f"execute if score #found gl_tmp matches 0 anchored eyes positioned ^ ^ ^{d}"
+                ray.append(f"{at} positioned ~-0.5 ~-0.5 ~-0.5 as @e[type=!#{NS}:not_creatures,tag=!gl_user,dx=0,dy=0,dz=0,"
+                           f"limit=1,sort=nearest] run function {NS}:construct/scan_hit")
+                ray.append(f"{at} unless block ~ ~ ~ #minecraft:replaceable run scoreboard players set #found gl_tmp 2")
+            ray.append("execute unless score #found gl_tmp matches 1 run "
+                       + actionbar([{"text": "Scan found nothing in your line of sight.", "color": "gray"}]))
             ray.append(f"execute if score #found gl_tmp matches 1 run function {NS}:construct/{corps}/scan_report")
             return ray + [sound("minecraft:block.beacon.ambient", 2.0)]
         # signature constructs
@@ -473,6 +485,29 @@ class Gen:
                     sound("minecraft:entity.wither.shoot", 0.6)]
         raise ValueError(f"no effect for {corps}/{k}")
 
+    def held_items(self, corps, con):
+        if con.key in HELD_OF:
+            return HELD_OF[con.key]
+        if con.key == "signature" and corps in SIGNATURE_HELD:
+            return [SIGNATURE_HELD[corps]]
+        return []
+
+    def room_check(self, corps, con):
+        """Held constructs and Construct Blocks need somewhere to go: each item needs its hand empty or a
+        free inventory slot (an item in the hand moves to a free slot). Otherwise nothing is spent."""
+        items = self.held_items(corps, con)
+        if not items and con.key != "blocks":
+            return []
+        need = ["scoreboard players set #need gl_tmp 0"]
+        if con.key == "blocks":
+            need.append("scoreboard players set #need gl_tmp 1")
+        for it in items:
+            path = "Inventory[{Slot:-106b}]" if it == "construct_shield" else "SelectedItem"
+            need.append(f"execute if data entity @s {path} run scoreboard players add #need gl_tmp 1")
+        return [*[f"execute if score #ok gl_tmp matches 1 run {line}" for line in need],
+                f"execute if score #ok gl_tmp matches 1 run function {NS}:construct/count_free",
+                f"execute if score #ok gl_tmp matches 1 if score #fs gl_tmp < #need gl_tmp run function {NS}:construct/no_room"]
+
     def target_check(self, corps, con):
         """Constructs aimed at the nearest creature cost nothing when there's none in range."""
         if con.key == "cage" or (con.key == "signature" and corps == "black"):
@@ -519,9 +554,10 @@ class Gen:
                                               actionbar([{"text": f"{con.name} dismissed.", "color": "gray"}])]
             elif con.kind == "toggle":
                 tag = f"gl_scuba_{corps}"
-                self.fn[f"{base}_try"] = [
-                    f"execute if entity @s[tag={tag}] run function {NS}:{base}_dismiss",
-                    f"execute unless entity @s[tag={tag}] run function {NS}:{base}_check",
+                self.fn[f"{base}_try"] = [  # decide first: dismissing must not fall through into forming it
+                    f"execute store success score #on gl_tmp if entity @s[tag={tag}]",
+                    f"execute if score #on gl_tmp matches 1 run function {NS}:{base}_dismiss",
+                    f"execute if score #on gl_tmp matches 0 run function {NS}:{base}_check",
                 ]
                 self.fn[f"{base}_dismiss"] = [f"tag @s remove {tag}",
                                               *[f"effect clear @s minecraft:{e}" for e in
@@ -539,15 +575,16 @@ class Gen:
                 f"execute if score #ok gl_tmp matches 1 if score #charge gl_tmp matches ..{con.cost - 1} run "
                 f"function {NS}:construct/low_charge",
                 *self.target_check(corps, con),
+                *self.room_check(corps, con),
                 f"execute if score #ok gl_tmp matches 1 run function {NS}:{base}_go",
             ]
             self.fn[f"{base}_go"] = [
                 f"energybar value subtract @s {power} {BAR} {con.cost}",
                 f"scoreboard players set @s gl_cc_{con.key} {con.cooldown}",
+                actionbar([{"text": "Construct: ", "color": "gray"}, {"text": con.name, "color": col}]),
                 "tag @s add gl_user",
                 *self.effect(corps, con),
                 "tag @s remove gl_user",
-                actionbar([{"text": "Construct: ", "color": "gray"}, {"text": con.name, "color": col}]),
             ]
         # hard-light structures, placed at an aligned block position
         self.fn[f"construct/{corps}/wall_x"] = self.hardlight(
@@ -583,12 +620,6 @@ class Gen:
                 press.append(f"execute if score @s gl_slot{slot} matches {construct_id(corps, con.key)} run "
                              f"function {NS}:construct/{corps}/{con.key}")
             self.fn[f"construct/press/{corps}_{slot}"] = press
-        # gatling: while right-click is held this runs every tick; it fires every third tick
-        self.fn[f"construct/{corps}/gatling_tick"] = [
-            "scoreboard players add @s gl_gat 1",
-            f"execute if score @s gl_gat matches 3.. run function {NS}:construct/{corps}/gatling_shot",
-            "execute if score @s gl_gat matches 3.. run scoreboard players set @s gl_gat 0",
-        ]
         self.fn[f"construct/{corps}/gatling_shot"] = [
             f"execute store result score #charge gl_tmp run energybar value get @s {power} {BAR}",
             f"execute if score #charge gl_tmp matches ..2 run function {NS}:construct/low_charge",
@@ -616,6 +647,52 @@ class Gen:
             "scoreboard players set #ok gl_tmp 0",
             actionbar([{"text": "Not enough charge. Recharge your ring at its Power Battery.", "color": "red"}]),
             "playsound minecraft:block.beacon.deactivate player @s ~ ~ ~ 0.6 2",
+        ]
+        # gatling: while right-click is held this runs every tick and fires every third tick, from the
+        # ring whose gatling it is (with two rings, either ring's ability may be the one pressed)
+        self.fn["construct/gatling_tick"] = [
+            "scoreboard players add @s gl_gat 1",
+            *[f"execute if score @s gl_gat matches 3.. if predicate {NS}:construct_held/{c}_mainhand run "
+              f"function {NS}:construct/{c}/gatling_shot" for c in corps],
+            "execute if score @s gl_gat matches 3.. run scoreboard players set @s gl_gat 0",
+        ]
+        # Upkeep: each held construct (and Scuba Gear) costs its own ring 3 charge a second, a little more
+        # than the ring regains, and dissolves when that ring runs dry. Only once the ring's charge has been
+        # restored after it was put on (gl_cr_<corps>), so re-equipping never dissolves anything.
+        for c in corps:
+            n = corps.index(c) + 1
+            power = f"{NS}:{c}_lantern"
+            name = self.corps_table[c]["name"]
+            ready = f"@a[tag=gl_{c},tag=gl_cr_{c}]"
+            self.second += [
+                f"execute as {ready} if predicate {NS}:construct_held/{c}_mainhand run function {NS}:construct/{c}/upkeep",
+                f"execute as {ready} if predicate {NS}:construct_held/{c}_offhand run function {NS}:construct/{c}/upkeep",
+                f"execute as @a[tag=gl_{c},tag=gl_cr_{c},tag=gl_scuba_{c}] run function {NS}:construct/{c}/upkeep",
+            ]
+            self.fn[f"construct/{c}/upkeep"] = [
+                f"execute store result score #charge gl_tmp run energybar value get @s {power} {BAR}",
+                f"execute if score #charge gl_tmp matches ..2 run function {NS}:construct/{c}/dissolve",
+                f"execute if score #charge gl_tmp matches 3.. run energybar value subtract @s {power} {BAR} 3",
+            ]
+            self.fn[f"construct/{c}/dissolve"] = [
+                *[f"clear @s {NS}:{item}{{CustomModelData:{n}}}" for item in HELD_ITEMS],
+                f"tag @s remove gl_scuba_{c}",
+                *[f"effect clear @s minecraft:{e}" for e in ("water_breathing", "conduit_power", "dolphins_grace")],
+                actionbar([{"text": f"Your {name} ring is out of charge: its constructs dissolve.", "color": "gray"}]),
+            ]
+            for hand in ("mainhand", "offhand"):
+                self.files[f"predicates/construct_held/{c}_{hand}.json"] = {
+                    "condition": "minecraft:entity_properties", "entity": "this",
+                    "predicate": {"equipment": {hand: {"tag": f"{NS}:held_constructs", "nbt": f"{{CustomModelData:{n}}}"}}}}
+        self.fn["construct/count_free"] = [  # #fs = free main-inventory slots (0-35)
+            "scoreboard players set #fs gl_tmp 0",
+            f"data modify storage {STORAGE} inv set from entity @s Inventory",
+            *[f"execute unless data storage {STORAGE} inv[{{Slot:{i}b}}] run scoreboard players add #fs gl_tmp 1"
+              for i in range(36)],
+        ]
+        self.fn["construct/no_room"] = [
+            "scoreboard players set #ok gl_tmp 0",
+            actionbar([{"text": "No room for the construct: free a slot in your inventory.", "color": "gray"}]),
         ]
         self.fn["construct/no_target"] = [
             "scoreboard players set #ok gl_tmp 0",
@@ -660,8 +737,13 @@ class Gen:
             f"execute as @a[scores={{gl_construct=1..}}] at @s run function {NS}:construct/menu_trigger",
         ]
         self.second += [
-            # constructs only exist through a ring: they dissolve without one
-            f"clear @a[tag=!gl_ring] #{NS}:constructs",
+            # constructs only exist through a ring: they dissolve when you have none on you (worn, or
+            # carried: a ring held in the main hand stops powering you while you hold the construct)
+            "tag @a remove gl_carry",
+            "tag @a[tag=gl_ring] add gl_carry",
+            f"execute as @a[tag=!gl_carry] store result score @s gl_tmp run clear @s #{NS}:lantern_rings 0",
+            "tag @a[tag=!gl_carry,scores={gl_tmp=1..}] add gl_carry",
+            f"clear @a[tag=!gl_carry] #{NS}:constructs",
             f"kill @e[type=minecraft:item,nbt={{Item:{{tag:{{gl_construct:1b}}}}}}]",
             *[f"tag @a[tag=gl_scuba_{c},tag=!gl_{c}] remove gl_scuba_{c}" for c in corps],
             "scoreboard players enable @a gl_construct",
@@ -753,9 +835,10 @@ BRIDGE_BOXES = {"s": "~-1 ~-1 ~1 ~1 ~-1 ~16", "n": "~-1 ~-1 ~-16 ~1 ~-1 ~-1",
 
 
 def generate(corps_table):
-    """Returns (load, tick, second, functions) for the construct system."""
+    """Returns (load, tick, second, functions, files) for the construct system; files maps paths
+    under data/greenlantern/ to JSON."""
     g = Gen(corps_table)
     g.shared()
     for c in corps_table:
         g.corps_functions(c)
-    return g.load, g.tick, g.second, g.fn
+    return g.load, g.tick, g.second, g.fn, g.files

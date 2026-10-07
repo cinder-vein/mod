@@ -1854,77 +1854,11 @@
       "hidden_in_bar": false,
       "list_index": 15
     },
-    "construct_upkeep_mainhand": {
-      "type": "palladium:dummy",
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 1
-      },
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:item_in_slot",
-          "item": {
-            "tag": "greenlantern:held_constructs"
-          },
-          "slot": "mainhand"
-        },
-        "enabling": {
-          "type": "palladium:interval",
-          "active_ticks": 1,
-          "disabled_ticks": 19
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_upkeep_offhand": {
-      "type": "palladium:dummy",
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 1
-      },
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:item_in_slot",
-          "item": {
-            "tag": "greenlantern:held_constructs"
-          },
-          "slot": "offhand"
-        },
-        "enabling": {
-          "type": "palladium:interval",
-          "active_ticks": 1,
-          "disabled_ticks": 19
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_dissolve": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "clear @s #greenlantern:held_constructs",
-        "tag @s remove gl_scuba_orange",
-        "title @s actionbar {\"text\": \"Your ring is out of charge: your constructs dissolve.\", \"color\": \"gray\"}"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:energy_bar",
-          "energy_bar": "ring_charge",
-          "min": 0,
-          "max": 0
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
     "gatling_fire": {
       "type": "palladium:command",
       "first_tick_commands": [],
       "commands": [
-        "function greenlantern:construct/orange/gatling_tick"
+        "function greenlantern:construct/gatling_tick"
       ],
       "last_tick_commands": [],
       "conditions": {
@@ -1974,28 +1908,6 @@
             "type": "palladium:interval",
             "active_ticks": 1,
             "disabled_ticks": 99
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "scuba_upkeep": {
-      "type": "palladium:dummy",
-      "energy_bar_usage": {
-        "energy_bar": "ring_charge",
-        "amount": 1
-      },
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:has_tag",
-            "tag": "gl_scuba_orange"
-          },
-          {
-            "type": "palladium:interval",
-            "active_ticks": 1,
-            "disabled_ticks": 39
           }
         ]
       },

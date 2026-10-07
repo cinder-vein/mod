@@ -1,2 +1,3 @@
-execute if entity @s[tag=gl_scuba_black] run function greenlantern:construct/black/scuba_dismiss
-execute unless entity @s[tag=gl_scuba_black] run function greenlantern:construct/black/scuba_check
+execute store success score #on gl_tmp if entity @s[tag=gl_scuba_black]
+execute if score #on gl_tmp matches 1 run function greenlantern:construct/black/scuba_dismiss
+execute if score #on gl_tmp matches 0 run function greenlantern:construct/black/scuba_check
