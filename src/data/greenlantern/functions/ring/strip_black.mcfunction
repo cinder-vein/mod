@@ -1,3 +1,5 @@
 execute store result score #stripped gl_tmp run clear @s greenlantern:black_lantern_ring
+scoreboard players set #strip gl_tmp 9
+function #greenlantern:curios_strip
 tag @s remove gl_member_black
 tag @s remove gl_leader_black

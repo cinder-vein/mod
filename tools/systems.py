@@ -197,6 +197,16 @@ def generate(corps_table, write, write_text):
                             "color": "gray", "italic": True}]),
         ]
     fn["ring/curios_check"] = curios_check
+    # remove the rings of corps #strip (an index) from both Curios ring slots, counting them in #stripped
+    curios_strip = []
+    for c in corps:
+        for i in (0, 1):
+            has = f'if data entity @s {(curios_path % i)[:-2]},id:"{ring(c)}"}}]'
+            curios_strip += [f"execute if score #strip gl_tmp matches {idx[c]} {has} run scoreboard players add #stripped gl_tmp 1",
+                             f"execute if score #strip gl_tmp matches {idx[c]} {has} run curios replace ring {i} @s with minecraft:air"]
+    fn["ring/curios_strip"] = curios_strip
+    write(f"data/{NS}/tags/functions/curios_strip.json",
+          {"values": [{"id": f"{NS}:ring/curios_strip", "required": False}]})
     write(f"data/{NS}/tags/functions/curios_check.json",
           {"values": [{"id": f"{NS}:ring/curios_check", "required": False}]})
 
@@ -341,6 +351,8 @@ def generate(corps_table, write, write_text):
         # strip: take every ring of this corps from the player (inventory, hands; Curios if it hooks /clear)
         fn[f"ring/strip_{c}"] = [
             f"execute store result score #stripped gl_tmp run clear @s {ring(c)}",
+            f"scoreboard players set #strip gl_tmp {idx[c]}",
+            f"function #{NS}:curios_strip",
             f"tag @s remove gl_member_{c}",
             f"tag @s remove gl_leader_{c}",
         ]

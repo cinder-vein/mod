@@ -647,11 +647,11 @@ def army_functions():
                  f"team modify {team} color {cfg['color']}", f"team modify {team} friendlyFire false"]
         tick.append(f"scoreboard players add @a[tag={tag}] {count} 0")
         summons = []
-        effects = ["{Id:12,Amplifier:0b,Duration:999999,ShowParticles:0b}",  # fire resistance
-                   "{Id:5,Amplifier:1b,Duration:999999,ShowParticles:0b}",   # strength
-                   "{Id:24,Amplifier:0b,Duration:999999,ShowParticles:0b}"]  # glowing (team-colored outline)
+        # given with /effect after summoning (no numeric effect ids in NBT)
+        effects = ["minecraft:fire_resistance infinite 0", "minecraft:strength infinite 1",
+                   "minecraft:glowing infinite 0"]  # glowing shows the team-colored outline
         if cfg["invisible"]:
-            effects.append("{Id:14,Amplifier:0b,Duration:999999,ShowParticles:0b}")  # only the outline shows
+            effects.append("minecraft:invisibility infinite 0")  # only the outline shows
         name_json = json.dumps({"text": cfg["minion"], "color": cfg["color"]}, separators=(",", ":"))
         for mob, held in GREED_MOBS.items():
             k_obj, s_obj = f"gl_k_{mob}", f"{cfg['store']}{mob}"
@@ -667,14 +667,14 @@ def army_functions():
             ]
             hand = f'HandItems:[{{id:"{held}",Count:1b}},{{}}],HandDropChances:[0f,0f],' if held else ""
             nbt = (f'{{Tags:["{minion}","gl_{army}_new"],Team:"{team}",PersistenceRequired:1b,'
-                   f'DeathLootTable:"minecraft:empty",{hand}CustomName:\'{name_json}\','
-                   f'ActiveEffects:[{",".join(effects)}]}}')
+                   f'DeathLootTable:"minecraft:empty",{hand}CustomName:\'{name_json}\'}}')
             for n in range(1, GREED_LIMIT + 1):
                 summons.append(f"execute if score @s {s_obj} matches {n}.. run summon minecraft:{mob} ~ ~ ~ {nbt}")
         functions[f"{army}/arrival"] = [
             f"team join {team} @s",
             f"execute if score @s {count} matches ..0 run tellraw @s " + json.dumps({"text": cfg["empty"], "color": cfg["color"]}),
             *summons,
+            *[f"effect give @e[tag=gl_{army}_new] {e} true" for e in effects],
             f"spreadplayers ~ ~ 1 3 false @e[tag=gl_{army}_new,distance=..4]",
             f"scoreboard players set @e[tag=gl_{army}_new] gl_life {GREED_SECONDS * 20}",
             f"execute at @e[tag=gl_{army}_new] run {fx(2, 40)}",
