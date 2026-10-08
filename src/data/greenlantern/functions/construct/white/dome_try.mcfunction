@@ -1,1 +1,0 @@
-function greenlantern:construct/white/dome_check

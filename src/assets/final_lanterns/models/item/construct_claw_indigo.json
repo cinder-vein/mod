@@ -1,0 +1,7 @@
+{
+  "parent": "final_lanterns:item/construct_claw_base",
+  "textures": {
+    "0": "final_lanterns:item/construct/indigo",
+    "particle": "final_lanterns:item/construct/indigo"
+  }
+}

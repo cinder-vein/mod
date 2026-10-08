@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:yellowlanternmasks",
+    "render_layer": "final_lanterns:yellowlanterns/masks/kylerayner",
+    "disable_rendering": true
+  }

@@ -1,4 +1,0 @@
-execute if predicate greenlantern:unbound_ring_mainhand run function greenlantern:ring/claim_mainhand
-execute if predicate greenlantern:unbound_ring_offhand run function greenlantern:ring/claim_offhand
-execute if predicate greenlantern:bound_ring_mainhand run function greenlantern:ring/check_mainhand
-execute if predicate greenlantern:bound_ring_offhand run function greenlantern:ring/check_offhand

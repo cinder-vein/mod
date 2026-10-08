@@ -1,6 +1,0 @@
-{
-  "type": "palladium:render_layer",
-  "slot": "greenlantern:violet_suit",
-  "render_layer": "greenlantern:violet_suit_uniform",
-  "disable_rendering": true
-}

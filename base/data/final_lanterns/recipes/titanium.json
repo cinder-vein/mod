@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TI ",
+        "II ",
+        "   "
+    ],
+    "key": {
+        "T": {
+            "item": "minecraft:netherite_scrap"
+        },
+        "I": {
+        "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+      "item": "palladium:raw_titanium"
+    }
+}

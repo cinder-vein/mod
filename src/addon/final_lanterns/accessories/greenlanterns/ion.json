@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:greenlantern",
+    "render_layer": "final_lanterns:greenlantern/ion",
+    "disable_rendering": true
+  }

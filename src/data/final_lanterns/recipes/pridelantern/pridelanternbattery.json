@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "TTT",
+      "VNV",
+      "TTT"
+  ],
+  "key": {
+      "T": {
+          "item": "palladium:titanium_ingot"
+      },
+      "V": {
+          "item": "final_lanterns:oan_circuit"
+      },
+      "N": {
+          "item": "minecraft:writable_book"
+      }
+  },
+  "result": {
+      "item": "final_lanterns:pridebattery",
+      "count": 1
+  }
+}

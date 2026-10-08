@@ -1,0 +1,357 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": "final_lanterns:battery#greenlantern",
+      "texture": {
+        "base": "final_lanterns:textures/block/batterytextures/powerbattery_#CORRUPT#BLACK#BLUE#YELLOW#GRAY#GREEN#ORANGE#PINK#RED#UNPOWERED#WHITE#GOLD.png",
+        "variables": {
+          "CORRUPT": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:corruptedfatebattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "corrupt",
+            "false_value": ""
+          },
+          "BLACK": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:blacklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "black",
+            "false_value": ""
+          },
+          "BLUE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "blue",
+            "false_value": ""
+          },
+          "YELLOW": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "yellow",
+            "false_value": ""
+          },
+          "GRAY": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:graylanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "gray",
+            "false_value": ""
+          },
+          "GREEN": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "green",
+            "false_value": ""
+          },
+          "ORANGE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "orange",
+            "false_value": ""
+          },
+          "PINK": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "pink",
+            "false_value": ""
+          },
+          "RED": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "red",
+            "false_value": ""
+          },
+          "UNPOWERED": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:lanternbatteryunpowered"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "unpowered",
+            "false_value": ""
+          },
+          "WHITE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:whitelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "white",
+            "false_value": ""
+          },
+          "GOLD": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:goldlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "gold",
+            "false_value": ""
+          }
+        }
+      }
+    },
+    {
+      "model_layer": "final_lanterns:batterycore#greenlantern",
+      "texture": {
+        "base": "final_lanterns:textures/block/batterytextures/powerbattery_#CORRUPT#BLACK#BLUE#YELLOW#GRAY#GREEN#ORANGE#PINK#RED#UNPOWERED#WHITE#GOLD.png",
+        "variables": {
+          "CORRUPT": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:corruptedfatebattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "corrupt",
+            "false_value": ""
+          },
+          "BLACK": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:blacklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "black",
+            "false_value": ""
+          },
+          "BLUE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "blue",
+            "false_value": ""
+          },
+          "YELLOW": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "yellow",
+            "false_value": ""
+          },
+          "GRAY": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:graylanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "gray",
+            "false_value": ""
+          },
+          "GREEN": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "green",
+            "false_value": ""
+          },
+          "ORANGE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "orange",
+            "false_value": ""
+          },
+          "PINK": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "pink",
+            "false_value": ""
+          },
+          "RED": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "red",
+            "false_value": ""
+          },
+          "UNPOWERED": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:lanternbatteryunpowered"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "unpowered",
+            "false_value": ""
+          },
+          "WHITE": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:whitelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "white",
+            "false_value": ""
+          },
+          "GOLD": {
+            "type": "palladium:condition",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:goldlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              }
+            ],
+            "true_value": "gold",
+            "false_value": ""
+          }
+        }
+      }
+    }
+  ]
+}

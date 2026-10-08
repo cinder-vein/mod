@@ -1,0 +1,60 @@
+{
+    "name": "§5Indigo Lantern",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/purple_concrete.png",
+    "icon": "final_lanterns:indigostaff",
+    "gui_display_type": "list",
+    "abilities": {
+        "say_the_oath":{
+            "type": "palladium:command",
+            "icon": "final_lanterns:indigostaff",
+            "title": "Forever Pure!",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 0,
+            "gui_position": "null",
+            "description": "Speak the Indigo Lanterns Oath and Recharge your Ring",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"In darkest times,\",\"color\":\"dark_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"when sorrow grows,\",\"color\":\"dark_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"A helping hand,\",\"color\":\"dark_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"compassion flows.\",\"color\":\"dark_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Through Abin Sur our bonds endure,\",\"color\":\"dark_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Together we stand- Forever Pure!\",\"color\":\"dark_purple\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value add @s final_lanterns:indigolantern compassion 4000"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:indigolantern",
+                        "energy_bar": "compassion",
+                        "min": 0,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":[
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:indigolantern",
+                        "energy_bar": "compassion",
+                        "min": 0,
+                        "max": 4000
+                    }
+                ]
+            }
+        }
+    }
+}

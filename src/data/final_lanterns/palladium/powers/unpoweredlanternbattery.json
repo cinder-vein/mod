@@ -1,0 +1,298 @@
+{
+    "name": "Unpowered Lantern Battery",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/light_gray_concrete.png",
+    "icon": "final_lanterns:lanternbatteryunpowered",
+    "gui_display_type": "list",
+    "abilities": {
+        "bluelantern":{
+            "type": "palladium:command",
+            "icon": "final_lanterns:bluelanternbattery",
+            "title": "Blue Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Blue Lanterns Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"In fearful day,\",\"color\":\"blue\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"In raging night,\",\"color\":\"blue\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"with strong hearts full our Souls Ignite.\",\"color\":\"blue\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Look to the stars for..\",\"color\":\"blue\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Hope Burns Bright!\",\"color\":\"blue\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:bluelantern hope 20000",
+                "give @s kubejs:bluelanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:bluelantern",
+                        "energy_bar": "hope",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:bluelantern"
+                }
+            }
+        },
+        "yellowlantern":{
+            "type": "palladium:command",
+            "icon": "final_lanterns:yellowlanternbattery",
+            "title": "Yellow Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Yellow Lanterns Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"In blackest day,\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"In brightest night,\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Beware your fears made into light.\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Let those who try to stop what's right, Burn like his powers...\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"selector\":\"@s\",\"color\":\"yellow\",\"bold\":true},{\"text\":\"'s Might!\",\"color\":\"yellow\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:yellowlantern fear 20000",
+                "give @s kubejs:yellowlanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:yellowlantern",
+                        "energy_bar": "fear",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:yellowlantern"
+                }
+            }
+        },
+        "orangelantern":{
+            "type": "palladium:command",
+            "icon": "kubejs:orangelanternbattery",
+            "title": "Orange Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Orange Lanterns Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"This power is mind, this is my light.\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Be it bright of day, or Black of night.\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"I lay claim to all that lays within my sight.\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"To take what I want,\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"that is my right!\",\"color\":\"gold\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:orangelantern greed 20000",
+                "give @s kubejs:orangelanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:orangelantern",
+                        "energy_bar": "greed",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:orangelantern"
+                }
+            }
+        },
+        "redlantern":{
+            "type": "palladium:command",
+            "icon": "kubejs:redlanternbattery",
+            "title": "Red Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Red Lanterns Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"With blood and rage of crimson red,\",\"color\":\"red\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"We fill men's souls with darkest dread,\",\"color\":\"red\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"And twist your minds to pain and hate.\",\"color\":\"red\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"We'll burn you all-\",\"color\":\"red\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"that is your fate!\",\"color\":\"red\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:redlantern rage 20000",
+                "give @s kubejs:redlanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:redlantern",
+                        "energy_bar": "rage",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:redlantern"
+                }
+            }
+        },
+        "pinklantern":{
+            "type": "palladium:command",
+            "icon": "kubejs:pinklanternbattery",
+            "title": "Violet Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Star Sapphires Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"For hearts long lost and full of fright,\",\"color\":\"light_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"For those alone in blackest night,\",\"color\":\"light_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Accept our ring and join our fight,\",\"color\":\"light_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Love conquers all-\",\"color\":\"light_purple\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"With Violet light!\",\"color\":\"light_purple\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:pinklantern love 20000",
+                "give @s kubejs:pinklanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:pinklantern",
+                        "energy_bar": "love",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:pinklantern"
+                }
+            }
+        },
+        "goldlantern":{
+            "type": "palladium:command",
+            "icon": "kubejs:goldlanternbattery",
+            "title": "Righteousness Lantern Battery",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "Speak the Gold Lanterns Oath and Drain your Ring to charge this Battery",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"No taint of greed,\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"no fear no spite,\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Shall turn my soul away from right.\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"By honor's vow,\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"my path is clear,\",\"color\":\"gold\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Justice burns forever here!\",\"color\":\"gold\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value subtract @s final_lanterns:goldlantern justice 20000",
+                "give @s kubejs:goldlanternbattery",
+                "clear @s kubejs:lanternbatteryunpowered 1"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:goldlantern",
+                        "energy_bar": "justice",
+                        "min": 4000,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":                     
+                {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:goldlantern"
+                }
+            }
+        }
+    }
+}

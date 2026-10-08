@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:whitelantern",
+    "render_layer": "final_lanterns:whitelanterns/whitenew",
+    "disable_rendering": true
+  }

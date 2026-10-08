@@ -1,0 +1,11 @@
+execute if dimension minecraft:overworld in cosmos:solar_system run tp -24109 1052 5106
+execute if dimension cosmos:venuslands in cosmos:solar_system run tp -9008 943 -4022
+execute if dimension cosmos:earth_moon in cosmos:solar_system run tp -21597 487 3602
+execute if dimension cosmos:uranus_lands in cosmos:solar_system run tp 293 1597 80290
+execute if dimension cosmos:neptune_lands in cosmos:solar_system run tp 90094 1150 90094
+execute if dimension cosmos:europa_lands in cosmos:solar_system run tp 10106 591 -49108
+execute if dimension cosmos:plutowastelands in cosmos:solar_system run tp 45095 546 121105
+execute if dimension cosmos:marslands in cosmos:solar_system run tp -41008 898 18005
+execute if dimension cosmos:mercury_wasteland in cosmos:solar_system run tp 90 645 100
+execute if dimension cosmos:jupiterlands in cosmos:solar_system run tp 17494 1817 -53009
+execute if dimension cosmos:saturn_lands in cosmos:solar_system run tp -64995 1544 29998

@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "Wanna see a magic trick?",
+            "color": "yellow",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Mischievous Lantern Corp"
+        },
+        "icon": {
+            "item": "final_lanterns:mischiefring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

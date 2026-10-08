@@ -1,0 +1,15 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+      {
+        "model_layer": {
+          "normal": "palladium:humanoid#tight_suit",
+          "slim": "palladium:humanoid#tight_suit_slim"
+        },
+        "texture": {
+          "normal": "final_lanterns:textures/models/skins/greenlanterns/alanscottnomask.png",
+          "slim": "final_lanterns:textures/models/skins/greenlanterns/slim/alanscottnomask.png"
+        }
+      }
+    ]
+}

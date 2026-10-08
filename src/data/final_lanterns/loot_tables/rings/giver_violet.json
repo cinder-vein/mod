@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "final_lanterns:pinklanternring",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{gl_bound:0b,gl_gv:1b}"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": {
+                "type": "minecraft:storage",
+                "source": "final_lanterns:binding"
+              },
+              "ops": [
+                {
+                  "source": "giver",
+                  "target": "gl_giver",
+                  "op": "replace"
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_lore",
+              "replace": true,
+              "lore": [
+                {
+                  "text": "Unbound: it will choose the next bearer",
+                  "color": "gray",
+                  "italic": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

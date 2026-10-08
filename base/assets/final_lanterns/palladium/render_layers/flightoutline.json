@@ -1,0 +1,5 @@
+{
+  "model_layer": "final_lanterns:flight#outline",
+  "texture": "final_lanterns:textures/models/skins/greenlanterns/flightoutline.png",
+  "render_type": "minecraft:cutout"
+}

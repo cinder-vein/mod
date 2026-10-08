@@ -1,0 +1,8 @@
+{
+    "slot": "mainhand",
+    "item": [
+      "final_lanterns:yellowlanternbattery",
+      "kubejs:yellowlanternbattery"
+      ],
+    "power": "final_lanterns:yellowlanternsoath"
+  }

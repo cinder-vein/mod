@@ -1,0 +1,53 @@
+{
+   "name":"Dual Wielding",
+   "background":"minecraft:textures/block/red_wool.png",
+   "icon":"minecraft:apple",
+   "abilities":{
+      "dualwielding":{
+         "type":"palladium:dual_wielding",
+         "icon":"minecraft:blaze_rod",
+         "title":"null",
+         "bar_color":"light_gray",
+         "hidden":true,
+         "hidden_in_bar":true,
+         "list_index":-1,
+         "gui_position":"null",
+         "description":"null",
+         "conditions":{
+            "enabling":[
+
+                            {
+                               "type": "palladium:item_in_slot",
+                               "item": {
+                                  "item": "final_lanterns:clawsyellow"
+                               },
+                               "slot": "offhand"
+                            }
+               ]
+            }
+         },
+      "dualwielding1":{
+         "type":"palladium:dual_wielding",
+         "icon":"minecraft:blaze_rod",
+         "title":"null",
+         "bar_color":"light_gray",
+         "hidden":true,
+         "hidden_in_bar":true,
+         "list_index":-1,
+         "gui_position":"null",
+         "description":"null",
+         "conditions":{
+            "enabling":[
+
+                            {
+                               "type": "palladium:item_in_slot",
+                               "item": {
+                                  "item": "final_lanterns:red_claw"
+                               },
+                               "slot": "offhand"
+                            }
+               ]
+            }
+         }
+      }
+   }

@@ -1,0 +1,23 @@
+{
+    "icon": "final_lanterns:textures/icons/slots/mask.png",
+    "allows_multiple": false,
+    "menu_visibility": {
+        "type": "palladium:and",
+        "conditions": [
+            {
+                "type": "palladium:or",
+                "conditions": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "final_lanterns:mischieflantern",
+                        "ability": "mischieflantern"
+                    },
+                    {
+                        "type": "palladium:has_power",
+                        "power": "final_lanterns:mischieflantern"
+                    }
+                ]
+            }
+        ]
+      }
+  }

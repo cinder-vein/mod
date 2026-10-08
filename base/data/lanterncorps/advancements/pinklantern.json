@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "Love Conquers all!",
+            "color": "light_purple",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Star Sapphires"
+        },
+        "icon": {
+            "item": "final_lanterns:pinklanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

@@ -1,0 +1,2 @@
+function final_lanterns:ring/strip_violet
+function final_lanterns:leader/update_any

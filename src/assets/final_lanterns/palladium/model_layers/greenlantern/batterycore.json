@@ -1,0 +1,77 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.minecraft:player#main",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "right_arm",
+					"pivot": [-5, 22, 0]
+				},
+				{
+					"name": "left_leg",
+					"pivot": [1.9, 12, 0]
+				},
+				{
+					"name": "body",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "lanternbattery",
+					"parent": "body",
+					"pivot": [-3, 7.5, -0.5],
+					"rotation": [0, 40, 0],
+					"cubes": [
+						{
+							"origin": [-3.75, 6.75, -0.75],
+							"size": [1.5, 1.5, 0.5],
+							"pivot": [-3, 7.5, -0.5],
+							"rotation": [0, 0, 45],
+							"uv": {
+								"north": {"uv": [36, 0], "uv_size": [6, 6]},
+								"east": {"uv": [28, 46], "uv_size": [2, 6]},
+								"south": {"uv": [6, 36], "uv_size": [6, 6]},
+								"west": {"uv": [0, 48], "uv_size": [2, 6]},
+								"up": {"uv": [48, 0], "uv_size": [6, 2]},
+								"down": {"uv": [48, 4], "uv_size": [6, -2]}
+							}
+						},
+						{
+							"origin": [-3.75, 6.75, -4.25],
+							"size": [1.5, 1.5, 0.5],
+							"pivot": [-3, 7.5, -4],
+							"rotation": [0, 0, 45],
+							"uv": {
+								"north": {"uv": [36, 6], "uv_size": [6, 6]},
+								"east": {"uv": [2, 48], "uv_size": [2, 6]},
+								"south": {"uv": [12, 36], "uv_size": [6, 6]},
+								"west": {"uv": [4, 48], "uv_size": [2, 6]},
+								"up": {"uv": [48, 4], "uv_size": [6, 2]},
+								"down": {"uv": [48, 8], "uv_size": [6, -2]}
+							}
+						}
+					]
+				},
+				{
+					"name": "head",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "left_arm",
+					"pivot": [5, 22, 0]
+				},
+				{
+					"name": "right_leg",
+					"pivot": [-1.9, 12, 0]
+				}
+			]
+		}
+	]
+}

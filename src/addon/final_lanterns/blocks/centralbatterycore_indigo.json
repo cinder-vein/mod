@@ -1,0 +1,10 @@
+{
+    "map_color": "minecraft:color_purple",
+    "sound_type": "minecraft:glass",
+    "destroy_time": 0.5,
+    "max_stack_size": 1,
+    "explosion_resistance": 1200,
+    "render_type": "solid",
+    "requires_correct_tool_for_drops": false,
+    "register_item": true
+}

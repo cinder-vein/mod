@@ -1,0 +1,3883 @@
+{
+  "name": "§5Compassion Ring Bearer",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/purple_concrete.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_barindigo.png",
+  "icon": "final_lanterns:textures/icons/slots/indigolantern1.png",
+  "gui_display_type": "tree",
+  "energy_bars": {
+    "compassion": {
+      "max": 2000,
+      "auto_increase_per_tick": 0,
+      "color": "#734bbe"
+    }
+  },
+  "abilities": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "suitsound": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "team add compassion",
+        "team join compassion",
+        "team modify compassion color dark_purple",
+        "scoreboard objectives add Lantern.Mastery.Amount dummy",
+        "execute if entity @s[advancements={lanterncorps:indigolantern=false}] run advancement grant @s only lanterncorps:indigolantern"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": []
+    },
+    "disableouterlayers": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls1",
+            "min": 1,
+            "max": 60
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:indigolantern",
+                "accessory": "final_lanterns:indigolanterns/blanksuit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "headouterlayer": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "head_overlay"
+      ],
+      "affects_first_person": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:indigolantern",
+                "accessory": "final_lanterns:indigolanterns/simonbaz"
+              }
+            ]
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls1",
+            "min": 1,
+            "max": 60
+          }
+        ]
+      }
+    },
+    "cape": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:capes/blankcape",
+      "accessory_slot": "final_lanterns:capes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "accessory": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:indigolantern/indigo1",
+      "accessory_slot": "final_lanterns:indigolantern"
+    },
+    "mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:indigolanterns/masks/starsapphire",
+      "accessory_slot": "final_lanterns:indigolanternmasks"
+    },
+    "name": {
+      "type": "palladium:name_change",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "name": {
+        "text": "§5Indigo Lantern"
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:and",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "indigolantern"
+              },
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:indigolantern",
+                "accessory": "final_lanterns:indigolanterns/simonbaz"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "armorstore": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "list_index": 2,
+      "title": "armorstore",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "pocket save"
+      ],
+      "last_tick_commands": [
+        "pocket load"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "indigolantern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "restrict_slots": {
+      "type": "palladium:restrict_slots",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "slots": [
+        "head",
+        "chest",
+        "legs",
+        "feet"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "indigolantern": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/indigolantern1.png",
+      "title": "Compassion Ring Bearer",
+      "list_index": 4,
+      "bar_color": "purple",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "With this ring you have been Chosen to become a Indigo Lantern.",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "compassion",
+            "min": 0,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:indigolanternring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Compassion Ring based Abilities",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "2e47d390-4ebf-4625-a917-eef334251299",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "be87693b-73d2-40d5-81d6-10938e557821",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+13)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 13,
+      "operation": 0,
+      "uuid": "7680936a-f45b-48d2-9dd2-9418490a194b",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+26)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 13,
+      "operation": 0,
+      "uuid": "7772ddd1-1b21-4a1e-a53b-031b0a027746",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 1                          Base Health: 20 (+6)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "fc75289b-27e4-4f01-9173-221b18bad0be",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+16)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "6039fa2d-4f02-4b93-96ab-491b7b692d5a",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
+      "description": "Natural Healing                           Amount: 1Heart/4Second",
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 80,
+      "amount": 1,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.02,
+      "operation": 0,
+      "uuid": "8d36b5af-a1b8-449d-98b0-b46b1627c573",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                              Base Strength: 1 (+6)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "3782443e-93cc-412a-8319-8c385539b278",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                              Base Strength: 1 (+13)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "1c9dd274-f719-4ebe-bce5-5563090a26a0",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "beam": {
+      "type": "palladium:energy_beam",
+      "title": "Compassion Beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "purple",
+      "energy_bar_usage": {
+        "energy_bar": "compassion",
+        "amount": 5
+      },
+      "icon": "final_lanterns:textures/icons/indigo/indigolanternbeam.png",
+      "list_index": 0,
+      "energy_beam": "final_lanterns:indigolanternbeam",
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "Compassion Beam        Beam Damage: 12",
+      "damage": 11,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:indigostaff"
+                },
+                "slot": "mainhand"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "compassion",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "compassionbeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "beam"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "beam_staff"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "beam_staff": {
+      "type": "palladium:energy_beam",
+      "title": "Compassion Beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "purple",
+      "icon": "final_lanterns:textures/icons/indigo/indigolanternbeamstaff.png",
+      "list_index": 0,
+      "energy_beam": "final_lanterns:indigolanternbeamstaff",
+      "gui_position": [
+        0,
+        0
+      ],
+      "damage": 15,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:indigostaff"
+            },
+            "slot": "mainhand"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "compassion",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "beamdummy": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/indigo/indigolanternbeam.png",
+      "title": "Compassion Beam",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "Compassion Beam        Beam Damage: 12",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "ringconstruction": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:indigolanternring",
+      "title": "Ring Construction",
+      "bar_color": "purple",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "description": "This final ability allows you to create a duplicate of your current ring at the cost of all your compassion. Once used, the ability becomes locked. Note: You must have Compassion Max lvl 3",
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "list_index": 3,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "waypointset"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "not_enough_compassion": {
+      "type": "palladium:command",
+      "title": "Not Enough Compassion",
+      "icon": "final_lanterns:indigolanternring",
+      "first_tick_commands": [
+        "playsound minecraft:block.note_block.didgeridoo ambient @s ~ ~ ~ 1 0.5",
+        "title @s actionbar [\"\",{\"text\":\"Not enough compassion!\",\"color\":\"red\",\"bold\":true}]"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 20,
+            "key_type": "key_bind"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "compassion",
+            "min": 0,
+            "max": 3999
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "ring_construction": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:indigolanternring",
+      "title": "Ring Construction",
+      "hidden": true,
+      "bar_color": "purple",
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "cooldown": 12000,
+            "ticks": 50,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "compassion",
+            "min": 4000,
+            "max": 4000
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "offhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "ring_conjure_timer": {
+      "type": "palladium:animation_timer",
+      "icon": "final_lanterns:indigolanternring",
+      "title": "Ring Construction",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 3,
+      "start_value": 0,
+      "max_value": 50,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_construction"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          }
+        ]
+      }
+    },
+    "ring_conjure_start": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "execute as @s anchored eyes positioned ^ ^ ^3 run function final_lanterns:indigolanternconstruction"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 5,
+            "max": 5
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          }
+        ]
+      }
+    },
+    "ring_conjure_anim": {
+      "type": "palladium:animation_timer",
+      "title": "Hand Anim",
+      "icon": "final_lanterns:indigolanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 4,
+      "start_value": 0,
+      "max_value": 10,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "show_both_arms": {
+      "type": "palladium:show_both_arms",
+      "hidden": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_prevent_movement": {
+      "type": "palladium:attribute_modifier",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "4e2eb792-9156-3206-3237-ce6a1409e0c3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_prevent_jump": {
+      "type": "palladium:attribute_modifier",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "attribute": "palladium:jump_power",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "c3d12d6d-6839-418e-b2c4-0cae7c89fe80",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_end": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "energybar value subtract @s final_lanterns:indigolantern compassion 4000",
+        "ability lock @s final_lanterns:indigolantern ringconstruction"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 50,
+            "max": 50
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          }
+        ]
+      }
+    },
+    "otherglowi2ng": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#2e004f",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#4b0082",
+      "end_hex": "#2e004f",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "indigolantern"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_fast_flying"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#4b0082",
+      "end_hex": "#2e004f",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.2,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "indigolantern"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/indigolantern1.png",
+      "title": "Construct Creation",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "description": "Concentrate and Create different Items with your Ring when holding another Lanterns Battery in your Offhand.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "greenwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/greenlantern3.png",
+      "title": "Willpower Constructs",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_greenbaseballbat",
+        "constructcreation_greenkatana",
+        "constructcreation_greenspear",
+        "constructcreation_greenpickaxe",
+        "constructcreation_greenaxe",
+        "willpowershield"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          }
+        ]
+      }
+    },
+    "constructcreationgreen": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:greenlanternbattery",
+      "title": "CC: Will Power",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        2
+      ],
+      "description": "Access the Green Lanterns Emotional Spectrum to Create their Constructs",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:greenlanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation_greenbaseballbat": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:bat_willpower",
+      "title": "Baseball Bat",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        -1,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:bat_willpower{CustomTag:green}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_greenkatana": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:katana_willpower",
+      "title": "Katana",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        -1,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:katana_willpower{CustomTag:green}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_greenspear": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:spear_willpower",
+      "title": "Spear",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        -1,
+        3.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:spear_willpower{CustomTag:green}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_greenpickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxe_willpower",
+      "title": "Pickaxe",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        -1,
+        4
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxe_willpower{CustomTag:green}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_greenaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axe_willpower",
+      "title": "Axe",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        -1,
+        4.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axe_willpower{CustomTag:green}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationgreen"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "bluewheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/bluelantern3.png",
+      "title": "Hope Constructs",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_bluebostaff",
+        "constructcreation_bluespear",
+        "constructcreation_bluefist",
+        "constructcreation_bluepickaxe",
+        "constructcreation_blueaxe"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationblue"
+          }
+        ]
+      }
+    },
+    "constructcreationblue": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:bluelanternbattery",
+      "title": "CC: Hope",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        2
+      ],
+      "description": "Access the Blue Lanterns Emotional Spectrum to Create their Constructs",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:bluelanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation_bluebostaff": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:bostaffblue",
+      "title": "Bostaff",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        -2,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:bostaffblue{CustomTag:blue}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationblue"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_bluespear": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:spearblue",
+      "title": "Spear",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        -2,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:spearblue{CustomTag:blue}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationblue"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_bluefist": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:hammerblue",
+      "title": "War Hammer",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        -2,
+        3.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:hammerblue{CustomTag:blue}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationblue"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_bluepickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxeblue",
+      "title": "Pickaxe",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        -2,
+        4
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxeblue{CustomTag:blue}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationblue"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "pinkwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/pinklantern3.png",
+      "title": "Love Constructs",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_pinkbow",
+        "constructcreation_pinkarrow",
+        "constructcreation_pinkspear",
+        "constructcreation_pinkpickaxe",
+        "constructcreation_pinkaxe"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          }
+        ]
+      }
+    },
+    "constructcreation_blueaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axeblue",
+      "title": "Axe",
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        -2,
+        4.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axeblue{CustomTag:blue}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationblue"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreationviolet": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:pinklanternbattery",
+      "title": "CC: Love",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1.5,
+        2
+      ],
+      "description": "Access the Star Sapphire Emotional Spectrum to Create their Constructs",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:pinklanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation_pinkbow": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:bowpink",
+      "title": "Bow",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        -3,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:bowpink{CustomTag:pink}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pinkarrow": {
+      "type": "palladium:command",
+      "icon": "minecraft:arrow",
+      "title": "Arrow",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        -3,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s minecraft:arrow 6",
+        "energybar value subtract @s final_lanterns:indigolantern compassion 500"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 60,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pinkspear": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:spearpink",
+      "title": "Spear",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        -3,
+        3.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:spearpink{CustomTag:pink}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pinkpickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxepink",
+      "title": "Pickaxe",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        -3,
+        4
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxepink{CustomTag:pink}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pinkaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axepink",
+      "title": "Axe",
+      "bar_color": "pink",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        -3,
+        4.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axepink{CustomTag:pink}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationviolet"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "yellowwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/yellowlantern3.png",
+      "title": "Fear Constructs",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_yellowscythe",
+        "constructcreation_yellowclaws",
+        "constructcreation_yellowpickaxe",
+        "constructcreation_yellowaxe"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationyellow"
+          }
+        ]
+      }
+    },
+    "constructcreationyellow": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:yellowlanternbattery",
+      "title": "CC: Fear",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        1.5,
+        2
+      ],
+      "description": "Access the Yellow Lanterns Emotional Spectrum to Create their Construcrts",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:yellowlanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation_yellowscythe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:scytheyellow",
+      "title": "Scythe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        3,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:scytheyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationyellow"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_yellowclaws": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:clawsyellow",
+      "title": "Claws",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        3,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:clawsyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationyellow"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_yellowskull": {
+      "type": "palladium:projectile",
+      "icon": "final_lanterns:skullyellow",
+      "title": "Fear Skull",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        1.5,
+        3.5
+      ],
+      "description": "null",
+      "entity_type": "palladium:custom_projectile",
+      "entity_data": {
+        "Appearances": [
+          {
+            "Type": "item",
+            "Item": "final_lanterns:skullyellow"
+          }
+        ]
+      },
+      "inaccuracy": 0,
+      "velocity": 1.5,
+      "swinging_arm": "main_arm",
+      "damage_from_player": false,
+      "ignore_player_movement": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:scytheyellow"
+            },
+            "slot": "mainhand"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 15,
+            "key_type": "right_click",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "constructcreation_yellowpickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxeyellow",
+      "title": "Pickaxe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        3,
+        4
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxeyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationyellow"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_yellowaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axeyellow",
+      "title": "Axe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        3,
+        4.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axeyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationyellow"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "skulldrain_energy": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value subtract @s final_lanterns:indigolantern compassion 5"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_on_cooldown",
+            "power": "null",
+            "ability": "constructcreation_yellowskull"
+          }
+        ]
+      }
+    },
+    "redwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/redlantern3.png",
+      "title": "Rage Constructs",
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "chainsawcreation",
+        "redbattleaxe",
+        "redclaw",
+        "redhammer",
+        "redtrident"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationred"
+          }
+        ]
+      }
+    },
+    "constructcreationred": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:redlanternbattery",
+      "title": "CC: Rage",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0.5,
+        2
+      ],
+      "description": "Access the Red Lanterns Emotional Spectrum to Create their Construcrts",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:redlanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "redbattleaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:red_battleaxe",
+      "title": "BattleAxe",
+      "list_index": 1,
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:red_battleaxe{CustomTag:red}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationred"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "redclaw": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:red_claw",
+      "title": "Claw",
+      "list_index": 1,
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:red_claw{CustomTag:red}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationred"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "redtrident": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:red_trident",
+      "title": "Trident",
+      "list_index": 1,
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:red_trident{CustomTag:red}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationred"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "redhammer": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:red_hammer",
+      "title": "Hammer",
+      "list_index": 1,
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:red_hammer{CustomTag:red}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationred"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "chainsawcreation": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greatswordred",
+      "title": "Crucible",
+      "list_index": 1,
+      "bar_color": "red",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:greatswordred{Enchantments:[{id:\"minecraft:sweeping_edge\",lvl:3s}],CustomTag:red}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationred"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "bloodarrow": {
+      "type": "palladium:projectile",
+      "icon": "final_lanterns:bloodarrow",
+      "title": "Blood Arrow",
+      "bar_color": "red",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "rage",
+        "amount": 200
+      },
+      "hidden_in_bar": true,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        2
+      ],
+      "description": "null",
+      "entity_type": "palladium:custom_projectile",
+      "entity_data": {
+        "Damage": 8,
+        "Appearances": [
+          {
+            "Type": "item",
+            "Item": "final_lanterns:bloodarrow"
+          }
+        ]
+      },
+      "inaccuracy": 0,
+      "velocity": 1.5,
+      "swinging_arm": "main_arm",
+      "damage_from_player": false,
+      "ignore_player_movement": false,
+      "damage": 5,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:red_battleaxe"
+            },
+            "slot": "mainhand"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 15,
+            "key_type": "right_click",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "orangewheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/orangelantern3.png",
+      "title": "Greed Constructs",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_bundle",
+        "constructcreation_pickaxe",
+        "constructcreation_axe"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "constructcreationorange"
+          }
+        ]
+      }
+    },
+    "constructcreationorange": {
+      "type": "palladium:dummy",
+      "icon": "kubejs:orangelanternbattery",
+      "title": "CC: Greed",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        2
+      ],
+      "description": "Access the Orange Lanterns Emotional Spectrum to Create their Construcrts",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "curios:lantern_batteries"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "kubejs:orangelanternbattery"
+                },
+                "slot": "offhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation_bundle": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:bundle",
+      "title": "CC:Dimensional Sack",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        2,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:bundle{CustomTag:orange}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationorange"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxeorange",
+      "title": "Pickaxe",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        2,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxeorange{CustomTag:orange}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationorange"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_axe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axeorange",
+      "title": "Axe",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        2,
+        3.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axeorange{CustomTag:orange}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreationorange"
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "sack": {
+      "type": "foi1y:ender_chest",
+      "icon": "minecraft:ender_chest",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        2
+      ],
+      "description": "null",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 0,
+            "key_type": "right_click",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:bundle"
+            },
+            "slot": "mainhand"
+          }
+        ]
+      }
+    },
+    "fortune": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "tag @s add OrangeFortune",
+        "enchant @s minecraft:fortune 3"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:and",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:has_tag",
+                    "tag": "OrangeFortune"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:pickaxeorange"
+                },
+                "slot": "mainhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "knockback": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "enchant @s minecraft:knockback 1"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:bat_willpower"
+            },
+            "slot": "mainhand"
+          }
+        ]
+      }
+    },
+    "compassion_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:indigostaff",
+      "list_index": 2,
+      "title": "Compassion Max lvl 2",
+      "bar_color": "green",
+      "description": "Energy Capacity                                         Total: 2000 (+1000)",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:indigolantern compassion 3000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "compassion_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "compassion_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:indigostaff",
+      "list_index": 2,
+      "title": "Compassion Max lvl 3",
+      "bar_color": "green",
+      "description": "Energy Capacity                                         Total: 2000 (+2000)",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:indigolantern compassion 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "compassion_maxlvl2"
+          }
+        ]
+      }
+    },
+    "hoperegen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greenlanternbattery",
+      "list_index": 2,
+      "title": "Hope Regen",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:indigolantern compassion 5"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:hope_enpowerment"
+          }
+        ]
+      }
+    },
+    "naturalregen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:indigostaff",
+      "list_index": 2,
+      "title": "Natural Compassion Regen",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "description": "Energy Regeneration                                                      2 Energy/Second",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:indigolantern compassion 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "compassion_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "beam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
+    },
+    "waypointset": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/indigo/waypoint.png",
+      "title": "Wormhole Waypoint",
+      "bar_color": "purple",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "description": "null",
+      "first_tick_commands": [
+        "scoreboard objectives add Foi1y.Waypoint.A.X dummy",
+        "scoreboard objectives add Foi1y.Waypoint.A.Y dummy",
+        "scoreboard objectives add Foi1y.Waypoint.A.Z dummy",
+        "execute as @s store result score @s Foi1y.Waypoint.A.X run data get entity @s Pos[0]",
+        "execute as @s store result score @s Foi1y.Waypoint.A.Y run data get entity @s Pos[1]",
+        "execute as @s store result score @s Foi1y.Waypoint.A.Z run data get entity @s Pos[2]",
+        "title @s actionbar \"Wormhole Waypoint Set.\"",
+        "tag @s add PrimarySet"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          }
+        ]
+      }
+    },
+    "waypointsetb": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/indigo/waypoint.png",
+      "title": "Wormhole Waypoint B",
+      "bar_color": "magenta",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "description": "Crouch and use the Waypoint Keybind to set a Wormhole Waypoint",
+      "first_tick_commands": [
+        "scoreboard objectives add Foi1y.Waypoint.B.X dummy",
+        "scoreboard objectives add Foi1y.Waypoint.B.Y dummy",
+        "scoreboard objectives add Foi1y.Waypoint.B.Z dummy",
+        "execute as @s store result score @s Foi1y.Waypoint.B.X run data get entity @s Pos[0]",
+        "execute as @s store result score @s Foi1y.Waypoint.B.Y run data get entity @s Pos[1]",
+        "execute as @s store result score @s Foi1y.Waypoint.B.Z run data get entity @s Pos[2]",
+        "title @s actionbar \"Wormhole Waypoint Set.\"",
+        "tag @s add SecondarySet"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "waypointset"
+          }
+        ]
+      }
+    },
+    "openportalprimary": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/indigo/portal.png",
+      "title": "Open Portal",
+      "bar_color": "purple",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "execute as @s run wormhole_teleport_primary",
+        "execute at @s run particle minecraft:dust 0.6 0 1 1 ~0 ~1 ~0 0.5 0.5 0.5 1 400 force",
+        "execute at @s run particle minecraft:falling_obsidian_tear ~0 ~1 ~0 0.2 0.3 0.20 0.1 20 force",
+        "energybar value subtract @s final_lanterns:indigolantern compassion 500"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 80,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "waypointset"
+          },
+          {
+            "type": "palladium:has_tag",
+            "tag": "PrimarySet"
+          }
+        ]
+      }
+    },
+    "openportalsecondary": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/indigo/portal.png",
+      "title": "Open Portal",
+      "bar_color": "magenta",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "execute as @s run wormhole_teleport_secondary",
+        "execute at @s run particle minecraft:dust 0.6 0 1 1 ~0 ~1 ~0 0.5 0.5 0.5 1 400 force",
+        "execute at @s run particle minecraft:falling_obsidian_tear ~0 ~1 ~0 0.2 0.3 0.20 0.1 20 force",
+        "energybar value subtract @s final_lanterns:indigolantern compassion 500"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 80,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          },
+          {
+            "type": "palladium:has_tag",
+            "tag": "SecondarySet"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "waypointset"
+          }
+        ]
+      }
+    },
+    "mastered_timer": {
+      "type": "palladium:animation_timer",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "start_value": 0,
+      "max_value": 25,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healing_factor"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel2"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel2"
+          }
+        ]
+      }
+    },
+    "mastered_grant": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "advancement grant @s only final_lanterns:mastered_indigo"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_integer_property",
+            "power": "null",
+            "ability": "mastered_timer",
+            "property": "value",
+            "min": 25,
+            "max": 25
+          }
+        ]
+      }
+    },
+    "fl_marker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "commands": [
+        "tag @s add gl_indigo",
+        "scoreboard players set @s gl_t_indigo 3"
+      ],
+      "last_tick_commands": []
+    },
+    "fl_emotions": {
+      "type": "palladium:command",
+      "title": {
+        "translate": "ability.final_lanterns.emotional_spectrum"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.emotional_spectrum.description"
+      },
+      "icon": "final_lanterns:textures/gui/ability/emotional_sight_indigo.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "first_tick_commands": [
+        "function final_lanterns:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 20,
+            "key_type": "key_bind"
+          }
+        ]
+      }
+    }
+  }
+}

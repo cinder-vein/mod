@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:corruptedfate",
+    "render_layer": "final_lanterns:blanksuit",
+    "disable_rendering": true
+  }

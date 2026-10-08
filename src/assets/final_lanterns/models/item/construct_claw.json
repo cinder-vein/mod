@@ -1,0 +1,59 @@
+{
+  "parent": "final_lanterns:item/construct_claw_base",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "final_lanterns:item/construct_claw_green"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "final_lanterns:item/construct_claw_yellow"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "final_lanterns:item/construct_claw_red"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "final_lanterns:item/construct_claw_orange"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "final_lanterns:item/construct_claw_blue"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "final_lanterns:item/construct_claw_violet"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "final_lanterns:item/construct_claw_indigo"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "final_lanterns:item/construct_claw_white"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "final_lanterns:item/construct_claw_black"
+    }
+  ]
+}

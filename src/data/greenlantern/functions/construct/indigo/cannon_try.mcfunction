@@ -1,1 +1,0 @@
-function greenlantern:construct/indigo/cannon_check

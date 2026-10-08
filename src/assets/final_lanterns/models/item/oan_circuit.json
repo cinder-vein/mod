@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "final_lanterns:item/oan_circuit"
+	}
+}

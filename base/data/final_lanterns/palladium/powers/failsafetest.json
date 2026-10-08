@@ -1,0 +1,83 @@
+{
+  "name": "Yellow Fear",
+  "background": "minecraft:textures/block/gray_concrete_powder.png",
+  "icon": "minecraft:blaze_rod",
+  "hidden": true,
+  "abilities": {
+    "effects": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 0,
+      "first_tick_commands": [
+        "effect give @s darkness 120 1 true",
+        "effect give @s minecraft:slowness 120 1 true"
+      ],
+      "last_tick_commands": [
+        "effect clear @s darkness",
+        "effect clear @s slowness"
+      ],
+      "commands": [
+        "execute if predicate final_lanterns:fear_rare run title @s title [\"\",{\"text\":\"Dont you hear him?\",\"color\":\"yellow\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"Stop!\",\"color\":\"yellow\"}]",
+        "execute if predicate final_lanterns:fear_rare run title @s title [\"\",{\"text\":\"Parralax is calling!\",\"color\":\"yellow\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"What was that?\",\"color\":\"red\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"Behind you...\",\"color\":\"red\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"Run...\",\"color\":\"red\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"Something moved...\",\"color\":\"red\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"Did you hear that?\",\"color\":\"yellow\"}]",
+        "execute if predicate final_lanterns:fear_rare run tellraw @s [\"\",{\"text\":\"I know what you are...\",\"color\":\"red\"}]",
+        "execute if predicate final_lanterns:fear_rare run playsound minecraft:entity.ghast.ambient ambient @s ~ ~ ~ 1 0.5",
+        "execute if predicate final_lanterns:fear_rare run playsound minecraft:ambient.cave ambient @s ~ ~ ~ 1 2",
+        "execute if predicate final_lanterns:fear_rare run playsound minecraft:entity.creeper.primed ambient @s ~ ~ ~ 1 0.5",
+        "execute if predicate final_lanterns:crazy run playsound minecraft:entity.warden.heartbeat ambient @s ~ ~ ~ 1 0.5"
+      ]
+    },
+    "screenshake": {
+      "type": "final_lanterns:screen_shake",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "base_intensity": 1,
+      "max_intensity": 1
+    },
+    "shiver": {
+      "type": "palladium:vibrate",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null"
+    },
+    "power_remove": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "superpower remove final_lanterns:effects/yellow_fear @s"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_effect",
+                "effect": "final_lanterns:yellow_fear"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "final_lanterns:item/construct_wall_base",
+  "textures": {
+    "0": "final_lanterns:item/construct/red",
+    "particle": "final_lanterns:item/construct/red"
+  }
+}

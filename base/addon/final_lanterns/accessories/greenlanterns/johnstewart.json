@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:greenlantern",
+    "render_layer": "final_lanterns:johnstewart",
+    "disable_rendering": true
+  }

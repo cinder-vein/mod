@@ -1,0 +1,39 @@
+{
+  "credit": "Made by PeterCoffe",
+  "parent": "kubejs:block/bluelanternbattery",
+  
+  "display": {
+    "gui": {
+      "rotation": [ 0, 0, 0 ], 
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.625, 0.625, 0.625 ],
+      "model": "kubejs:item/bluelanternbattery_2d"
+    },
+  
+    "thirdperson_righthand": {
+      "rotation": [0, 90, 45],
+      "translation": [0, 7.5, 1],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 90, -45],
+      "translation": [0, 7.5, 1],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 90, 30],
+      "translation": [0, 2, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, -60],
+      "translation": [0, 2, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 0 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    }
+  }
+} 

@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:indigolantern",
+    "render_layer": "final_lanterns:indigolantern/kyleraynerbn",
+    "disable_rendering": true
+  }

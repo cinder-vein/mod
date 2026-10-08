@@ -1,0 +1,35 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/greenlanterns/#SLIM/iongalaxy.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": "palladium:humanoid#tight_suit",
+      "render_type": "glow",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/greenlanterns/#SLIM/iongalaxyglow.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    }
+  ]
+}

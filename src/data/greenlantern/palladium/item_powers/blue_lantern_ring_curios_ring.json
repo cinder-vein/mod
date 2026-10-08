@@ -1,8 +1,0 @@
-{
-  "slot": "curios:ring",
-  "item": "greenlantern:blue_lantern_ring",
-  "power": [
-    "greenlantern:blue_lantern",
-    "greenlantern:lantern_base"
-  ]
-}

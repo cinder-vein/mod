@@ -1,7 +1,0 @@
-{
-  "parent": "greenlantern:item/construct_drill_base",
-  "textures": {
-    "0": "greenlantern:item/construct/violet",
-    "particle": "greenlantern:item/construct/violet"
-  }
-}

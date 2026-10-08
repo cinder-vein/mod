@@ -1,0 +1,73 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "final_lanterns:pinklanternring",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{gl_bound:1b,gl_gv:0b,gl_giver:0}"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": {
+                "type": "minecraft:storage",
+                "source": "final_lanterns:binding"
+              },
+              "ops": [
+                {
+                  "source": "owner",
+                  "target": "gl_owner",
+                  "op": "replace"
+                },
+                {
+                  "source": "bits",
+                  "target": "gl_ob",
+                  "op": "replace"
+                },
+                {
+                  "source": "serial",
+                  "target": "gl_serial",
+                  "op": "replace"
+                }
+              ]
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "this",
+              "ops": [
+                {
+                  "source": "UUID",
+                  "target": "gl_owner_uuid",
+                  "op": "replace"
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_lore",
+              "entity": "this",
+              "replace": true,
+              "lore": [
+                {
+                  "text": "Bound to ",
+                  "color": "gray",
+                  "italic": false,
+                  "extra": [
+                    {
+                      "selector": "@s",
+                      "color": "white"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

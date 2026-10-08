@@ -1,0 +1,36 @@
+{
+  "name": "Yellow Fear",
+  "background": "minecraft:textures/block/gray_concrete_powder.png",
+  "icon": "minecraft:blaze_rod",
+  "hidden": true,
+  "abilities": {
+    "power.remove": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "superpower remove final_lanterns:effects/immortality @s"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_effect",
+                "effect": "final_lanterns:corruptedimmortality"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

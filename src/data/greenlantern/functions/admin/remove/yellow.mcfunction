@@ -1,2 +1,0 @@
-function greenlantern:ring/strip_yellow
-function greenlantern:leader/update_any

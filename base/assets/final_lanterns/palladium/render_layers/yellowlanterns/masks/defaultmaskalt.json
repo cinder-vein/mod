@@ -1,0 +1,46 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+          {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/yellowlanterns/masks/defaultmaskalt.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/universalmask/transformationmask_#TIMER.png"
+          }
+        ],
+        "variables": {
+          "TIMER": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:yellowlantern",
+            "ability": "maskpls1",
+            "property": "value"
+          }
+        }
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/yellowlanterns/masks/defaultmasklight.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/universalmasklight/transformationmask_#GLOW_HEL.png"
+          }
+        ],
+        "variables": {
+          "GLOW_HEL": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:yellowlantern",
+            "ability": "maskpls",
+            "property": "value"
+          }
+        }
+      },
+      "render_type": "glow"
+    }
+    ]
+}

@@ -1,7 +1,0 @@
-{
-  "parent": "greenlantern:item/construct_axe_base",
-  "textures": {
-    "0": "greenlantern:item/construct/yellow",
-    "particle": "greenlantern:item/construct/yellow"
-  }
-}

@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#n#",
+        "DND",
+        "#Y#"
+    ],
+    "key": {
+        "#": {
+            "tag": "palladium:connector/titanium_ingots"
+        },
+        "n": {
+            "item": "minecraft:netherite_ingot"
+        },
+        "D": {
+            "item": "final_lanterns:oan_circuit"
+        },
+        "N": {
+            "item": "minecraft:netherite_sword"
+        },
+        "Y": {
+            "item": "final_lanterns:yingyangbatterycore"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:yinyangsword",
+        "count": 1
+    }
+}

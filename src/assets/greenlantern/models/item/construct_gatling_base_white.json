@@ -1,7 +1,0 @@
-{
-  "parent": "greenlantern:item/construct_gatling_base",
-  "textures": {
-    "0": "greenlantern:item/construct/white",
-    "particle": "greenlantern:item/construct/white"
-  }
-}

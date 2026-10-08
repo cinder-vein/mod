@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "Blinded by Rage!",
+            "color": "red",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Red Lantern Corps"
+        },
+        "icon": {
+            "item": "final_lanterns:redlanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

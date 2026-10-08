@@ -1,0 +1,162 @@
+{
+    "name": "Parallax",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/yellow_wool.png",
+    "icon": "final_lanterns:textures/item/greenlanternringbroken.png",
+    "gui_display_type": "list",
+    "abilities": {
+        "sacrifice":{
+            "type": "palladium:command",
+            "icon": "final_lanterns:greenlanternring",
+            "title": "Resurrection",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": 0,
+            "gui_position": "null",
+            "description": "Once you Fall in Combat release the Entity inside rebirthing you into your Former self",
+            "first_tick_commands": [
+                "effect give @s minecraft:slowness 5 100"
+            ],
+            "last_tick_commands": [
+                "advancement grant @s only lanterncorps:reborn",
+                "superpower remove final_lanterns:parallax @s"
+            ],
+            "commands": [
+                "execute as @p at @s anchored eyes rotated as @s run particle minecraft:dust 0.86 0.71 0.16 0.5 ^ ^0.1 ^0.3 0 0 0 40 20 force",
+                "execute as @p at @s anchored eyes rotated as @s run particle minecraft:dust 0.86 0.71 0.16 2 ^ ^0.5 ^0.3 0 0 0 40 20 force"
+            ],
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:has_effect",
+                        "effect": "final_lanterns:parallax"
+                    }
+                ]
+            }
+        },
+        "nodie": {
+            "type": "palladium:immortality",
+            "icon": "minecraft:totem_of_undying",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:has_effect",
+                        "effect": "final_lanterns:parallax"
+                    }
+                ]
+            }
+        },
+        "stay_stunned":{
+            "type": "palladium:animation_timer",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "start_value": 0,
+            "max_value": 1200,
+            "conditions": {
+                "enabling":[
+                    {
+                        "type": "palladium:has_effect",
+                        "effect": "final_lanterns:parallax"
+                    }
+                ]
+            }
+        },
+        "animation": {
+            "type": "palladium:animation_timer",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "start_value": 0,
+            "max_value": 1,
+            "conditions": {
+                "enabling": {
+                    "type": "palladium:has_effect",
+                    "effect": "final_lanterns:parallax"
+                }
+            }
+        },
+        "armorlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:diamond_chestplate",
+            "title": "Enhanced Defense",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                1,
+                0
+            ],
+            "description": "null",
+            "attribute": "minecraft:generic.armor",
+            "amount": 6,
+            "operation": 0,
+            "uuid": "911191f3-f5e3-4b27-9bb1-8acba315f925"
+        },
+        "healthlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/heart.png",
+            "title": "Enhanced Health",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                1,
+                -2
+            ],
+            "description": "null",
+            "attribute": "minecraft:generic.max_health",
+            "amount": 6,
+            "operation": 0,
+            "uuid": "c1d0e19a-9df3-4a34-b210-63f503d99670"
+        },
+        "healing_factor": {
+            "type": "palladium:healing",
+            "icon": "minecraft:apple",
+            "title": "Enhanced Healing",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "frequency": 40,
+            "amount": 1
+        },
+        "strengthlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:golden_sword",
+            "title": "Enhanced Strength",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                -1,
+                0
+            ],
+            "description": "null",
+            "attribute": "minecraft:generic.attack_damage",
+            "amount": 3,
+            "operation": 0,
+            "uuid": "d8fcc3e6-5783-4a50-9685-390309ec74d7"
+        }
+    }
+}

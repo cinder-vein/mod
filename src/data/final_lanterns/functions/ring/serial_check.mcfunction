@@ -1,0 +1,3 @@
+execute if predicate final_lanterns:bound_ring_mainhand run function final_lanterns:ring/serial_mainhand
+execute if predicate final_lanterns:bound_ring_offhand run function final_lanterns:ring/serial_offhand
+function final_lanterns:ring/curios_check

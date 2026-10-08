@@ -1,1 +1,0 @@
-function greenlantern:construct/violet/blocks_check

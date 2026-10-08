@@ -1,0 +1,15 @@
+{
+    "villager_profession": "minecraft:wandering_trader",
+    "rare": false,
+    "trades": [
+        {
+            "price": {
+                "item": "minecraft:emerald",
+                "count": 12
+            },
+            "for_sale": "final_lanterns:oan_circuit",
+            "xp": 10,
+            "max_trades": 6
+        }
+    ]
+}

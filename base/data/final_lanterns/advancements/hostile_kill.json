@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "kill_hostile": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "#final_lanterns:hostile"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "final_lanterns:on_hostile_kill"
+  }
+}

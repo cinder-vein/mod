@@ -1,0 +1,1431 @@
+{
+  "name": {
+    "translate": "power.final_lanterns.host_butcher"
+  },
+  "icon": "minecraft:nether_wart",
+  "background": "minecraft:textures/block/black_concrete.png",
+  "gui_display_type": "tree",
+  "primary_color": "#DC1E23",
+  "secondary_color": "#580C0E",
+  "persistent_data": true,
+  "energy_bars": {
+    "entity_power": {
+      "max": {
+        "type": "score",
+        "objective": "glhmax_butcher",
+        "fallback": 4000
+      },
+      "auto_increase_per_tick": 3,
+      "color": "#DC1E23"
+    }
+  },
+  "abilities": {
+    "host_root": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.host_root"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.host_root.description"
+      },
+      "icon": "minecraft:nether_wart",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0
+      ]
+    },
+    "host_health": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-2989055078c9",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_armor": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-c662fa8576fb",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_toughness": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-cc5e42eba3ea",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_aura": {
+      "type": "gravecore:particle_aura",
+      "count": 3,
+      "start_hex": "#DC1E23",
+      "end_hex": "#FF272D",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.25,
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_glow": {
+      "type": "palladium:entity_glow",
+      "mode": "self",
+      "color": "#DC1E23",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:is_flying"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:hosts/butcher",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit_skin": {
+      "type": "palladium:hide_body_part",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "head_overlay"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_fill": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "energybar value add @s final_lanterns:host_butcher entity_power 100000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_vitality_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_vitality_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_vitality_1.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_vitality_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_vitality_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_vitality_2.description"
+      },
+      "icon": "minecraft:enchanted_golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_vitality_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "vitality_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-eb3ac14f85f4",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "vitality_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-62b25c886254",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_might_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_might_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_might_1.description"
+      },
+      "icon": "minecraft:iron_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_might_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_might_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_might_2.description"
+      },
+      "icon": "minecraft:netherite_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_might_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "might_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-551711f46e5d",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_1_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-35319ccef322",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-76244cbb7f7f",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-5c3df174ddcf",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_flight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_flight"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_flight.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.0,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-24e54d2b9a70",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "flight_flexibility": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_flexibility",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-4055e35413d6",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "heroic_flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d25b8f1d117e",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_passive": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_passive"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_passive.description"
+      },
+      "icon": "minecraft:iron_axe",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "bloodlust_fire": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:fire_resistance 15 0 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 99
+        },
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_passive"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "bloodlust": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-288fe3eda7a1",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_passive"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_rage_roar": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_rage_roar"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_rage_roar.description"
+      },
+      "icon": "minecraft:fire_charge",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "rage_roar": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "execute as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..8] at @s facing entity @p[tag=gl_user] feet rotated ~180 0 run tp @s ^ ^0.5 ^3",
+        "execute as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..8] run damage @s 8 minecraft:player_attack by @p[tag=gl_user]",
+        "execute as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..8] run data merge entity @s {Fire:120s}",
+        "particle minecraft:dust 0.86 0.12 0.14 2.5 ~ ~1 ~ 4 1 4 0 200 force",
+        "particle minecraft:flame ~ ~1 ~ 3 1 3 0.05 120 force",
+        "playsound minecraft:entity.ravager.roar player @a[distance=..24] ~ ~ ~ 1 0.6",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 160
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rage_roar"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 120
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 120
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.rage_roar"
+      },
+      "icon": "final_lanterns:textures/gui/ability/roar_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.rage_roar.description"
+      }
+    },
+    "skill_rampage": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_rampage"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_rampage.description"
+      },
+      "icon": "minecraft:blaze_powder",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rage_roar"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "rampage": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:strength 12 2 true",
+        "effect give @s minecraft:speed 12 1 true",
+        "effect give @s minecraft:resistance 12 0 true",
+        "particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 0.6 1 0.6 0 120 force",
+        "playsound minecraft:entity.ravager.roar player @a[distance=..24] ~ ~ ~ 1 0.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 400
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rampage"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 150
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 150
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.rampage"
+      },
+      "icon": "final_lanterns:textures/gui/ability/rage_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.rampage.description"
+      }
+    },
+    "skill_gore_charge": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_gore_charge"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_gore_charge.description"
+      },
+      "icon": "minecraft:goat_horn",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rampage"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "gore_charge": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "function final_lanterns:entity/dash",
+        "execute as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..3] run damage @s 12 minecraft:player_attack by @p[tag=gl_user]",
+        "effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..3] minecraft:levitation 1 3 true",
+        "particle minecraft:dust 0.86 0.12 0.14 2.0 ~ ~1 ~ 1 1 1 0 100 force",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 80
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_gore_charge"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 100
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 100
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.gore_charge"
+      },
+      "icon": "final_lanterns:textures/gui/ability/blast_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 4,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.gore_charge.description"
+      }
+    },
+    "skill_slaughter": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_slaughter"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_slaughter.description"
+      },
+      "icon": "minecraft:nether_wart_block",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_gore_charge"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "slaughter": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "particle minecraft:dust 0.86 0.12 0.14 3.0 ~ ~1 ~ 4 2 4 0 300 force",
+        "particle minecraft:flash ~ ~1 ~ 0 0 0 0 2 force",
+        "execute as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..10] run damage @s 24 minecraft:player_attack by @p[tag=gl_user]",
+        "effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..10] minecraft:wither 6 2 true",
+        "execute at @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..10] run particle minecraft:flame ~ ~1 ~ 0.3 0.6 0.3 0.02 30 force",
+        "playsound minecraft:entity.blaze.shoot player @a[distance=..24] ~ ~ ~ 1 0.5",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_slaughter"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 600
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 600
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.slaughter"
+      },
+      "icon": "final_lanterns:textures/gui/ability/overload_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 5,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.slaughter.description"
+      }
+    },
+    "skill_beam": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_beam.description"
+      },
+      "icon": "final_lanterns:textures/icons/red/vomit.png",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "beam": {
+      "type": "palladium:energy_beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "white",
+      "icon": "final_lanterns:textures/icons/red/vomit.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:bloodvomit",
+      "damage": 16,
+      "max_distance": 10,
+      "speed": 1,
+      "set_on_fire_seconds": 5,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "commands_on_block_hit": [
+        "effect give @e[distance=..1] minecraft:poison 2 1 true"
+      ],
+      "commands_on_entity_hit": [
+        "effect give @e[distance=..1] minecraft:poison 2 1 true"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 5
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_beam"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.beam.description"
+      }
+    },
+    "beam_aim": {
+      "type": "palladium:aim",
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "beam"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_constructs": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_constructs"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_constructs.description"
+      },
+      "icon": "final_lanterns:textures/icons/slots/redlantern3.png",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_beam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "construct_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:greatswordred{CustomTag:red,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.construct_0"
+      },
+      "icon": "final_lanterns:greatswordred",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:red_battleaxe{CustomTag:red,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.construct_1"
+      },
+      "icon": "final_lanterns:red_battleaxe",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:red_claw{CustomTag:red,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.construct_2"
+      },
+      "icon": "final_lanterns:red_claw",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:red_hammer{CustomTag:red,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.construct_3"
+      },
+      "icon": "final_lanterns:red_hammer",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:red_trident{CustomTag:red,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.construct_4"
+      },
+      "icon": "final_lanterns:red_trident",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "constructs": {
+      "type": "palladium:ability_wheel",
+      "abilities": [
+        "construct_0",
+        "construct_1",
+        "construct_2",
+        "construct_3",
+        "construct_4"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held"
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.constructs"
+      },
+      "icon": "final_lanterns:textures/icons/slots/redlantern3.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1
+    },
+    "skill_forge": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_forge"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_forge.description"
+      },
+      "icon": "final_lanterns:redlanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ]
+      }
+    },
+    "forge_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/butcher/forge"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 6000
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_forge"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 3000
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 3000
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.forge_ring"
+      },
+      "icon": "final_lanterns:redlanternring",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.forge_ring.description"
+      }
+    },
+    "skill_empower": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_empower"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_empower.description"
+      },
+      "icon": "kubejs:redlanternbattery",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "empower_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/butcher/empower"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 400
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 60
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.empower_ring"
+      },
+      "icon": "kubejs:redlanternbattery",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 6,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.empower_ring.description"
+      }
+    },
+    "skill_lantern": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_lantern"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_lantern.description"
+      },
+      "icon": "final_lanterns:redlanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "living_lantern": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_living_lantern"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_living_lantern"
+      ],
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 1
+      },
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_lantern"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 1
+          }
+        ]
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.living_lantern"
+      },
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 7,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.living_lantern.description"
+      }
+    },
+    "skill_reserves": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_reserves"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_reserves.description"
+      },
+      "icon": "minecraft:glowstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_wellspring": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.skill_wellspring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.skill_wellspring.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_reserves"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "reserves_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glhmax_butcher dummy",
+        "scoreboard players set @s glhmax_butcher 6000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_reserves"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "wellspring_regen": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": -3
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_wellspring"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "release": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:entity/release_ask"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 40
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.release"
+      },
+      "icon": "final_lanterns:textures/gui/ability/revoke_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 9,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.release.description"
+      }
+    },
+    "emotions": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 20
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.emotions"
+      },
+      "icon": "final_lanterns:textures/gui/ability/emotional_sight_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.emotions.description"
+      }
+    },
+    "mortal_form": {
+      "type": "palladium:command",
+      "first_tick_commands": [],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_butcher.mortal_form"
+      },
+      "icon": "final_lanterns:textures/gui/ability/suit_up_butcher.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 11,
+      "description": {
+        "translate": "ability.final_lanterns.host_butcher.mortal_form.description"
+      }
+    }
+  }
+}

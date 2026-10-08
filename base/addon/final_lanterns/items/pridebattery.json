@@ -1,0 +1,4 @@
+{
+    "type": "palladium:default",
+    "render_layers": {"curios:lantern_batteries": ["final_lanterns:pridelantern/pridebook"],"trinkets:hand/ring": ["final_lanterns:pridelantern/pridebook"]}
+}

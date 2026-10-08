@@ -1,0 +1,9 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+      {
+        "model_layer": "palladium:humanoid#tight_suit",
+        "texture": "final_lanterns:textures/models/skins/greenlanterns/masks/blankmask.png"
+      }
+    ]
+}

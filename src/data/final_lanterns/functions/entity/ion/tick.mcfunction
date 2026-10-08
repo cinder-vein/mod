@@ -1,0 +1,7 @@
+execute on passengers run data modify entity @s Rotation set from entity @e[tag=gl_ent_ion,limit=1] Rotation
+execute as @a[tag=!gl_host,scores={gl_edc_ion=..0,gl_ehcd=..0},distance=..40] at @s if score @s gl_e_will >= #req100 gl_ent run tag @s add gl_ent_worthy
+execute if entity @a[tag=gl_ent_worthy,distance=6..40] facing entity @p[tag=gl_ent_worthy] eyes run tp @s ^ ^ ^0.2 ~ ~
+execute unless entity @a[tag=gl_ent_worthy,distance=..40] run tp @s ~ ~ ~ ~1 ~
+execute if entity @a[tag=gl_ent_worthy,distance=..6] facing entity @p[tag=gl_ent_worthy] eyes run tp @s ~ ~ ~ ~ ~
+execute as @a[tag=gl_ent_worthy,distance=..8,tag=!gl_eoffer_ion] run function final_lanterns:entity/ion/offer
+tag @a[tag=gl_ent_worthy] remove gl_ent_worthy

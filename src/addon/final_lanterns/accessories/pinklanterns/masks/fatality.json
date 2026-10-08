@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:pinklanternmasks",
+    "render_layer": "final_lanterns:pinklanterns/masks/fatality",
+    "disable_rendering": true
+  }

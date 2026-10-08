@@ -1,0 +1,25 @@
+execute rotated ~ 0 positioned ^ ^0.3 ^1.5 run summon minecraft:item_display ~ ~ ~ {Tags:["gl_construct","gl_new","gl_train","gl_train_new"],item:{id:"final_lanterns:construct_train",Count:1b,tag:{CustomModelData:1}},item_display:"none",brightness:{sky:15,block:15},view_range:2f,transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f]}}
+execute rotated ~ 0 positioned ^ ^0.3 ^1.5 run tp @e[type=minecraft:item_display,tag=gl_new,limit=1,sort=nearest] ~ ~ ~ ~ 0
+playsound minecraft:entity.minecart.riding player @a[distance=..24] ~ ~ ~ 1 0.6
+playsound minecraft:block.bell.use player @a[distance=..24] ~ ~ ~ 1 0.5
+execute rotated ~ 0 positioned ^ ^0.5 ^2 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^2 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^2 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^4 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^4 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^4 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^6 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^6 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^6 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^8 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^8 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^8 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^10 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^10 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^10 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^12 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^12 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^12 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force
+execute rotated ~ 0 positioned ^ ^0.5 ^14 as @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] run damage @s 14 minecraft:player_attack by @p[tag=gl_user]
+execute rotated ~ 0 positioned ^ ^0.5 ^14 run effect give @e[type=!#final_lanterns:not_creatures,tag=!gl_user,tag=!gl_dead_minion,distance=..2] minecraft:levitation 1 4 true
+execute rotated ~ 0 positioned ^ ^0.5 ^14 run particle minecraft:dust 0.18 0.78 0.27 2.0 ~ ~ ~ 0.6 0.6 0.6 0 20 force

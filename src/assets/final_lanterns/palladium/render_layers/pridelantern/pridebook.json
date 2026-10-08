@@ -1,0 +1,9 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+        "model_layer": "final_lanterns:book#greenlantern",
+        "texture": "final_lanterns:textures/item/pride/pride_book.png"
+    }
+  ]
+}

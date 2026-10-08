@@ -1,0 +1,19 @@
+{
+    "slot": "curios:lantern_batteries",
+    "item": [
+        "final_lanterns:lanternbatteryunpowered",
+        "kubejs:greenlanternbattery",
+        "kubejs:yellowlanternbattery",
+        "kubejs:bluelanternbattery",
+        "kubejs:redlanternbattery",
+        "kubejs:orangelanternbattery",
+        "kubejs:pinklanternbattery",
+        "kubejs:goldlanternbattery",
+        "kubejs:graylanternbattery",
+        "kubejs:whitelanternbattery",
+        "kubejs:blacklanternbattery",
+        "kubejs:lanternbatteryunpowered",
+        "kubejs:corruptedfatebattery"
+    ],
+    "power": "final_lanterns:batteryrenderpower"
+  }

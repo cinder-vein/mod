@@ -1,0 +1,15 @@
+{
+    "criteria": {
+        "player": {
+            "trigger": "minecraft:tick",
+            "conditions": {
+                "player": {
+                    "nbt": "{Tags:[\"None\"]}"
+                }
+            }
+        }
+    },
+    "rewards": {
+        "function": "final_lanterns:red_lantern_warning"
+    }
+}

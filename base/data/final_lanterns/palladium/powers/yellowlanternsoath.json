@@ -1,0 +1,167 @@
+{
+    "name": "§eYellow Lantern Battery",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/yellow_concrete.png",
+    "icon": "final_lanterns:yellowlanternbattery",
+    "gui_display_type": "list",
+    "abilities": {
+        "say_the_oath": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:yellowlanternbattery",
+            "title": "Sinestro's Might",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 0,
+            "gui_position": "null",
+            "description": "Speak the Yellow Lanterns Oath and Recharge your Ring",
+            "first_tick_commands": [
+                "tellraw @s [\"\",{\"text\":\"In blackest day,\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"In brightest night,\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Beware your fears made into light.\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"text\":\"Let those who try to stop what's right, Burn like his powers...\",\"color\":\"yellow\",\"bold\":true}]",
+                "tellraw @s [\"\",{\"selector\":\"@s\",\"color\":\"yellow\",\"bold\":true},{\"text\":\"'s Might!\",\"color\":\"yellow\",\"bold\":true}]"
+            ],
+            "last_tick_commands": [
+                "execute at @s run energybar value add @s final_lanterns:yellowlantern fear 4000"
+            ],
+            "commands": [],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:yellowlantern",
+                        "energy_bar": "fear",
+                        "min": 0,
+                        "max": 4000
+                    }
+                ],
+                "unlocking":[
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "final_lanterns:yellowlantern",
+                        "energy_bar": "fear",
+                        "min": 0,
+                        "max": 4000
+                    }
+                ]
+            }
+        },
+        "charge_ring_anim": {
+            "type": "palladium:repeating_animation_timer",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "start_value": 0,
+            "max_value": 20,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_on_cooldown",
+                        "power": "null",
+                        "ability": "say_the_oath"
+                    }
+                ]
+            }
+        },
+        "show_botharms": {
+            "type": "palladium:show_both_arms",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_on_cooldown",
+                        "power": "null",
+                        "ability": "say_the_oath"
+                    }
+                ]
+            }
+        },
+        "sacrifice": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:greenlanternring",
+            "title": "Ring Sacrifice",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 0,
+            "gui_position": "null",
+            "description": "Sacrifice a Green Lantern Ring to become the Host of Parallax, Only Green and Yellow Lanterns can host Parallax",
+            "first_tick_commands": [
+                "scoreboard objectives add rings_sacrificed dummy",
+                "function final_lanterns:sacrifice",
+                "clear @s final_lanterns:greenlanternring 1"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 25,
+                        "key_type": "right_click",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    },
+                    {
+                        "type": "palladium:item_in_slot",
+                        "item": {
+                            "item": "final_lanterns:greenlanternring"
+                        },
+                        "slot": "offhand"
+                    }
+                ],
+                "unlocking": [
+                    {
+                        "type": "palladium:item_in_slot",
+                        "item": {
+                            "item": "final_lanterns:greenlanternring"
+                        },
+                        "slot": "offhand"
+                    },
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:has_power",
+                                "power": "final_lanterns:yellowlantern"
+                            },
+                            {
+                                "type": "palladium:has_power",
+                                "power": "final_lanterns:greenlantern"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "palladium:not",
+                        "conditions": [
+                            {
+                                "type": "palladium:has_power",
+                                "power": "final_lanterns:parallax"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

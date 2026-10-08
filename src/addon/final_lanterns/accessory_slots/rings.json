@@ -1,0 +1,13 @@
+{
+    "icon": "final_lanterns:textures/icons/slots/rings.png",
+    "allows_multiple": false,
+    "menu_visibility": {
+        "type": "palladium:and",
+        "conditions": [
+          {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+          }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+	"credit": "Made by Foi1y",
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "final_lanterns:item/green/greatsword"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 90, 45],
+			"translation": [0, 12.25, 0.5],
+			"scale": [1.8, 1.8, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -45],
+			"translation": [0, 12.25, 0.5],
+			"scale": [1.8, 1.8, 1]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 90, 30],
+			"translation": [0, 4.5, 0],
+			"scale": [1.5, 1.5, 1]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 90, -60],
+			"translation": [0, 4.5, 0],
+			"scale": [1.5, 1.5, 1]
+		}
+	}
+}

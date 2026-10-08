@@ -1,0 +1,10 @@
+{
+    "type": "palladium:sword",
+    "max_stack_size": 1,
+    "rarity": "uncommon",
+    "tier": "minecraft:iron",
+    "base_damage": 7,
+    "attack_speed": -2.7,
+    "is_fire_resistant": true,
+    "render_layers": {"curios:lantern_batteries": ["final_lanterns:balancelantern/yinyangsword"],"trinkets:hand/ring": ["final_lanterns:balancelantern/yinyangsword"]}
+}

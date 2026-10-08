@@ -1,1 +1,0 @@
-function greenlantern:construct/violet/barrier_check

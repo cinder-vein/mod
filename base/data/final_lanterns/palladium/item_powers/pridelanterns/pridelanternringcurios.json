@@ -1,0 +1,7 @@
+{
+    "slot": "curios:lantern_rings",
+    "item": "final_lanterns:pridelanternring",
+    "power": [
+    "final_lanterns:pridelantern"
+    ]
+  }

@@ -1,1 +1,0 @@
-function greenlantern:emotion/menu

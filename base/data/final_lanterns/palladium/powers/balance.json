@@ -1,0 +1,1543 @@
+{
+    "name": "§8Balance §fBearer",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/gray_concrete.png",
+    "ability_bar_texture": "final_lanterns:textures/gui/ability_barbalance.png",
+    "icon": "final_lanterns:textures/icons/slots/yingyang.png",
+    "gui_display_type": "tree",
+    "energy_bars": {
+        "balance": {
+            "max": 2000,
+            "auto_increase_per_tick": 0,
+            "color": "#ffffff"
+        }
+    },
+    "abilities": {
+        "enablepls": {
+            "type": "palladium:animation_timer",
+            "hidden_in_bar": false,
+            "start_value": 0,
+            "max_value": 21,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "enablepls1": {
+            "type": "palladium:animation_timer",
+            "hidden_in_bar": false,
+            "start_value": 0,
+            "max_value": 16,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:animation_timer_ability",
+                        "ability": "enablepls",
+                        "min": 5,
+                        "max": 21
+                    }
+                ]
+            }
+        },
+        "maskpls": {
+            "type": "palladium:animation_timer",
+            "hidden_in_bar": false,
+            "start_value": 0,
+            "max_value": 6,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "maskpls1": {
+            "type": "palladium:animation_timer",
+            "hidden_in_bar": false,
+            "start_value": 0,
+            "max_value": 5,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:animation_timer_ability",
+                        "ability": "maskpls",
+                        "min": 2,
+                        "max": 6
+                    }
+                ]
+            }
+        },
+        "suitsound": {
+            "type": "palladium:command",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "first_tick_commands": [
+                "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "othergl1owing": {
+            "type": "palladium:entity_glow",
+            "icon": "minecraft:glow_berries",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "mode": "self",
+            "color": "#FFFFFF",
+            "distance": 30,
+            "property_key": "null",
+            "property_value": "null",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:is_hovering_or_flying"
+                    }
+                ]
+            }
+        },
+        "outlinefast": {
+            "type": "gravecore:particle_aura",
+            "icon": "minecraft:amethyst_shard",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "count": 14,
+            "start_hex": "#FFFFFF",
+            "end_hex": "#FFFFFF",
+            "aura_type": "aura",
+            "particle_type": "smoke",
+            "particle_size": 1.5,
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:is_fast_flying"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "outline": {
+            "type": "gravecore:particle_aura",
+            "icon": "minecraft:amethyst_shard",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "count": 4,
+            "start_hex": "#FFFFFF",
+            "end_hex": "#FFFFFF",
+            "aura_type": "aura",
+            "particle_type": "smoke",
+            "particle_size": 0.4,
+            "visibility": 0.2,
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:is_hovering_or_flying"
+                            },
+                            {
+                                "type": "palladium:is_under_water"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "outlinefast2": {
+            "type": "gravecore:particle_aura",
+            "icon": "minecraft:amethyst_shard",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "count": 14,
+            "start_hex": "#808080",
+            "end_hex": "#808080",
+            "aura_type": "aura",
+            "particle_type": "smoke",
+            "particle_size": 1.5,
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:is_fast_flying"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "outline2": {
+            "type": "gravecore:particle_aura",
+            "icon": "minecraft:amethyst_shard",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "count": 4,
+            "start_hex": "#808080",
+            "end_hex": "#808080",
+            "aura_type": "aura",
+            "particle_type": "smoke",
+            "particle_size": 0.4,
+            "visibility": 0.2,
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:is_hovering_or_flying"
+                            },
+                            {
+                                "type": "palladium:is_under_water"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "toughlungs": {
+            "type": "finallanterns:toughlungs",
+            "icon": {
+                "type": "palladium:item",
+                "item": "minecraft:air",
+                "count": 0
+            },
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:not",
+                        "conditions": [
+                            {
+                                "type": "palladium:dimension",
+                                "dimension": "minecraft:overworld"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "cosmicspace": {
+            "type": "palladium:command",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "first_tick_commands": [
+                "function final_lanterns:cosmicspace"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:mod_loaded",
+                        "mod_id": "cosmos"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "finallanterns:get_y",
+                        "min": 1000,
+                        "max": 1400
+                    }
+                ]
+            }
+        },
+        "adastrascreen": {
+            "type": "palladium:command",
+            "icon": "minecraft:command_block",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "first_tick_commands": [
+                "adastra planets"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:mod_loaded",
+                        "mod_id": "ad_astra"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "finallanterns:get_y",
+                        "min": 1200,
+                        "max": 1500
+                    }
+                ]
+            }
+        },
+        "nightvision": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:textures/icons/bluelantern_shield.png",
+            "list_index": 2,
+            "bar_color": "green",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "first_tick_commands": [],
+            "last_tick_commands": [],
+            "commands": [
+                "effect give @s minecraft:night_vision 11 1 true"
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:night"
+                            },
+                            {
+                                "type": "palladium:brightness_at_position",
+                                "min_brightness": 0,
+                                "max_brightness": 5
+                            }
+                        ]
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "objective_checker": {
+            "type": "palladium:command",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "first_tick_commands": [
+                "team add balance",
+                "team join balance",
+                "team modify balance color gray"
+            ],
+            "last_tick_commands": [
+                "team leave @s"
+            ],
+            "commands": [
+            ]
+        },
+        "disableouterlayers": {
+            "type": "palladium:hide_body_part",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "body_parts": [
+                "right_arm_overlay",
+                "left_arm_overlay",
+                "right_leg_overlay",
+                "left_leg_overlay",
+                "chest_overlay",
+                "cape"
+            ],
+            "affects_first_person": true,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:animation_timer_ability",
+                        "ability": "enablepls1",
+                        "min": 1,
+                        "max": 60
+                    },
+                    {
+                        "type": "palladium:not",
+                        "conditions": [
+                            {
+                                "type": "palladium:accessory_selected",
+                                "accessory_slot": "final_lanterns:balancelantern",
+                                "accessory": "final_lanterns:balance/blanksuit"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "greenlantern_accessory": {
+            "type": "palladium:render_layer_by_accessory_slot",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "default_layer": "final_lanterns:balancelantern/default",
+            "accessory_slot": "final_lanterns:balancelantern"
+        },
+        "name": {
+            "type": "palladium:name_change",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "name": {
+                "text": "§7Bal§fance"
+            },
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:and",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "armorstore": {
+            "type": "palladium:command",
+            "icon": "minecraft:cookie",
+            "list_index": 2,
+            "title": "armorstore",
+            "bar_color": "green",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "gui_position": [
+                -0.5,
+                -1.5
+            ],
+            "first_tick_commands": ["pocket save"],
+            "last_tick_commands": ["pocket load"],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:or",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_enabled",
+                                "power": "null",
+                                "ability": "balancelantern"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "restrict_slots": {
+            "type": "palladium:restrict_slots",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "slots": [
+                "head",
+                "chest",
+                "legs",
+                "feet"
+            ],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "immunities2": {
+            "type": "palladium:damage_immunity",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "damage_sources": [
+                "minecraft:is_fall",
+                "minecraft:is_explosion",
+                "minecraft:is_drowning",
+                "minecraft:is_fire",
+                "minecraft:is_freezing",
+                "final_lanterns:oxygen"
+            ],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "balancelantern": {
+            "type": "palladium:dummy",
+            "icon": "final_lanterns:textures/icons/slots/yingyang.png",
+            "title": "Balance Bearer",
+            "list_index": 4,
+            "bar_color": "blue",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "gui_position": [
+                0,
+                -1.5
+            ],
+            "description": "Yo fon linging yu fool",
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:toggle",
+                        "cooldown": 0,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ],
+                "unlocking": [
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "null",
+                        "energy_bar": "balance",
+                        "min": 0,
+                        "max": 4000
+                    }
+                ]
+            }
+        },
+        "skilltree": {
+            "type": "palladium:dummy",
+            "icon": "final_lanterns:balancering",
+            "title": "Skill Tree",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "gui_position": [
+                0,
+                -0.5
+            ],
+            "description": "Balance Ring based Abilities",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "strengthtree": {
+            "type": "palladium:dummy",
+            "icon": "final_lanterns:textures/icons/strength.png",
+            "title": "Strength Tree",
+            "hidden": false,
+            "description": "Strength Upgrades                            Base Strength: 1",
+            "hidden_in_bar": false,
+            "gui_position": [
+                -1,
+                -0.5
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "skilltree"
+                    }
+                ]
+            }
+        },
+        "defensetree": {
+            "type": "palladium:dummy",
+            "icon": "final_lanterns:textures/icons/defense.png",
+            "title": "Defense Tree",
+            "hidden": false,
+            "description": "Defense Upgrades                           Base Armor: 10",
+            "hidden_in_bar": false,
+            "gui_position": [
+                1,
+                -0.5
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "skilltree"
+                    }
+                ]
+            }
+        },
+        "flightlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:elytra",
+            "title": "Flight Speed Level 1",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                2,
+                -1
+            ],
+            "description": "null",
+            "attribute": "palladium:flight_speed",
+            "amount": 1.5,
+            "operation": 0,
+            "uuid": "ad9a2979-f36b-40b9-9d30-afe4256045fd",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "defensetree"
+                    }
+                ]
+            }
+        },
+        "armorbase": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/defense.png",
+            "title": "Defense Level 1",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                1,
+                0
+            ],
+            "description": "null",
+            "attribute": "minecraft:generic.armor",
+            "amount": 10,
+            "operation": 0,
+            "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "armorlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/defense.png",
+            "title": "Defense Level 1",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                1,
+                0
+            ],
+            "description": "Defense Upgrade 1                           Total: 10 (+15)",
+            "attribute": "minecraft:generic.armor",
+            "amount": 15,
+            "operation": 0,
+            "uuid": "917cd7a1-d0e4-406d-8076-ee1ba2dcf3bb",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "defensetree"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 15
+                    }
+                ]
+            }
+        },
+        "armorlevel2": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/defense.png",
+            "title": "Defense Level 2",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                1,
+                0.5
+            ],
+            "description": "Defense Upgrade 2                           Total: 10 (+30)",
+            "attribute": "minecraft:generic.armor",
+            "amount": 15,
+            "operation": 0,
+            "uuid": "3b905451-2cc2-4de5-8fc0-b94f4d13f819",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "armorlevel1"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 15
+                    }
+                ]
+            }
+        },
+        "movementspeed1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:iron_boots",
+            "title": "Movement Speed Level 1",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                -2,
+                -1
+            ],
+            "description": "null",
+            "attribute": "minecraft:generic.movement_speed",
+            "amount": 0.02,
+            "operation": 0,
+            "uuid": "735e051a-80d5-48ae-950c-fd77d342709a",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "strengthtree"
+                    }
+                ]
+            }
+        },
+        "strengthlevel1": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/strength.png",
+            "title": "Strength Level 1",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                -1,
+                0
+            ],
+            "description": "Strength Upgrade 1                              Base Strength: 1 (+7)",
+            "attribute": "minecraft:generic.attack_damage",
+            "amount": 7,
+            "operation": 0,
+            "uuid": "be267032-142e-48c0-9b62-d013232168aa",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "strengthtree"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 15
+                    }
+                ]
+            }
+        },
+        "strengthlevel2": {
+            "type": "palladium:attribute_modifier",
+            "icon": "final_lanterns:textures/icons/strength.png",
+            "title": "Strength Level 2",
+            "bar_color": "light_gray",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": -1,
+            "gui_position": [
+                -1,
+                0.5
+            ],
+            "description": "Strength Upgrade 2                              Base Strength: 1 (+17)",
+            "attribute": "minecraft:generic.attack_damage",
+            "amount": 10,
+            "operation": 0,
+            "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "strengthlevel1"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 20
+                    }
+                ]
+            }
+        },
+        "bluewheel": {
+            "type": "palladium:ability_wheel",
+            "icon": "final_lanterns:textures/icons/balance/yingyangforconstructifneeded.png",
+            "title": "Ki Construction",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": false,
+            "list_index": 1,
+            "gui_position": "null",
+            "description": "null",
+            "abilities": [
+                "constructcreation_bostaff",
+                "constructcreation_spear",
+                "constructcreation_fist",
+                "constructcreation_axe",
+                "constructcreation_pickaxe"
+            ],
+            "texture": "null",
+            "disable_mouse_scrolling": false,
+            "disable_center_icon": false,
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:held",
+                        "cooldown": 0,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": false
+                    }
+                ],
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    }
+                ]
+            }
+        },
+        "constructcreation": {
+            "type": "palladium:dummy",
+            "icon": "final_lanterns:textures/icons/balance/yingyangforconstructifneeded.png",
+            "title": "Ki Construction",
+            "hidden": false,
+            "hidden_in_bar": true,
+            "gui_position": [
+                0,
+                0
+            ],
+            "description": "Concentrate and Create different Items with your Ring.",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "skilltree"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 15
+                    }
+                ]
+            }
+        },
+        "constructcreation_bostaff": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:bostaffbalance",
+            "title": "Bostaff",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 5,
+            "gui_position": [
+                0.5,
+                1
+            ],
+            "first_tick_commands": [
+                "give @s final_lanterns:bostaffbalance{CustomTag:balance}"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": true,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "constructcreation_spear": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:spearbalance",
+            "title": "Spear",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 6,
+            "gui_position": [
+                0.5,
+                1.5
+            ],
+            "first_tick_commands": [
+                "give @s final_lanterns:spearbalance{CustomTag:balance}"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": true,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "constructcreation_fist": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:scythebalance",
+            "title": "Scythe",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 7,
+            "gui_position": [
+                0.5,
+                2
+            ],
+            "first_tick_commands": [
+                "give @s final_lanterns:scythebalance{CustomTag:balance}"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": true,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "constructcreation_pickaxe": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:pickaxebalance",
+            "title": "Axe",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 9,
+            "gui_position": [
+                0.5,
+                3
+            ],
+            "first_tick_commands": [
+                "give @s final_lanterns:pickaxebalance{CustomTag:balance}"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": true,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "constructcreation_axe": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:axebalance",
+            "title": "Axe",
+            "bar_color": "blue",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": 9,
+            "gui_position": [
+                0.5,
+                3
+            ],
+            "first_tick_commands": [
+                "give @s final_lanterns:axebalance{CustomTag:balance}"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": true,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "otherglowing": {
+            "type": "palladium:entity_glow",
+            "icon": "minecraft:glow_berries",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "mode": "others",
+            "color": "#a9a9a9",
+            "distance": 20,
+            "property_key": "null",
+            "property_value": "null",
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "damagagepool": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:textures/icons/balance/damaging_area.png",
+            "title": "Destructive Kai",
+            "bar_color": "blue",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": 3,
+            "description": "Disrupt your kai balance, unleashing an AoE blast that damages all entities within a 5-block radius including yourself",
+            "gui_position": [
+                0,
+                1.5
+            ],
+            "first_tick_commands": [],
+            "last_tick_commands": [],
+            "commands": [
+                "effect give @e[distance=..5] minecraft:instant_damage 1 1",
+                "energybar value subtract @s final_lanterns:balance balance 5"
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "healingpool"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 30
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "null",
+                        "energy_bar": "balance",
+                        "min": 1,
+                        "max": 4000
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:toggle",
+                        "key_type": "key_bind",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "healingpool": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:textures/icons/balance/healing_area.png",
+            "title": "Healing Kai",
+            "bar_color": "blue",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": 2,
+            "description": "Use kai to heal your injuries",
+            "gui_position": [
+                0,
+                1
+            ],
+            "first_tick_commands": [],
+            "last_tick_commands": [],
+            "commands": [
+                "effect give @e[distance=..5] minecraft:regeneration 5 3",
+                "energybar value subtract @s final_lanterns:balance balance 4"
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "inflictbalance"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 25
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "null",
+                        "energy_bar": "balance",
+                        "min": 1,
+                        "max": 4000
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:toggle",
+                        "key_type": "key_bind",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "inflictbalance": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:textures/icons/balance/resistancebuff.png",
+            "title": "Refined Body",
+            "bar_color": "blue",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "list_index": 0,
+            "description": "Coat your body with kai and make yourself more resistant to damage for 30 seconds",
+            "gui_position": [
+                0,
+                0.5
+            ],
+            "first_tick_commands": [
+                "effect give @s minecraft:resistance 30 1 true",
+                "energybar value subtract @s final_lanterns:balance balance 1500"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "constructcreation"
+                    },
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 20
+                    },
+                    {
+                        "type": "palladium:energy_bar",
+                        "power": "null",
+                        "energy_bar": "balance",
+                        "min": 1,
+                        "max": 4000
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:action",
+                        "cooldown": 30,
+                        "key_type": "key_bind",
+                        "needs_empty_hand": false,
+                        "allow_scrolling_when_crouching": true
+                    }
+                ]
+            }
+        },
+        "hope_maxlvl2": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:yinyangsword",
+            "list_index": 2,
+            "title": "Balance Max lvl 2",
+            "bar_color": "green",
+            "hidden": false,
+            "description": "Energy Capacity                                  Total: 2000 (+1000)",
+            "hidden_in_bar": false,
+            "gui_position": [
+                0,
+                -2
+            ],
+            "first_tick_commands": [
+                "energybar max set @s final_lanterns:balance balance 3000"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 10
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    },
+                    {
+                        "type": "palladium:not",
+                        "conditions": [
+                            {
+                                "type": "palladium:ability_unlocked",
+                                "power": "null",
+                                "ability": "hope_maxlvl3"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "hope_maxlvl3": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:yinyangsword",
+            "list_index": 2,
+            "title": "Balance Max lvl 3",
+            "bar_color": "green",
+            "hidden": false,
+            "hidden_in_bar": false,
+            "description": "Energy Capacity                                  Total: 2000 (+2000)",
+            "gui_position": [
+                0,
+                -2.5
+            ],
+            "first_tick_commands": [
+                "energybar max set @s final_lanterns:balance balance 4000"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 20
+                    },
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "hope_maxlvl2"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:ability_enabled",
+                        "power": "null",
+                        "ability": "balancelantern"
+                    }
+                ]
+            }
+        },
+        "hoperegen": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:greenlanternbattery",
+            "list_index": 2,
+            "title": "Balance Regen",
+            "bar_color": "green",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "gui_position": [
+                0,
+                3
+            ],
+            "first_tick_commands": [],
+            "last_tick_commands": [],
+            "commands": [
+                "energybar value add @s final_lanterns:balance balance 5"
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:has_effect",
+                        "effect": "final_lanterns:hope_enpowerment"
+                    }
+                ]
+            }
+        },
+        "naturalregen": {
+            "type": "palladium:command",
+            "icon": "final_lanterns:yinyangsword",
+            "list_index": 2,
+            "title": "Natural Balance Regeneration",
+            "bar_color": "green",
+            "hidden": false,
+            "description": "Energy Regeneration                                                                2 Energy/Second",
+            "hidden_in_bar": true,
+            "gui_position": [
+                0,
+                -3
+            ],
+            "first_tick_commands": [],
+            "last_tick_commands": [],
+            "commands": [
+                "energybar value add @s final_lanterns:balance balance 2"
+            ],
+            "conditions": {
+                "unlocking": [
+                    {
+                        "type": "palladium:experience_level_buyable",
+                        "xp_level": 40
+                    },
+                    {
+                        "type": "palladium:ability_unlocked",
+                        "power": "null",
+                        "ability": "hope_maxlvl3"
+                    }
+                ],
+                "enabling": [
+                    {
+                        "type": "palladium:not",
+                        "conditions": [
+                            {
+                                "type": "palladium:is_hovering_or_flying"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "flightstyle": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:iron_sword",
+            "title": "Enhanced Strength lvl 3",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": [
+                0,
+                4
+            ],
+            "attribute": "palladium:heroic_flight_type",
+            "amount": 0,
+            "operation": 0,
+            "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:flightstyle",
+                        "accessory": "final_lanterns:flightstyles/flightone"
+                    }
+                ]
+            }
+        },
+        "flightstyle2": {
+            "type": "palladium:attribute_modifier",
+            "icon": "minecraft:iron_sword",
+            "title": "Enhanced Strength lvl 3",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": [
+                0,
+                4
+            ],
+            "attribute": "palladium:heroic_flight_type",
+            "amount": 1,
+            "operation": 0,
+            "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:flightstyle",
+                        "accessory": "final_lanterns:flightstyles/flighttwo"
+                    }
+                ]
+            }
+        }
+    }
+}

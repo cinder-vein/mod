@@ -1,0 +1,147 @@
+{
+  "name": "Hack and Slash",
+  "background": "minecraft:textures/block/gray_concrete_powder.png",
+  "icon": "minecraft:blaze_rod",
+  "hidden": true,
+  "abilities": {
+    "attributemining":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "palladium:destroy_speed",
+    "amount": 2,
+    "operation": 0,
+    "uuid": "104fd2ff-2bc7-44ab-ac41-e38469f53582"
+    },
+    "attributespeed":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "minecraft:generic.movement_speed",
+    "amount": 0.06,
+    "operation": 0,
+    "uuid": "1869de40-4f45-4de6-94aa-259995946078"
+    },
+    "attributefist":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "minecraft:generic.attack_damage",
+    "amount": 7,
+    "operation": 0,
+    "uuid": "c67f5001-ea1c-4a5a-995d-0abfe8e98d84"
+    },
+    "attributearmor":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "minecraft:generic.armor",
+    "amount": 10,
+    "operation": 0,
+    "uuid": "c9101347-6284-488c-951d-e97ed265e4d7"
+    },
+    "attributehealth":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "minecraft:generic.max_health",
+    "amount": 15,
+    "operation": 0,
+    "uuid": "e4df571f-d898-4a8d-a530-4761567e43a7"
+    },
+    "attributeflight":{
+    "type": "palladium:attribute_modifier",
+    "icon": "minecraft:iron_chestplate",
+    "title": "null",
+    "bar_color": "light_gray",
+    "hidden": false,
+    "hidden_in_bar": false,
+    "list_index": -1,
+    "gui_position": "null",
+    "description": "null",
+    "attribute": "palladium:flight_speed",
+    "amount": 0.5,
+    "operation": 0,
+    "uuid": "498be4fb-af04-42f2-8948-e6ccdc0d99e1"
+    },
+    "effects": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 0,
+      "first_tick_commands": ["effect give @s minecraft:regeneration infinite 1 true",
+                              "effect give @s minecraft:poison infinite 4 true"],
+      "last_tick_commands": [
+        "effect clear @s hunger",
+        "effect clear @s regeneration",
+      "effect clear @s poison",
+    "effect clear @s final_lanterns:berserker"],
+      "commands": [
+        "effect give @s minecraft:hunger 1 1 true",
+        "execute if predicate final_lanterns:berserker run tellraw @s [\"\",{\"text\":\"Blood for blood!\",\"color\":\"dark_red\"}]",
+        "execute if predicate final_lanterns:berserker run tellraw @s [\"\",{\"text\":\"Tear them apart!\",\"color\":\"dark_red\"}]",
+        "execute if predicate final_lanterns:berserker run tellraw @s [\"\",{\"text\":\"The rage consumes me!\",\"color\":\"dark_red\"}]",
+        "execute if predicate final_lanterns:berserker run tellraw @s [\"\",{\"text\":\"No mercy, only blood!\",\"color\":\"dark_red\"}]",
+        "execute if predicate final_lanterns:berserker run tellraw @s [\"\",{\"text\":\"I will not fall!\",\"color\":\"dark_red\"}]"
+      ]
+    },
+    "power.remove": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "superpower remove final_lanterns:effects/berserker @s"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_effect",
+                "effect": "final_lanterns:berserker"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

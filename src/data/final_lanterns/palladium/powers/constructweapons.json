@@ -1,0 +1,8 @@
+{
+    "name": "Construct Weapons",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/green_wool.png",
+    "icon": "final_lanterns:pickaxe_willpower",
+    "abilities": {
+    }
+}

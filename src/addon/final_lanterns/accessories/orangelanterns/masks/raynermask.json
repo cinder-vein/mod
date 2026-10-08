@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:orangelanternmasks",
+    "render_layer": "final_lanterns:orangelantern/masks/rayner",
+    "disable_rendering": true
+  }

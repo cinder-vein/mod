@@ -1,0 +1,1 @@
+superpower add final_lanterns:failsafe @a

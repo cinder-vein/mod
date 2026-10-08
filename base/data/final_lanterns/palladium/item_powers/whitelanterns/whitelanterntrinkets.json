@@ -1,0 +1,7 @@
+{
+    "slot": "trinkets:hand/ring",
+    "item": "final_lanterns:whitelanternring",
+    "power": [
+      "final_lanterns:whitelantern"
+      ]
+  }

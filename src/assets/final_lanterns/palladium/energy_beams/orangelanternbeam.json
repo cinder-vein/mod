@@ -1,0 +1,39 @@
+[
+  {
+    "type": "palladium:laser",
+    "body_part": "right_arm",
+    "glow_color": "#dd6319",
+    "core_color": "#eb6a1b",
+    "glow_opacity": 0.75,
+    "core_opacity": 0.75,
+    "size": [
+      0.3,
+      0.3
+    ],
+    "offset": [
+      -1,
+      -10,
+      0
+    ],
+    "particles": [
+      {
+        "particle_type": "final_lanterns:beamparticle_orange",
+        "amount": 4,
+        "motion": [
+          1,
+          1,
+          1
+        ],
+        "motion_random": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "bloom": 2,
+    "rotation": 45,
+    "rotation_speed": 0,
+    "normal_transparency": false
+  }
+]

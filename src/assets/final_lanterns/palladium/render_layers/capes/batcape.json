@@ -1,0 +1,16 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+      {
+        "model_layer": "final_lanterns:humanoid#cape",
+        "model_type": "palladium:caped_humanoid",
+        "texture": {
+          "base": "final_lanterns:textures/models/skins/yellowlanterns/batman_cape.png"
+        }
+      },
+      {
+        "model_layer": "final_lanterns:cape#greenlantern",
+        "texture": "final_lanterns:textures/models/skins/yellowlanterns/capetopblack.png"
+      }
+    ]
+}

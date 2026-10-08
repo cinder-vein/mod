@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "TTT",
+      "TNT",
+      "TTT"
+  ],
+  "key": {
+      "T": {
+          "tag": "palladium:connector/titanium_ingots"
+      },
+      "N": {
+          "item": "final_lanterns:whitelanternring"
+      }
+  },
+  "result": {
+      "item": "kubejs:whitelanternbattery",
+      "count": 1
+  }
+}

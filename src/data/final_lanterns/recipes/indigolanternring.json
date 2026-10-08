@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " T ",
+        "TGT",
+        " T "
+    ],
+    "key": {
+        "T": {
+            "tag": "palladium:connector/titanium_ingots"
+        },
+        "G": {
+            "item": "final_lanterns:indigostaff"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:indigolanternring",
+        "count": 1
+    }
+}

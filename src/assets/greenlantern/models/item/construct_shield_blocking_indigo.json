@@ -1,7 +1,0 @@
-{
-  "parent": "greenlantern:item/construct_shield_blocking",
-  "textures": {
-    "0": "greenlantern:item/construct/indigo",
-    "particle": "greenlantern:item/construct/indigo"
-  }
-}

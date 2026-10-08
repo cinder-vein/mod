@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "TTT",
+      "VNV",
+      "TTT"
+  ],
+  "key": {
+      "T": {
+          "tag": "palladium:connector/titanium_ingots"
+      },
+      "V": {
+          "item": "final_lanterns:oan_circuit"
+      },
+      "N": {
+          "item": "final_lanterns:goldbatterycore"
+      }
+  },
+  "result": {
+      "item": "kubejs:goldlanternbattery",
+      "count": 1
+  }
+}

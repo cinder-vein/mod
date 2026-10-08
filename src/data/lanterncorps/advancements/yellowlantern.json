@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "Fear the Ring!",
+            "color": "yellow",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Yellow Lanterns Corps"
+        },
+        "icon": {
+            "item": "final_lanterns:yellowlanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

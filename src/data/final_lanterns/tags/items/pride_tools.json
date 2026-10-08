@@ -1,0 +1,12 @@
+{
+    "replace": false,
+    "values":[
+    "kubejs:dagger_pride",
+    "kubejs:greatsword_igris",
+    "kubejs:hammer_pride",
+    "kubejs:scythe_pride",
+    "kubejs:axe_pride",
+    "kubejs:pickaxe_pride",
+    "kubejs:shovel_pride"
+    ]
+}

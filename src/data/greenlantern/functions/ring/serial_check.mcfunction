@@ -1,3 +1,0 @@
-execute if predicate greenlantern:bound_ring_mainhand run function greenlantern:ring/serial_mainhand
-execute if predicate greenlantern:bound_ring_offhand run function greenlantern:ring/serial_offhand
-function greenlantern:ring/curios_check

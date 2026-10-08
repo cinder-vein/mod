@@ -1,0 +1,10 @@
+{
+    "map_color": "minecraft:color_black",
+    "sound_type": "minecraft:ancient_debris",
+    "destroy_time": 50,
+    "max_stack_size": 1,
+    "explosion_resistance": 1200,
+    "render_type": "cutout",
+    "requires_correct_tool_for_drops": false,
+    "register_item": true
+}

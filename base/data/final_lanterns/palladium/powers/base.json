@@ -1,0 +1,9 @@
+{
+    "name": "base",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/white_concrete.png",
+    "icon": "kubejs:whitelanternbattery",
+    "gui_display_type": "list",
+    "abilities": {
+    }
+}

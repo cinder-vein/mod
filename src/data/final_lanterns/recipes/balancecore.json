@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "final_lanterns:centralbatteryshard_balance"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:yingyangbatterycore",
+        "count": 1
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "name": "Lantern Alter",
+    "background": "minecraft:textures/block/gray_concrete_powder.png",
+    "icon": "minecraft:fire_charge",
+    "abilities": {
+        "sfx_esper": {
+            "type": "palladium:command",
+            "icon": "minecraft:command_block",
+            "hidden": true,
+            "first_tick_commands": [
+                "execute if entity @s[tag=Red.Activated] run particle dust 1 0.00 0.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Orange.Activated] run particle dust 1 0.5 0.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Yellow.Activated] run particle dust 1 1 0.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Gold.Activated] run particle dust 1 0.7 0.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Green.Activated] run particle dust 0 1 0.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Blue.Activated] run particle dust 0 0 1.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Purple.Activated] run particle dust 0.5 0 1.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "execute if entity @s[tag=Pink.Activated] run particle dust 1 0.6 1.00 1 ~ ~1 ~ 0.5 1 0.5 1 25 force",
+                "playsound minecraft:block.respawn_anchor.deplete player @s ~ ~ ~ 0.3 0.5"
+            ],
+            "last_tick_commands": [],
+            "commands": [],
+            "conditions": {
+                "enabling": [
+                    {
+                        "type": "palladium:interval",
+                        "active_ticks": 0,
+                        "disabled_ticks": 10
+                    }
+                ]
+            }
+        }
+    }
+}

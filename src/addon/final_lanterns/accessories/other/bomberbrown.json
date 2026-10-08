@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:coats",
+    "render_layer": "final_lanterns:other/bomberbrown",
+    "disable_rendering": false
+}

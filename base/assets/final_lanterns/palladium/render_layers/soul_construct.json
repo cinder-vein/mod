@@ -1,0 +1,10 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": "palladium:humanoid#suit",
+      "texture": "final_lanterns:textures/models/skins/orangelanterns/soul_construct_text.png",
+  "render_type": "glow"
+    }
+  ]
+}

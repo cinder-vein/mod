@@ -1,0 +1,43 @@
+{
+	"credit": "Made by Foi1y",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "final_lanterns:item/red/bloodarrow",
+		"particle": "final_lanterns:item/red/bloodarrow"
+	},
+	"elements": [
+		{
+			"from": [7.70711, 0, -7.29289],
+			"to": [7.70711, 6, 23.70711],
+			"rotation": {"angle": -45, "axis": "z", "origin": [7.70711, 3, 8.70711]},
+			"faces": {
+				"north": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"east": {"uv": [16, 1, 0, 4.5], "texture": "#0"},
+				"south": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"west": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"up": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"down": {"uv": [0, 1, 16, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.70711, 0, -7.29289],
+			"to": [7.70711, 6, 23.70711],
+			"rotation": {"angle": 45, "axis": "z", "origin": [7.70711, 3, 8.20711]},
+			"faces": {
+				"north": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"east": {"uv": [16, 1, 0, 4.5], "texture": "#0"},
+				"south": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"west": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"up": {"uv": [0, 1, 16, 4.5], "texture": "#0"},
+				"down": {"uv": [0, 1, 16, 4.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [112, -49, 6],
+			"translation": [0, -1, 0],
+			"scale": [0.7, 0.7, 0.7]
+		}
+	}
+}

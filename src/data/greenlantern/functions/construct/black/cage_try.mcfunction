@@ -1,1 +1,0 @@
-function greenlantern:construct/black/cage_check

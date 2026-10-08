@@ -1,0 +1,2 @@
+function #final_lanterns:curios_clear_slot
+function final_lanterns:ring/dark_message

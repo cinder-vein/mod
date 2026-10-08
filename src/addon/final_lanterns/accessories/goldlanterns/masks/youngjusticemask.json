@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:goldlanternmasks",
+    "render_layer": "final_lanterns:goldlanterns/masks/yj",
+    "disable_rendering": true
+  }

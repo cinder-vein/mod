@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:indigolanternmasks",
+    "render_layer": "final_lanterns:indigolantern/masks/defaultmask",
+    "disable_rendering": true
+  }

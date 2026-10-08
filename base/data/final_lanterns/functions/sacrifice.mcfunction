@@ -1,0 +1,4 @@
+playsound minecraft:entity.experience_orb.pickup player @s
+scoreboard players add @s rings_sacrificed 1
+title @s[palladium.power=final_lanterns:yellowlantern] actionbar [{"text":"Rings Sacrificed ","color":"yellow","bold":true},{"score":{"name":"@s","objective":"rings_sacrificed"},"color":"yellow","bold":true},{"text":"/10 ","color":"yellow","bold":true}]
+title @s[palladium.power=final_lanterns:greenlantern] actionbar [{"text":"Rings Sacrificed ","color":"green","bold":true},{"score":{"name":"@s","objective":"rings_sacrificed"},"color":"green","bold":true},{"text":"/10 ","color":"green","bold":true}]

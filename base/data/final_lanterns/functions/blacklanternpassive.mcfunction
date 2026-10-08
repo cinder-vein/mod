@@ -1,0 +1,14 @@
+execute as @e[type=minecraft:skeleton,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:zombie,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:drowned,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:stray,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:vex,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:husk,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:slime,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:zombified_piglin,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:wither,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:wither_skeleton,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:phantom,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:hoglin,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:zoglin,team=!necro_army] run team join necro_army @s
+execute as @e[type=minecraft:zombie_villager,team=!necro_army] run team join necro_army @s

@@ -1,0 +1,12 @@
+{
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "equipment": {
+      "mainhand": {
+        "tag": "final_lanterns:lantern_rings",
+        "nbt": "{gl_ob:{b7:1b}}"
+      }
+    }
+  }
+}

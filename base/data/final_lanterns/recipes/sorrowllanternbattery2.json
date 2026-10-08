@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "NNN",
+      "NTN",
+      "NNN"
+  ],
+  "key": {
+      "T": {
+          "item": "kubejs:lanternbatteryunpowered"
+      },
+      "N": {
+          "item": "minecraft:ghast_tear"
+      }
+  },
+  "result": {
+      "item": "kubejs:graylanternbattery",
+      "count": 1
+  },
+  "group": "sorrowllanternbattery"
+}

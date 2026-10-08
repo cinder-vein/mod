@@ -12,14 +12,17 @@ How they come:
 - defeat (the Butcher in the Nether, Nekron in the deep dark below y 0): a boss. Bring it down to 15% and it takes the
   nearest player as its host, if they're worthy (50% of its emotion); otherwise it vanishes.
 
-A host needs no ring: hosting gives the greenlantern:host_<e> power (built in gen_corps.py) with its own skill tree.
-It ends when the host gives the entity up, or when another player draws it out: sneak while holding a Power Battery and
-look at the host for five seconds. The battery becomes an Entity Lantern with the entity sealed inside. Right-click it to
+A host needs no ring: hosting gives the final_lanterns:host_<e> power (built in hosts.py) with its own skill tree.
+It ends when the host gives the entity up, or when another player draws it out: sneak while holding a corps' lantern and
+look at the host for five seconds. The lantern becomes an Entity Lantern with the entity sealed inside. Right-click it to
 release the entity into the world, or to become its host if you're worthy.
+
+One entity per host, and after a host loses theirs (released, drawn out, or taken back) no entity chooses them for an
+hour (gl_ehcd, in seconds). A free entity strengthens the rings of its own color: bearers within 24 blocks recharge.
 """
 import json
 
-from constructs import NS, OWN_ARMY, TARGETS, actionbar, burst, hexcolor, sound, tellraw
+from common import CORPS, NS, actionbar, burst, hexcolor, sound, tellraw
 from systems import EMOTION_OF, SPECTRUM
 
 RING_COLOR = {"green": (46, 200, 70), "yellow": (245, 205, 30), "red": (220, 30, 35), "orange": (250, 130, 20),
@@ -63,6 +66,19 @@ APPEAR = {"bond": 100, "hunt": 60, "defeat": 25}     # % for it to come to you
 BOSS_HEALTH = {"butcher": 400, "nekron": 320}
 MANIFEST_CHANCE = 0.17  # per minute, per entity, while someone can draw it
 EXORCISE_TICKS = 100
+HOST_COOLDOWN = 3600    # seconds after losing an entity before any entity will choose you
+DECLINE_COOLDOWN = 1800  # seconds before an entity you turned away offers itself again
+NEAR_CHARGE = 40        # ring charge per second for a matching bearer within 24 blocks of a free entity
+
+
+def free(k):
+    """Selector arguments for a player entity k may choose: hosting nothing, not turned away, not cooling down."""
+    return f"tag=!gl_host,scores={{gl_edc_{k}=..0,gl_ehcd=..0}}"
+
+
+def wait_message():
+    return tellraw("@s", ["", {"text": "No entity will join you yet: you lost one too recently. ", "color": "gray"},
+                          {"text": "(see your Emotional Spectrum menu)", "color": "dark_gray"}])
 
 
 def emotion_cond(e, pct):
@@ -78,12 +94,12 @@ def emotion_ok(e, pct):
 
 def generate(sizes):
     """sizes: {entity key: (display scale, lift in blocks)} from its model."""
-    """Returns (load, tick, second, functions, files) for the datapack; files maps paths under data/greenlantern/."""
+    """Returns (load, tick, second, functions, files) for the datapack; files maps paths under data/final_lanterns/."""
     fn, files, load, tick, second = {}, {}, [], [], []
     load += ["scoreboard objectives add gl_ent dummy", "scoreboard objectives add gl_eser dummy",
              "scoreboard objectives add gl_exo dummy", "scoreboard objectives add gl_entity trigger",
              "scoreboard objectives add gl_eofft dummy", "scoreboard objectives add gl_lifecd dummy",
-             "scoreboard objectives add gl_takeover dummy",
+             "scoreboard objectives add gl_takeover dummy", "scoreboard objectives add gl_ehcd dummy",
              "execute unless score #entities gl_cfg matches 0.. run scoreboard players set #entities gl_cfg 1"]
     for e in ENTITIES:
         load += [f"scoreboard players add #state_{e.key} gl_ent 0", f"scoreboard players add #host_{e.key} gl_ent 0",
@@ -133,7 +149,7 @@ def generate(sizes):
                  "nether": "in_the_nether"}[e.home]
         minute += [
             f"tag @a remove {cand}",
-            f"execute if score #state_{e.key} gl_ent matches 0 as @a[tag=!gl_host,scores={{gl_edc_{e.key}=..0}}] "
+            f"execute if score #state_{e.key} gl_ent matches 0 as @a[{free(e.key)}] "
             f"at @s if predicate {NS}:entity/{where} {emotion_cond(e, APPEAR[e.kind])} run tag @s add {cand}",
             f"execute if score #state_{e.key} gl_ent matches 0 if predicate {NS}:entity/chance_manifest "
             f"as @r[tag={cand}] at @s run function {NS}:entity/{e.key}/manifest",
@@ -141,6 +157,7 @@ def generate(sizes):
     fn["entity/minute"] = minute
     second += [f"scoreboard players add @a gl_edc_{e.key} 0" for e in ENTITIES]
     second += [f"scoreboard players remove @a[scores={{gl_edc_{e.key}=1..}}] gl_edc_{e.key} 1" for e in ENTITIES]
+    second += ["scoreboard players add @a gl_ehcd 0", "scoreboard players remove @a[scores={gl_ehcd=1..}] gl_ehcd 1"]
 
     # --- shared helpers --------------------------------------------------------------------------
     fn["entity/remove_body"] = [  # as a body (the base mob): take it and its model away without a death
@@ -232,7 +249,7 @@ def generate(sizes):
         # every tick while it's out: face and move, offer or possess
         move = [f"execute on passengers run data modify entity @s Rotation set from entity @e[tag=gl_ent_{k},limit=1] Rotation"]
         if e.kind == "bond":
-            near = f"@a[tag=!gl_host,distance=..40,scores={{gl_edc_{k}=..0}}]"
+            near = f"@a[{free(k)},distance=..40]"
             move += [
                 # drift toward the nearest player who could host it; otherwise turn slowly
                 f"execute as {near} at @s {emotion_cond(e, REQUIRED['bond'])} run tag @s add gl_ent_worthy",
@@ -258,7 +275,8 @@ def generate(sizes):
             prey = f"@a[tag=gl_hunted_{k},limit=1]"
             move += [
                 f"execute if entity {prey} facing entity {prey} eyes run tp @s ^ ^ ^0.3 ~ ~",
-                f"execute as @a[tag=gl_hunted_{k},distance=..2] at @s run function {NS}:entity/{k}/host",
+                f"execute as @a[tag=gl_hunted_{k},tag=!gl_host,scores={{gl_ehcd=..0}},distance=..2] at @s run "
+                f"function {NS}:entity/{k}/host",
                 f"execute as @a[tag=gl_hunted_{k},distance=2..10] run "
                 + actionbar([{"text": f"{e.name} is right behind you...", "color": col}]),
             ]
@@ -287,6 +305,9 @@ def generate(sizes):
             f"execute as @a[tag=gl_host_{k}] unless score @s gl_id = #host_{k} gl_ent run function {NS}:entity/{k}/strip",
             f"execute as @a[tag=gl_host_{k}] run superpower add {NS}:host_{k} @s",
             f"execute as @a[tag=!gl_host_{k}] run superpower remove {NS}:host_{k} @s",
+            # a free entity strengthens the rings of its own color nearby
+            f"execute if score {state} matches 1 at {body} as @a[tag=gl_{e.corps},distance=..24] at @s run "
+            f"function {NS}:entity/{k}/near_ring",
             # a sealed entity breaks free if its lantern stays shut for two hours
             f"execute if score {state} matches 3 run scoreboard players remove #life_{k} gl_ent 1",
             f"execute if score {state} matches 3 if score #life_{k} gl_ent matches ..0 run function {NS}:entity/{k}/break_free",
@@ -326,7 +347,15 @@ def generate(sizes):
                                                                                     f"{e.title}.", "color": col}]),
         ]
         fn[f"entity/{k}/strip"] = [f"superpower remove {NS}:host_{k} @s", f"tag @s remove gl_host_{k}",
-                                   "tag @s remove gl_host"]
+                                   "tag @s remove gl_host", f"scoreboard players set @s gl_ehcd {HOST_COOLDOWN}",
+                                   f"clear @s #{NS}:host_constructs{{fl_host:1b}}", "tag @s remove gl_living_lantern"]
+        corps = CORPS[e.corps]
+        fn[f"entity/{k}/near_ring"] = [  # as a bearer of the entity's color near it
+            f"energybar value add @s {NS}:{corps['power']} {corps['bar']} {NEAR_CHARGE}",
+            f"particle minecraft:dust {e.rgb[0] / 255:.2f} {e.rgb[1] / 255:.2f} {e.rgb[2] / 255:.2f} 1 ~ ~1 ~ 0.4 0.6 0.4 0 "
+            "4 force",
+            actionbar([{"text": f"{e.name} is near: your ring drinks its light.", "color": col}]),
+        ]
 
         # bond: the offer
         if e.kind == "bond":
@@ -358,21 +387,22 @@ def generate(sizes):
             + tellraw("@s", ["", {"text": f"{e.name} is gone.", "color": "gray"}]),
             f"execute if entity @s[tag=gl_eoffer_{k},tag=gl_host] run "
             + tellraw("@s", ["", {"text": "You already host an entity.", "color": "gray"}]),
-            f"execute if entity @s[tag=gl_eoffer_{k},tag=!gl_host] if score {state} matches 1 at @s run "
-            f"function {NS}:entity/{k}/host",
+            f"execute if entity @s[tag=gl_eoffer_{k},tag=!gl_host,scores={{gl_ehcd=1..}}] run {wait_message()}",
+            f"execute if entity @s[tag=gl_eoffer_{k},tag=!gl_host,scores={{gl_ehcd=..0}}] if score {state} matches 1 at @s "
+            f"run function {NS}:entity/{k}/host",
             f"tag @s remove gl_eoffer_{k}",
         ]
         fn[f"entity/{k}/decline"] = [
             f"execute if entity @s[tag=gl_eoffer_{k}] run "
             + tellraw("@s", ["", {"text": f"{e.name} turns away from you.", "color": col, "italic": True}]),
-            f"tag @s remove gl_eoffer_{k}", f"scoreboard players set @s gl_edc_{k} 1800",
+            f"tag @s remove gl_eoffer_{k}", f"scoreboard players set @s gl_edc_{k} {DECLINE_COOLDOWN}",
         ]
 
         # defeat: worn down, it takes the nearest worthy player
         if e.kind == "defeat":
             fn[f"entity/{k}/yield"] = [  # as and at the boss
                 "tag @a remove gl_ent_victor",
-                f"tag @p[distance=..24,tag=!gl_host] add gl_ent_victor",
+                "tag @p[distance=..24,tag=!gl_host,scores={gl_ehcd=..0}] add gl_ent_victor",
                 f"execute as @a[tag=gl_ent_victor] {emotion_cond(e, REQUIRED['defeat'])} run tag @s add gl_ent_worthy",
                 f"execute as @a[tag=gl_ent_worthy,limit=1] at @s run function {NS}:entity/{k}/host",
                 f"execute unless entity @a[tag=gl_ent_worthy] run function {NS}:entity/{k}/scorn",
@@ -432,7 +462,6 @@ def generate(sizes):
         fn[f"entity/{k}/release"] = [
             f"function {NS}:entity/{k}/strip",
             f"scoreboard players set {state} 0", f"scoreboard players set #host_{k} gl_ent 0",
-            f"scoreboard players set @s gl_edc_{k} 3600",
             burst_e(3.0, "1 2 1", 200), sound("minecraft:block.beacon.deactivate", 0.6),
             tellraw("@s", ["", {"text": f"{e.name} leaves you and returns to the world.", "color": col}]),
         ]
@@ -465,7 +494,7 @@ def generate(sizes):
                  f"scoreboard players set #fresh gl_tmp 0",
                  f"execute if score {state} matches 3 if score #s gl_tmp = #seal_{k} gl_ent run scoreboard players set #fresh gl_tmp 1")
         empty_lantern = [f"execute if score #fresh gl_tmp matches 0 run item replace entity @s weapon.mainhand with "
-                         f"{NS}:{e.corps}_power_battery",
+                         f"{corps['battery']}",
                          "execute if score #fresh gl_tmp matches 0 run "
                          + tellraw("@s", ["", {"text": "The lantern is empty: the entity broke free long ago.",
                                                "color": "gray"}])]
@@ -485,10 +514,12 @@ def generate(sizes):
                              {"text": " (see your Emotional Spectrum menu).", "color": "gray"}]),
             "execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity @s[tag=gl_host] run "
             + tellraw("@s", ["", {"text": "You already host an entity.", "color": "gray"}]),
-            f"execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 unless entity @s[tag=gl_host] run "
-            f"item replace entity @s weapon.mainhand with {NS}:{e.corps}_power_battery",
-            f"execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 unless entity @s[tag=gl_host] at @s "
-            f"run function {NS}:entity/{k}/host",
+            "execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity "
+            f"@s[tag=!gl_host,scores={{gl_ehcd=1..}}] run {wait_message()}",
+            "execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity "
+            f"@s[tag=!gl_host,scores={{gl_ehcd=..0}}] run item replace entity @s weapon.mainhand with {corps['battery']}",
+            "execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity "
+            f"@s[tag=!gl_host,scores={{gl_ehcd=..0}}] at @s run function {NS}:entity/{k}/host",
         ]
         fn[f"entity/{k}/lantern_release"] = [
             f"execute unless predicate {NS}:entity/lantern_{k} run "
@@ -497,7 +528,7 @@ def generate(sizes):
             *[f"execute if predicate {NS}:entity/lantern_{k} run {line}" for line in fresh],
             *[f"execute if predicate {NS}:entity/lantern_{k} run {line}" for line in empty_lantern],
             f"execute if score #fresh gl_tmp matches 1 run item replace entity @s weapon.mainhand with "
-            f"{NS}:{e.corps}_power_battery",
+            f"{corps['battery']}",
             f"execute if score #fresh gl_tmp matches 1 run scoreboard players set {state} 0",
             f"execute if score #fresh gl_tmp matches 1 run {burst_e(3.0, '1 2 1', 200)}",
             "execute if score #fresh gl_tmp matches 1 run "
@@ -556,7 +587,7 @@ def generate(sizes):
     fn["entity/lantern_use"] = use
 
     # --- drawing an entity out with a lantern ------------------------------------------------------
-    # Sneak while holding a Power Battery and look at a host within 6 blocks for five seconds.
+    # Sneak while holding a corps' lantern and look at a host within 6 blocks for five seconds.
     tick += [
         f"execute as @a[predicate={NS}:entity/sneaking,predicate={NS}:entity/holding_battery] at @s if entity "
         f"@a[tag=gl_host,distance=0.1..6] run function {NS}:entity/exorcise",
@@ -586,6 +617,18 @@ def generate(sizes):
     fn["entity/exorcise_done"] = ["scoreboard players set @s gl_exo 0"] + [
         f"execute if entity @a[tag=gl_exo_target,tag=gl_host_{e.key}] run function {NS}:entity/{e.key}/sealed"
         for e in ENTITIES] + ["tag @a remove gl_exo_target"]
+
+    # A New Corps' road to Parallax: sacrifice ten rings to the yellow lantern and Parallax takes you, if it's free
+    fn["entity/parallax/sacrifice"] = [  # as and at the player (from the patched ring_sacrifice function)
+        "scoreboard players set #ok gl_tmp 0",
+        "execute if score #state_parallax gl_ent matches 0..1 if entity @s[tag=!gl_host,scores={gl_ehcd=..0}] run "
+        "scoreboard players set #ok gl_tmp 1",
+        f"execute if score #ok gl_tmp matches 1 run function {NS}:entity/parallax/host",
+        "execute if score #ok gl_tmp matches 1 run advancement grant @s only lanterncorps:parallax",
+        "execute if score #ok gl_tmp matches 0 run " + tellraw("@s", [
+            "", {"text": "Parallax does not answer your sacrifice: ", "color": "yellow"},
+            {"text": "it is bound elsewhere, or you can't take an entity right now.", "color": "gray"}]),
+    ]
 
     # Nekron's risen dead last 30 seconds
     tick += ["scoreboard players remove @e[tag=gl_boss_minion] gl_life 1",

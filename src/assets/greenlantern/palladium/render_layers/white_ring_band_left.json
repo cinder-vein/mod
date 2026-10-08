@@ -1,8 +1,0 @@
-{
-  "model_layer": {
-    "normal": "greenlantern:player#lantern_ring_left",
-    "slim": "greenlantern:player#lantern_ring_left_slim"
-  },
-  "texture": "greenlantern:textures/models/ring/white_band.png",
-  "render_type": "solid"
-}

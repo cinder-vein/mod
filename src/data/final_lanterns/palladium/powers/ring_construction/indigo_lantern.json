@@ -1,0 +1,90 @@
+{
+  "name": "X",
+  "icon": "minecraft:nether_star",
+  "background": "minecraft:textures/block/red_wool.png",
+  "gui_display_type": "tree",
+  "abilities": {
+    "Power.Remove.Timer": {
+      "type": "palladium:animation_timer",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "start_value": 0,
+      "max_value": 45
+    },
+    "construct_end": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "kill @s",
+        "function final_lanterns:ring_construction/indigo_ring"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_integer_property",
+            "power": "null",
+            "ability": "Power.Remove.Timer",
+            "property": "value",
+            "min": 45,
+            "max": 45
+          }
+        ]
+      }
+    },
+    "indigo_particles": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "particle minecraft:dust 0.5 0.2 1 1.5 ~ ~0.5 ~ 0.1 0.1 0.1 0.5 30"
+      ]
+    },
+    "indigo_sound": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "execute as @e[distance=..30] run playsound minecraft:block.beacon.activate player @s ~ ~ ~ 1.2 2"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:interval",
+            "active_ticks": 10,
+            "disabled_ticks": 10
+          }
+        ]
+      }
+    }
+  }
+}

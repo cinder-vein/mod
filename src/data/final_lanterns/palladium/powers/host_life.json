@@ -1,0 +1,1537 @@
+{
+  "name": {
+    "translate": "power.final_lanterns.host_life"
+  },
+  "icon": "minecraft:nether_star",
+  "background": "minecraft:textures/block/black_concrete.png",
+  "gui_display_type": "tree",
+  "primary_color": "#EBF2FA",
+  "secondary_color": "#5E6064",
+  "persistent_data": true,
+  "energy_bars": {
+    "entity_power": {
+      "max": {
+        "type": "score",
+        "objective": "glhmax_life",
+        "fallback": 4000
+      },
+      "auto_increase_per_tick": 3,
+      "color": "#EBF2FA"
+    }
+  },
+  "abilities": {
+    "host_root": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.host_root"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.host_root.description"
+      },
+      "icon": "minecraft:nether_star",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0
+      ]
+    },
+    "host_health": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-c94709c9b0ad",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_armor": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-71b1885c4a46",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_toughness": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-4afcb466db84",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_aura": {
+      "type": "gravecore:particle_aura",
+      "count": 3,
+      "start_hex": "#EBF2FA",
+      "end_hex": "#FFFFFF",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.25,
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_glow": {
+      "type": "palladium:entity_glow",
+      "mode": "self",
+      "color": "#EBF2FA",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:is_flying"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:hosts/life",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit_skin": {
+      "type": "palladium:hide_body_part",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "head_overlay"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_fill": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "energybar value add @s final_lanterns:host_life entity_power 100000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_vitality_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_vitality_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_vitality_1.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_vitality_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_vitality_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_vitality_2.description"
+      },
+      "icon": "minecraft:enchanted_golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_vitality_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "vitality_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-83f7f44f0088",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "vitality_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-dae68f7007c5",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_might_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_might_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_might_1.description"
+      },
+      "icon": "minecraft:iron_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_might_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_might_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_might_2.description"
+      },
+      "icon": "minecraft:netherite_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_might_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "might_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-68b1c8e53f28",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_1_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-1ab741bfd6a3",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-290f9bc13ec6",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-f497b2c49020",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_flight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_flight"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_flight.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.0,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-a2fc9cc5c94a",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "flight_flexibility": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_flexibility",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-fb5add83d8fc",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "heroic_flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-c665ced90bf9",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_passive": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_passive"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_passive.description"
+      },
+      "icon": "minecraft:totem_of_undying",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "eternal_life": {
+      "type": "palladium:immortality",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_passive"
+          },
+          {
+            "type": "palladium:has_tag",
+            "tag": "gl_life_ready"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "eternal_life_revival": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:instant_health 1 3 true",
+        "effect give @s minecraft:regeneration 10 2 true",
+        "effect give @s minecraft:absorption 20 3 true",
+        "particle minecraft:totem_of_undying ~ ~1 ~ 0.6 1 0.6 0.4 120 force",
+        "tag @s remove gl_life_ready",
+        "scoreboard players set @s gl_lifecd 600",
+        "title @s actionbar {\"text\": \"Life will not let you go.\", \"color\": \"white\"}",
+        "playsound minecraft:item.totem.use player @a[distance=..24] ~ ~ ~ 1 1.2"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_passive"
+          },
+          {
+            "type": "palladium:has_tag",
+            "tag": "gl_life_ready"
+          },
+          {
+            "type": "palladium:health",
+            "max_health": 1.5
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_life_wave": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_life_wave"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_life_wave.description"
+      },
+      "icon": "minecraft:glistering_melon_slice",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "life_wave": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @e[distance=..10,type=!minecraft:item,type=!minecraft:experience_orb] minecraft:instant_health 1 1 true",
+        "particle minecraft:end_rod ~ ~1 ~ 4 1 4 0.05 150 force",
+        "playsound minecraft:block.beacon.activate player @a[distance=..24] ~ ~ ~ 1 1.4"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 160
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_life_wave"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 150
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 150
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.life_wave"
+      },
+      "icon": "final_lanterns:textures/gui/ability/life_aura_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.life_wave.description"
+      }
+    },
+    "skill_regrowth": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_regrowth"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_regrowth.description"
+      },
+      "icon": "minecraft:bone_meal",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_life_wave"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "regrowth": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:grass_block replace minecraft:dirt",
+        "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:grass_block replace minecraft:coarse_dirt",
+        "fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 minecraft:moss_block replace minecraft:cobblestone",
+        "particle minecraft:happy_villager ~ ~0.5 ~ 5 0.5 5 0 200 force",
+        "playsound minecraft:item.bone_meal.use player @a[distance=..24] ~ ~ ~ 1 1.0"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 40
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_regrowth"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 60
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 60
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.regrowth"
+      },
+      "icon": "final_lanterns:textures/gui/ability/life_growth_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.regrowth.description"
+      }
+    },
+    "skill_breath_of_life": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_breath_of_life"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_breath_of_life.description"
+      },
+      "icon": "minecraft:totem_of_undying",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_regrowth"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "breath_of_life": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @a[distance=..12] minecraft:absorption 60 3 true",
+        "effect give @a[distance=..12] minecraft:regeneration 10 1 true",
+        "particle minecraft:end_rod ~ ~1 ~ 3 1 3 0.02 100 force",
+        "playsound minecraft:item.totem.use player @a[distance=..24] ~ ~ ~ 1 1.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 600
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_breath_of_life"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 200
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 200
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.breath_of_life"
+      },
+      "icon": "final_lanterns:textures/gui/ability/healing_touch_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 4,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.breath_of_life.description"
+      }
+    },
+    "skill_light_of_creation": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_light_of_creation"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_light_of_creation.description"
+      },
+      "icon": "minecraft:nether_star",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_breath_of_life"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "light_of_creation": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "particle minecraft:end_rod ~ ~1 ~ 8 3 8 0.05 500 force",
+        "particle minecraft:flash ~ ~1 ~ 0 0 0 0 3 force",
+        "effect give @e[distance=..20,type=!minecraft:item,type=!minecraft:experience_orb] minecraft:instant_health 1 3 true",
+        "effect give @a[distance=..20] minecraft:regeneration 20 1 true",
+        "playsound minecraft:block.beacon.activate player @a[distance=..24] ~ ~ ~ 1 0.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_light_of_creation"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 600
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 600
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.light_of_creation"
+      },
+      "icon": "final_lanterns:textures/gui/ability/overload_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 5,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.light_of_creation.description"
+      }
+    },
+    "skill_beam": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_beam.description"
+      },
+      "icon": "final_lanterns:textures/icons/white/whitelanternbeam.png",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "beam": {
+      "type": "palladium:energy_beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "white",
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 5
+      },
+      "icon": "final_lanterns:textures/icons/white/whitelanternbeam.png",
+      "list_index": 0,
+      "energy_beam": "final_lanterns:whitelanternbeam",
+      "damage": 0,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "commands_on_block_hit": [
+        "effect give @e[distance=..1] minecraft:instant_health 2 255 true",
+        "effect give @e[distance=..1] minecraft:regeneration 2 255 true"
+      ],
+      "commands_on_entity_hit": [
+        "effect give @e[distance=..1] minecraft:instant_health 2 255 true",
+        "effect give @e[distance=..1] minecraft:regeneration 2 255 true"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 5
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_beam"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.beam.description"
+      }
+    },
+    "beam_aim": {
+      "type": "palladium:aim",
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "beam"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_constructs": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_constructs"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_constructs.description"
+      },
+      "icon": "final_lanterns:greatsword_willpower",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_beam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "construct_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:greatsword_willpower{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_0"
+      },
+      "icon": "final_lanterns:greatsword_willpower",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:scytheyellow{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_1"
+      },
+      "icon": "final_lanterns:scytheyellow",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:red_trident{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_2"
+      },
+      "icon": "final_lanterns:red_trident",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:axeorange{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_3"
+      },
+      "icon": "final_lanterns:axeorange",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:hammerblue{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_4"
+      },
+      "icon": "final_lanterns:hammerblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_5": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:bowpink{CustomTag:white,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_5"
+      },
+      "icon": "final_lanterns:bowpink",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_6": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:lovearrow{CustomTag:white,fl_host:1b} 4",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_6"
+      },
+      "icon": "final_lanterns:lovearrow",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_7": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "item replace entity @s weapon.offhand with final_lanterns:shield{CustomTag:white,fl_host:1b}",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_life.construct_7"
+      },
+      "icon": "final_lanterns:shield",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:empty_slot",
+            "slot": "offhand"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "constructs": {
+      "type": "palladium:ability_wheel",
+      "abilities": [
+        "construct_0",
+        "construct_1",
+        "construct_2",
+        "construct_3",
+        "construct_4",
+        "construct_5",
+        "construct_6",
+        "construct_7"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held"
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.constructs"
+      },
+      "icon": "final_lanterns:greatsword_willpower",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1
+    },
+    "skill_forge": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_forge"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_forge.description"
+      },
+      "icon": "final_lanterns:whitelanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ]
+      }
+    },
+    "forge_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/life/forge"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 6000
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_forge"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 3000
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 3000
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.forge_ring"
+      },
+      "icon": "final_lanterns:whitelanternring",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.forge_ring.description"
+      }
+    },
+    "skill_empower": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_empower"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_empower.description"
+      },
+      "icon": "kubejs:whitelanternbattery",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "empower_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/life/empower"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 400
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 60
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.empower_ring"
+      },
+      "icon": "kubejs:whitelanternbattery",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 6,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.empower_ring.description"
+      }
+    },
+    "skill_lantern": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_lantern"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_lantern.description"
+      },
+      "icon": "final_lanterns:whitelanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "living_lantern": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_living_lantern"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_living_lantern"
+      ],
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 1
+      },
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_lantern"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 1
+          }
+        ]
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.living_lantern"
+      },
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 7,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.living_lantern.description"
+      }
+    },
+    "skill_reserves": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_reserves"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_reserves.description"
+      },
+      "icon": "minecraft:glowstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_wellspring": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_life.skill_wellspring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_life.skill_wellspring.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_reserves"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "reserves_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glhmax_life dummy",
+        "scoreboard players set @s glhmax_life 6000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_reserves"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "wellspring_regen": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": -3
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_wellspring"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "release": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:entity/release_ask"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 40
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.release"
+      },
+      "icon": "final_lanterns:textures/gui/ability/revoke_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 9,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.release.description"
+      }
+    },
+    "emotions": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 20
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.emotions"
+      },
+      "icon": "final_lanterns:textures/gui/ability/emotional_sight_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.emotions.description"
+      }
+    },
+    "mortal_form": {
+      "type": "palladium:command",
+      "first_tick_commands": [],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_life.mortal_form"
+      },
+      "icon": "final_lanterns:textures/gui/ability/suit_up_life.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 11,
+      "description": {
+        "translate": "ability.final_lanterns.host_life.mortal_form.description"
+      }
+    }
+  }
+}

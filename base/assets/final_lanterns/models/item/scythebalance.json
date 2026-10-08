@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "final_lanterns:item/balance/constructscythe"
+  }
+}

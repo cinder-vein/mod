@@ -1,0 +1,27 @@
+{
+	"credit": "Made by Foi1y",
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "final_lanterns:item/gray/scythe"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 45],
+			"translation": [0, -1.25, 0],
+			"scale": [1.5, 1.5, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -45],
+			"translation": [0, -1.25, 0],
+			"scale": [1.5, 1.5, 1]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -60, 48],
+			"scale": [1.5, 1.5, 1]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 110, -48],
+			"scale": [1.5, 1.5, 1]
+		}
+	}
+}

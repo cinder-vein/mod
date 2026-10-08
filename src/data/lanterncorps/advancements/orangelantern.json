@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "This advancement is Mine!",
+            "color": "gold",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Orange Lantern Corps"
+        },
+        "icon": {
+            "item": "final_lanterns:orangelanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

@@ -1,0 +1,10 @@
+{
+    "type": "palladium:sword",
+    "max_stack_size": 1,
+    "rarity": "uncommon",
+    "is_fire_resistant": true,
+    "tier": "minecraft:iron",
+    "base_damage": 4.5,
+    "attack_speed": -2.7,
+    "tooltip": ["Non-Canon"]
+}

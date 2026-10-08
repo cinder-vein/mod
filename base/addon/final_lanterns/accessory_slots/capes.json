@@ -1,0 +1,99 @@
+{
+    "icon": "final_lanterns:textures/icons/slots/cape.png",
+    "allows_multiple": false,
+    "menu_visibility": {
+        "type": "palladium:or",
+        "conditions": [
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:bluelantern",
+              "ability": "bluelantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:blacklantern",
+              "ability": "blacklantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:balance",
+              "ability": "balancelantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:corruptedfate",
+              "ability": "corruptedfate"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:fatebreakerlantern",
+              "ability": "fatebreaker"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:goldlantern",
+              "ability": "goldlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:greenlantern",
+              "ability": "greenlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:indigolantern",
+              "ability": "indigolantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:orangelantern",
+              "ability": "orangelantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:pinklantern",
+              "ability": "pinklantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:pridelantern",
+              "ability": "greenlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:redlantern",
+              "ability": "redlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:sorrowlantern",
+              "ability": "lantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:starheart",
+              "ability": "greenlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:whitelantern",
+              "ability": "whitelantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:yellowlantern",
+              "ability": "yellowlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:yellowlantern",
+              "ability": "yellowlantern"
+          },
+          {
+              "type": "palladium:ability_enabled",
+              "power": "final_lanterns:mischieflantern",
+              "ability": "mischieflantern"
+          }
+        ]
+    }
+}

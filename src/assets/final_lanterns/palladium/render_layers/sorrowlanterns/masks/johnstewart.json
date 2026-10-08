@@ -1,0 +1,56 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+    {
+      "model_layer": "palladium:humanoid#tight_suit",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/sorrowlanterns/#SLIM/johnstewart_sorrow.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/greentransform/transformation_#TIMER.png"
+          }
+        ],
+        "variables": {
+          "TIMER": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:sorrowlantern",
+            "ability": "enablepls1",
+            "property": "value"
+          },
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/sorrowlanterns/#SLIM/gayampellight.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/greentransform/transformation_#GLOW_HEL.png"
+          }
+        ],
+        "variables": {
+          "GLOW_HEL": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:sorrowlantern",
+            "ability": "enablepls",
+            "property": "value"
+          },
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      },
+      "render_type": "glow"
+    }
+    ]
+}

@@ -1,0 +1,59 @@
+{
+  "parent": "final_lanterns:block/greenlanternbattery",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "final_lanterns:block/greenlanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "final_lanterns:block/yellowlanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "final_lanterns:block/redlanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "final_lanterns:block/orangelanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "final_lanterns:block/bluelanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "final_lanterns:block/pinklanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "final_lanterns:item/indigostaff"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "final_lanterns:block/whitelanternbattery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "final_lanterns:block/blacklanternbattery"
+    }
+  ]
+}

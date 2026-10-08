@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:orangelantern",
+    "render_layer": "final_lanterns:orangelantern/guygardner",
+    "disable_rendering": true
+  }

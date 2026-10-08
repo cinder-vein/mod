@@ -1,0 +1,14 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+        "model_layer": "final_lanterns:indigostaff#greenlantern",
+        "texture": "final_lanterns:textures/item/indigo/indigostaff.png"
+    },
+    {
+        "model_layer": "final_lanterns:indigostaffcore#greenlantern",
+        "texture": "final_lanterns:textures/item/indigo/indigocore.png",
+        "render_type": "glow"
+    }
+  ]
+}

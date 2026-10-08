@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "final_lanterns:centralbatteryshard_green"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:greenbatterycore",
+        "count": 1
+    }
+}

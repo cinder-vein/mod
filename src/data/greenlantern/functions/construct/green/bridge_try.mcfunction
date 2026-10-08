@@ -1,1 +1,0 @@
-function greenlantern:construct/green/bridge_check

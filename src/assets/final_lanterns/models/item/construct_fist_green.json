@@ -1,0 +1,7 @@
+{
+  "parent": "final_lanterns:item/construct_fist_base",
+  "textures": {
+    "0": "final_lanterns:item/construct/green",
+    "particle": "final_lanterns:item/construct/green"
+  }
+}

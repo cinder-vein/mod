@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " T ",
+        "TGT",
+        " T "
+    ],
+    "key": {
+        "T": {
+            "item": "minecraft:iron_ingot"
+        },
+        "G": {
+            "item": "grave.core:advanced_motherboard"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:oan_circuit",
+        "count": 1
+    }
+}

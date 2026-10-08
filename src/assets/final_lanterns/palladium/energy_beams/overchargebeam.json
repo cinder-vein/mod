@@ -1,0 +1,15 @@
+[
+  {
+    "type": "palladium:laser",
+    "body_part": "right_arm",
+    "glow_color": "#228B22",
+    "glow_opacity": 1,
+    "core_opacity": 0,
+    "size": [0.3, 0.3],
+    "offset": [-1, -10, 0],
+    "bloom": 1,
+    "rotation":45,
+    "rotation_speed":0,
+    "normal_transparency": false
+  }
+]

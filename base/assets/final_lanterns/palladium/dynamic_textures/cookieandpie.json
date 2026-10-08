@@ -1,0 +1,10 @@
+{
+    "base": "final_lanterns:textures/icons/slots/whitelantern_#spectrum.png",
+    "variables": {
+        "spectrum": {
+            "type": "palladium:objective_score",
+            "objective": "lantern.color",
+            "min_score": 0
+        }
+    }
+}

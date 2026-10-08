@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "final_lanterns:greenlanternring",
+    "final_lanterns:yellowlanternring",
+    "final_lanterns:redlanternring",
+    "final_lanterns:orangelanternring",
+    "final_lanterns:bluelanternring",
+    "final_lanterns:pinklanternring",
+    "final_lanterns:indigolanternring",
+    "final_lanterns:whitelanternring",
+    "final_lanterns:blacklanternring"
+  ]
+}

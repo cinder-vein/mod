@@ -1,0 +1,50 @@
+{
+    "name": "Crystal Stun",
+    "persistent_data": true,
+    "background": "minecraft:textures/block/blue_wool.png",
+    "icon": "final_lanterns:textures/icons/slots/bluelantern1.png",
+    "gui_display_type": "tree",
+    "abilities": {
+        "render_crystals": {
+            "type": "palladium:render_layer",
+            "icon": "minecraft:blaze_rod",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "render_layer": "final_lanterns:pinklanterns/crystalstun"
+        },
+        "slowness": {
+            "type": "palladium:command",
+            "icon": "minecraft:command_block",
+            "title": "null",
+            "bar_color": "light_gray",
+            "hidden": true,
+            "hidden_in_bar": true,
+            "list_index": -1,
+            "gui_position": "null",
+            "description": "null",
+            "first_tick_commands": [
+                "effect give @s minecraft:slowness infinite 100 true",
+                "effect give @s minecraft:jump_boost infinite 128 true"
+            ],
+            "last_tick_commands": [
+                "superpower remove final_lanterns:crystalstun @s",
+                "effect clear @s minecraft:slowness",
+                "effect clear @s minecraft:jump_boost"
+            ],
+            "commands": [
+            ],
+            "conditions": {
+                "enabling": 
+                {
+                    "type": "palladium:has_effect",
+                    "effect": "final_lanterns:crystal_stun"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "armor_material": "minecraft:diamond",
+    "creative_mode_tab": [
+      "minecraft:combat"
+    ],
+    "chest": {
+      "item_name": "black_bulls_robe",
+        "armor_renderer": "bc_test_1:black_bulls_robe"
+    }
+}

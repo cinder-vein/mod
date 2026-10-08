@@ -1,0 +1,4 @@
+function final_lanterns:ring/store_giver
+execute store result score #given gl_tmp run loot give @s loot final_lanterns:rings/giver_green
+execute if score #given gl_tmp matches 0 at @s run loot spawn ~ ~ ~ loot final_lanterns:rings/giver_green
+execute if score #given gl_tmp matches 0 at @s run data merge entity @e[type=minecraft:item,distance=..1.5,nbt={Item:{tag:{gl_gv:1b}}},limit=1,sort=nearest] {Age:-32768s}

@@ -1,5 +1,6 @@
 {
   "values": [
-    "greenlantern:load"
+    "final_lanterns:load",
+    "final_lanterns:fl/load"
   ]
 }

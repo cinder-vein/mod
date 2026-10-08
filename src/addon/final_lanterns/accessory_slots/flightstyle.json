@@ -1,0 +1,45 @@
+{
+    "icon": "final_lanterns:textures/icons/flight.png",
+    "allows_multiple": false,
+    "menu_visibility": {
+        "type": "palladium:or",
+        "conditions": [
+          {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+          },
+          {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:yellowlantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:whitelantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:bluelantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:redlantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:orangelantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:pinklantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:indigolantern"
+        },
+        {
+            "type": "palladium:has_power",
+            "power": "final_lanterns:goldlantern"
+        }
+        ]
+    }
+}

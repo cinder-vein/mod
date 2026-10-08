@@ -1,0 +1,9 @@
+{
+    "type": "palladium:bow",
+    "velocity": 3,
+    "tier": "final_lanterns:bow",
+    "max_stack_size": 1,
+    "inaccuracy": 1,
+    "use_duration": 72000,
+    "projectiles": "final_lanterns:bowpink_arrows"
+}

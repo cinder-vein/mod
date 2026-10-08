@@ -1,1 +1,0 @@
-function greenlantern:construct/orange/missiles_check

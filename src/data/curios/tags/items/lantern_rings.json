@@ -1,0 +1,23 @@
+{
+    "replace": false,
+    "drop_rule": "ALWAYS_KEEP",
+    "values": [
+        "final_lanterns:greenlanternring",
+        "final_lanterns:yellowlanternring",
+        "final_lanterns:bluelanternring",
+        "final_lanterns:redlanternring",
+        "final_lanterns:orangelanternring",
+        "final_lanterns:pinklanternring",
+        "final_lanterns:indigolanternring",
+        "final_lanterns:goldlanternring",
+        "final_lanterns:djinnlanternring",
+        "final_lanterns:sorrowlanternring",
+        "final_lanterns:pridelanternring",
+        "final_lanterns:whitelanternring",
+        "final_lanterns:starheartring",
+        "final_lanterns:corruptedfatering",
+        "final_lanterns:balancering",
+        "final_lanterns:mischiefring",
+        "final_lanterns:blacklanternring"
+    ]
+}

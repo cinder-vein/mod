@@ -1,0 +1,59 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/greenlanterns/#SLIM/foi1ysuit.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/greentransform/transformation_#TIMER.png"
+          }
+        ],
+        "variables": {
+          "TIMER": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:greenlantern",
+            "ability": "enablepls1",
+            "property": "value"
+          },
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "type": "palladium:skin_overlay",
+      "texture": {
+        "base": "final_lanterns:textures/models/skins/greenlanterns/#SLIM/greenlight.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "final_lanterns:textures/models/alpha_masks/greenlight/transformation_#GLOW_HEL.png"
+          }
+        ],
+        "variables": {
+          "GLOW_HEL": {
+            "type": "palladium:ability_integer_property",
+            "power": "final_lanterns:greenlantern",
+            "ability": "enablepls",
+            "property": "value"
+          },
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      },
+      "render_type": "glow"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "final_lanterns:block/centralbatterycore_gold"
+  }
+}

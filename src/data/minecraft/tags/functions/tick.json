@@ -1,5 +1,7 @@
 {
   "values": [
-    "greenlantern:tick"
+    "final_lanterns:tick",
+    "final_lanterns:construct",
+    "final_lanterns:fl/tick"
   ]
 }

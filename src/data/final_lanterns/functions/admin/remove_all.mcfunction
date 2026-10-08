@@ -1,0 +1,10 @@
+function final_lanterns:ring/strip_green
+function final_lanterns:ring/strip_yellow
+function final_lanterns:ring/strip_red
+function final_lanterns:ring/strip_orange
+function final_lanterns:ring/strip_blue
+function final_lanterns:ring/strip_violet
+function final_lanterns:ring/strip_indigo
+function final_lanterns:ring/strip_white
+function final_lanterns:ring/strip_black
+function final_lanterns:leader/update_any

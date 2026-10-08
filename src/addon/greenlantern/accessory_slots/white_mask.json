@@ -1,7 +1,0 @@
-{
-  "icon": "greenlantern:textures/gui/accessory_slots/white_mask.png",
-  "menu_visibility": {
-    "type": "palladium:has_power",
-    "power": "greenlantern:white_lantern"
-  }
-}

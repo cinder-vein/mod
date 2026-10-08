@@ -1,0 +1,19 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"white_rune_turn": {
+			"loop": true,
+			"animation_length": 2.5,
+			"bones": {
+				"bone2": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"2.5": [0, 360, 0]
+					},
+					"position": [0, -11.9, 0],
+					"scale": [4.8, 0, 4.8]
+				}
+			}
+		}
+	}
+}

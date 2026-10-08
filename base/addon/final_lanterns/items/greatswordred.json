@@ -1,0 +1,19 @@
+{
+    "type": "palladium:pickaxe",
+    "max_stack_size": 1,
+    "rarity": "uncommon",
+    "is_fire_resistant": true,
+    "tier": "final_lanterns:weapons",
+    "attribute_modifiers": {
+        "all": [
+            {
+                "attribute": "forge:entity_reach",
+                "amount": 3,
+                "operation": 0,
+                "uuid": "f98db25e-91cb-45ca-ba40-5526ff2cd180"
+            }
+        ]
+    },
+    "base_damage": 10,
+    "attack_speed": -2.8
+}

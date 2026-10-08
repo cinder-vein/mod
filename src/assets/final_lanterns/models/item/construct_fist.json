@@ -1,0 +1,59 @@
+{
+  "parent": "final_lanterns:item/construct_fist_base",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "final_lanterns:item/construct_fist_green"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "final_lanterns:item/construct_fist_yellow"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "final_lanterns:item/construct_fist_red"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "final_lanterns:item/construct_fist_orange"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "final_lanterns:item/construct_fist_blue"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "final_lanterns:item/construct_fist_violet"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "final_lanterns:item/construct_fist_indigo"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "final_lanterns:item/construct_fist_white"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "final_lanterns:item/construct_fist_black"
+    }
+  ]
+}

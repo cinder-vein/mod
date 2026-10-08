@@ -1,0 +1,29 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+      {
+        "model_layer": {
+          "normal": "palladium:humanoid#tight_suit",
+          "slim": "palladium:humanoid#tight_suit_slim"
+        },
+        "texture": {
+          "normal": "final_lanterns:textures/models/skins/pridelanterns/pride_super.png",
+          "slim": "final_lanterns:textures/models/skins/pridelanterns/slim/pride_super.png"
+        }
+      },
+      {
+        "model_layer": "final_lanterns:pride_hairgeo",
+        "texture": "final_lanterns:textures/models/skins/pridelanterns/pride_hairsuit.png"
+      },
+      {
+        "model_layer": {
+          "normal": "palladium:humanoid#tight_suit",
+          "slim": "palladium:humanoid#tight_suit_slim"
+        },
+        "texture": {
+          "normal": "final_lanterns:textures/models/skins/pridelanterns/pride_player_hair.png",
+          "slim": "final_lanterns:textures/models/skins/pridelanterns/slim/pride_player_hair.png"
+        }
+      }
+    ]
+}

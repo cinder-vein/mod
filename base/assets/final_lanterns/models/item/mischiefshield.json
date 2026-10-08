@@ -1,0 +1,60 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"2": "final_lanterns:item/mischief/card_shield"
+	},
+	"elements": [
+		{
+			"name": "shield",
+			"from": [1, -5, 5],
+			"to": [15, 17, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, -15, 6]},
+			"faces": {
+				"north": {"uv": [0.5, 0.5, 7.5, 11.5], "texture": "#2"},
+				"east": {"uv": [0, 0.5, 0.5, 11.5], "texture": "#2"},
+				"south": {"uv": [8, 0.5, 15, 11.5], "texture": "#2"},
+				"west": {"uv": [7.5, 0.5, 8, 11.5], "texture": "#2"},
+				"up": {"uv": [7.5, 0.5, 0.5, 0], "texture": "#2"},
+				"down": {"uv": [14.5, 0, 7.5, 0.5], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -71, 0],
+			"translation": [0, 1.5, 3]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, -71, 0],
+			"translation": [0, 1.5, 3]
+		},
+		"firstperson_righthand": {
+			"rotation": [1, -35, 9],
+			"translation": [1.5, 1.25, -1],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"firstperson_lefthand": {
+			"rotation": [1, -35, 9],
+			"translation": [1.5, 1.25, -1],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"ground": {
+			"rotation": [90, 0, 0],
+			"translation": [0, -3.75, 2.75]
+		},
+		"gui": {
+			"translation": [0, 1.25, 0],
+			"scale": [0.6, 0.6, 0.6]
+		}
+	},
+	"groups": [
+		{
+			"name": "shield",
+			"origin": [-1, 15.5, 3],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

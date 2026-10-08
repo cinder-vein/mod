@@ -1,0 +1,1445 @@
+{
+  "name": {
+    "translate": "power.final_lanterns.host_adara"
+  },
+  "icon": "minecraft:feather",
+  "background": "minecraft:textures/block/black_concrete.png",
+  "gui_display_type": "tree",
+  "primary_color": "#2882FF",
+  "secondary_color": "#103466",
+  "persistent_data": true,
+  "energy_bars": {
+    "entity_power": {
+      "max": {
+        "type": "score",
+        "objective": "glhmax_adara",
+        "fallback": 4000
+      },
+      "auto_increase_per_tick": 3,
+      "color": "#2882FF"
+    }
+  },
+  "abilities": {
+    "host_root": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.host_root"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.host_root.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0
+      ]
+    },
+    "host_health": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-c4123e4d4b1b",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_armor": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-a3a6ea7afdb4",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_toughness": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.armor_toughness",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d302aecc1941",
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_aura": {
+      "type": "gravecore:particle_aura",
+      "count": 3,
+      "start_hex": "#2882FF",
+      "end_hex": "#34A9FF",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.25,
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_glow": {
+      "type": "palladium:entity_glow",
+      "mode": "self",
+      "color": "#2882FF",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:is_flying"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:hosts/adara",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_suit_skin": {
+      "type": "palladium:hide_body_part",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "head_overlay"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "mortal_form"
+            }
+          ]
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "host_fill": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "energybar value add @s final_lanterns:host_adara entity_power 100000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_vitality_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_vitality_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_vitality_1.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_vitality_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_vitality_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_vitality_2.description"
+      },
+      "icon": "minecraft:enchanted_golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_vitality_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "vitality_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-52251b29a7fe",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "vitality_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-e8f02841ee79",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_vitality_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_might_1": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_might_1"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_might_1.description"
+      },
+      "icon": "minecraft:iron_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_might_2": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_might_2"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_might_2.description"
+      },
+      "icon": "minecraft:netherite_sword",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_might_1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "might_1": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-2333a6b79851",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_1_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-07f2e5011bbd",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_1"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d4c317e26556",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "might_2_fists": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-e45aaae2d1fd",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_might_2"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_flight": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_flight"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_flight.description"
+      },
+      "icon": "minecraft:feather",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.0,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-08bb6827a214",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "flight_flexibility": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_flexibility",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-e52543f657b0",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "heroic_flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "6c7afe00-1a2b-4c3d-8e4f-110b03ccbc47",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_flight"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_passive": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_passive"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_passive.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        -1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_flight"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "undying_hope": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:regeneration 3 1 true"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_passive"
+          },
+          {
+            "type": "palladium:health",
+            "min_health": 0,
+            "max_health": 20
+          }
+        ],
+        "enabling": {
+          "type": "palladium:interval",
+          "active_ticks": 1,
+          "disabled_ticks": 39
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_wings_of_hope": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_wings_of_hope"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_wings_of_hope.description"
+      },
+      "icon": "minecraft:elytra",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "wings_of_hope": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @s minecraft:levitation 1 12 true",
+        "effect give @s minecraft:slow_falling 10 0 true",
+        "effect give @a[distance=..8] minecraft:regeneration 5 1 true",
+        "particle minecraft:dust 0.16 0.51 1.00 2.0 ~ ~1 ~ 1 1 1 0 100 force",
+        "playsound minecraft:entity.ender_dragon.flap player @a[distance=..24] ~ ~ ~ 1 1.4"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 160
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_wings_of_hope"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 80
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 80
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.wings_of_hope"
+      },
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.wings_of_hope.description"
+      }
+    },
+    "skill_beacon_of_hope": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_beacon_of_hope"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_beacon_of_hope.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_wings_of_hope"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "beacon_of_hope": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @a[distance=..12] minecraft:regeneration 12 1 true",
+        "effect give @a[distance=..12] minecraft:resistance 12 0 true",
+        "particle minecraft:dust 0.16 0.51 1.00 2.0 ~ ~1 ~ 3 1 3 0 150 force",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.6"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 300
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_beacon_of_hope"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 150
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 150
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.beacon_of_hope"
+      },
+      "icon": "final_lanterns:textures/gui/ability/rekindle_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.beacon_of_hope.description"
+      }
+    },
+    "skill_rekindle": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_rekindle"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_rekindle.description"
+      },
+      "icon": "minecraft:golden_apple",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_beacon_of_hope"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "rekindle": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "effect give @a[distance=..12] minecraft:instant_health 1 1 true",
+        "effect give @a[distance=..12] minecraft:absorption 60 1 true",
+        "particle minecraft:dust 0.16 0.51 1.00 2.0 ~ ~1 ~ 3 1 3 0 150 force",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 600
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rekindle"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 200
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 200
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.rekindle"
+      },
+      "icon": "final_lanterns:textures/gui/ability/healing_touch_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 4,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.rekindle.description"
+      }
+    },
+    "skill_hope_eternal": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_hope_eternal"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_hope_eternal.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        4
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_rekindle"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "hope_eternal": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "particle minecraft:dust 0.16 0.51 1.00 3.0 ~ ~1 ~ 4 2 4 0 300 force",
+        "particle minecraft:flash ~ ~1 ~ 0 0 0 0 2 force",
+        "effect give @a[distance=..24] minecraft:instant_health 1 2 true",
+        "effect give @a[distance=..24] minecraft:regeneration 20 2 true",
+        "effect give @a[distance=..24] minecraft:resistance 20 1 true",
+        "playsound minecraft:ui.toast.challenge_complete player @a[distance=..24] ~ ~ ~ 1 1.2"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 1200
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_hope_eternal"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 600
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 600
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.hope_eternal"
+      },
+      "icon": "final_lanterns:textures/gui/ability/overload_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 5,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.hope_eternal.description"
+      }
+    },
+    "skill_beam": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_beam.description"
+      },
+      "icon": "final_lanterns:textures/icons/blue/beam.png",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 5
+          }
+        ]
+      }
+    },
+    "beam": {
+      "type": "palladium:energy_beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "white",
+      "icon": "final_lanterns:textures/icons/blue/beam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:bluelanternbeam",
+      "damage": 10,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 5
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_beam"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.beam"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.beam.description"
+      }
+    },
+    "beam_aim": {
+      "type": "palladium:aim",
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "beam"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "skill_constructs": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_constructs"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_constructs.description"
+      },
+      "icon": "final_lanterns:textures/icons/slots/bluelantern3.png",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_beam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "construct_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:bostaffblue{CustomTag:blue,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_0"
+      },
+      "icon": "final_lanterns:bostaffblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:spearblue{CustomTag:blue,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_1"
+      },
+      "icon": "final_lanterns:spearblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:hammerblue{CustomTag:blue,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_2"
+      },
+      "icon": "final_lanterns:hammerblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:axeblue{CustomTag:blue,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_3"
+      },
+      "icon": "final_lanterns:axeblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxeblue{CustomTag:blue,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_4"
+      },
+      "icon": "final_lanterns:pickaxeblue",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "construct_5": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "item replace entity @s weapon.offhand with final_lanterns:blueshield{CustomTag:blue,fl_host:1b}",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.construct_5"
+      },
+      "icon": "final_lanterns:blueshield",
+      "list_index": 1,
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:empty_slot",
+            "slot": "offhand"
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "constructs": {
+      "type": "palladium:ability_wheel",
+      "abilities": [
+        "construct_0",
+        "construct_1",
+        "construct_2",
+        "construct_3",
+        "construct_4",
+        "construct_5"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held"
+          }
+        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_constructs"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.constructs"
+      },
+      "icon": "final_lanterns:textures/icons/slots/bluelantern3.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1
+    },
+    "skill_forge": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_forge"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_forge.description"
+      },
+      "icon": "final_lanterns:bluelanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        1,
+        3
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_constructs"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ]
+      }
+    },
+    "forge_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/adara/forge"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 6000
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_forge"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 3000
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 3000
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.forge_ring"
+      },
+      "icon": "final_lanterns:bluelanternring",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 8,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.forge_ring.description"
+      }
+    },
+    "skill_empower": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_empower"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_empower.description"
+      },
+      "icon": "kubejs:bluelanternbattery",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "empower_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/adara/empower"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 400
+          }
+        ],
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 60
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.empower_ring"
+      },
+      "icon": "kubejs:bluelanternbattery",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 6,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.empower_ring.description"
+      }
+    },
+    "skill_lantern": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_lantern"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_lantern.description"
+      },
+      "icon": "final_lanterns:bluelanternring",
+      "hidden_in_bar": true,
+      "gui_position": [
+        2,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_empower"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "living_lantern": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_living_lantern"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_living_lantern"
+      ],
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": 1
+      },
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        },
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_lantern"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "entity_power",
+            "min": 1
+          }
+        ]
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.living_lantern"
+      },
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 7,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.living_lantern.description"
+      }
+    },
+    "skill_reserves": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_reserves"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_reserves.description"
+      },
+      "icon": "minecraft:glowstone",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "host_root"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 8
+          }
+        ]
+      }
+    },
+    "skill_wellspring": {
+      "type": "palladium:dummy",
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.skill_wellspring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.skill_wellspring.description"
+      },
+      "icon": "minecraft:beacon",
+      "hidden_in_bar": true,
+      "gui_position": [
+        3,
+        2
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "skill_reserves"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 16
+          }
+        ]
+      }
+    },
+    "reserves_apply": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "scoreboard objectives add glhmax_adara dummy",
+        "scoreboard players set @s glhmax_adara 6000"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_reserves"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "wellspring_regen": {
+      "type": "palladium:dummy",
+      "energy_bar_usage": {
+        "energy_bar": "entity_power",
+        "amount": -3
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "skill_wellspring"
+        }
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "release": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:entity/release_ask"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 40
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.release"
+      },
+      "icon": "final_lanterns:textures/gui/ability/revoke_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 9,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.release.description"
+      }
+    },
+    "emotions": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:emotion/menu"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action",
+          "cooldown": 20
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.emotions"
+      },
+      "icon": "final_lanterns:textures/gui/ability/emotional_sight_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.emotions.description"
+      }
+    },
+    "mortal_form": {
+      "type": "palladium:command",
+      "first_tick_commands": [],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_adara.mortal_form"
+      },
+      "icon": "final_lanterns:textures/gui/ability/suit_up_adara.png",
+      "bar_color": "white",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 11,
+      "description": {
+        "translate": "ability.final_lanterns.host_adara.mortal_form.description"
+      }
+    }
+  }
+}

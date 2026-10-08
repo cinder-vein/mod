@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "kubejs:greenlanternbattery",
+    "kubejs:yellowlanternbattery",
+    "kubejs:redlanternbattery",
+    "kubejs:orangelanternbattery",
+    "kubejs:bluelanternbattery",
+    "kubejs:pinklanternbattery",
+    "final_lanterns:indigostaff",
+    "kubejs:whitelanternbattery",
+    "kubejs:blacklanternbattery"
+  ]
+}

@@ -1,0 +1,4 @@
+execute if predicate final_lanterns:unbound_ring_mainhand run function final_lanterns:ring/claim_mainhand
+execute if predicate final_lanterns:unbound_ring_offhand run function final_lanterns:ring/claim_offhand
+execute if predicate final_lanterns:bound_ring_mainhand run function final_lanterns:ring/check_mainhand
+execute if predicate final_lanterns:bound_ring_offhand run function final_lanterns:ring/check_offhand

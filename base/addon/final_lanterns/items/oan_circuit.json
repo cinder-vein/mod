@@ -1,0 +1,9 @@
+{
+    "type": "palladium:default",
+    "creative_mode_tab": "palladium:technology",
+    "tooltip": [
+        "A Circuit from space used in crafting a Special Lantern.",
+        " ",
+        "Found in Meteors or Traded by Wandering Traders"
+        ]
+}

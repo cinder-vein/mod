@@ -1,9 +1,0 @@
-{
-  "sound_type": "minecraft:amethyst",
-  "map_color": "minecraft:color_yellow",
-  "destroy_time": -1.0,
-  "explosion_resistance": 1200.0,
-  "no_occlusion": true,
-  "render_type": "translucent",
-  "register_item": false
-}

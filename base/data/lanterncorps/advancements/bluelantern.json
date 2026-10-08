@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "The Last Hope!",
+            "color": "blue",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the Blue Lantern Corps"
+        },
+        "icon": {
+            "item": "final_lanterns:bluelanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

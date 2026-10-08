@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:yellowlantern",
+    "render_layer": "final_lanterns:arrzee",
+    "disable_rendering": true
+  }

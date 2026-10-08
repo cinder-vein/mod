@@ -2,8 +2,11 @@
 
     python3 tools/build.py
 
-Output: dist/greenlantern-<version>-forge-1.20.1.jar
+Output: dist/final_lanterns-<version>-forge-1.20.1.jar
 The same file also works as a Palladium addon pack (drop it in .minecraft/addonpacks).
+
+src/ is A New Corps (base/) plus what tools/gen_final.py adds. Problems already present in base/ are reported as
+inherited, not as failures: only problems src/ adds (or a patch introduces) fail the build.
 """
 import json
 import re
@@ -14,7 +17,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-NS = "greenlantern"
+NS = "final_lanterns"
+BASE = ROOT / "base"
 
 errors = []
 
@@ -60,11 +64,34 @@ def exists(kind, rl):
 
 
 def check_ref(kind, rl, where):
+    if isinstance(rl, list):
+        for one in rl:
+            check_ref(kind, one, where)
+        return
+    if not isinstance(rl, str):
+        return
     if not exists(kind, rl):
         err(f"{where}: unknown {kind} '{rl}'")
 
 
-def validate():
+def validate(src=None):
+    """Checks the pack in `src` (default src/); returns the list of problems."""
+    global SRC
+    SRC = src or ROOT / "src"
+    errors.clear()
+    _validate()
+    return list(errors)
+
+
+def _validate():
+    try:
+        _checks()
+    except (KeyError, TypeError, AttributeError, IndexError) as e:  # a malformed file: report it, keep going
+        import traceback
+        err(f"could not finish checking: {e!r} at {traceback.extract_tb(e.__traceback__)[-1].lineno}")
+
+
+def _checks():
     for path in SRC.rglob("*.json"):
         load(path)
     if errors:
@@ -75,7 +102,7 @@ def validate():
     def check_lang(node, where):
         for obj in walk(node):
             key = obj.get("translate")
-            if key and key not in lang:
+            if isinstance(key, str) and key not in lang:
                 err(f"{where}: missing translation '{key}'")
 
     # items + creative tabs
@@ -147,7 +174,7 @@ def validate():
                 for sub in ab["abilities"]:
                     if sub not in abilities:
                         err(f"{w}: wheel references unknown ability '{sub}'")
-            if ab.get("type") == "palladium:attribute_modifier":
+            if ab.get("type") == "palladium:attribute_modifier" and ab.get("uuid"):
                 uuids.setdefault(ab["uuid"], []).append(w)
             for e in ab.get("emitter", []):
                 check_ref("emitter", e, w)
@@ -164,7 +191,7 @@ def validate():
             for cond in walk(ab.get("conditions", {})):
                 if "ability" in cond:
                     other = abilities
-                    if cond.get("power"):  # cross-power reference
+                    if cond.get("power") and cond["power"] != "null":  # cross-power reference ("null": this one)
                         ns, _, pid = cond["power"].partition(":")
                         other_path = SRC / "data" / ns / "palladium" / "powers" / f"{pid}.json"
                         other = json.loads(other_path.read_text())["abilities"] if other_path.exists() else {}
@@ -172,7 +199,8 @@ def validate():
                             err(f"{w}: condition references unknown power '{cond['power']}'")
                     if cond["ability"] not in other:
                         err(f"{w}: condition references unknown ability '{cond['ability']}'")
-                if cond.get("type") == "palladium:energy_bar" and not cond.get("power") and cond["energy_bar"] not in bars:
+                if (cond.get("type") == "palladium:energy_bar" and cond.get("power") in (None, "null")
+                        and cond["energy_bar"] not in bars):
                     err(f"{w}: unknown energy bar '{cond['energy_bar']}'")
                 if cond.get("type") == "palladium:has_power":
                     check_ref("power", cond["power"], w)
@@ -269,9 +297,11 @@ def validate():
             if "item" in ing:
                 check_ref("item", ing["item"], path.name)
 
-    for obj in walk(load(SRC / "data" / "curios" / "tags" / "items" / "ring.json")):
-        for v in obj.get("values", []):
-            check_ref("item", v, "curios ring tag")
+    for tag in ("ring", "lantern_rings"):
+        path = SRC / "data" / "curios" / "tags" / "items" / f"{tag}.json"
+        for obj in walk(load(path) if path.exists() else {}):
+            for v in obj.get("values", []):
+                check_ref("item", v, f"curios {tag} tag")
 
 
 def version():
@@ -291,11 +321,16 @@ def package():
 
 
 if __name__ == "__main__":
-    validate()
-    if errors:
+    inherited = set(validate(BASE)) if BASE.exists() else set()
+    found = validate()
+    new = [e for e in found if e not in inherited]
+    if inherited:
+        print(f"({len(inherited)} problems inherited from A New Corps in base/, not counted)")
+    if new:
         print("Validation failed:")
-        for e in errors:
+        for e in new:
             print("  -", e)
         sys.exit(1)
+    SRC = ROOT / "src"
     out, n = package()
     print(f"OK - packaged {n} files into {out.relative_to(ROOT)}")

@@ -1,0 +1,14 @@
+{
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "equipment": {
+      "mainhand": {
+        "items": [
+          "final_lanterns:entity_lantern"
+        ],
+        "nbt": "{gl_entity:2}"
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+    "slot": "offhand",
+    "item": [
+      "final_lanterns:baseballbatgreen",
+      "final_lanterns:bigolfist",
+      "final_lanterns:shield",
+      "final_lanterns:katana",
+      "final_lanterns:spear",
+      "final_lanterns:axegreen",
+      "final_lanterns:pickaxegreen",
+
+      "final_lanterns:scytheyellow",
+      "final_lanterns:clawsyellow",
+      "final_lanterns:yellowshield",
+      "final_lanterns:axeyellow",
+      "final_lanterns:pickaxeyellow",
+
+      "final_lanterns:bostaffblue",
+      "final_lanterns:spearblue",
+      "final_lanterns:hammerblue",
+      "final_lanterns:blueshield",
+      "final_lanterns:axeblue",
+      "final_lanterns:pickaxeblue",
+
+      "final_lanterns:greatswordred",
+
+      "final_lanterns:pickaxeorange",
+      "final_lanterns:bundle",
+      "final_lanterns:axeorange",
+      "final_lanterns:orangeshield",
+
+      "final_lanterns:pinkshield",
+      "final_lanterns:bowpink",
+      "final_lanterns:spearpink",
+      "final_lanterns:pickaxepink",
+      "final_lanterns:axepink",
+
+      "final_lanterns:goldshield",
+      "final_lanterns:greatswordgold",
+      "final_lanterns:speargold",
+      "final_lanterns:battleaxegold",
+      "final_lanterns:pickaxegold",
+      "final_lanterns:axegold"
+    ],
+    "power": "final_lanterns:constructweapons"
+  }

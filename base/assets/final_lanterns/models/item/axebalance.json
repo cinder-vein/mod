@@ -1,0 +1,7 @@
+{
+	"credit": "Made by Petercoffe",
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "final_lanterns:item/balance/axw"
+	}
+}

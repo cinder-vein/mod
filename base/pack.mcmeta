@@ -1,0 +1,37 @@
+{
+  "pack": {
+    "id": "final_lanterns",
+    "description": "Final Lanterns",
+    "pack_format": 15,
+    "version": "1.0.1"
+  },
+  "dependencies": {
+    "common": {
+      "minecraft": ">=1.20",
+      "kubejs": "*",
+      "palladium": "*",
+	  "architectury": "*",
+    "architectury": "*",
+	  "rhino": "*",
+    "gravecore": ">=1.2.1"
+		}
+	},
+  "custom": {
+    "curios": {
+    "lantern_rings": {
+      "icon": "curios:slot/rings",
+      "priority": 1,
+      "size": 1,
+      "hide": false,
+      "cosmetic": true
+    },
+    "lantern_batteries": {
+      "icon": "curios:slot/battery",
+      "priority": 1,
+      "size": 1,
+      "hide": false,
+      "cosmetic": true
+    }
+    }
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "icon": "greenlantern:textures/gui/accessory_slots/black_suit.png",
-  "menu_visibility": {
-    "type": "palladium:has_power",
-    "power": "greenlantern:black_lantern"
-  }
-}

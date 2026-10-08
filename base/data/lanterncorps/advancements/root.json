@@ -1,0 +1,35 @@
+{
+    "display": {
+        "title": {
+            "text": "Welcome to the Corps",
+            "color": "gray",
+            "bold": true,
+            "italic": false,
+            "strikethrough": false,
+            "underlined": false,
+            "obfuscated": false
+        },
+        "description": {
+            "text": "Thank you for Installing & Playing with Final Lanterns.",
+            "bold": false
+        },
+        "icon": {
+            "item": "final_lanterns:lanternicon"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false,
+        "background": "final_lanterns:textures/gui/background.png"
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "requirements": [
+        [
+            "grantadvancement"
+        ]
+    ]
+}

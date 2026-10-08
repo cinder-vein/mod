@@ -1,1 +1,0 @@
-function greenlantern:construct/yellow/signature_check

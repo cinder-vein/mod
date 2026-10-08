@@ -1,1 +1,0 @@
-function greenlantern:construct/orange/blocks_check

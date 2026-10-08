@@ -1,2 +1,0 @@
-execute unless score #state_nekron gl_ent matches 0 run tellraw @s ["",{"text":"Nekron isn't free (it's out, hosted or sealed). Reset it first: function greenlantern:entity/admin/reset","color":"gray"}]
-execute if score #state_nekron gl_ent matches 0 run function greenlantern:entity/nekron/manifest

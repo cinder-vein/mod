@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:overworld",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "height": 3,
+          "block": "stone"
+        },
+        {
+          "height": 52,
+          "block": "sandstone"
+        },
+        {
+          "height": 8,
+          "block": "sand"
+        }
+      ],
+      "biome": "minecraft:desert"
+    }
+  }
+}

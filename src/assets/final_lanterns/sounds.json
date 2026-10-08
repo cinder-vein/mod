@@ -1,0 +1,17 @@
+{
+  "phone": {
+    "sounds": [ "final_lanterns:phone" ]
+  },
+  "roar": {
+    "sounds": [ "final_lanterns:roar" ]
+  },
+  "roar2": {
+    "sounds": [ "final_lanterns:roar2" ]
+  },
+  "suitup": {
+    "sounds": [ "final_lanterns:suitup" ]
+  },
+  "fluisteren": {
+    "sounds": [ "final_lanterns:fluisteren" ]
+  }
+}

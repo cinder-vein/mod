@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#P#",
+        "RES",
+        "#P#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:prismarine_shard"
+        },
+        "P": {
+            "item": "minecraft:prismarine_crystals"
+        },
+        "R": {
+            "item": "final_lanterns:redbatterycore"
+        },
+        "E": {
+            "item": "minecraft:echo_shard"
+        },
+        "S": {
+            "item": "final_lanterns:pinkbatterycore"
+        }
+    },
+    "result": {
+        "item": "kubejs:corruptedfatebattery",
+        "count": 1
+    }
+}

@@ -1,0 +1,164 @@
+{
+    "type": "chest",
+    "pools": [
+        {
+            "rolls": 3.0,
+            "bonus_rolls": 0.0,
+            "functions": [
+                {
+                    "function": "set_count",
+                    "count": {
+                        "type": "uniform",
+                        "min": 1,
+                        "max": 3
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:coal",
+                    "weight": 5
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_ingot",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:diamond",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:oan_circuit",
+                    "weight": 2
+                }
+            ]
+        },
+        {
+            "rolls": 8.0,
+            "bonus_rolls": 0.0,
+            "functions": [
+                {
+                    "function": "set_count",
+                    "count": {
+                        "type": "uniform",
+                        "min": 1,
+                        "max": 3
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:glowstone_dust",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_nugget",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_nugget",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:stick",
+                    "weight": 2
+                }
+            ]
+        },
+        {
+            "rolls": 1.0,
+            "bonus_rolls": 0.0,
+            "functions": [
+                {
+                    "function": "set_count",
+                    "count": {
+                        "type": "uniform",
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:netherite_scrap",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:blaze_powder",
+                    "weight": 5
+                }
+            ]
+        },
+        {
+            "rolls": 1.0,
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "final_lanterns:greenbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:yellowbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:bluebatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:redbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:orangebatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:pinkbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:goldbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:indigobatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:djinnbatterycore",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "final_lanterns:yingyangbatterycore",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

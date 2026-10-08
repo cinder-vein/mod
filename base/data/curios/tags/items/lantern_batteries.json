@@ -1,0 +1,24 @@
+{
+    "replace": false,
+    "drop_rule": "ALWAYS_KEEP",
+    "values": [
+        "kubejs:greenlanternbattery",
+        "kubejs:yellowlanternbattery",
+        "kubejs:bluelanternbattery",
+        "kubejs:redlanternbattery",
+        "kubejs:orangelanternbattery",
+        "kubejs:pinklanternbattery",
+        "final_lanterns:indigostaff",
+        "kubejs:goldlanternbattery",
+        "final_lanterns:sworddjinn",
+        "kubejs:graylanternbattery",
+        "final_lanterns:pridebattery",
+        "kubejs:whitelanternbattery",
+        "kubejs:blacklanternbattery",
+        "kubejs:lanternbatteryunpowered",
+        "kubejs:corruptedfatebattery",
+        "final_lanterns:yinyangsword",
+        "final_lanterns:mischiefstaff",
+        "kubejs:blacklanternbattery"
+    ]
+}

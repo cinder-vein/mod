@@ -1,0 +1,47 @@
+[
+  {
+    "type": "palladium:laser",
+    "body_part": "right_arm",
+    "glow_color": "#5c399a",
+    "core_color": "#cd45d0",
+    "glow_opacity": 0.75,
+    "core_opacity": 0.75,
+    "size": [1, 1],
+    "offset": {
+      "first_person": [
+        -6,
+        -6,
+        -10
+      ],
+      "third_person": [
+        -1,
+        -15,
+        -10
+      ]
+    },
+    "particles": [
+      {
+        "particle_type": "final_lanterns:beamparticle_purple",
+        "amount": 4,
+        "motion": [
+          1,
+          1,
+          1
+        ],
+        "motion_random": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "normal_transparency": false,
+    "visibility": {
+      "first_person": true,
+      "third_person": true
+    },
+    "bloom": 2,
+    "rotation":45,
+    "rotation_speed":0
+  }
+]

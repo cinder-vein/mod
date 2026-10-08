@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:djinnlanternmasks",
+    "render_layer": "final_lanterns:djinnlanterns/masks/default",
+    "disable_rendering": true
+  }

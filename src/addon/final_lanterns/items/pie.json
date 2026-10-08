@@ -1,0 +1,24 @@
+{
+  "type": "palladium:default",
+  "max_stack_size": 16,
+  "rarity": "rare",
+  "creative_mode_tab": "minecraft:food_and_drinks",
+  "food": {
+    "nutrition": 5,
+    "saturation_modifier": 0.6,
+    "meat": false,
+    "can_always_eat": true,
+    "fast": false,
+    "effects": [
+      {
+        "mob_effect": "minecraft:saturation",
+        "duration": 40,
+        "amplifier": 1,
+        "ambient": false,
+        "visible": true,
+        "show_icon": true,
+        "probability": 1
+      }
+    ]
+  }
+}

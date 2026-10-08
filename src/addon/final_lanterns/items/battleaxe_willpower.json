@@ -1,0 +1,9 @@
+{
+    "type": "palladium:pickaxe",
+    "max_stack_size": 1,
+    "rarity": "uncommon",
+    "is_fire_resistant": true,
+    "tier": "final_lanterns:weapons",
+    "base_damage": 8,
+    "attack_speed": -2.6
+}

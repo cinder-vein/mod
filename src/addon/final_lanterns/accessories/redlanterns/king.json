@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:redlantern",
+    "render_layer": "final_lanterns:redlanterns/king",
+    "disable_rendering": true
+  }

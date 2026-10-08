@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "The Fallen Green Lantern",
+            "color": "dark_green",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You have Sacrificed yourself to Parallax becoming it's Host."
+        },
+        "icon": {
+            "item": "final_lanterns:greenlanternringbroken"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:greenlantern"
+}

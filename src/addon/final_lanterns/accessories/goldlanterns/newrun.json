@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:goldlantern",
+    "render_layer": "final_lanterns:goldlanterns/newrun",
+    "disable_rendering": true
+  }

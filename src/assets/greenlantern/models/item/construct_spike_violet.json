@@ -1,7 +1,0 @@
-{
-  "parent": "greenlantern:item/construct_spike_base",
-  "textures": {
-    "0": "greenlantern:item/construct/violet",
-    "particle": "greenlantern:item/construct/violet"
-  }
-}

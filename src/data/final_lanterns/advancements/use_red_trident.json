@@ -1,0 +1,13 @@
+{
+  "criteria": {
+    "use": {
+      "trigger": "minecraft:using_item",
+      "conditions": {
+        "item": { "items": ["final_lanterns:red_trident"] }
+      }
+    }
+  },
+  "rewards": {
+    "function": "final_lanterns:throw"
+  }
+}

@@ -1,1 +1,0 @@
-function greenlantern:construct/indigo/cage_check

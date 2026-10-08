@@ -1,0 +1,7 @@
+{
+    "type": "palladium:default",
+    "max_stack_size": 1,
+    "rarity": "common",
+    "is_fire_resistant": true,
+    "render_layers": {"curios:lantern_batteries": ["final_lanterns:indigolantern/indigostaff"],"trinkets:hand/ring": ["final_lanterns:indigolantern/indigostaff"]}
+}

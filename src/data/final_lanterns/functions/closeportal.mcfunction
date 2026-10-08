@@ -1,0 +1,1 @@
+kill @e[type=minecraft:block_display,tag=Foi1y-Opened_Portal]

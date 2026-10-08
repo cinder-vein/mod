@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#L#",
+        "QSQ",
+        "#B#"
+    ],
+    "key": {
+        "#": {
+            "tag": "palladium:connector/titanium_ingots"
+        },
+        "L": {
+            "item": "minecraft:lilac"
+        },
+        "Q": {
+            "item": "final_lanterns:oan_circuit"
+        },
+        "S": {
+            "item": "minecraft:smooth_quartz"
+        },
+        "B": {
+            "item": "palladium:titanium_block"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:mischiefstaff",
+        "count": 1
+    }
+}

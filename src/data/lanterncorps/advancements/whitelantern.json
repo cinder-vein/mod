@@ -1,0 +1,26 @@
+{
+    "display": {
+        "title": {
+            "text": "Bearer of Life!",
+            "color": "white",
+            "bold": true,
+            "italic": false
+        },
+        "description": {
+            "text": "You are now a member of the White Lantern Corps"
+        },
+        "icon": {
+            "item": "final_lanterns:whitelanternring"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "grantadvancement": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "lanterncorps:root"
+}

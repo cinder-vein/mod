@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "final_lanterns:starheartring"
+        }
+    ],
+    "result": {
+        "item": "final_lanterns:greenlanternring",
+        "count": 1
+    }
+}

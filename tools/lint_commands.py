@@ -6,7 +6,10 @@ Needs the `mecha` package (pip install mecha); it is a development check, not pa
 
 Checks: every .mcfunction file, every command inside Palladium powers (command abilities and
 command_result conditions), every function a command calls, and that every scoreboard objective
-the commands use is created in load.mcfunction.
+the commands use is created in a load function.
+
+src/ is A New Corps (base/) plus what tools/gen_final.py adds: problems already in base/ are reported as inherited
+(other mods' commands, for one), and only new ones fail.
 """
 import json
 import re
@@ -17,7 +20,8 @@ from mecha import DiagnosticError, Mecha
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
-NS = "greenlantern"
+BASE = ROOT / "base"
+NS = "final_lanterns"
 
 
 def walk(node):
@@ -36,7 +40,7 @@ def collect():
         for n, line in enumerate(path.read_text().splitlines(), 1):
             if line.strip() and not line.startswith("#"):
                 yield f"{path.relative_to(SRC)}:{n}", line
-    for path in sorted((SRC / "data" / NS / "palladium" / "powers").glob("*.json")):
+    for path in sorted((SRC / "data" / NS / "palladium" / "powers").rglob("*.json")):
         power = json.loads(path.read_text())
         for name, ab in power["abilities"].items():
             for key in ("first_tick_commands", "commands", "last_tick_commands"):
@@ -47,7 +51,10 @@ def collect():
                     yield f"{path.stem}/{name} (condition)", cond["command"]
 
 
-def main():
+def lint(src):
+    """Returns (commands checked, problems) for the pack in `src`."""
+    global SRC
+    SRC = src
     mc = Mecha(version="1.20")
     errors = []
     commands = list(collect())
@@ -65,7 +72,7 @@ def main():
 
     functions = {str(p.relative_to(SRC / "data" / NS / "functions"))[:-len(".mcfunction")]
                  for p in (SRC / "data" / NS / "functions").rglob("*.mcfunction")}
-    load = (SRC / "data" / NS / "functions" / "load.mcfunction").read_text()
+    load = "".join(p.read_text() for p in (SRC / "data" / NS / "functions").glob("**/load.mcfunction"))
     objectives = set(re.findall(r"scoreboard objectives add (\S+)", load))
     obj_patterns = [
         r"scoreboard players (?:set|add|remove|reset|enable|get) \S+ (\S+)",
@@ -91,12 +98,19 @@ def main():
             used.update(k.split("=")[0] for k in sel.split(","))
         for obj in used:
             if obj.startswith("gl_") and obj not in objectives:
-                errors.append(f"{where}: objective {obj} is never created in load.mcfunction")
+                errors.append(f"{where}: objective {obj} is never created in a load function")
+    return len(commands), errors
 
-    print(f"Checked {len(commands)} commands")
-    if errors:
-        print(f"{len(errors)} problem(s):")
-        for e in errors:
+
+def main():
+    _, inherited = lint(BASE) if BASE.exists() else (0, [])
+    count, found = lint(ROOT / "src")
+    known = {re.sub(r":\d+:", ":", e) for e in inherited}  # line numbers may shift in patched files
+    new = [e for e in found if re.sub(r":\d+:", ":", e) not in known]
+    print(f"Checked {count} commands ({len(inherited)} problems inherited from A New Corps, not counted)")
+    if new:
+        print(f"{len(new)} problem(s):")
+        for e in new:
             print("  -", e)
         sys.exit(1)
     print("OK")

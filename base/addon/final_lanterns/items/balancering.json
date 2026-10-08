@@ -1,0 +1,8 @@
+{
+    "type": "palladium:default",
+    "max_stack_size": 1,
+    "rarity": "rare",
+    "is_fire_resistant": true,
+    "render_layers": {"curios:lantern_rings": ["final_lanterns:balancelantern/balancering"],"trinkets:hand/ring": ["final_lanterns:balancelantern/balancering"]},
+    "tooltip": ["Non-Canon"]
+  }

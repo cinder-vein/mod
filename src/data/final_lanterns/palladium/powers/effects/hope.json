@@ -1,0 +1,59 @@
+{
+  "name": "Blue Hope",
+  "background": "minecraft:textures/block/gray_concrete_powder.png",
+  "icon": "minecraft:blaze_rod",
+  "hidden": true,
+  "abilities": {
+    "effects": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 0,
+      "first_tick_commands": [
+        "effect give @s minecraft:regeneration 120 2 true",
+        "effect give @s minecraft:strength 120 2 true",
+        "effect give @s minecraft:saturation 120 2 true"
+      ],
+      "last_tick_commands": [
+        "effect clear @s regeneration",
+        "effect clear @s strength",
+        "effect clear @s saturation"
+      ],
+      "commands": [
+        "execute if predicate final_lanterns:hope run tellraw @s [\"\",{\"text\":\"I believe in you!\",\"color\":\"blue\"}]",
+        "execute if predicate final_lanterns:hope run tellraw @s [\"\",{\"text\":\"I know you can handle this\",\"color\":\"blue\"}]",
+        "execute if predicate final_lanterns:hope run tellraw @s [\"\",{\"text\":\"One step at a time, you’ll make it\",\"color\":\"blue\"}]",
+        "execute if predicate final_lanterns:hope run tellraw @s [\"\",{\"text\":\"I’m proud of you keep going.\",\"color\":\"blue\"}]",
+        "execute if predicate final_lanterns:hope run tellraw @s [\"\",{\"text\":\"You’re capable of more than you realize\",\"color\":\"blue\"}]"
+      ]
+    },
+    "power.remove": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "superpower remove final_lanterns:effects/hope @s"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_effect",
+                "effect": "final_lanterns:hope_enpowerment"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

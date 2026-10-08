@@ -1,0 +1,15 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "final_lanterns:player",
+        "slim": "final_lanterns:playerslim"
+      },
+      "texture": {
+        "normal": "final_lanterns:textures/models/skins/other/bomberbrown.png",
+        "slim": "final_lanterns:textures/models/skins/other/slim/bomberbrown.png"
+      }
+    }
+  ]
+}

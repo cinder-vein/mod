@@ -1,0 +1,63 @@
+[
+    {
+    "type": "palladium:laser",
+    "glow_color": "#84231a",
+    "body_part": "head",
+    "core_color": "#84231a",
+    "rainbow": false,
+    "glow_opacity": 0.75,
+    "core_opacity": 0.75,
+    "bloom": 1,
+    "size": 1,
+    "normal_transparency": false,
+    "rotation": 0,
+    "rotation_speed": 0
+    },
+    {
+    "particles": [
+      {
+        "particle_type": "minecraft:crimson_spore",
+        "amount": 4,
+        "motion": [
+          1,
+          1,
+          1
+        ],
+        "motion_random": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "particle_type": "final_lanterns:beamparticle_red",
+        "amount": 4,
+        "motion": [
+          1,
+          1,
+          1
+        ],
+        "motion_random": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "type": "palladium:lightning",
+    "segments": 20,
+    "frequency": 12,
+    "spread": 1,
+    "glow_color": "#84231a",
+    "body_part": "head",
+    "core_color": "#84231a",
+    "rainbow": false,
+    "glow_opacity": 1,
+    "core_opacity": 1,
+    "bloom": 1,
+    "size": 2,
+    "normal_transparency": false,
+    "rotation": 0,
+    "rotation_speed": 0
+    }
+]

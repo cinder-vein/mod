@@ -1,0 +1,16 @@
+{
+    "type": "palladium:projectile",
+    "entity_type": "palladium:custom_projectile",
+    "entity_data": {
+        "CommandOnEntityHit": "tag @s add pink",
+        "Appearances": [
+            {
+                "Type": "item",
+                "Item": "final_lanterns:lovearrow"
+            }
+        ],
+        "Damage": 0,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": true
+    }
+}

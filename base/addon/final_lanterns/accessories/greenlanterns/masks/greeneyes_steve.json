@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:greenlanternmasks",
+    "render_layer": "final_lanterns:greenlantern/masks/eyes_steve",
+    "disable_rendering": true
+  }

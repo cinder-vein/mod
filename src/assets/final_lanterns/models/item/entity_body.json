@@ -1,0 +1,59 @@
+{
+  "parent": "final_lanterns:item/entity_body_ion",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "final_lanterns:item/entity_body_ion"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "final_lanterns:item/entity_body_parallax"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "final_lanterns:item/entity_body_butcher"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "final_lanterns:item/entity_body_ophidian"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "final_lanterns:item/entity_body_adara"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "final_lanterns:item/entity_body_predator"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "final_lanterns:item/entity_body_proselyte"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "final_lanterns:item/entity_body_life"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "final_lanterns:item/entity_body_nekron"
+    }
+  ]
+}

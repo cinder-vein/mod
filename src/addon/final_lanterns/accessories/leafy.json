@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "palladium:hat",
+    "render_layer": "final_lanterns:cats/leafy",
+    "disable_rendering": false
+}

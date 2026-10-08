@@ -1,0 +1,44 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+        {
+            "type": "geckolib:default",
+            "model": "final_lanterns:geo/white_rune.geo.json",
+            "render_type": "glow",
+            "texture": {
+                "base": "final_lanterns:textures/models/white_rune.png",
+                "transformers": [
+                    {
+                        "type": "palladium:alpha_mask",
+                        "mask": "final_lanterns:textures/models/alpha_masks/white_ritual/basicrune_#TIMER.png"
+                    }
+                ],
+                "variables": {
+                    "TIMER": {
+                        "type": "palladium:animation_timer_ability",
+                        "power": "final_lanterns:effects/white_lantern_rune",
+                        "ability": "rune_transform_basic"
+                    }
+                },
+                "output": "final_lanterns:textures/models/alpha_masks/white_ritual/basicrune_temp_#TIMER"
+            },
+            "animation_file": "final_lanterns:animations/white_rune_turn.json",
+            "animation_controller": [
+                {
+                    "name": "looping",
+                    "transition_tick_time": 0,
+                    "animation": "white_rune_turn"
+                }
+            ],
+            "bones": {
+                "head": "armorHead",
+                "body": "armorBody",
+                "right_arm": "armorRightArm",
+                "left_arm": "armorLeftArm",
+                "right_leg": "armorRightLeg",
+                "left_leg": "armorLeftLeg"
+            },
+            "conditions": []
+        }
+    ]
+}

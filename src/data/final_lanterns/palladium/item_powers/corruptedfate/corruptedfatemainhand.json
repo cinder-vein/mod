@@ -1,0 +1,8 @@
+{
+    "slot": "mainhand",
+    "item": [
+        "final_lanterns:corruptedfatebattery",
+        "kubejs:corruptedfatebattery"
+    ],
+    "power": "final_lanterns:corruptedfateoath"
+  }

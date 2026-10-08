@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:blacklanternmasks",
+    "render_layer": "final_lanterns:blacklanterns/maskalt",
+    "disable_rendering": true
+  }

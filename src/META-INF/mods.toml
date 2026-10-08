@@ -1,38 +1,65 @@
 # Data-only Forge mod: no Java code, so it uses Forge's low-code loader.
-# Palladium picks up every mod jar as an addon pack, which is how the
-# "addon/" folder in this jar gets loaded.
+# Palladium loads every mod jar as an addon pack, which is how the "addon/" folder in this jar gets loaded.
 modLoader="lowcodefml"
 loaderVersion="[47,)"
-license="MIT"
+license="All rights reserved"
 
 [[mods]]
-modId="greenlantern"
-version="10.0.0"
-displayName="Lantern Corps"
+modId="final_lanterns"
+version="1.0.0"
+displayName="Final Lanterns"
 authors="cinder-vein"
 logoFile="pack.png"
 description='''
-The Lantern Corps of the emotional spectrum, as a Palladium addon.
-In brightest day, in blackest night, no evil shall escape my sight!
+The Lantern Corps of the emotional spectrum, and the entities behind it.
+Based on A New Corps.
 '''
 
-[[dependencies.greenlantern]]
+[[dependencies.final_lanterns]]
     modId="forge"
     mandatory=true
     versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.greenlantern]]
+[[dependencies.final_lanterns]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1,1.20.2)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.greenlantern]]
+[[dependencies.final_lanterns]]
     modId="palladium"
     mandatory=true
     versionRange="[4.0.0,)"
     ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.final_lanterns]]
+    modId="geckolib"
+    mandatory=true
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.final_lanterns]]
+    modId="gravecore"
+    mandatory=true
+    versionRange="[1.2.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.final_lanterns]]
+    modId="curios"
+    mandatory=true
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.final_lanterns]]
+    modId="kubejs"
+    mandatory=true
+    versionRange="*"
+    ordering="NONE"
     side="BOTH"

@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:bluelanternmasks",
+    "render_layer": "final_lanterns:bluelanterns/masks/elder",
+    "disable_rendering": true
+  }

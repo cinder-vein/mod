@@ -1,1 +1,0 @@
-function greenlantern:construct/black/fist_check

@@ -1,0 +1,14 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+        "model_layer": "final_lanterns:yinyangsword#greenlantern",
+        "texture": "final_lanterns:textures/item/balance/render/battery_sword.png"
+    },
+    {
+        "model_layer": "final_lanterns:balancecore#greenlantern",
+        "texture": "final_lanterns:textures/item/balance/render/battery_sword.png",
+        "render_type": "glow"
+    }
+  ]
+}

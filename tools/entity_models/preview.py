@@ -10,7 +10,7 @@ TOOLS = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, "/tmp/claude-0/-home-user-mod/96fe7e93-da4a-51ab-827c-893c832f9e8b/scratchpad")
 
-import art  # noqa: E402
+import hardlight  # noqa: E402
 import render_model  # noqa: E402
 from entity_models import load  # noqa: E402
 
@@ -23,7 +23,7 @@ COLORS = {"ion": ("green", (46, 200, 70)), "parallax": ("yellow", (245, 205, 30)
 def textures(key):
     corps, rgb = COLORS[key]
     glow = Image.new("RGBA", (16, 16), (255, 255, 240, 255))
-    return {"0": art.construct_texture(corps, rgb), "1": glow}
+    return {"0": hardlight.construct_texture(corps, rgb), "1": glow}
 
 
 def render_key(key, model):

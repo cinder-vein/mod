@@ -1,0 +1,20 @@
+{
+    "type": "palladium:compound",
+    "layers": [
+      {
+        "model_layer": {
+          "normal": "palladium:humanoid#tight_suit",
+          "slim": "palladium:humanoid#tight_suit_slim"
+        },
+        "texture": {
+          "normal": "final_lanterns:textures/models/skins/greenlanterns/haljordaninjustice2021nomask.png",
+          "slim": "final_lanterns:textures/models/skins/greenlanterns/slim/haljordaninjustice2021nomask.png"
+        }
+      },
+      {
+        "model_layer": "palladium:humanoid#tight_suit",
+        "texture": "final_lanterns:textures/models/skins/greenlanterns/haljordaninjustice2021glow.png",
+        "render_type": "glow"
+      }
+    ]
+}

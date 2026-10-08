@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "final_lanterns:centralbatteryshard_djinn"
+        }
+    },
+    "result": {
+        "item": "final_lanterns:djinnbatterycore",
+        "count": 1
+    }
+}

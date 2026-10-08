@@ -1,0 +1,27 @@
+{
+    "objectives":[
+        "construct",
+        "currentconstruct",
+        "rings_sacrificed",
+        "Resurection_Amount",
+        "Resurection_Amount_Max",
+        "bluelantern",
+        "redlantern",
+        "greenlantern",
+        "yellowlantern",
+        "orangelantern",
+        "violetlantern",
+        "indigolantern",
+        "sorrowlantern",
+        "whitelantern",
+        "lantern.color",
+        "lantern.xp",
+        "lantern.xpmax",
+        "lantern.Level",
+        "overdrive",
+        "starheart",
+        "mask",
+        "Blacklantern.Death.Amount",
+        "Blacklantern.Death.Amount.Max"
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "replace": false,
+    "values":[
+    "kubejs:greatsword_sorrow",
+    "kubejs:scythe_sorrow",
+    "kubejs:bostaff_sorrow",
+    "kubejs:axe_sorrow",
+    "kubejs:pickaxe_sorrow",
+    "kubejs:shovel_sorrow"
+    ]
+}

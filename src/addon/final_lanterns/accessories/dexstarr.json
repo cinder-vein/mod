@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "palladium:hat",
+    "render_layer": "final_lanterns:cats/dexstarr",
+    "disable_rendering": false
+}

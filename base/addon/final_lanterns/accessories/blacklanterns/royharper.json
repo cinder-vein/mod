@@ -1,0 +1,6 @@
+{
+    "type": "palladium:render_layer",
+    "slot": "final_lanterns:blacklantern",
+    "render_layer": "final_lanterns:blacklanterns/royharper",
+    "disable_rendering": true
+  }

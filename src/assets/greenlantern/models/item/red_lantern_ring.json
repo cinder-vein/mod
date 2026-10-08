@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "greenlantern:item/red_lantern_ring"
-  }
-}

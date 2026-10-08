@@ -8,12 +8,19 @@ Spectrum ability on a ring's bar. It's a clickable chat menu:
 Each emotion has a chain of three quests. They run on their own, one at a time: when one is done its reward lands
 and the next begins. Quest counters are their own scoreboard objectives (vanilla statistics), never reset.
 
-gen_corps.py calls generate() and merges the returned lines and functions; systems.py's emotion/feed adds the
+Every player is born with a spark of each emotion: the first time they join, each emotion gets a random
+START_MIN-START_MAX (emotion/roll; 1.20.1 has no /random, so 13 coin-flip predicates make a number).
+
+gen_final.py calls generate() and merges the returned lines and functions; systems.py's emotion/feed adds the
 lifetime tracking (gl_tr_<emotion><source>).
 """
 import json
 
-from systems import CORPS_TITLE, EMOTION_NAME, EMOTION_OF, EMOTIONS, NS, SOURCES, SPECTRUM, tellraw
+from common import NS, SPECTRUM
+from systems import BLACK_COUNT, CORPS_TITLE, EMOTION_NAME, EMOTION_OF, EMOTIONS, SOURCES, tellraw
+
+START_MIN, START_MAX = 10000, 15000
+ROLL_BITS = 13  # 0-8191, scaled to 0-(START_MAX - START_MIN)
 
 TITLE = {"will": "Willpower", "fear": "Fear", "rage": "Rage", "greed": "Avarice", "hope": "Hope", "love": "Love",
          "compassion": "Compassion", "death": "Death"}
@@ -98,6 +105,7 @@ def generate():
     for e in EMOTIONS:
         assert len(SOURCE_LABELS[e]) == len(SOURCES[e]), e
     fn, load, tick, second = {}, [], [], []
+    files = {"predicates/random/half.json": {"condition": "minecraft:random_chance", "chance": 0.5}}
     criteria = sorted({crit for e in EMOTIONS for q in QUESTS[e] for crit in q[2]})
     counter = {crit: f"gl_qc{i}" for i, crit in enumerate(criteria)}
     load += [f"scoreboard objectives add {obj} {crit}" for crit, obj in counter.items()]
@@ -108,6 +116,31 @@ def generate():
         load += [f"scoreboard objectives add {o}_{e} dummy" for o in ("gl_qn", "gl_qs", "gl_qp", "gl_qd", "gl_ep", "gl_el")]
         load += [f"scoreboard objectives add gl_tr_{e}{i} dummy" for i in range(len(SOURCES[e]))]
         load.append(f"scoreboard objectives add gl_tr_{e}_quests dummy")
+        load.append(f"scoreboard objectives add gl_tr_{e}_start dummy")
+
+    # --- the spark every player is born with --------------------------------------------------------
+    span = START_MAX - START_MIN + 1
+    load += [f"scoreboard players set #span gl_cfg {span}", f"scoreboard players set #bits gl_cfg {2 ** ROLL_BITS}"]
+    fn["emotion/roll_value"] = ["scoreboard players set #r gl_tmp 0", *[
+        f"execute if predicate {NS}:random/half run scoreboard players add #r gl_tmp {2 ** b}" for b in range(ROLL_BITS)],
+        "scoreboard players operation #r gl_tmp *= #span gl_cfg", "scoreboard players operation #r gl_tmp /= #bits gl_cfg",
+        f"scoreboard players add #r gl_tmp {START_MIN}"]
+    roll = ["tag @s add gl_rolled"]
+    for e in EMOTIONS:
+        roll += [f"function {NS}:emotion/roll_value", f"scoreboard players add @s gl_e_{e} 0",
+                 f"scoreboard players operation @s gl_e_{e} += #r gl_tmp",
+                 f"scoreboard players operation @s gl_tr_{e}_start = #r gl_tmp"]
+    fn["emotion/roll"] = roll + [
+        tellraw("@s", ["", {"text": "⬢ ", "color": "#7A50F0"},
+                       {"text": "The emotional spectrum stirs in you. ", "color": "white"},
+                       {"text": "[See your emotions]", "color": "aqua",
+                        "clickEvent": {"action": "run_command", "value": "/trigger gl_emotions set 1"},
+                        "hoverEvent": {"action": "show_text", "contents": "Open your Emotional Spectrum"}},
+                       {"text": "  (or say \"emotions\" in chat)", "color": "dark_gray"}])]
+    fn["emotion/reroll"] = [*[f"scoreboard players operation @s gl_e_{e} -= @s gl_tr_{e}_start" for e in EMOTIONS],
+                            f"function {NS}:emotion/roll"]
+    # before anything else reads a new player's emotions (the Black Lantern ring looks for empty ones)
+    tick.append(f"execute as @a[tag=!gl_rolled] run function {NS}:emotion/roll")
 
     # --- quests: checked every second for every player -------------------------------------------
     check_all = []
@@ -198,8 +231,20 @@ def generate():
         menu.append(f"execute if entity @s[tag=gl_host_{ent.key}] run " + tellraw("@s", [
             "", {"text": " You host ", "color": "gray"}, {"text": ent.name, "color": ent.color, "bold": True},
             {"text": f", {ent.title}.", "color": "gray"}]))
+    menu += [  # the entities' cooldown after losing one, in minutes (rounded up)
+        "scoreboard players set #m gl_tmp 0",
+        "execute if score @s gl_ehcd matches 1.. run scoreboard players operation #m gl_tmp = @s gl_ehcd",
+        "execute if score @s gl_ehcd matches 1.. run scoreboard players add #m gl_tmp 59",
+        "execute if score @s gl_ehcd matches 1.. run scoreboard players operation #m gl_tmp /= #60 gl_cfg",
+        "execute if score @s gl_ehcd matches 1.. run " + tellraw("@s", [
+            "", {"text": " No entity will choose you for another ", "color": "gray"},
+            {"score": {"name": "#m", "objective": "gl_tmp"}, "color": "white"}, {"text": " min.", "color": "gray"}])]
     menu.append(tellraw("@s", ["", {"text": " At 100% that corps' ring comes for you. The White Lantern ring comes when all "
-                                        "seven spectrum emotions (not Death) are at 100%.", "color": "dark_gray"}]))
+                                        "seven spectrum emotions (not Death) are at 100%. The Black Lantern ring comes to "
+                                        f"the emotionally dead: {BLACK_COUNT} or more spectrum emotions still below ",
+                                "color": "dark_gray"},
+                               {"score": {"name": "#black_floor", "objective": "gl_cfg"}, "color": "gray"},
+                               {"text": ".", "color": "dark_gray"}]))
     fn["emotion/menu"] = menu
     fn["emotion/show"] = [f"function {NS}:emotion/menu"]
 
@@ -209,7 +254,8 @@ def generate():
                 "execute unless score #threshold gl_cfg matches 1.. run scoreboard players set #threshold gl_cfg 1",
                 *compute(e),
                 tellraw("@s", ["", {"text": f"\n⬢ {TITLE[e]}", "color": EMOTION_COLOR[e], "bold": True},
-                               {"text": f"  the {CORPS_TITLE[corps]} ring comes at 100%", "color": "dark_gray"}])]
+                               {"text": (f"  the {CORPS_TITLE[corps]} ring comes at 100%" if e != "death" else
+                                         "  how close you have come to death"), "color": "dark_gray"}])]
         page += bar_lines(e, [{"text": " "}], stats(e))
         page.append(tellraw("@s", ["", {"text": " What has raised it:", "color": "white"}]))
         for label, rate, idxs in label_groups(e):
@@ -223,7 +269,10 @@ def generate():
                 amount = {"score": {"name": "@s", "objective": f"gl_tr_{e}{idxs[0]}"}, "color": "white"}
             page.append(tellraw("@s", ["", {"text": f"  • {label}: +", "color": "gray"}, amount,
                                        {"text": f"  ({rate})", "color": "dark_gray"}]))
-        page += [f"scoreboard players add @s gl_tr_{e}_quests 0",
+        page += [f"scoreboard players add @s gl_tr_{e}_start 0",
+                 tellraw("@s", ["", {"text": "  • Born with: +", "color": "gray"},
+                                {"score": {"name": "@s", "objective": f"gl_tr_{e}_start"}, "color": "white"}]),
+                 f"scoreboard players add @s gl_tr_{e}_quests 0",
                  tellraw("@s", ["", {"text": "  • Quests: +", "color": "gray"},
                                 {"score": {"name": "@s", "objective": f"gl_tr_{e}_quests"}, "color": "white"}]),
                  tellraw("@s", ["", {"text": " Quests:", "color": "white"}])]
@@ -256,4 +305,5 @@ def generate():
     ]
     tick.append(f"execute as @a[scores={{gl_emotions=1..}}] run function {NS}:emotion/trigger")
     assert all(EMOTION_OF[c] in EMOTIONS for c in SPECTRUM)
-    return load, tick, second, fn
+    load.append("scoreboard players set #60 gl_cfg 60")
+    return load, tick, second, fn, files

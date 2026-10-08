@@ -1,0 +1,9 @@
+execute if entity @s[tag=gl_offer_green] run function final_lanterns:offer/decline_green
+execute if entity @s[tag=gl_offer_yellow] run function final_lanterns:offer/decline_yellow
+execute if entity @s[tag=gl_offer_red] run function final_lanterns:offer/decline_red
+execute if entity @s[tag=gl_offer_orange] run function final_lanterns:offer/decline_orange
+execute if entity @s[tag=gl_offer_blue] run function final_lanterns:offer/decline_blue
+execute if entity @s[tag=gl_offer_violet] run function final_lanterns:offer/decline_violet
+execute if entity @s[tag=gl_offer_indigo] run function final_lanterns:offer/decline_indigo
+execute if entity @s[tag=gl_offer_white] run function final_lanterns:offer/decline_white
+execute if entity @s[tag=gl_offer_black] run function final_lanterns:offer/decline_black

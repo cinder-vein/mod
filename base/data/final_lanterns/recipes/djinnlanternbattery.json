@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      " VT",
+      "ZTV",
+      "SN "
+  ],
+  "key": {
+      "T": {
+          "tag": "palladium:connector/titanium_ingots"
+      },
+      "V": {
+          "item": "final_lanterns:oan_circuit"
+      },
+        "S": {
+          "item": "minecraft:stick"
+      },
+        "Z": {
+          "item": "minecraft:string"
+      },
+      "N": {
+          "item": "final_lanterns:djinnbatterycore"
+      }
+  },
+  "result": {
+      "item": "final_lanterns:sworddjinn",
+      "count": 1
+  }
+}

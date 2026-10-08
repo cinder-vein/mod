@@ -1,9 +1,0 @@
-{
-  "sound_type": "minecraft:lantern",
-  "map_color": "minecraft:snow",
-  "destroy_time": 2.0,
-  "explosion_resistance": 6.0,
-  "no_occlusion": true,
-  "render_type": "translucent",
-  "register_item": false
-}
