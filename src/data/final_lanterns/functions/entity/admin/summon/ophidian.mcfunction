@@ -1,2 +1,3 @@
-execute unless score #state_ophidian gl_ent matches 0 run tellraw @s ["",{"text":"Ophidian isn't free (it's out, hosted or sealed). Reset it first: function final_lanterns:entity/admin/reset","color":"gray"}]
-execute if score #state_ophidian gl_ent matches 0 run function final_lanterns:entity/ophidian/manifest
+execute unless score #state_ophidian gl_ent matches 0 run tellraw @s ["",{"text":"Ophidian isn't free (it's out, hosted or sealed). ","color":"gray"},{"text":"[Free every entity]","color":"aqua","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/reset"}}]
+execute if score #state_ophidian gl_ent matches 0 run function final_lanterns:entity/ophidian/summon_here
+execute if score #state_ophidian gl_ent matches 1 run tellraw @s ["",{"text":"Ophidian ","color":"#FA8214","bold":true},{"text":"offers itself to players with 100% greed. ","color":"gray"},{"text":"[Make me its host now]","color":"green","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/host/ophidian"},"hoverEvent":{"action":"show_text","contents":"Skips its emotion check and the one-hour wait"}}]

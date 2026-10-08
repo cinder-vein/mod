@@ -210,9 +210,15 @@ def generate(sizes):
                    f'brightness:{{sky:15,block:15}},item:{{id:"{NS}:entity_body",Count:1b,tag:{{CustomModelData:{i}}}}},'
                    f'transformation:{{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0f,0f],'
                    f'scale:[0.1f,0.1f,0.1f]}}}}')
-        fn[f"entity/{k}/manifest"] = [
+        fn[f"entity/{k}/manifest"] = ["scoreboard players set #placed gl_tmp 0", *spots, f"function {NS}:entity/{k}/arrive"]
+        # an admin's summon: right in front of them
+        fn[f"entity/{k}/summon_here"] = [
             "scoreboard players set #placed gl_tmp 0",
-            *spots,
+            f"execute rotated ~ 0 positioned ^ ^{1 if e.kind != 'defeat' else 0} ^6 run function {NS}:entity/{k}/place",
+            f"execute if score #placed gl_tmp matches 0 positioned ~ ~3 ~ run function {NS}:entity/{k}/place",
+            f"function {NS}:entity/{k}/arrive",
+        ]
+        fn[f"entity/{k}/arrive"] = [
             f"scoreboard players set {state} 1",
             f"scoreboard players add #ser_{k} gl_ent 1",
             f"scoreboard players operation @e[tag=gl_ent_new] gl_eser = #ser_{k} gl_ent",
@@ -645,11 +651,33 @@ def generate(sizes):
 
     # --- admin ---------------------------------------------------------------------------------
     for e in ENTITIES:
+        need = REQUIRED[e.kind]
+        how = {"bond": "offers itself to", "hunt": "hunts down and possesses", "defeat": "can be defeated by"}[e.kind]
+        emotion = "all seven spectrum emotions" if e.emotion == "life" else e.emotion
         fn[f"entity/admin/summon/{e.key}"] = [
             f"execute unless score #state_{e.key} gl_ent matches 0 run "
-            + tellraw("@s", ["", {"text": f"{e.name} isn't free (it's out, hosted or sealed). Reset it first: "
-                                          f"function {NS}:entity/admin/reset", "color": "gray"}]),
-            f"execute if score #state_{e.key} gl_ent matches 0 run function {NS}:entity/{e.key}/manifest"]
+            + tellraw("@s", ["", {"text": f"{e.name} isn't free (it's out, hosted or sealed). ", "color": "gray"},
+                             {"text": "[Free every entity]", "color": "aqua",
+                              "clickEvent": {"action": "run_command", "value": f"/function {NS}:entity/admin/reset"}}]),
+            f"execute if score #state_{e.key} gl_ent matches 0 run function {NS}:entity/{e.key}/summon_here",
+            f"execute if score #state_{e.key} gl_ent matches 1 run " + tellraw("@s", [
+                "", {"text": f"{e.name} ", "color": e.color, "bold": True},
+                {"text": f"{how} players with {need}% {emotion}" + (" (it takes the nearest worthy player when worn "
+                         "down to 15%)" if e.kind == "defeat" else "") + ". ", "color": "gray"},
+                {"text": "[Make me its host now]", "color": "green",
+                 "clickEvent": {"action": "run_command", "value": f"/function {NS}:entity/admin/host/{e.key}"},
+                 "hoverEvent": {"action": "show_text", "contents": "Skips its emotion check and the one-hour wait"}}]),
+        ]
+        fn[f"entity/admin/host/{e.key}"] = [  # as the player: host it now, whatever their emotions or cooldown
+            f"execute if entity @s[tag=gl_host] run " + tellraw("@s", ["", {"text": "You already host an entity: "
+                                                                               "release it first.", "color": "gray"}]),
+            f"execute if score #state_{e.key} gl_ent matches 2 run " + tellraw("@s", [
+                "", {"text": f"{e.name} already has a host.", "color": "gray"}]),
+            f"execute if score #state_{e.key} gl_ent matches 3 run " + tellraw("@s", [
+                "", {"text": f"{e.name} is sealed in a lantern.", "color": "gray"}]),
+            f"execute if entity @s[tag=!gl_host] if score #state_{e.key} gl_ent matches 0..1 at @s run "
+            f"function {NS}:entity/{e.key}/host",
+        ]
     fn["entity/admin/reset"] = [
         *[line for e in ENTITIES for line in (f"scoreboard players set #state_{e.key} gl_ent 0",
                                               f"scoreboard players set #host_{e.key} gl_ent 0")],

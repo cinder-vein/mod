@@ -5,7 +5,7 @@
 const CORPS = ["green", "yellow", "red", "orange", "blue", "violet", "indigo", "white", "black"]
 const EMOTIONS = ["will", "fear", "rage", "greed", "hope", "love", "compassion", "death"]
 // answered by Palladium itself (exact messages), so the script leaves them alone
-const PALLADIUM_PHRASES = ["accept", "black ring come to me", "black ring come to me!", "black ring, come to me", "black ring, come to me!", "blue ring come to me", "blue ring come to me!", "blue ring, come to me", "blue ring, come to me!", "come to me ring", "come to me ring!", "come to me, black ring", "come to me, black ring!", "come to me, blue ring", "come to me, blue ring!", "come to me, green ring", "come to me, green ring!", "come to me, indigo ring", "come to me, indigo ring!", "come to me, orange ring", "come to me, orange ring!", "come to me, red ring", "come to me, red ring!", "come to me, ring", "come to me, ring!", "come to me, sinestro ring", "come to me, sinestro ring!", "come to me, star sapphire ring", "come to me, star sapphire ring!", "come to me, violet ring", "come to me, violet ring!", "come to me, white ring", "come to me, white ring!", "come to me, yellow ring", "come to me, yellow ring!", "decline", "emotional spectrum", "emotions", "green ring come to me", "green ring come to me!", "green ring, come to me", "green ring, come to me!", "i accept", "i call my ring", "i call my ring!", "i decline", "i summon my ring", "i summon my ring!", "indigo ring come to me", "indigo ring come to me!", "indigo ring, come to me", "indigo ring, come to me!", "my emotions", "n", "no", "orange ring come to me", "orange ring come to me!", "orange ring, come to me", "orange ring, come to me!", "red ring come to me", "red ring come to me!", "red ring, come to me", "red ring, come to me!", "return to me, black ring", "return to me, black ring!", "return to me, blue ring", "return to me, blue ring!", "return to me, green ring", "return to me, green ring!", "return to me, indigo ring", "return to me, indigo ring!", "return to me, orange ring", "return to me, orange ring!", "return to me, red ring", "return to me, red ring!", "return to me, ring", "return to me, ring!", "return to me, sinestro ring", "return to me, sinestro ring!", "return to me, star sapphire ring", "return to me, star sapphire ring!", "return to me, violet ring", "return to me, violet ring!", "return to me, white ring", "return to me, white ring!", "return to me, yellow ring", "return to me, yellow ring!", "ring come back", "ring come back!", "ring come to me", "ring come to me!", "ring return to me", "ring return to me!", "ring, come back", "ring, come back!", "ring, come to me", "ring, come to me!", "ring, return to me", "ring, return to me!", "ring, to me", "ring, to me!", "show my emotions", "sinestro ring come to me", "sinestro ring come to me!", "sinestro ring, come to me", "sinestro ring, come to me!", "star sapphire ring come to me", "star sapphire ring come to me!", "star sapphire ring, come to me", "star sapphire ring, come to me!", "violet ring come to me", "violet ring come to me!", "violet ring, come to me", "violet ring, come to me!", "white ring come to me", "white ring come to me!", "white ring, come to me", "white ring, come to me!", "y", "yellow ring come to me", "yellow ring come to me!", "yellow ring, come to me", "yellow ring, come to me!", "yes"]
+const PALLADIUM_PHRASES = ["accept", "black ring come to me", "black ring come to me!", "black ring, come to me", "black ring, come to me!", "blue ring come to me", "blue ring come to me!", "blue ring, come to me", "blue ring, come to me!", "come to me ring", "come to me ring!", "come to me, black ring", "come to me, black ring!", "come to me, blue ring", "come to me, blue ring!", "come to me, green ring", "come to me, green ring!", "come to me, indigo ring", "come to me, indigo ring!", "come to me, orange ring", "come to me, orange ring!", "come to me, red ring", "come to me, red ring!", "come to me, ring", "come to me, ring!", "come to me, sinestro ring", "come to me, sinestro ring!", "come to me, star sapphire ring", "come to me, star sapphire ring!", "come to me, violet ring", "come to me, violet ring!", "come to me, white ring", "come to me, white ring!", "come to me, yellow ring", "come to me, yellow ring!", "decline", "emotional spectrum", "emotions", "final lanterns check", "green ring come to me", "green ring come to me!", "green ring, come to me", "green ring, come to me!", "i accept", "i call my ring", "i call my ring!", "i decline", "i summon my ring", "i summon my ring!", "indigo ring come to me", "indigo ring come to me!", "indigo ring, come to me", "indigo ring, come to me!", "lantern check", "lanterns check", "my emotions", "n", "no", "orange ring come to me", "orange ring come to me!", "orange ring, come to me", "orange ring, come to me!", "red ring come to me", "red ring come to me!", "red ring, come to me", "red ring, come to me!", "return to me, black ring", "return to me, black ring!", "return to me, blue ring", "return to me, blue ring!", "return to me, green ring", "return to me, green ring!", "return to me, indigo ring", "return to me, indigo ring!", "return to me, orange ring", "return to me, orange ring!", "return to me, red ring", "return to me, red ring!", "return to me, ring", "return to me, ring!", "return to me, sinestro ring", "return to me, sinestro ring!", "return to me, star sapphire ring", "return to me, star sapphire ring!", "return to me, violet ring", "return to me, violet ring!", "return to me, white ring", "return to me, white ring!", "return to me, yellow ring", "return to me, yellow ring!", "ring come back", "ring come back!", "ring come to me", "ring come to me!", "ring return to me", "ring return to me!", "ring, come back", "ring, come back!", "ring, come to me", "ring, come to me!", "ring, return to me", "ring, return to me!", "ring, to me", "ring, to me!", "show my emotions", "sinestro ring come to me", "sinestro ring come to me!", "sinestro ring, come to me", "sinestro ring, come to me!", "star sapphire ring come to me", "star sapphire ring come to me!", "star sapphire ring, come to me", "star sapphire ring, come to me!", "violet ring come to me", "violet ring come to me!", "violet ring, come to me", "violet ring, come to me!", "white ring come to me", "white ring come to me!", "white ring, come to me", "white ring, come to me!", "y", "yellow ring come to me", "yellow ring come to me!", "yellow ring, come to me", "yellow ring, come to me!", "yes"]
 const ENTITY_KEYS = ["ion", "parallax", "butcher", "ophidian", "adara", "predator", "proselyte", "life", "nekron"]
 console.info('[Final Lanterns] KubeJS script loaded: /lantern, /ring and /emotions')
 
@@ -80,6 +80,17 @@ ServerEvents.commandRegistry(event => {
       .then(Commands.literal('reset').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/reset')))
       .then(Commands.literal('on').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/on')))
       .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/off')))
+      .then(Commands.literal('host').then(Commands.argument('player', Arguments.PLAYER.create(event))
+        .then(Commands.argument('entity', Arguments.WORD.create(event))
+          .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
+          .executes(ctx => {
+            const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
+            if (ENTITY_KEYS.indexOf(key) < 0) {
+              ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
+              return 0
+            }
+            return asPlayer(ctx, `entity/admin/host/${key}`)
+          }))))
       .then(Commands.literal('summon').then(Commands.argument('entity', Arguments.WORD.create(event))
         .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
         .executes(ctx => {
@@ -90,6 +101,7 @@ ServerEvents.commandRegistry(event => {
           }
           return runSelf(ctx, `final_lanterns:entity/admin/summon/${key}`)
         }))))
+    .then(Commands.literal('check').executes(ctx => runSelf(ctx, 'final_lanterns:check')))
     .then(Commands.literal('enable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/enable')))
     .then(Commands.literal('disable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/disable')))
   )
@@ -117,6 +129,11 @@ ServerEvents.commandRegistry(event => {
       .executes(ctx => recall(ctx, null))
       .then(corpsArgument(ctx => recall(ctx, String(Arguments.WORD.getResult(ctx, 'corps')).toLowerCase()))))
   )
+})
+
+// Lets the datapack's check ("lantern check") see that this script is loaded.
+PlayerEvents.loggedIn(event => {
+  event.server.runCommandSilent('scoreboard players set #kubejs gl_cfg 1')
 })
 
 // Recall runs as the player (by UUID, so any name works).

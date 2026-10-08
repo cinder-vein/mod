@@ -22,17 +22,19 @@ from pathlib import Path
 
 import emotions
 import entities
+import check
 import entity_models
 import hardlight
 import hosts
 import icons
+import spectrum
 import systems
 from common import CORPS, HOSTILE_PREY, NOT_CREATURES, NS
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 BASE = ROOT / "base"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 MERGED = {f"assets/{NS}/lang/en_us.json", "data/minecraft/tags/functions/load.json",
           "data/minecraft/tags/functions/tick.json", "pack.mcmeta"}
 PATCHED = set()  # A New Corps files deliberately rewritten (see patch_base)
@@ -116,7 +118,7 @@ def patch_base(lang):
             "bar_color": "white", "hidden": True, "hidden_in_bar": False, "list_index": index,
             "first_tick_commands": [f"function {NS}:emotion/menu"], "commands": [], "last_tick_commands": [],
             "conditions": {"enabling": [{"type": "palladium:action", "cooldown": 20, "key_type": "key_bind"}]}}
-        patch(rel, power)
+        patch(rel, spectrum.patch_ring(c, power))
     lang[f"ability.{NS}.emotional_spectrum"] = "Emotional Spectrum"
     lang[f"ability.{NS}.emotional_spectrum.description"] = "Your emotions, what raised them, and their quests."
     # Orange had no ring-forging animation of its own (the hosts' Forge Ring uses one per color)
@@ -245,6 +247,9 @@ def main():
     h_fn, h_load, h_second = hosts.functions()
     merge((h_load, [], h_second, h_fn))
     merge(([], hardlight.tick_lines(), [], hardlight.world_constructs()))
+    merge(spectrum.generate())
+    c_load, c_tick, c_fn = check.generate()
+    merge((c_load, c_tick, [], c_fn))
     second.append(f"superpower add {NS}:emotional_spectrum @a")
     fn["second"] = s_second + second
     for path, data in {**e_files, **n_files}.items():
@@ -255,10 +260,12 @@ def main():
     for path, lines in fn.items():
         write_text(f"data/{NS}/functions/{path}.mcfunction", "\n".join(lines) + "\n")
 
+    # Every entry optional: a function tag with one missing function (one that failed to load, say) is dropped whole,
+    # which would stop A New Corps' tick and ours together.
     for rel, value in (("data/minecraft/tags/functions/load.json", f"{NS}:fl/load"),
                        ("data/minecraft/tags/functions/tick.json", f"{NS}:fl/tick")):
         tag = base_json(rel)
-        tag["values"].append(value)
+        tag["values"] = [{"id": v, "required": False} if isinstance(v, str) else v for v in tag["values"] + [value]]
         write(rel, tag)
     write(f"data/{NS}/tags/entity_types/not_creatures.json", {"replace": False, "values": [
         t if t.startswith("minecraft:") else {"id": t, "required": False} for t in NOT_CREATURES]})
@@ -267,6 +274,7 @@ def main():
     items = hardlight.item_files(write, save, lang)
     entity_assets(lang)
     hosts.assets(write, lang)
+    spectrum.assets(write, save, lang)
     write(f"data/{NS}/palladium/powers/emotional_spectrum.json", spirit_power())
     lang[f"power.{NS}.emotional_spectrum"] = "Emotional Spectrum"
     for name, (glyph, rgb) in sorted(hosts.ICONS.items()):
@@ -277,6 +285,8 @@ def main():
     write_text("META-INF/mods.toml", mods_toml())
     pack = base_json("pack.mcmeta")
     pack["pack"].update({"id": NS, "description": "Final Lanterns (based on A New Corps)", "version": VERSION})
+    # two Lantern Ring slots, for the Spectrum Bond (Palladium registers this slot from here)
+    pack["custom"]["curios"]["lantern_rings"]["size"] = 2
     write("pack.mcmeta", pack)
     shutil.copyfile(ROOT / "tools/templates/logo.png", SRC / "pack.png")
     base_lang = base_json(f"assets/{NS}/lang/en_us.json")

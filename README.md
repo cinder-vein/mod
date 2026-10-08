@@ -13,12 +13,21 @@ Use a Forge **1.20.1** profile (Forge 47.x) with these mods:
 - **Curios**: rings are worn in the *Lantern Ring* slot
 - **KubeJS** (with Rhino)
 
-Then put `dist/final_lanterns-1.0.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
+Then put `dist/final_lanterns-1.1.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
 (`greenlantern-*.jar`) and *A New Corps* jars: Final Lanterns replaces both.
 
-Palladium loads the mod's KubeJS scripts from the jar. If `/ring` or `/lantern` is still an unknown command, copy
-`kubejs/server_scripts/lantern_commands.js` from this repository into your game's `kubejs/server_scripts` folder and
-restart. `logs/kubejs/server.log` says *"[Final Lanterns] KubeJS script loaded"* when it works.
+**Coming from Lantern Corps 10:** delete `lantern_commands.js` and `lantern_keys.js` from your game's
+`kubejs/server_scripts` and `kubejs/client_scripts` folders. Those old copies call the old `greenlantern` functions,
+so `/lantern` and `/ring` silently do nothing while they're there.
+
+**Check it works:** say ***lantern check*** in chat (or `/function final_lanterns:check`). It says whether the
+datapack is running, whether the KubeJS commands are loaded, and for each corps how close you are to its ring (or why it
+won't come yet).
+
+Palladium loads the mod's KubeJS script (`/lantern`, `/ring`, `/emotions`) from the jar. If the check says it isn't
+loaded, copy `kubejs/server_scripts/lantern_commands.js` from this repository into your game's `kubejs/server_scripts`
+folder and restart. Everything also works without it: through chat, `/trigger`, and `/function` for admins (see Admin
+commands).
 
 ## The rings
 
@@ -31,6 +40,7 @@ and Starheart rings.
   menu.
 - **Recharge** at its lantern: right-click the lantern (placed, or held in your hand) to speak the oath.
 - The nine spectrum rings' bars have an **Emotional Spectrum** button (see below).
+- The Lantern Ring slot holds **two rings**: see *Two rings: the Spectrum Bond*.
 
 Final Lanterns adds these to the nine spectrum rings:
 
@@ -50,6 +60,30 @@ Final Lanterns adds these to the nine spectrum rings:
   - With KubeJS: `/ring recall [corps]`, and looser wordings in chat (*"come back blue ring"*).
   - A ring lying anywhere in a loaded area, in any dimension, flies back to you. One in your ender chest comes out at
     your feet. Anywhere else (a chest, an unloaded area), a new ring forms on you and the one left behind goes dark.
+
+## Two rings: the Spectrum Bond
+
+Wear two of the nine spectrum rings (both Lantern Ring slots) and they bond. Each ring keeps its own power and bar; the
+**Spectrum Bond** adds a bar and a skill tree of its own (powers menu), and merged suits.
+
+- **The bar:**
+  - **Twin Beam** (hold): both rings' beams at once, the first ring's from your right hand, the second's from your
+    left. Each ring pays for its own beam.
+  - **Twin Constructs** (hold the key): one wheel with both corps' construct weapons.
+  - **Spectrum Fusion:** a burst that fuses both emotions; every pair has its own (*Will Over Fear*, *Rage Tempered
+    by Hope*, *Life and Death*...). 125 charge from each ring, every 30 seconds; Fusion Mastery makes it 75 every 15.
+  - **Prismatic Shield** (toggle): Resistance II in both colors; each ring pays a charge a tick.
+  - **Spectrum Overload** (ultimate): everything within 12 blocks is blasted into the air, and you get Strength II,
+    Resistance II and Speed II for 15 seconds. 400 charge from each ring, once a minute.
+  - Second page: the Emotional Spectrum menu.
+- **The skill tree** (XP levels): Twin Beam → Twin Constructs → Prismatic Shield; Spectrum Fusion → Fusion Mastery →
+  Spectrum Overload; **Shared Light** (charge flows from the fuller ring to the emptier one) → **Twin Lanterns**
+  (recharging either ring at its lantern fills both) → **Resonance** (both rings regain 20 charge a second); Dual
+  Vitality (+10 hearts) → Twin Strength (+3 damage) → Spectrum Flight (faster flight).
+- **Merged suits:** the accessories menu gets a *Spectrum Suit* slot. Both corps' suits split down the middle
+  (*Split Light*) or at the belt (*Above and Below*), each either way round, or *Own Suits* to keep each ring's own.
+  It shows while either ring's suit is on.
+- The first ring in this order is the right-hand one: green, yellow, red, orange, blue, violet, indigo, white, black.
 
 ## Your emotions
 
@@ -90,8 +124,11 @@ Every player has eight emotions: willpower, fear, rage, avarice, hope, love, com
 
 ## The ring chooses you
 
-When an emotion reaches the **threshold (20 000)** while you're in survival, that corps' ring streaks down to you:
-*"&lt;Name&gt;, you have great willpower. Welcome to the Green Lantern Corps. Do you accept?"*
+When an emotion reaches the **threshold (20 000)** while you're **in survival**, that corps' ring streaks down to you
+within a second: *"&lt;Name&gt;, you have great willpower. Welcome to the Green Lantern Corps. Do you accept?"*
+Everyone starts between 10 000 and 15 000, so the first ring comes after some play (or a quest or two). Say
+*lantern check* to see how far each corps is. To try it straight away, an admin can run
+`/lantern offer <player> <corps>` or set an emotion to 20 000.
 
 - Click **[ACCEPT]** or **[DECLINE]**, or type **yes** / **no** in chat.
 - If you accept, the ring is bound to you and brings its lantern. If your inventory is full, they drop at your feet.
@@ -121,6 +158,8 @@ sealed in a lantern. You don't need a ring to host one: only the emotion.
 
 - **One at a time:** a host can't take a second entity. After you lose yours (released, drawn out with a lantern, or
   taken back by an admin), **no entity will choose you for an hour**.
+- **Testing:** `/lantern entity summon <entity>` makes it appear right in front of you; chat says who it chooses and
+  has a **[Make me its host now]** button. `/lantern entity host <player> <entity>` does the same for anyone.
 - **When they come:** once a minute, each free entity has a chance (about 1 in 6) to come to a player it can draw:
   100% of its emotion for the ones that offer, 60% for the hunters, 25% for the bosses. It stays 10 minutes (20 for
   hunters and bosses), then fades away until next time.
@@ -188,8 +227,13 @@ goes to the leader, unbound, for a new recruit. Leaders can't revoke each other.
 
 ## Admin commands
 
-With KubeJS: `/lantern` (operators only). Without it, run the matching function on the player, e.g.
-`execute as Steve run function final_lanterns:admin/give/green`.
+With KubeJS: `/lantern` (operators only). Without it, run the matching function, as the player where it acts on one:
+
+- `/function final_lanterns:admin/help` lists them all.
+- `/function final_lanterns:entity/admin/summon/ion` summons Ion in front of you;
+  `/execute as Steve run function final_lanterns:entity/admin/host/ion` makes Steve its host.
+- `/execute as Steve run function final_lanterns:admin/offer/green` makes the green ring choose Steve now.
+- `/scoreboard players set Steve gl_e_will 20000` sets an emotion.
 
 | Command | What it does |
 |---|---|
@@ -207,7 +251,9 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function 
 | `/lantern blackfloor <n>` | the Black ring comes when 4+ spectrum emotions are below n (default 11 000) |
 | `/lantern enable` / `disable` | turn emotions and ring offers on or off |
 | `/lantern entity status\|reset\|on\|off` | where each entity is; free them all; let them appear or not |
-| `/lantern entity summon <entity>` | bring a free entity to you now (ion, parallax, butcher, ophidian, adara, predator, proselyte, life, nekron) |
+| `/lantern entity summon <entity>` | a free entity appears in front of you, and chat says who it chooses (ion, parallax, butcher, ophidian, adara, predator, proselyte, life, nekron) |
+| `/lantern entity host <player> <entity>` | make the player its host now, skipping its emotion check and the one-hour wait |
+| `/lantern check` | the same as saying *lantern check*: what works, and why no ring has come |
 
 - **Emotion names:** will, fear, rage, greed, hope, love, compassion, death.
 - **Corps names:** green, yellow, red, orange, blue, violet, indigo, white, black.
@@ -225,6 +271,8 @@ The jar is built from `src/`, which is generated: don't edit it by hand.
   - `tools/entities.py`: the entities;
   - `tools/hosts.py`: the host powers and suits;
   - `tools/hardlight.py`: the hard-light constructs;
+  - `tools/spectrum.py`: the Spectrum Bond (two rings) and its merged suits;
+  - `tools/check.py`: the *lantern check*;
   - `tools/entity_models/`: the entities' models;
   - `tools/common.py`: the nine corps and how they map onto A New Corps' rings.
 - `python3 tools/build.py` validates and packages the jar. `tools/lint_commands.py` syntax-checks every command (needs

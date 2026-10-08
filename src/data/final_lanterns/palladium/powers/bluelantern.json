@@ -365,14 +365,70 @@
       "hidden": true,
       "hidden_in_bar": true,
       "default_layer": "final_lanterns:bluelanterns/saintwalker",
-      "accessory_slot": "final_lanterns:bluelantern"
+      "accessory_slot": "final_lanterns:bluelantern",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:and",
+                "conditions": [
+                  {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:spectrum_bond"
+                  },
+                  {
+                    "type": "palladium:not",
+                    "conditions": [
+                      {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:spectrum_suit",
+                        "accessory": "final_lanterns:spectrum_suit_own"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     "mask": {
       "type": "palladium:render_layer_by_accessory_slot",
       "hidden": true,
       "hidden_in_bar": true,
       "default_layer": "final_lanterns:blankmask",
-      "accessory_slot": "final_lanterns:bluelanternmasks"
+      "accessory_slot": "final_lanterns:bluelanternmasks",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:and",
+                "conditions": [
+                  {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:spectrum_bond"
+                  },
+                  {
+                    "type": "palladium:not",
+                    "conditions": [
+                      {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:spectrum_suit",
+                        "accessory": "final_lanterns:spectrum_suit_own"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     "name": {
       "type": "palladium:name_change",

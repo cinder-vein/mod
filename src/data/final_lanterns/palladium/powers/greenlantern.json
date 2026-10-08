@@ -421,6 +421,30 @@
                 "effect": "final_lanterns:willpower_overdrive"
               }
             ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:and",
+                "conditions": [
+                  {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:spectrum_bond"
+                  },
+                  {
+                    "type": "palladium:not",
+                    "conditions": [
+                      {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:spectrum_suit",
+                        "accessory": "final_lanterns:spectrum_suit_own"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -439,6 +463,30 @@
               {
                 "type": "palladium:has_effect",
                 "effect": "final_lanterns:willpower_overdrive"
+              }
+            ]
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:and",
+                "conditions": [
+                  {
+                    "type": "palladium:has_power",
+                    "power": "final_lanterns:spectrum_bond"
+                  },
+                  {
+                    "type": "palladium:not",
+                    "conditions": [
+                      {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:spectrum_suit",
+                        "accessory": "final_lanterns:spectrum_suit_own"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }

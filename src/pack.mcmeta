@@ -3,7 +3,7 @@
     "id": "final_lanterns",
     "description": "Final Lanterns (based on A New Corps)",
     "pack_format": 15,
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "dependencies": {
     "common": {
@@ -20,7 +20,7 @@
       "lantern_rings": {
         "icon": "curios:slot/rings",
         "priority": 1,
-        "size": 1,
+        "size": 2,
         "hide": false,
         "cosmetic": true
       },

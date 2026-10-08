@@ -104,3 +104,55 @@ tag @e[type=minecraft:item_display,tag=gl_train_new] remove gl_train_new
 tag @e[type=minecraft:item_display,tag=gl_new] remove gl_new
 scoreboard players remove @e[type=minecraft:item_display,tag=gl_construct] gl_life 1
 kill @e[type=minecraft:item_display,tag=gl_construct,scores={gl_life=..0}]
+scoreboard players set @a gl_rings 0
+tag @a[tag=gl_p1_green] remove gl_p1_green
+tag @a[tag=gl_p2_green] remove gl_p2_green
+tag @a[tag=gl_p1_yellow] remove gl_p1_yellow
+tag @a[tag=gl_p2_yellow] remove gl_p2_yellow
+tag @a[tag=gl_p1_red] remove gl_p1_red
+tag @a[tag=gl_p2_red] remove gl_p2_red
+tag @a[tag=gl_p1_orange] remove gl_p1_orange
+tag @a[tag=gl_p2_orange] remove gl_p2_orange
+tag @a[tag=gl_p1_blue] remove gl_p1_blue
+tag @a[tag=gl_p2_blue] remove gl_p2_blue
+tag @a[tag=gl_p1_violet] remove gl_p1_violet
+tag @a[tag=gl_p2_violet] remove gl_p2_violet
+tag @a[tag=gl_p1_indigo] remove gl_p1_indigo
+tag @a[tag=gl_p2_indigo] remove gl_p2_indigo
+tag @a[tag=gl_p1_white] remove gl_p1_white
+tag @a[tag=gl_p2_white] remove gl_p2_white
+tag @a[tag=gl_p1_black] remove gl_p1_black
+tag @a[tag=gl_p2_black] remove gl_p2_black
+scoreboard players add @a[tag=gl_green] gl_rings 1
+tag @a[tag=gl_green,scores={gl_rings=1}] add gl_p1_green
+tag @a[tag=gl_green,scores={gl_rings=2}] add gl_p2_green
+scoreboard players add @a[tag=gl_yellow] gl_rings 1
+tag @a[tag=gl_yellow,scores={gl_rings=1}] add gl_p1_yellow
+tag @a[tag=gl_yellow,scores={gl_rings=2}] add gl_p2_yellow
+scoreboard players add @a[tag=gl_red] gl_rings 1
+tag @a[tag=gl_red,scores={gl_rings=1}] add gl_p1_red
+tag @a[tag=gl_red,scores={gl_rings=2}] add gl_p2_red
+scoreboard players add @a[tag=gl_orange] gl_rings 1
+tag @a[tag=gl_orange,scores={gl_rings=1}] add gl_p1_orange
+tag @a[tag=gl_orange,scores={gl_rings=2}] add gl_p2_orange
+scoreboard players add @a[tag=gl_blue] gl_rings 1
+tag @a[tag=gl_blue,scores={gl_rings=1}] add gl_p1_blue
+tag @a[tag=gl_blue,scores={gl_rings=2}] add gl_p2_blue
+scoreboard players add @a[tag=gl_violet] gl_rings 1
+tag @a[tag=gl_violet,scores={gl_rings=1}] add gl_p1_violet
+tag @a[tag=gl_violet,scores={gl_rings=2}] add gl_p2_violet
+scoreboard players add @a[tag=gl_indigo] gl_rings 1
+tag @a[tag=gl_indigo,scores={gl_rings=1}] add gl_p1_indigo
+tag @a[tag=gl_indigo,scores={gl_rings=2}] add gl_p2_indigo
+scoreboard players add @a[tag=gl_white] gl_rings 1
+tag @a[tag=gl_white,scores={gl_rings=1}] add gl_p1_white
+tag @a[tag=gl_white,scores={gl_rings=2}] add gl_p2_white
+scoreboard players add @a[tag=gl_black] gl_rings 1
+tag @a[tag=gl_black,scores={gl_rings=1}] add gl_p1_black
+tag @a[tag=gl_black,scores={gl_rings=2}] add gl_p2_black
+execute as @a[tag=!gl_dual,scores={gl_rings=2..}] at @s run function final_lanterns:bond/bond
+execute as @a[tag=gl_dual,scores={gl_rings=..1}] at @s run function final_lanterns:bond/unbond
+scoreboard players add #prism gl_cfg 1
+execute if score #prism gl_cfg matches 4.. run scoreboard players set #prism gl_cfg 0
+execute if score #prism gl_cfg matches 0 as @a[tag=gl_prism,tag=gl_dual] at @s run function final_lanterns:bond/prism
+scoreboard players add #ticks gl_cfg 1

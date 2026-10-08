@@ -74,6 +74,7 @@ RING_NAMES = {"yellow": ["yellow", "sinestro"], "violet": ["violet", "star sapph
 OFFER_ANSWERS = {"yes": "chat_yes", "y": "chat_yes", "accept": "chat_yes", "i accept": "chat_yes",
                  "no": "chat_no", "n": "chat_no", "decline": "chat_no", "i decline": "chat_no"}
 MENU_PHRASES = ["emotions", "my emotions", "emotional spectrum", "show my emotions"]
+CHECK_PHRASES = ["lantern check", "lanterns check", "final lanterns check"]
 
 
 def chat_phrases(corps_table):
@@ -91,6 +92,8 @@ def chat_phrases(corps_table):
         out[word] = f"offer/{fn}"
     for p in MENU_PHRASES:
         out[p] = "emotion/menu"
+    for p in CHECK_PHRASES:
+        out[p] = "check"
     return out
 
 
@@ -1016,7 +1019,10 @@ def generate(corps_table, write, write_text):
         "Players: /trigger gl_recall (or /ring recall [corps], or 'ring, come to me' in chat) calls their rings back",
         "  one ring: /trigger gl_recall set " + ", ".join(f"{10 + idx[c]} {c}" for c in corps),
         "/lantern reset <player> | show <player> | enable | disable",
-        f"/lantern entity status | reset | on | off | summon <entity>  -  function {NS}:entity/admin/...",
+        f"/lantern entity status | reset | on | off  -  function {NS}:entity/admin/status (reset, on, off)",
+        f"/lantern entity summon <entity>  -  function {NS}:entity/admin/summon/<entity>: it appears in front of you",
+        f"/lantern entity host <player> <entity>  -  execute as <player> run function {NS}:entity/admin/host/<entity>",
+        f"/lantern check, or say \"lantern check\"  -  function {NS}:check: what works, and why no ring has come",
         f"/lantern blackfloor <n>  -  the Black Lantern ring comes when {BLACK_COUNT}+ spectrum emotions are below n "
         f"(default {BLACK_FLOOR})",
         "/lantern reroll <player>  -  roll their starting emotions again (10 000-15 000 each)",
@@ -1168,6 +1174,17 @@ ServerEvents.commandRegistry(event => {
       .then(Commands.literal('reset').executes(ctx => runSelf(ctx, '__NS__:entity/admin/reset')))
       .then(Commands.literal('on').executes(ctx => runSelf(ctx, '__NS__:entity/admin/on')))
       .then(Commands.literal('off').executes(ctx => runSelf(ctx, '__NS__:entity/admin/off')))
+      .then(Commands.literal('host').then(Commands.argument('player', Arguments.PLAYER.create(event))
+        .then(Commands.argument('entity', Arguments.WORD.create(event))
+          .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
+          .executes(ctx => {
+            const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
+            if (ENTITY_KEYS.indexOf(key) < 0) {
+              ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
+              return 0
+            }
+            return asPlayer(ctx, `entity/admin/host/${key}`)
+          }))))
       .then(Commands.literal('summon').then(Commands.argument('entity', Arguments.WORD.create(event))
         .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
         .executes(ctx => {
@@ -1178,6 +1195,7 @@ ServerEvents.commandRegistry(event => {
           }
           return runSelf(ctx, `__NS__:entity/admin/summon/${key}`)
         }))))
+    .then(Commands.literal('check').executes(ctx => runSelf(ctx, '__NS__:check')))
     .then(Commands.literal('enable').executes(ctx => runSelf(ctx, '__NS__:admin/enable')))
     .then(Commands.literal('disable').executes(ctx => runSelf(ctx, '__NS__:admin/disable')))
   )
@@ -1205,6 +1223,11 @@ ServerEvents.commandRegistry(event => {
       .executes(ctx => recall(ctx, null))
       .then(corpsArgument(ctx => recall(ctx, String(Arguments.WORD.getResult(ctx, 'corps')).toLowerCase()))))
   )
+})
+
+// Lets the datapack's check ("lantern check") see that this script is loaded.
+PlayerEvents.loggedIn(event => {
+  event.server.runCommandSilent('scoreboard players set #kubejs gl_cfg 1')
 })
 
 // Recall runs as the player (by UUID, so any name works).

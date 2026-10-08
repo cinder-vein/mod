@@ -98,4 +98,11 @@ execute as @a[tag=gl_living_lantern,tag=gl_host_nekron] at @s run function final
 scoreboard players add @a gl_lcd 0
 scoreboard players remove @a[scores={gl_lcd=1..}] gl_lcd 1
 tag @a[tag=gl_living_lantern,tag=!gl_host] remove gl_living_lantern
+execute as @a[tag=gl_dual] run superpower add final_lanterns:spectrum_bond @s
+execute as @a[tag=!gl_dual] run superpower remove final_lanterns:spectrum_bond @s
+execute as @a[tag=gl_dual,tag=gl_dn_shared_light] run function final_lanterns:bond/shared_light
+execute as @a[tag=gl_dual,tag=gl_dn_twin_lanterns] run function final_lanterns:bond/twin_lanterns
+tag @a remove gl_dn_shared_light
+tag @a remove gl_dn_twin_lanterns
+tag @a[tag=gl_prism,tag=!gl_dual] remove gl_prism
 superpower add final_lanterns:emotional_spectrum @a

@@ -1,2 +1,3 @@
-execute unless score #state_proselyte gl_ent matches 0 run tellraw @s ["",{"text":"The Proselyte isn't free (it's out, hosted or sealed). Reset it first: function final_lanterns:entity/admin/reset","color":"gray"}]
-execute if score #state_proselyte gl_ent matches 0 run function final_lanterns:entity/proselyte/manifest
+execute unless score #state_proselyte gl_ent matches 0 run tellraw @s ["",{"text":"The Proselyte isn't free (it's out, hosted or sealed). ","color":"gray"},{"text":"[Free every entity]","color":"aqua","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/reset"}}]
+execute if score #state_proselyte gl_ent matches 0 run function final_lanterns:entity/proselyte/summon_here
+execute if score #state_proselyte gl_ent matches 1 run tellraw @s ["",{"text":"The Proselyte ","color":"#693CE6","bold":true},{"text":"offers itself to players with 100% compassion. ","color":"gray"},{"text":"[Make me its host now]","color":"green","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/host/proselyte"},"hoverEvent":{"action":"show_text","contents":"Skips its emotion check and the one-hour wait"}}]

@@ -1,2 +1,3 @@
-execute unless score #state_life gl_ent matches 0 run tellraw @s ["",{"text":"The Life Entity isn't free (it's out, hosted or sealed). Reset it first: function final_lanterns:entity/admin/reset","color":"gray"}]
-execute if score #state_life gl_ent matches 0 run function final_lanterns:entity/life/manifest
+execute unless score #state_life gl_ent matches 0 run tellraw @s ["",{"text":"The Life Entity isn't free (it's out, hosted or sealed). ","color":"gray"},{"text":"[Free every entity]","color":"aqua","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/reset"}}]
+execute if score #state_life gl_ent matches 0 run function final_lanterns:entity/life/summon_here
+execute if score #state_life gl_ent matches 1 run tellraw @s ["",{"text":"The Life Entity ","color":"#EBF2FA","bold":true},{"text":"offers itself to players with 100% all seven spectrum emotions. ","color":"gray"},{"text":"[Make me its host now]","color":"green","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/host/life"},"hoverEvent":{"action":"show_text","contents":"Skips its emotion check and the one-hour wait"}}]

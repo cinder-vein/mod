@@ -678,7 +678,7 @@
     "chat_38": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "function final_lanterns:recall/request_green"
+        "function final_lanterns:check"
       ],
       "commands": [],
       "last_tick_commands": [],
@@ -687,7 +687,7 @@
       "conditions": {
         "enabling": {
           "type": "palladium:chat_action",
-          "chat_message": "green ring come to me",
+          "chat_message": "final lanterns check",
           "cooldown": 20
         }
       }
@@ -704,7 +704,7 @@
       "conditions": {
         "enabling": {
           "type": "palladium:chat_action",
-          "chat_message": "green ring come to me!",
+          "chat_message": "green ring come to me",
           "cooldown": 20
         }
       }
@@ -721,7 +721,7 @@
       "conditions": {
         "enabling": {
           "type": "palladium:chat_action",
-          "chat_message": "green ring, come to me",
+          "chat_message": "green ring come to me!",
           "cooldown": 20
         }
       }
@@ -738,12 +738,29 @@
       "conditions": {
         "enabling": {
           "type": "palladium:chat_action",
-          "chat_message": "green ring, come to me!",
+          "chat_message": "green ring, come to me",
           "cooldown": 20
         }
       }
     },
     "chat_42": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:recall/request_green"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "green ring, come to me!",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_43": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_yes"
@@ -760,7 +777,7 @@
         }
       }
     },
-    "chat_43": {
+    "chat_44": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -777,7 +794,7 @@
         }
       }
     },
-    "chat_44": {
+    "chat_45": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -794,7 +811,7 @@
         }
       }
     },
-    "chat_45": {
+    "chat_46": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_no"
@@ -811,7 +828,7 @@
         }
       }
     },
-    "chat_46": {
+    "chat_47": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:entity/release_ask"
@@ -828,7 +845,7 @@
         }
       }
     },
-    "chat_47": {
+    "chat_48": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:entity/release_ask"
@@ -845,7 +862,7 @@
         }
       }
     },
-    "chat_48": {
+    "chat_49": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -862,7 +879,7 @@
         }
       }
     },
-    "chat_49": {
+    "chat_50": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -879,7 +896,7 @@
         }
       }
     },
-    "chat_50": {
+    "chat_51": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -896,7 +913,7 @@
         }
       }
     },
-    "chat_51": {
+    "chat_52": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -913,7 +930,7 @@
         }
       }
     },
-    "chat_52": {
+    "chat_53": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -930,7 +947,7 @@
         }
       }
     },
-    "chat_53": {
+    "chat_54": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -947,7 +964,41 @@
         }
       }
     },
-    "chat_54": {
+    "chat_55": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:check"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "lantern check",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_56": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:check"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:chat_action",
+          "chat_message": "lanterns check",
+          "cooldown": 20
+        }
+      }
+    },
+    "chat_57": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:emotion/menu"
@@ -964,7 +1015,7 @@
         }
       }
     },
-    "chat_55": {
+    "chat_58": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_no"
@@ -981,7 +1032,7 @@
         }
       }
     },
-    "chat_56": {
+    "chat_59": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_no"
@@ -998,7 +1049,7 @@
         }
       }
     },
-    "chat_57": {
+    "chat_60": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1015,7 +1066,7 @@
         }
       }
     },
-    "chat_58": {
+    "chat_61": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1032,7 +1083,7 @@
         }
       }
     },
-    "chat_59": {
+    "chat_62": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1049,7 +1100,7 @@
         }
       }
     },
-    "chat_60": {
+    "chat_63": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1066,7 +1117,7 @@
         }
       }
     },
-    "chat_61": {
+    "chat_64": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1083,7 +1134,7 @@
         }
       }
     },
-    "chat_62": {
+    "chat_65": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1100,7 +1151,7 @@
         }
       }
     },
-    "chat_63": {
+    "chat_66": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1117,7 +1168,7 @@
         }
       }
     },
-    "chat_64": {
+    "chat_67": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1134,7 +1185,7 @@
         }
       }
     },
-    "chat_65": {
+    "chat_68": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_black"
@@ -1151,7 +1202,7 @@
         }
       }
     },
-    "chat_66": {
+    "chat_69": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_black"
@@ -1168,7 +1219,7 @@
         }
       }
     },
-    "chat_67": {
+    "chat_70": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_blue"
@@ -1185,7 +1236,7 @@
         }
       }
     },
-    "chat_68": {
+    "chat_71": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_blue"
@@ -1202,7 +1253,7 @@
         }
       }
     },
-    "chat_69": {
+    "chat_72": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_green"
@@ -1219,7 +1270,7 @@
         }
       }
     },
-    "chat_70": {
+    "chat_73": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_green"
@@ -1236,7 +1287,7 @@
         }
       }
     },
-    "chat_71": {
+    "chat_74": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -1253,7 +1304,7 @@
         }
       }
     },
-    "chat_72": {
+    "chat_75": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_indigo"
@@ -1270,7 +1321,7 @@
         }
       }
     },
-    "chat_73": {
+    "chat_76": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1287,7 +1338,7 @@
         }
       }
     },
-    "chat_74": {
+    "chat_77": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_orange"
@@ -1304,7 +1355,7 @@
         }
       }
     },
-    "chat_75": {
+    "chat_78": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1321,7 +1372,7 @@
         }
       }
     },
-    "chat_76": {
+    "chat_79": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_red"
@@ -1338,7 +1389,7 @@
         }
       }
     },
-    "chat_77": {
+    "chat_80": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1355,7 +1406,7 @@
         }
       }
     },
-    "chat_78": {
+    "chat_81": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1372,7 +1423,7 @@
         }
       }
     },
-    "chat_79": {
+    "chat_82": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1389,7 +1440,7 @@
         }
       }
     },
-    "chat_80": {
+    "chat_83": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1406,7 +1457,7 @@
         }
       }
     },
-    "chat_81": {
+    "chat_84": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1423,7 +1474,7 @@
         }
       }
     },
-    "chat_82": {
+    "chat_85": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1440,7 +1491,7 @@
         }
       }
     },
-    "chat_83": {
+    "chat_86": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1457,7 +1508,7 @@
         }
       }
     },
-    "chat_84": {
+    "chat_87": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1474,7 +1525,7 @@
         }
       }
     },
-    "chat_85": {
+    "chat_88": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -1491,7 +1542,7 @@
         }
       }
     },
-    "chat_86": {
+    "chat_89": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -1508,7 +1559,7 @@
         }
       }
     },
-    "chat_87": {
+    "chat_90": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1525,7 +1576,7 @@
         }
       }
     },
-    "chat_88": {
+    "chat_91": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1542,7 +1593,7 @@
         }
       }
     },
-    "chat_89": {
+    "chat_92": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1559,7 +1610,7 @@
         }
       }
     },
-    "chat_90": {
+    "chat_93": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1576,7 +1627,7 @@
         }
       }
     },
-    "chat_91": {
+    "chat_94": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1593,7 +1644,7 @@
         }
       }
     },
-    "chat_92": {
+    "chat_95": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1610,7 +1661,7 @@
         }
       }
     },
-    "chat_93": {
+    "chat_96": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1627,7 +1678,7 @@
         }
       }
     },
-    "chat_94": {
+    "chat_97": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1644,7 +1695,7 @@
         }
       }
     },
-    "chat_95": {
+    "chat_98": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1661,7 +1712,7 @@
         }
       }
     },
-    "chat_96": {
+    "chat_99": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1678,7 +1729,7 @@
         }
       }
     },
-    "chat_97": {
+    "chat_100": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1695,7 +1746,7 @@
         }
       }
     },
-    "chat_98": {
+    "chat_101": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1712,7 +1763,7 @@
         }
       }
     },
-    "chat_99": {
+    "chat_102": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1729,7 +1780,7 @@
         }
       }
     },
-    "chat_100": {
+    "chat_103": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1746,7 +1797,7 @@
         }
       }
     },
-    "chat_101": {
+    "chat_104": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1763,7 +1814,7 @@
         }
       }
     },
-    "chat_102": {
+    "chat_105": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request"
@@ -1780,7 +1831,7 @@
         }
       }
     },
-    "chat_103": {
+    "chat_106": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:emotion/menu"
@@ -1797,7 +1848,7 @@
         }
       }
     },
-    "chat_104": {
+    "chat_107": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1814,7 +1865,7 @@
         }
       }
     },
-    "chat_105": {
+    "chat_108": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1831,7 +1882,7 @@
         }
       }
     },
-    "chat_106": {
+    "chat_109": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1848,7 +1899,7 @@
         }
       }
     },
-    "chat_107": {
+    "chat_110": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -1865,7 +1916,7 @@
         }
       }
     },
-    "chat_108": {
+    "chat_111": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1882,7 +1933,7 @@
         }
       }
     },
-    "chat_109": {
+    "chat_112": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1899,7 +1950,7 @@
         }
       }
     },
-    "chat_110": {
+    "chat_113": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1916,7 +1967,7 @@
         }
       }
     },
-    "chat_111": {
+    "chat_114": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1933,7 +1984,7 @@
         }
       }
     },
-    "chat_112": {
+    "chat_115": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1950,7 +2001,7 @@
         }
       }
     },
-    "chat_113": {
+    "chat_116": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1967,7 +2018,7 @@
         }
       }
     },
-    "chat_114": {
+    "chat_117": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -1984,7 +2035,7 @@
         }
       }
     },
-    "chat_115": {
+    "chat_118": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_violet"
@@ -2001,7 +2052,7 @@
         }
       }
     },
-    "chat_116": {
+    "chat_119": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -2018,7 +2069,7 @@
         }
       }
     },
-    "chat_117": {
+    "chat_120": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -2035,7 +2086,7 @@
         }
       }
     },
-    "chat_118": {
+    "chat_121": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -2052,7 +2103,7 @@
         }
       }
     },
-    "chat_119": {
+    "chat_122": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_white"
@@ -2069,7 +2120,7 @@
         }
       }
     },
-    "chat_120": {
+    "chat_123": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_yes"
@@ -2086,7 +2137,7 @@
         }
       }
     },
-    "chat_121": {
+    "chat_124": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -2103,7 +2154,7 @@
         }
       }
     },
-    "chat_122": {
+    "chat_125": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -2120,7 +2171,7 @@
         }
       }
     },
-    "chat_123": {
+    "chat_126": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -2137,7 +2188,7 @@
         }
       }
     },
-    "chat_124": {
+    "chat_127": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:recall/request_yellow"
@@ -2154,7 +2205,7 @@
         }
       }
     },
-    "chat_125": {
+    "chat_128": {
       "type": "palladium:command",
       "first_tick_commands": [
         "function final_lanterns:offer/chat_yes"

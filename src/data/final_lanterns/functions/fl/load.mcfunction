@@ -290,3 +290,8 @@ bossbar set final_lanterns:nekron color white
 bossbar set final_lanterns:nekron max 320
 bossbar set final_lanterns:nekron style notched_10
 scoreboard objectives add gl_lcd dummy
+scoreboard objectives add gl_rings dummy
+scoreboard objectives add gl_dc1 dummy
+scoreboard objectives add gl_dc2 dummy
+execute unless score #kubejs gl_cfg matches 0.. run scoreboard players set #kubejs gl_cfg 0
+execute unless score #ticks gl_cfg matches 0.. run scoreboard players set #ticks gl_cfg 0

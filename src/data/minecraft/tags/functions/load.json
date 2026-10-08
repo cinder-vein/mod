@@ -1,6 +1,12 @@
 {
   "values": [
-    "final_lanterns:load",
-    "final_lanterns:fl/load"
+    {
+      "id": "final_lanterns:load",
+      "required": false
+    },
+    {
+      "id": "final_lanterns:fl/load",
+      "required": false
+    }
   ]
 }

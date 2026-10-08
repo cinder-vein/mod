@@ -1,0 +1,7 @@
+{
+  "icon": "final_lanterns:textures/gui/accessory_slots/spectrum_suit.png",
+  "menu_visibility": {
+    "type": "palladium:has_power",
+    "power": "final_lanterns:spectrum_bond"
+  }
+}

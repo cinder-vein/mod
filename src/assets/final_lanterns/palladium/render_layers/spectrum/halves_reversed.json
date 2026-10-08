@@ -1,0 +1,941 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_yellow.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_red.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_orange.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_blue.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_violet.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:greenlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_green_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_red.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_orange.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_blue.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_violet.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:yellowlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_yellow_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_orange.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_blue.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_violet.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:redlantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_red_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_orange_blue.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_orange_violet.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_orange_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_orange_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:orangelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_orange_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_blue_violet.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_blue_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_blue_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:bluelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_blue_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_violet_indigo.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_violet_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:pinklantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_violet_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_indigo_white.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:indigolantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_indigo_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": {
+        "normal": "final_lanterns:humanoid",
+        "slim": "final_lanterns:humanoid_slim"
+      },
+      "conditions": [
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:whitelantern"
+        },
+        {
+          "type": "palladium:has_power",
+          "power": "final_lanterns:blacklantern"
+        }
+      ],
+      "texture": {
+        "base": "final_lanterns:textures/models/spectrum/#SLIM/halves_reversed_white_black.png",
+        "variables": {
+          "SLIM": {
+            "type": "palladium:small_arms",
+            "true_value": "slim",
+            "false_value": "steve"
+          }
+        }
+      }
+    }
+  ]
+}

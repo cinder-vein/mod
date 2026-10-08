@@ -1,2 +1,3 @@
-execute unless score #state_predator gl_ent matches 0 run tellraw @s ["",{"text":"The Predator isn't free (it's out, hosted or sealed). Reset it first: function final_lanterns:entity/admin/reset","color":"gray"}]
-execute if score #state_predator gl_ent matches 0 run function final_lanterns:entity/predator/manifest
+execute unless score #state_predator gl_ent matches 0 run tellraw @s ["",{"text":"The Predator isn't free (it's out, hosted or sealed). ","color":"gray"},{"text":"[Free every entity]","color":"aqua","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/reset"}}]
+execute if score #state_predator gl_ent matches 0 run function final_lanterns:entity/predator/summon_here
+execute if score #state_predator gl_ent matches 1 run tellraw @s ["",{"text":"The Predator ","color":"#D737DC","bold":true},{"text":"hunts down and possesses players with 60% love. ","color":"gray"},{"text":"[Make me its host now]","color":"green","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/host/predator"},"hoverEvent":{"action":"show_text","contents":"Skips its emotion check and the one-hour wait"}}]

@@ -1,2 +1,3 @@
-execute unless score #state_adara gl_ent matches 0 run tellraw @s ["",{"text":"Adara isn't free (it's out, hosted or sealed). Reset it first: function final_lanterns:entity/admin/reset","color":"gray"}]
-execute if score #state_adara gl_ent matches 0 run function final_lanterns:entity/adara/manifest
+execute unless score #state_adara gl_ent matches 0 run tellraw @s ["",{"text":"Adara isn't free (it's out, hosted or sealed). ","color":"gray"},{"text":"[Free every entity]","color":"aqua","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/reset"}}]
+execute if score #state_adara gl_ent matches 0 run function final_lanterns:entity/adara/summon_here
+execute if score #state_adara gl_ent matches 1 run tellraw @s ["",{"text":"Adara ","color":"#2882FF","bold":true},{"text":"offers itself to players with 100% hope. ","color":"gray"},{"text":"[Make me its host now]","color":"green","clickEvent":{"action":"run_command","value":"/function final_lanterns:entity/admin/host/adara"},"hoverEvent":{"action":"show_text","contents":"Skips its emotion check and the one-hour wait"}}]

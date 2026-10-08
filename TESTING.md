@@ -1,10 +1,14 @@
-# In-game test checklist (Final Lanterns 1.0)
+# In-game test checklist (Final Lanterns 1.1)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change. Install the mods listed in the README first (Palladium, GeckoLib,
 GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jars.
 
 ## 1. Loading
+- [ ] Coming from Lantern Corps 10: `lantern_commands.js` and `lantern_keys.js` are gone from the game's
+      `kubejs/server_scripts` and `kubejs/client_scripts` folders.
+- [ ] Say **lantern check** in chat: every line is a ✔ (datapack running, KubeJS commands loaded). The corps lines
+      show your emotion against the threshold.
 - [ ] The game starts with Final Lanterns in the mods list (*"Based on A New Corps"* in its description).
 - [ ] `logs/latest.log` has no errors about `final_lanterns` functions failing to load.
 - [ ] `logs/kubejs/server.log` says *"[Final Lanterns] KubeJS script loaded"*. If not, copy
@@ -35,8 +39,13 @@ GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jar
 - [ ] A second player picks up your ring: it flies back to you.
 
 ## 5. Entities: one host, one hour
-- [ ] `/lantern entity summon ion` with willpower at 20 000 (`/lantern emotion <you> will set 20000`): Ion appears
-      and offers itself. Accept: you host Ion (suit, aura, the host power).
+- [ ] `/lantern entity summon ion` (or `/function final_lanterns:entity/admin/summon/ion`): Ion appears 6 blocks in
+      front of you and chat says it offers itself to players with 100% willpower, with a **[Make me its host now]**
+      button.
+- [ ] With willpower at 20 000 (`/lantern emotion <you> will set 20000`), in survival, Ion flies to you and offers
+      itself. Accept: you host Ion (suit, aura, the host power).
+- [ ] `/lantern entity reset`, summon Parallax: it comes straight at you and possesses you.
+- [ ] `/lantern entity host <you> butcher`: you host the Butcher right away.
 - [ ] While hosting Ion, summon Adara for yourself (hope 20 000): accepting says *"You already host an entity."*
 - [ ] Release Ion (Release slot, or say *"I release you"* and confirm). Then summon Ion again and accept: *"No entity
       will join you yet: you lost one too recently."* The menu says how many minutes are left (60).
@@ -63,11 +72,28 @@ Buy the nodes in the host's skill tree (`/xp add @s 300 levels`).
 - [ ] **A free entity near your ring:** with Ion out in the world (summoned, not hosted), a green bearer within 24
       blocks sees *"Ion is near: your ring drinks its light."* and recharges.
 
-## 7. Parallax by sacrifice (A New Corps)
+## 7. Two rings: the Spectrum Bond
+- [ ] The Lantern Ring slot (Curios) has **two** slots.
+- [ ] Wear a green and a yellow ring: the actionbar says *Spectrum Bond: Willpower + Fear* and a **Spectrum Bond**
+      bar and skill tree appear (each ring keeps its own). Take one off: *"The Spectrum Bond fades."*
+- [ ] Buy the nodes (`/xp add @s 300 levels`). **Twin Beam** (hold): a green beam from the right hand and a yellow one
+      from the left; both rings' charge drops.
+- [ ] **Twin Constructs**: the wheel shows green and yellow construct weapons. Take a ring off: the bond's
+      construct weapons vanish.
+- [ ] **Spectrum Fusion**: the title *Will Over Fear*, both colors, and both rings lose 125 charge.
+- [ ] **Prismatic Shield**: Resistance II and particles in both colors while it's on.
+- [ ] **Spectrum Overload**: everything around flies up; you get Strength, Resistance and Speed.
+- [ ] **Shared Light**: drain one ring (beam) and watch charge flow into it from the other. **Twin Lanterns**:
+      recharge the green ring at its lantern: the yellow fills too.
+- [ ] Turn a ring's suit on: the merged **Split Light** suit shows (green right half, yellow left half). In the
+      accessories menu, **Spectrum Suit** lists Split Light, Above and Below (and reversed) and **Own Suits**, which
+      brings each ring's own suit back.
+
+## 8. Parallax by sacrifice (A New Corps)
 - [ ] As a Sinestro Corps bearer, sacrifice ten rings at the yellow lantern: the counter shows *Rings Sacrificed n/10*.
       At ten, if Parallax is free and you host nothing, **our** Parallax takes you (the host power, its suit). If
       Parallax is taken: *"Parallax does not answer your sacrifice..."*
 
-## 8. Admin
+## 9. Admin
 - [ ] `/lantern` lists the commands. `/lantern entity status` shows where each entity is.
 - [ ] Without KubeJS: `execute as <you> run function final_lanterns:admin/help` works the same.
