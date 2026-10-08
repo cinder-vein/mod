@@ -13,7 +13,7 @@ Use a Forge **1.20.1** profile (Forge 47.x) with these mods:
 - **Curios**: rings are worn in the *Lantern Ring* slot
 - **KubeJS** (with Rhino)
 
-Then put `dist/final_lanterns-1.2.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
+Then put `dist/final_lanterns-1.3.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
 (`greenlantern-*.jar`) and *A New Corps* jars: Final Lanterns replaces both.
 
 **Coming from Lantern Corps 10:** delete `lantern_commands.js` and `lantern_keys.js` from your game's
@@ -127,8 +127,8 @@ Every player has eight emotions: willpower, fear, rage, avarice, hope, love, com
 
 ## The ring chooses you
 
-When an emotion reaches the **threshold (20 000)** while you're **in survival**, that corps' ring streaks down to you
-within a second: *"&lt;Name&gt;, you have great willpower. Welcome to the Green Lantern Corps. Do you accept?"*
+When an emotion reaches the **threshold (20 000)**, that corps' ring streaks down to you within a second (in any game
+mode but spectator): *"&lt;Name&gt;, you have great willpower. Welcome to the Green Lantern Corps. Do you accept?"*
 Everyone starts between 10 000 and 15 000, so the first ring comes after some play (or a quest or two). Say
 *lantern check* to see how far each corps is. To try it straight away, an admin can run
 `/lantern offer <player> <corps>` or set an emotion to 20 000.
@@ -147,25 +147,28 @@ Everyone starts between 10 000 and 15 000, so the first ring comes after some pl
 Nine beings of pure emotion roam the world, one of each. Each is either free, out in the world, inside a host, or
 sealed in a lantern. You don't need a ring to host one: only the emotion.
 
-| Entity | Emotion | How it comes | Where |
-|---|---|---|---|
-| Ion | Willpower | offers itself to someone with 100% willpower | in the sky |
-| Parallax | Fear | hunts someone with 60% fear and possesses them (or: sacrifice ten rings to the yellow lantern) | anywhere in the Overworld |
-| The Butcher | Rage | a boss: bring it down, and it takes the nearest player with 50% rage | the Nether |
-| Ophidian | Avarice | offers itself to someone with 100% avarice, once they throw it a **block of gold** | caves (below y 30) |
-| Adara | Hope | offers itself to someone with 100% hope | in the sky |
-| The Predator | Love | hunts someone with 60% love and possesses them | anywhere in the Overworld |
-| The Proselyte | Compassion | offers itself to someone with 100% compassion | in the sky |
-| The Life Entity | Life | offers itself to someone with all seven spectrum emotions at 100% | in the sky |
-| Nekron | Death | a boss: bring it down, and it takes the nearest player with 50% death | the deep dark (below y 0) |
+Percentages are of the ring threshold (20 000). Everyone starts at 50% to 75%, so no entity comes for you on the day
+you join.
+
+| Entity | Emotion | How it comes |
+|---|---|---|
+| Ion | Willpower | offers itself to someone with 100% willpower |
+| Parallax | Fear | hunts someone with 85% fear and possesses them (or: sacrifice ten rings to the yellow lantern) |
+| The Butcher | Rage | a boss: comes for someone with 90% rage; bring it down and it takes the nearest player with 95% |
+| Ophidian | Avarice | offers itself to someone with 100% avarice, once they throw it a **block of gold** |
+| Adara | Hope | offers itself to someone with 100% hope |
+| The Predator | Love | hunts someone with 85% love and possesses them |
+| The Proselyte | Compassion | offers itself to someone with 100% compassion |
+| The Life Entity | Life | offers itself to someone with all seven spectrum emotions at 100% |
+| Nekron | Death | a boss: comes for someone with 90% death; bring it down and it takes the nearest player with 95% |
 
 - **One at a time:** a host can't take a second entity. After you lose yours (released, drawn out with a lantern, or
   taken back by an admin), **no entity will choose you for an hour**.
 - **Testing:** `/lantern entity summon <entity>` makes it appear right in front of you; chat says who it chooses and
   has a **[Make me its host now]** button. `/lantern entity host <player> <entity>` does the same for anyone.
-- **When they come:** once a minute, each free entity has a chance (about 1 in 6) to come to a player it can draw:
-  100% of its emotion for the ones that offer, 60% for the hunters, 25% for the bosses. It stays 10 minutes (20 for
-  hunters and bosses), then fades away until next time.
+- **When they come:** within 10 seconds of you reaching its percentage, a free entity comes to you, wherever you are
+  (if several players qualify, it picks one). It stays 10 minutes (20 for hunters and bosses); if nobody takes it, it
+  fades away and comes again 10 seconds later.
 - **Offers:** click **[ACCEPT]** or **[DECLINE]** in chat. Declining keeps it away from you for 30 minutes.
 - **Hunters** come from behind and fly at you; if one reaches you, it possesses you. A host of a hunter is sometimes
   overtaken by it.
@@ -279,5 +282,7 @@ The jar is built from `src/`, which is generated: don't edit it by hand.
   - `tools/suit_free.py`: lets every ring's abilities work without its suit;
   - `tools/entity_models/`: the entities' models;
   - `tools/common.py`: the nine corps and how they map onto A New Corps' rings.
+- `python3 tools/simulate.py` runs the generated datapack in a small simulator and checks that ring offers, the Black
+  Lantern offer and every kind of entity arrival actually happen.
 - `python3 tools/build.py` validates and packages the jar. `tools/lint_commands.py` syntax-checks every command (needs
   the `mecha` package). Both count problems already present in A New Corps separately and fail only on new ones.

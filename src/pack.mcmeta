@@ -3,7 +3,7 @@
     "id": "final_lanterns",
     "description": "Final Lanterns (based on A New Corps)",
     "pack_format": 15,
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
   "dependencies": {
     "common": {

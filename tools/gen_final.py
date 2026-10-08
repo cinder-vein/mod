@@ -35,7 +35,7 @@ from common import CORPS, HOSTILE_PREY, NOT_CREATURES, NS
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 BASE = ROOT / "base"
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 MERGED = {f"assets/{NS}/lang/en_us.json", "data/minecraft/tags/functions/load.json",
           "data/minecraft/tags/functions/tick.json", "pack.mcmeta"}
 PATCHED = set()  # A New Corps files deliberately rewritten (see patch_base)

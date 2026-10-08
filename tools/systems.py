@@ -773,7 +773,7 @@ def generate(corps_table, write, write_text):
     fn["emotion/feed"] = [f"scoreboard players add @s gl_e_{e} 0" for e in EMOTIONS] + feed
     # ---------------------------------------------------------------- ring offers
     def offer_ok(c):  # never a revoked or removed bearer (gl_ser -1): only an admin can offer them that ring again
-        return f"@a[gamemode=survival,tag=!gl_offer_any,tag=!gl_member_{c},scores={{gl_cd_{c}=..0,gl_ser_{c}=0..}}]"
+        return f"@a[gamemode=!spectator,tag=!gl_offer_any,tag=!gl_member_{c},scores={{gl_cd_{c}=..0,gl_ser_{c}=0..}}]"
 
     offer_scan = [f"scoreboard players add @a gl_cd_{c} 0" for c in corps] + [
         f"scoreboard players add @a gl_ser_{c} 0" for c in corps]

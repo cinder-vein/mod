@@ -3,14 +3,15 @@
 Each is free, hosted by a player, or sealed in a lantern (world state in objective gl_ent, fake players #state_<e>
 0 dormant, 1 out in the world, 2 hosted, 3 sealed; #host_<e> = the host's gl_id).
 
-How they come:
+How they come: every SEEK_SECONDS seconds, each free entity looks for players who can draw it (anywhere, in any
+dimension, not hosting one, not cooling down) and comes to one of them at once.
 - bond (Ion, Ophidian, Adara, the Proselyte, the Life Entity): it appears near a player whose emotion is full (100%; the
   Life Entity wants all seven spectrum emotions full) and offers to make them its host. Ophidian first wants an offering:
   a block of gold thrown to it.
-- hunt (Parallax, the Predator): it appears behind a player strong in its emotion (60%), hunts them down and possesses
+- hunt (Parallax, the Predator): it appears behind a player strong in its emotion (85%), hunts them down and possesses
   them, wanted or not. A host of a hunting entity is sometimes overtaken by it.
-- defeat (the Butcher in the Nether, Nekron in the deep dark below y 0): a boss. Bring it down to 15% and it takes the
-  nearest player as its host, if they're worthy (50% of its emotion); otherwise it vanishes.
+- defeat (the Butcher, Nekron): a boss that comes to challenge a player with 90% of its emotion. Bring it down to 15% and it takes the
+  nearest player as its host, if they're worthy (95% of its emotion); otherwise it vanishes.
 
 A host needs no ring: hosting gives the final_lanterns:host_<e> power (built in hosts.py) with its own skill tree.
 It ends when the host gives the entity up, or when another player draws it out: sneak while holding a corps' lantern and
@@ -61,10 +62,13 @@ ENTITIES = [
 ]
 BY_KEY = {e.key: e for e in ENTITIES}
 INDEX = {e.key: i for i, e in enumerate(ENTITIES, 1)}
-REQUIRED = {"bond": 100, "hunt": 60, "defeat": 50}   # % of the threshold to become a host
-APPEAR = {"bond": 100, "hunt": 60, "defeat": 25}     # % for it to come to you
+# % of the ring threshold. Everyone starts at 50-75% (emotions.START_MIN/START_MAX), so all are above that: no entity
+# comes for a player the day they join.
+REQUIRED = {"bond": 100, "hunt": 85, "defeat": 95}   # % of the threshold to become a host
+APPEAR = {"bond": 100, "hunt": 85, "defeat": 90}     # % for it to come to you
+PERCENTS = sorted(set(REQUIRED.values()) | set(APPEAR.values()))
 BOSS_HEALTH = {"butcher": 400, "nekron": 320}
-MANIFEST_CHANCE = 0.17  # per minute, per entity, while someone can draw it
+SEEK_SECONDS = 10  # how often a free entity looks for someone worthy (it comes to them at once)
 EXORCISE_TICKS = 100
 HOST_COOLDOWN = 3600    # seconds after losing an entity before any entity will choose you
 DECLINE_COOLDOWN = 1800  # seconds before an entity you turned away offers itself again
@@ -115,7 +119,6 @@ def generate(sizes):
     files["predicates/entity/holding_battery.json"] = {
         "condition": "minecraft:entity_properties", "entity": "this",
         "predicate": {"equipment": {"mainhand": {"tag": f"{NS}:power_batteries"}}}}
-    files["predicates/entity/chance_manifest.json"] = {"condition": "minecraft:random_chance", "chance": MANIFEST_CHANCE}
     files["predicates/entity/chance_quarter.json"] = {"condition": "minecraft:random_chance", "chance": 0.25}
     for name, loc in (("overworld", {"dimension": "minecraft:overworld"}),
                       ("the_nether", {"dimension": "minecraft:the_nether"}),
@@ -130,33 +133,37 @@ def generate(sizes):
                                                      "nbt": f"{{gl_entity:{INDEX[e.key]}}}"}}}}
 
     # --- thresholds, refreshed every second ------------------------------------------------------
-    second += [f"scoreboard players operation #req{p} gl_ent = #threshold gl_cfg" for p in (25, 50, 60, 100)]
+    second += [f"scoreboard players operation #req{p} gl_ent = #threshold gl_cfg" for p in PERCENTS]
     second += ["scoreboard players set #pct gl_ent 100"]
-    for p in (25, 50, 60):
+    for p in [p for p in PERCENTS if p != 100]:
         second += [f"scoreboard players set #p{p} gl_ent {p}",
                    f"scoreboard players operation #req{p} gl_ent *= #p{p} gl_ent",
                    f"scoreboard players operation #req{p} gl_ent /= #pct gl_ent"]
 
-    # --- appearing: once a minute, each dormant entity may come to someone who can draw it --------
-    second += ["scoreboard players add #minute gl_ent 1",
-               f"execute if score #minute gl_ent matches 60.. if score #entities gl_cfg matches 1 run "
-               f"function {NS}:entity/minute",
-               "execute if score #minute gl_ent matches 60.. run scoreboard players set #minute gl_ent 0"]
-    minute = []
-    for e in ENTITIES:
-        cand = f"gl_ecand_{e.key}"
-        where = {"sky": "in_sky", "any": "in_overworld", "caves": "in_caves", "deep": "in_deep",
-                 "nether": "in_the_nether"}[e.home]
-        minute += [
-            f"tag @a remove {cand}",
-            f"execute if score #state_{e.key} gl_ent matches 0 as @a[{free(e.key)}] "
-            f"at @s if predicate {NS}:entity/{where} {emotion_cond(e, APPEAR[e.kind])} run tag @s add {cand}",
-            f"execute if score #state_{e.key} gl_ent matches 0 if predicate {NS}:entity/chance_manifest "
-            f"as @r[tag={cand}] at @s run function {NS}:entity/{e.key}/manifest",
-        ]
-    fn["entity/minute"] = minute
+    # --- appearing: every few seconds, each free entity comes to someone who can draw it -------------
+    # (scores first: a selector only matches players who have the score)
     second += [f"scoreboard players add @a gl_edc_{e.key} 0" for e in ENTITIES]
     second += [f"scoreboard players remove @a[scores={{gl_edc_{e.key}=1..}}] gl_edc_{e.key} 1" for e in ENTITIES]
+    second += ["scoreboard players add #seek gl_ent 1",
+               f"execute if score #seek gl_ent matches {SEEK_SECONDS}.. if score #entities gl_cfg matches 1 run "
+               f"function {NS}:entity/seek",
+               f"execute if score #seek gl_ent matches {SEEK_SECONDS}.. run scoreboard players set #seek gl_ent 0",
+               "scoreboard players add #minute gl_ent 1",
+               f"execute if score #minute gl_ent matches 60.. run function {NS}:entity/minute",
+               "execute if score #minute gl_ent matches 60.. run scoreboard players set #minute gl_ent 0"]
+    seek = []
+    for e in ENTITIES:
+        cand = f"gl_ecand_{e.key}"
+        seek += [
+            f"tag @a remove {cand}",
+            f"execute if score #state_{e.key} gl_ent matches 0 as @a[{free(e.key)},gamemode=!spectator] "
+            f"{emotion_cond(e, APPEAR[e.kind])} run tag @s add {cand}",
+            f"execute if score #state_{e.key} gl_ent matches 0 as @r[tag={cand}] at @s run "
+            f"function {NS}:entity/{e.key}/manifest",
+            f"tag @a remove {cand}",
+        ]
+    fn["entity/seek"] = seek
+    fn["entity/minute"] = []
     second += ["scoreboard players add @a gl_ehcd 0", "scoreboard players remove @a[scores={gl_ehcd=1..}] gl_ehcd 1"]
 
     # --- shared helpers --------------------------------------------------------------------------
@@ -202,9 +209,9 @@ def generate(sizes):
                 spots = [f"execute if score #placed gl_tmp matches 0 rotated ~ 0 positioned ^ ^1 ^{d} if block ~ ~ ~ "
                          f"#minecraft:replaceable if block ~ ~1 ~ #minecraft:replaceable run function {NS}:entity/{k}/place"
                          for d in (10, 8, 6, 4)]
-            else:                  # in the sky ahead of them
-                spots = [f"execute if score #placed gl_tmp matches 0 rotated ~ 0 positioned ^ ^9 ^20 "
-                         f"run function {NS}:entity/{k}/place"]
+            else:                  # in the sky ahead of them, or nearer if that's in rock
+                spots = [f"execute if score #placed gl_tmp matches 0 rotated ~ 0 positioned ^ ^{up} ^{d} if block ~ ~ ~ "
+                         f"#minecraft:replaceable run function {NS}:entity/{k}/place" for up, d in ((9, 20), (4, 12), (1, 6))]
         spots.append(f"execute if score #placed gl_tmp matches 0 positioned ~ ~3 ~ run function {NS}:entity/{k}/place")
         display = (f'{{id:"minecraft:item_display",Tags:["gl_entm","gl_entm_{k}"],item_display:"none",view_range:6f,'
                    f'brightness:{{sky:15,block:15}},item:{{id:"{NS}:entity_body",Count:1b,tag:{{CustomModelData:{i}}}}},'

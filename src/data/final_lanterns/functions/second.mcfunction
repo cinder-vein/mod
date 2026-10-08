@@ -24,23 +24,20 @@ execute as @a[tag=gl_hasid,tag=!gl_sersaved] run function final_lanterns:ring/sa
 tag @a[tag=gl_reser,scores={gl_reser=..0}] remove gl_reser
 scoreboard players remove @a[scores={gl_rcd=1..}] gl_rcd 1
 execute as @a run function final_lanterns:emotion/quests
-scoreboard players operation #req25 gl_ent = #threshold gl_cfg
-scoreboard players operation #req50 gl_ent = #threshold gl_cfg
-scoreboard players operation #req60 gl_ent = #threshold gl_cfg
+scoreboard players operation #req85 gl_ent = #threshold gl_cfg
+scoreboard players operation #req90 gl_ent = #threshold gl_cfg
+scoreboard players operation #req95 gl_ent = #threshold gl_cfg
 scoreboard players operation #req100 gl_ent = #threshold gl_cfg
 scoreboard players set #pct gl_ent 100
-scoreboard players set #p25 gl_ent 25
-scoreboard players operation #req25 gl_ent *= #p25 gl_ent
-scoreboard players operation #req25 gl_ent /= #pct gl_ent
-scoreboard players set #p50 gl_ent 50
-scoreboard players operation #req50 gl_ent *= #p50 gl_ent
-scoreboard players operation #req50 gl_ent /= #pct gl_ent
-scoreboard players set #p60 gl_ent 60
-scoreboard players operation #req60 gl_ent *= #p60 gl_ent
-scoreboard players operation #req60 gl_ent /= #pct gl_ent
-scoreboard players add #minute gl_ent 1
-execute if score #minute gl_ent matches 60.. if score #entities gl_cfg matches 1 run function final_lanterns:entity/minute
-execute if score #minute gl_ent matches 60.. run scoreboard players set #minute gl_ent 0
+scoreboard players set #p85 gl_ent 85
+scoreboard players operation #req85 gl_ent *= #p85 gl_ent
+scoreboard players operation #req85 gl_ent /= #pct gl_ent
+scoreboard players set #p90 gl_ent 90
+scoreboard players operation #req90 gl_ent *= #p90 gl_ent
+scoreboard players operation #req90 gl_ent /= #pct gl_ent
+scoreboard players set #p95 gl_ent 95
+scoreboard players operation #req95 gl_ent *= #p95 gl_ent
+scoreboard players operation #req95 gl_ent /= #pct gl_ent
 scoreboard players add @a gl_edc_ion 0
 scoreboard players add @a gl_edc_parallax 0
 scoreboard players add @a gl_edc_butcher 0
@@ -59,6 +56,12 @@ scoreboard players remove @a[scores={gl_edc_predator=1..}] gl_edc_predator 1
 scoreboard players remove @a[scores={gl_edc_proselyte=1..}] gl_edc_proselyte 1
 scoreboard players remove @a[scores={gl_edc_life=1..}] gl_edc_life 1
 scoreboard players remove @a[scores={gl_edc_nekron=1..}] gl_edc_nekron 1
+scoreboard players add #seek gl_ent 1
+execute if score #seek gl_ent matches 10.. if score #entities gl_cfg matches 1 run function final_lanterns:entity/seek
+execute if score #seek gl_ent matches 10.. run scoreboard players set #seek gl_ent 0
+scoreboard players add #minute gl_ent 1
+execute if score #minute gl_ent matches 60.. run function final_lanterns:entity/minute
+execute if score #minute gl_ent matches 60.. run scoreboard players set #minute gl_ent 0
 scoreboard players add @a gl_ehcd 0
 scoreboard players remove @a[scores={gl_ehcd=1..}] gl_ehcd 1
 function final_lanterns:entity/ion/second

@@ -6,8 +6,8 @@ execute if predicate final_lanterns:entity/lantern_butcher run execute if score 
 execute if predicate final_lanterns:entity/lantern_butcher run execute if score #fresh gl_tmp matches 0 run item replace entity @s weapon.mainhand with kubejs:redlanternbattery
 execute if predicate final_lanterns:entity/lantern_butcher run execute if score #fresh gl_tmp matches 0 run tellraw @s ["",{"text":"The lantern is empty: the entity broke free long ago.","color":"gray"}]
 scoreboard players set #worthy gl_tmp 0
-execute if score @s gl_e_rage >= #req50 gl_ent run scoreboard players set #worthy gl_tmp 1
-execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 0 run tellraw @s ["",{"text":"The Butcher doesn't answer you: you need ","color":"gray"},{"text":"50% rage","color":"#DC1E23"},{"text":" (see your Emotional Spectrum menu).","color":"gray"}]
+execute if score @s gl_e_rage >= #req95 gl_ent run scoreboard players set #worthy gl_tmp 1
+execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 0 run tellraw @s ["",{"text":"The Butcher doesn't answer you: you need ","color":"gray"},{"text":"95% rage","color":"#DC1E23"},{"text":" (see your Emotional Spectrum menu).","color":"gray"}]
 execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity @s[tag=gl_host] run tellraw @s ["",{"text":"You already host an entity.","color":"gray"}]
 execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity @s[tag=!gl_host,scores={gl_ehcd=1..}] run tellraw @s ["",{"text":"No entity will join you yet: you lost one too recently. ","color":"gray"},{"text":"(see your Emotional Spectrum menu)","color":"dark_gray"}]
 execute if score #fresh gl_tmp matches 1 if score #worthy gl_tmp matches 1 if entity @s[tag=!gl_host,scores={gl_ehcd=..0}] run item replace entity @s weapon.mainhand with kubejs:redlanternbattery

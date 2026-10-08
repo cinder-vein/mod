@@ -43,9 +43,9 @@ def generate():
         line("unless score #enabled gl_cfg matches 1", [{"text": BAD, "color": red},
                                                         {"text": "Ring offers and emotions are turned off (/lantern "
                                                                  "enable).", "color": gray}]),
-        line("unless entity @s[gamemode=survival]", [{"text": BAD, "color": red},
-                                                     {"text": "You're not in survival mode: rings only come to "
-                                                              "players in survival.", "color": gray}]),
+        line("if entity @s[gamemode=spectator]", [{"text": BAD, "color": red},
+                                                  {"text": "You're in spectator mode: rings and entities don't come to "
+                                                           "spectators.", "color": gray}]),
         line("if entity @s[tag=gl_offer_any]", [{"text": NOTE, "color": "gold"},
                                                 {"text": "A ring is waiting for your answer right now.",
                                                  "color": gray}]),

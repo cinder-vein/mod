@@ -1,4 +1,4 @@
-# In-game test checklist (Final Lanterns 1.2)
+# In-game test checklist (Final Lanterns 1.3)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change. Install the mods listed in the README first (Palladium, GeckoLib,
@@ -24,7 +24,7 @@ GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jar
 
 ## 3. The Black Lantern ring
 - [ ] Set four spectrum emotions low: `/scoreboard players set @s gl_e_will 10000` (same for `gl_e_fear`,
-      `gl_e_rage`, `gl_e_greed`). In survival, within a second the **Black Lantern** ring streaks down and offers
+      `gl_e_rage`, `gl_e_greed`). Within a second the **Black Lantern** ring streaks down and offers
       itself (*"a heart gone cold..."*).
 - [ ] With only three below 11 000, it doesn't come.
 - [ ] `/lantern blackfloor 13000` raises the floor: more players qualify.
@@ -44,7 +44,7 @@ GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jar
 - [ ] `/lantern entity summon ion` (or `/function final_lanterns:entity/admin/summon/ion`): Ion appears 6 blocks in
       front of you and chat says it offers itself to players with 100% willpower, with a **[Make me its host now]**
       button.
-- [ ] With willpower at 20 000 (`/lantern emotion <you> will set 20000`), in survival, Ion flies to you and offers
+- [ ] With willpower at 20 000 (`/lantern emotion <you> will set 20000`), within 10 seconds Ion flies to you and offers
       itself. Accept: you host Ion (suit, aura, the host power).
 - [ ] `/lantern entity reset`, summon Parallax: it comes straight at you and possesses you.
 - [ ] `/lantern entity host <you> butcher`: you host the Butcher right away.
