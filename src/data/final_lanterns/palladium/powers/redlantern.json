@@ -239,13 +239,8 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:has_effect",
-                "effect": "final_lanterns:berserker"
-              }
-            ]
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:berserker"
           }
         ]
       }
@@ -358,10 +353,6 @@
             "max": 4000
           },
           {
-            "type": "palladium:ability_enabled",
-            "ability": "redlantern"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "redwheel"
@@ -399,11 +390,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
           }
         ]
       }
@@ -744,15 +730,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "redlantern": {
       "type": "palladium:dummy",
@@ -799,20 +777,7 @@
         -0.5
       ],
       "description": "Rage Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "redlantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -855,14 +820,7 @@
         "effect clear @s final_lanterns:berserker"
       ],
       "commands": [],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "redlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "defensetree": {
       "type": "palladium:dummy",
@@ -1051,11 +1009,6 @@
       "uuid": "cab7dbd0-18b0-4448-9aef-8220f5604e00",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "redlantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1434,13 +1387,6 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:action",
@@ -1470,13 +1416,6 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:action",
@@ -1506,13 +1445,6 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:action",
@@ -1542,13 +1474,6 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:action",
@@ -1578,13 +1503,6 @@
       "last_tick_commands": [],
       "commands": [],
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:action",
@@ -1674,11 +1592,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          },
-          {
             "type": "palladium:is_hovering_or_flying"
           }
         ]
@@ -1701,26 +1614,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "redlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1743,18 +1639,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "redlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1797,11 +1681,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1842,13 +1721,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "rage_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "redlantern"
           }
         ]
       }
@@ -1999,26 +1871,21 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:and",
+            "type": "palladium:or",
             "conditions": [
               {
-                "type": "palladium:or",
-                "conditions": [
-                  {
-                    "type": "palladium:item_in_slot",
-                    "item": {
-                      "item": "final_lanterns:redlanternring"
-                    },
-                    "slot": "curios:lantern_rings"
-                  },
-                  {
-                    "type": "palladium:item_in_slot",
-                    "item": {
-                      "item": "final_lanterns:redlanternring"
-                    },
-                    "slot": "trinkets:hand/ring"
-                  }
-                ]
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:redlanternring"
+                },
+                "slot": "curios:lantern_rings"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:redlanternring"
+                },
+                "slot": "trinkets:hand/ring"
               }
             ]
           }

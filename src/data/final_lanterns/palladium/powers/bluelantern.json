@@ -116,14 +116,7 @@
       "commands": [
         "effect give @s minecraft:hero_of_the_village 2 3 true"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "bluelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "nightvision": {
       "type": "palladium:command",
@@ -151,11 +144,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ]
       }
@@ -548,15 +536,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "bluelantern": {
       "type": "palladium:dummy",
@@ -603,20 +583,7 @@
         -0.5
       ],
       "description": "Hope Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "bluelantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -704,15 +671,7 @@
       "amount": 6,
       "operation": 0,
       "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "bluelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -795,11 +754,6 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "bluelantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1107,11 +1061,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1148,11 +1097,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1189,11 +1133,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1230,11 +1169,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1271,11 +1205,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1313,11 +1242,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ],
         "enabling": [
@@ -1360,11 +1284,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           },
           {
             "type": "palladium:experience_level_buyable",
@@ -1410,11 +1329,6 @@
             "ability": "inflicthope"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 30
           }
@@ -1454,11 +1368,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "ringconstruction"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ]
       }
@@ -1493,11 +1402,6 @@
             "energy_bar": "hope",
             "min": 4000,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ]
       }
@@ -1681,26 +1585,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "bluelantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1722,11 +1609,6 @@
       "property_value": "null",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
-          },
           {
             "type": "palladium:is_hovering_or_flying"
           }
@@ -1751,18 +1633,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "bluelantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1805,11 +1675,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "bluelantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1850,13 +1715,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "hope_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "bluelantern"
           }
         ]
       }

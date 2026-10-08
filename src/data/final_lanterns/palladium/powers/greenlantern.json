@@ -123,11 +123,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ]
       }
@@ -272,11 +267,6 @@
       "property_value": "null",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          },
           {
             "type": "palladium:is_hovering_or_flying"
           }
@@ -648,15 +638,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "phasing_vertical": {
       "type": "palladium:intangibility",
@@ -735,11 +717,6 @@
           }
         ],
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          },
           {
             "type": "palladium:accessory_selected",
             "accessory_slot": "final_lanterns:rings",
@@ -845,10 +822,6 @@
             "energy_bar": "will_power",
             "min": 1,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "greenlantern"
           },
           {
             "type": "palladium:ability_unlocked",
@@ -1056,20 +1029,7 @@
         -0.5
       ],
       "description": "Willpower Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "greenlantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -1130,24 +1090,7 @@
       "amount": 1.5,
       "operation": 0,
       "uuid": "e6d59e54-74a5-4314-b067-2ce9edf01d99",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:has_effect",
-                "effect": "final_lanterns:willpower_overdrive"
-              },
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "greenlantern"
-              }
-            ]
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorbase": {
       "type": "palladium:attribute_modifier",
@@ -1166,15 +1109,7 @@
       "amount": 6,
       "operation": 0,
       "uuid": "53596a54-1b24-4e88-b0bd-ba0badef2619",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -1257,11 +1192,6 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "greenlantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1606,14 +1536,18 @@
       "strength": -0.1,
       "max_range": 15,
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "key_type": "scroll_up"
-        },
-        "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "telekinesis"
-        }
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "scroll_up"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "telekinesis"
+          }
+        ]
       }
     },
     "telekinesis_decrease": {
@@ -1626,14 +1560,18 @@
       "strength": 0.1,
       "max_strength": 1.5,
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "key_type": "scroll_down"
-        },
-        "unlocking": {
-          "type": "palladium:ability_enabled",
-          "ability": "telekinesis"
-        }
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "scroll_down"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "telekinesis"
+          }
+        ]
       }
     },
     "telekinesis": {
@@ -1801,11 +1739,6 @@
             "ability": "overdrive"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          },
-          {
             "type": "palladium:item_in_slot",
             "item": {
               "item": "kubejs:greenlanternbattery"
@@ -1854,11 +1787,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "overdrive"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           },
           {
             "type": "palladium:item_in_slot",
@@ -1961,11 +1889,6 @@
             "ability": "overdrive"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 30
           }
@@ -2005,11 +1928,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "ringconstruction"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           },
           {
             "type": "palladium:not",
@@ -2063,11 +1981,6 @@
             "energy_bar": "will_power",
             "min": 4000,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           },
           {
             "type": "palladium:not",
@@ -2380,26 +2293,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "greenlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -2422,22 +2318,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:has_effect",
-                "effect": "final_lanterns:willpower_overdrive"
-              },
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "greenlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -2480,11 +2360,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "greenlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -2525,13 +2400,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "willpower_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ]
       }
@@ -2711,11 +2579,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2749,11 +2612,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2787,11 +2645,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2825,11 +2678,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2863,11 +2711,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2901,11 +2744,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2939,11 +2777,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -2977,11 +2810,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -3015,11 +2843,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -3054,11 +2877,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           }
         ],
         "enabling": [
@@ -3140,11 +2958,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "greenlantern"
           },
           {
             "type": "palladium:accessory_selected",

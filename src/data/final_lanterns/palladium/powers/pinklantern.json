@@ -211,11 +211,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ]
       }
@@ -589,15 +584,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "pinklantern": {
       "type": "palladium:dummy",
@@ -644,20 +631,7 @@
         -0.5
       ],
       "description": "Love Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "pinklantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -718,15 +692,7 @@
       "amount": 1.5,
       "operation": 0,
       "uuid": "e841e107-946a-4960-ab31-b9f45e7aed64",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorbase": {
       "type": "palladium:attribute_modifier",
@@ -837,11 +803,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "pinklantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
           }
@@ -924,15 +885,7 @@
       "amount": 0.02,
       "operation": 0,
       "uuid": "01b610a1-570c-4918-b434-ed94c2a7ea71",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "pinklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthlevel1": {
       "type": "palladium:attribute_modifier",
@@ -1151,11 +1104,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -1193,11 +1141,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -1234,11 +1177,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -1275,11 +1213,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           },
           {
             "type": "palladium:not",
@@ -1340,11 +1273,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -1381,11 +1309,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -1438,11 +1361,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 25
           }
@@ -1486,11 +1404,6 @@
             "ability": "crystalstun"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 30
           }
@@ -1530,11 +1443,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "ringconstruction"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ]
       }
@@ -1570,11 +1478,6 @@
             "energy_bar": "love",
             "min": 4000,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ]
       }
@@ -1758,26 +1661,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "pinklantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1799,11 +1685,6 @@
       "property_value": "null",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "pinklantern"
-          },
           {
             "type": "palladium:is_hovering_or_flying"
           }
@@ -1828,18 +1709,6 @@
       "particle_size": 0.1,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "pinklantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1878,11 +1747,6 @@
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
-          },
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "pinklantern"
           }
         ],
         "enabling": [

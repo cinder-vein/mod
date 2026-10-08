@@ -1,1782 +1,1669 @@
 {
-    "name": "§bPride Ring Bearer",
-    "persistent_data": true,
-    "background": "minecraft:textures/block/light_blue_concrete.png",
-    "ability_bar_texture": "final_lanterns:textures/gui/ability_barpride.png",
-    "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
-    "gui_display_type": "tree",
-    "energy_bars": {
-        "pride": {
-            "max": 2000,
-            "auto_increase_per_tick": 0,
-            "color": "#84a5cf"
-        }
-    },
-    "abilities": {
-        "toughlungs": {
-            "type": "finallanterns:toughlungs",
-            "icon": {
-                "type": "palladium:item",
-                "item": "minecraft:air",
-                "count": 0
-            },
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:dimension",
-                                "dimension": "minecraft:overworld"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "cosmicspace": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "function final_lanterns:cosmicspace"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "cosmos"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1000,
-                        "max": 1400
-                    }
-                ]
-            }
-        },
-        "adastrascreen": {
-            "type": "palladium:command",
-            "icon": "minecraft:command_block",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "first_tick_commands": [
-                "adastra planets"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "ad_astra"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1200,
-                        "max": 1500
-                    }
-                ]
-            }
-        },
-        "enablepls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 21,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "enablepls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 16,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls",
-                        "min": 5,
-                        "max": 21
-                    }
-                ]
-            }
-        },
-        "maskpls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 6,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "maskpls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 5,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "maskpls",
-                        "min": 2,
-                        "max": 6
-                    }
-                ]
-            }
-        },
-        "suitsound": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "first_tick_commands": [
-                "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "objective_checker": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "scoreboard objectives add saiyansuit dummy",
-                "team add pride",
-                "team join pride",
-                "team modify pride color blue"
-            ],
-            "last_tick_commands": [
-                "team leave @s"
-            ],
-            "commands": []
-        },
-        "nightvision": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
-            "list_index": 2,
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "effect give @s minecraft:night_vision 11 1 true"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:night"
-                            },
-                            {
-                                "type": "palladium:brightness_at_position",
-                                "min_brightness": 0,
-                                "max_brightness": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "disableouterlayers": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "right_arm_overlay",
-                "left_arm_overlay",
-                "right_leg_overlay",
-                "left_leg_overlay",
-                "chest_overlay",
-                "head_overlay",
-                "cape"
-            ],
-            "affects_first_person": true,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls1",
-                        "min": 1,
-                        "max": 60
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:accessory_selected",
-                                "accessory_slot": "final_lanterns:pridelantern",
-                                "accessory": "final_lanterns:pridelanterns/blanksuit"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "cape": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:capes/blankcape",
-            "accessory_slot": "final_lanterns:capes",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "accessory": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:pridelantern/default",
-            "accessory_slot": "final_lanterns:pridelantern"
-        },
-        "greenlantern_name": {
-            "type": "palladium:name_change",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "name": {
-                "text": "§bCosmic Nexus Lantern"
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "armorstore": {
-            "type": "palladium:command",
-            "icon": "minecraft:cookie",
-            "list_index": 2,
-            "title": "armorstore",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": ["pocket save"],
-            "last_tick_commands": ["pocket load"],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "greenlantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "greenlantern_restrict_slots": {
-            "type": "palladium:restrict_slots",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "slots": [
-                "head",
-                "chest",
-                "legs",
-                "feet"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "greenlantern_immunities2": {
-            "type": "palladium:damage_immunity",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "damage_sources": [
-                "minecraft:is_fall",
-                "minecraft:is_explosion",
-                "minecraft:is_drowning",
-                "minecraft:is_fire",
-                "minecraft:is_freezing",
-                "final_lanterns:oxygen"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "greenlantern": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
-            "title": "Pride Ring Bearer",
-            "list_index": 4,
-            "bar_color": "light_blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -1.5
-            ],
-            "description": "With this ring you have been Chosen to become a Cosmic Nexus Lantern.",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:toggle",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 0,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "skilltree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:pridelanternring",
-            "title": "Skill Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -0.5
-            ],
-            "description": "Pride Ring based Abilities",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "strengthtree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Tree",
-            "hidden": false,
-            "description": "Strength Upgrades                           Base Strength: 1",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "defensetree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Defense Upgrades                           Base Armor: 6",
-            "gui_position": [
-                1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "flightlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:elytra",
-            "title": "Flight Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "palladium:flight_speed",
-            "amount": 1.5,
-            "operation": 0,
-            "uuid": "520e3f6e-9713-4fb9-bc56-1322aa61ac39",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    }
-                ]
-            }
-        },
-        "armorbase": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:chainmail_chestplate",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.armor",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "804c11d7-760e-4af2-9e80-9b92ebae437f",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    }
-                ]
-            }
-        },
-        "armorlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "Defense Upgrade 1                           Total: 6 (+12)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 12,
-            "operation": 0,
-            "uuid": "618422d5-7e84-4367-8320-fa4650161475",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "armorlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0.5
-            ],
-            "description": "Defense Upgrade 2                           Total: 6 (+24)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 12,
-            "operation": 0,
-            "uuid": "bfd31e3d-d7de-4c19-ab81-5f9958ec7cdb",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "armorlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    }
-                ]
-            }
-        },
-        "healthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heart.png",
-            "title": "Health Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -1.5
-            ],
-            "description": "Health Upgrade 1                          Base Health: 20 (+6)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "5885efbf-fc92-4dda-b8c7-2542359e65ba",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ]
-            }
-        },
-        "healthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heartgold.png",
-            "title": "Health Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -2
-            ],
-            "description": "Health Upgrade 2                          Base Health: 20 (+12)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "3f5f9a2a-695e-4c33-ad6a-2380754f041b",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healing_factor": {
-            "type": "palladium:healing",
-            "icon": "final_lanterns:textures/icons/heartdiamond.png",
-            "title": "Natural Healing",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "frequency": 40,
-            "amount": 1,
-            "description": "Natural Healing                           Amount: 1Heart/2Second",
-            "gui_position": [
-                0.5,
-                -2.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel2"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "movementspeed1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_boots",
-            "title": "Movement Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                -2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.movement_speed",
-            "amount": 0.05,
-            "operation": 0,
-            "uuid": "46938a4b-bd0c-4c36-8eba-21bf5516a889",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    }
-                ]
-            }
-        },
-        "willpowerbeambig": {
-            "type": "palladium:energy_beam",
-            "title": "Pride Beam Big",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "bar_color": "light_blue",
-            "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "pride",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:pridelanternbeambluebig",
-            "gui_position": [
-                0,
-                0
-            ],
-            "damage": 13,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "smelt_blocks": false,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "beamdummy"
-                    },
-                    {
-                        "type": "palladium:crouching"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "beamdummy": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
-            "title": "Pride Beam",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                0
-            ],
-            "description": "Pride Beam        Beam Damage: 10",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "finalflash": {
-            "type": "palladium:energy_beam",
-            "title": "Final Flash",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "bar_color": "light_blue",
-            "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "pride",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:finalflash",
-            "gui_position": [
-                0,
-                0
-            ],
-            "damage": 10,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "smelt_blocks": false,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "beamdummy"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:crouching"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "willpowerbeam": {
-            "type": "palladium:energy_beam",
-            "title": "Pride Beam",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "bar_color": "light_blue",
-            "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "pride",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:pridelanternbeamblue",
-            "gui_position": [
-                0,
-                0
-            ],
-            "description": "Pride Beam        Beam Damage: 10",
-            "damage": 10,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "smelt_blocks": false,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "beamdummy"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:crouching"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "willpowerbeam_aim": {
-            "type": "palladium:aim",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "time": 1,
-            "arm": "main_arm",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "willpowerbeam"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "willpowerbeambig"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "constructcreation": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/slots/pridelantern3.png",
-            "title": "Construct Creation",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "gui_position": [
-                0,
-                0.5
-            ],
-            "description": "Concentrate and Create different Items with your Ring.",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "beamdummy"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "teleportcost": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
-            "list_index": 2,
-            "title": "Natural Pride Regeneration",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value subtract @s final_lanterns:pridelantern pride 5"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "teleportation"
-                    }
-                ]
-            }
-        },
-        "teleportation": {
-            "type": "lanterncorps:teleport",
-            "icon": "minecraft:ender_pearl",
-            "title": "Teleportation",
-            "bar_color": "light_blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                1
-            ],
-            "description": "Teleport 10 block forwards",
-            "max_distance": 10,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 1,
-                        "max": 4000
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 20,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "ringconstruction": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:pridelanternring",
-            "title": "Ring Construction",
-            "bar_color": "light_blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "This final ability allows you to create a duplicate of your current ring at the cost of all your pride. Once used, the ability becomes locked. Note: You must have Pride Max lvl 3",
-            "gui_position": [
-                0,
-                1.5
-            ],
-            "list_index": 3,
-            "first_tick_commands": [
-                "give @s final_lanterns:pridelanternring",
-                "energybar value subtract @s final_lanterns:pridelantern pride 4000",
-                "ability lock @s final_lanterns:pridelantern ringconstruction"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "teleportation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "pride",
-                        "min": 4000,
-                        "max": 4000
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 30
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 130,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "strengthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0
-            ],
-            "description": "Strength Upgrade 1                              Base Strength: 1 (+5)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 5,
-            "operation": 0,
-            "uuid": "e9642050-bce1-4f5a-9c99-f8d804089fe3",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "strengthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0.5
-            ],
-            "description": "Strength Upgrade 2                              Base Strength: 1 (+13)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 8,
-            "operation": 0,
-            "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    }
-                ]
-            }
-        },
-        "otherglowi2ng": {
-            "type": "palladium:entity_glow",
-            "icon": "minecraft:glow_berries",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "mode": "self",
-            "color": "#2100b3",
-            "distance": 30,
-            "property_key": "null",
-            "property_value": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:is_hovering_or_flying"
-                    }
-                ]
-            }
-        },
-        "outlinefast": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 14,
-            "start_hex": "#2100b3",
-            "end_hex": "#2100b3",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 1.5,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "greenlantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_fast_flying"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outline": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 4,
-            "start_hex": "#2100b3",
-            "end_hex": "#2100b3",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 0.4,
-            "visibility": 0.2,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "greenlantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:is_under_water"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "willpower_maxlvl2": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:pridebattery",
-            "list_index": 2,
-            "title": "Pride Max lvl 2",
-            "bar_color": "green",
-            "hidden": false,
-            "description": "Energy Capacity                                                         Total: 2000 (+1000)",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:pridelantern pride 3000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_unlocked",
-                                "power": "null",
-                                "ability": "willpower_maxlvl3"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "willpower_maxlvl3": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:pridebattery",
-            "list_index": 2,
-            "title": "Pride Max lvl 3",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Energy Capacity                                                         Total: 2000 (+2000)",
-            "gui_position": [
-                -0.5,
-                -2
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:pridelantern pride 4000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "willpower_maxlvl2"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ]
-            }
-        },
-        "hoperegen": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:greenlanternbattery",
-            "list_index": 2,
-            "title": "Hope Regen",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:pridelantern pride 5"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:has_effect",
-                        "effect": "final_lanterns:hope_enpowerment"
-                    }
-                ]
-            }
-        },
-        "naturalregen1": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:pridebattery",
-            "list_index": 2,
-            "title": "Natural Pride Regeneration",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "description": "Energy Regeneration                                                          2 Energy/Second",
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:pridelantern pride 2"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 40
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "willpower_maxlvl3"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "willpowerbeam"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "flightstyle": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 0,
-            "operation": 0,
-            "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flightone"
-                    }
-                ]
-            }
-        },
-        "flightstyle2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 1,
-            "operation": 0,
-            "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flighttwo"
-                    }
-                ]
-            }
-        },
-        "dagger_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:dagger_pride",
-            "title": "Dagger",
-            "bar_color": "light_blue",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:dagger_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "greatsword_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:greatsword_igris",
-            "title": "Great Sword",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:greatsword_igris{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "hammer_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:hammer_pride",
-            "title": "Hammer",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:hammer_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "scythe_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:scythe_pride",
-            "title": "Scythe",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:scythe_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "axe_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:axe_pride",
-            "title": "Axe",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:axe_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "pickaxe_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:pickaxe_pride",
-            "title": "Pickaxe",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:pickaxe_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "shovel_construct": {
-            "type": "palladium:command",
-            "icon": "kubejs:shovel_pride",
-            "title": "Shovel",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                "give @s kubejs:shovel_pride{CustomTag:pride}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "greenlantern"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_wheel",
-                        "cooldown": 0
-                    }
-                ]
-            }
-        },
-        "ability_wheel": {
-            "type": "palladium:ability_wheel",
-            "icon": "final_lanterns:textures/icons/slots/pridelantern3.png",
-            "title": "Construct Creation",
-            "bar_color": "light_blue",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": 1,
-            "gui_position": [
-                0,
-                0
-            ],
-            "description": "null",
-            "abilities": [
-                "dagger_construct",
-                "greatsword_construct",
-                "hammer_construct",
-                "scythe_construct",
-                "axe_construct",
-                "pickaxe_construct",
-                "shovel_construct"
-            ],
-            "texture": "null",
-            "disable_mouse_scrolling": false,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    }
-                ]
-            }
-        }
+  "name": "§bPride Ring Bearer",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/light_blue_concrete.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_barpride.png",
+  "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
+  "gui_display_type": "tree",
+  "energy_bars": {
+    "pride": {
+      "max": 2000,
+      "auto_increase_per_tick": 0,
+      "color": "#84a5cf"
     }
+  },
+  "abilities": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "greenlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "greenlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "suitsound": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "scoreboard objectives add saiyansuit dummy",
+        "team add pride",
+        "team join pride",
+        "team modify pride color blue"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": []
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "disableouterlayers": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "head_overlay",
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls1",
+            "min": 1,
+            "max": 60
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:pridelantern",
+                "accessory": "final_lanterns:pridelanterns/blanksuit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cape": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:capes/blankcape",
+      "accessory_slot": "final_lanterns:capes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "accessory": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:pridelantern/default",
+      "accessory_slot": "final_lanterns:pridelantern"
+    },
+    "greenlantern_name": {
+      "type": "palladium:name_change",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "name": {
+        "text": "§bCosmic Nexus Lantern"
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "armorstore": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "list_index": 2,
+      "title": "armorstore",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "pocket save"
+      ],
+      "last_tick_commands": [
+        "pocket load"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "greenlantern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "greenlantern_restrict_slots": {
+      "type": "palladium:restrict_slots",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "slots": [
+        "head",
+        "chest",
+        "legs",
+        "feet"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
+    },
+    "greenlantern_immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {}
+    },
+    "greenlantern": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
+      "title": "Pride Ring Bearer",
+      "list_index": 4,
+      "bar_color": "light_blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "With this ring you have been Chosen to become a Cosmic Nexus Lantern.",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 0,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:pridelanternring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Pride Ring based Abilities",
+      "conditions": {}
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "hidden": false,
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "520e3f6e-9713-4fb9-bc56-1322aa61ac39",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:chainmail_chestplate",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "804c11d7-760e-4af2-9e80-9b92ebae437f",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+12)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 12,
+      "operation": 0,
+      "uuid": "618422d5-7e84-4367-8320-fa4650161475",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+24)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 12,
+      "operation": 0,
+      "uuid": "bfd31e3d-d7de-4c19-ab81-5f9958ec7cdb",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 1                          Base Health: 20 (+6)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "5885efbf-fc92-4dda-b8c7-2542359e65ba",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+12)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "3f5f9a2a-695e-4c33-ad6a-2380754f041b",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 40,
+      "amount": 1,
+      "description": "Natural Healing                           Amount: 1Heart/2Second",
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.05,
+      "operation": 0,
+      "uuid": "46938a4b-bd0c-4c36-8eba-21bf5516a889",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "willpowerbeambig": {
+      "type": "palladium:energy_beam",
+      "title": "Pride Beam Big",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "light_blue",
+      "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "pride",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:pridelanternbeambluebig",
+      "gui_position": [
+        0,
+        0
+      ],
+      "damage": 13,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "beamdummy": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
+      "title": "Pride Beam",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "Pride Beam        Beam Damage: 10",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "finalflash": {
+      "type": "palladium:energy_beam",
+      "title": "Final Flash",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "light_blue",
+      "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "pride",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:finalflash",
+      "gui_position": [
+        0,
+        0
+      ],
+      "damage": 10,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:crouching"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "willpowerbeam": {
+      "type": "palladium:energy_beam",
+      "title": "Pride Beam",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "light_blue",
+      "icon": "final_lanterns:textures/icons/pridelanternbeam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "pride",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:pridelanternbeamblue",
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "Pride Beam        Beam Damage: 10",
+      "damage": 10,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:crouching"
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "willpowerbeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "willpowerbeam"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "willpowerbeambig"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "constructcreation": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/pridelantern3.png",
+      "title": "Construct Creation",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "description": "Concentrate and Create different Items with your Ring.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "beamdummy"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "teleportcost": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/slots/pridelantern.png",
+      "list_index": 2,
+      "title": "Natural Pride Regeneration",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value subtract @s final_lanterns:pridelantern pride 5"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "teleportation"
+          }
+        ]
+      }
+    },
+    "teleportation": {
+      "type": "lanterncorps:teleport",
+      "icon": "minecraft:ender_pearl",
+      "title": "Teleportation",
+      "bar_color": "light_blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        1
+      ],
+      "description": "Teleport 10 block forwards",
+      "max_distance": 10,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 1,
+            "max": 4000
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 20,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "ringconstruction": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pridelanternring",
+      "title": "Ring Construction",
+      "bar_color": "light_blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "This final ability allows you to create a duplicate of your current ring at the cost of all your pride. Once used, the ability becomes locked. Note: You must have Pride Max lvl 3",
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "list_index": 3,
+      "first_tick_commands": [
+        "give @s final_lanterns:pridelanternring",
+        "energybar value subtract @s final_lanterns:pridelantern pride 4000",
+        "ability lock @s final_lanterns:pridelantern ringconstruction"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "teleportation"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "pride",
+            "min": 4000,
+            "max": 4000
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 130,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                              Base Strength: 1 (+5)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "e9642050-bce1-4f5a-9c99-f8d804089fe3",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                              Base Strength: 1 (+13)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "otherglowi2ng": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#2100b3",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#2100b3",
+      "end_hex": "#2100b3",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#2100b3",
+      "end_hex": "#2100b3",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.4,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "willpower_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pridebattery",
+      "list_index": 2,
+      "title": "Pride Max lvl 2",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Capacity                                                         Total: 2000 (+1000)",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:pridelantern pride 3000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "willpower_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "willpower_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pridebattery",
+      "list_index": 2,
+      "title": "Pride Max lvl 3",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Energy Capacity                                                         Total: 2000 (+2000)",
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:pridelantern pride 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "willpower_maxlvl2"
+          }
+        ]
+      }
+    },
+    "hoperegen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greenlanternbattery",
+      "list_index": 2,
+      "title": "Hope Regen",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:pridelantern pride 5"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:hope_enpowerment"
+          }
+        ]
+      }
+    },
+    "naturalregen1": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pridebattery",
+      "list_index": 2,
+      "title": "Natural Pride Regeneration",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "description": "Energy Regeneration                                                          2 Energy/Second",
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:pridelantern pride 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "willpower_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "willpowerbeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
+    },
+    "dagger_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:dagger_pride",
+      "title": "Dagger",
+      "bar_color": "light_blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:dagger_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "greatsword_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:greatsword_igris",
+      "title": "Great Sword",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:greatsword_igris{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "hammer_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:hammer_pride",
+      "title": "Hammer",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:hammer_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "scythe_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:scythe_pride",
+      "title": "Scythe",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:scythe_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "axe_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:axe_pride",
+      "title": "Axe",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:axe_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "pickaxe_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:pickaxe_pride",
+      "title": "Pickaxe",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:pickaxe_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "shovel_construct": {
+      "type": "palladium:command",
+      "icon": "kubejs:shovel_pride",
+      "title": "Shovel",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s kubejs:shovel_pride{CustomTag:pride}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_wheel",
+            "cooldown": 0
+          }
+        ]
+      }
+    },
+    "ability_wheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/pridelantern3.png",
+      "title": "Construct Creation",
+      "bar_color": "light_blue",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "null",
+      "abilities": [
+        "dagger_construct",
+        "greatsword_construct",
+        "hammer_construct",
+        "scythe_construct",
+        "axe_construct",
+        "pickaxe_construct",
+        "shovel_construct"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ]
+      }
+    }
+  }
 }

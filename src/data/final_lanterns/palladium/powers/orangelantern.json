@@ -211,11 +211,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
           }
         ]
       }
@@ -525,15 +520,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "orangelantern": {
       "type": "palladium:dummy",
@@ -580,20 +567,7 @@
         -0.5
       ],
       "description": "Greed Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "orangewheel": {
       "type": "palladium:ability_wheel",
@@ -692,15 +666,7 @@
       "amount": 1.5,
       "operation": 0,
       "uuid": "ad9a2979-f36b-40b9-9d30-afe4256045fd",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorbase": {
       "type": "palladium:attribute_modifier",
@@ -810,11 +776,6 @@
       "uuid": "96d55b72-dc3b-42df-8ee1-49c04735815e",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "orangelantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1085,11 +1046,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1148,11 +1104,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
           },
           {
             "type": "palladium:not",
@@ -1215,11 +1166,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1280,11 +1226,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1339,14 +1280,7 @@
         "effect clear @s minecraft:haste"
       ],
       "commands": [],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "orangelantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "orangeshield": {
       "type": "palladium:command",
@@ -1371,11 +1305,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
           },
           {
             "type": "palladium:not",
@@ -1590,11 +1519,6 @@
             "xp_level": 35
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "greed_construct_purchase"
@@ -1673,26 +1597,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "orangelantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1714,11 +1621,6 @@
       "property_value": "null",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
-          },
           {
             "type": "palladium:is_hovering_or_flying"
           }
@@ -1743,18 +1645,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "orangelantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1797,11 +1687,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "orangelantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1842,13 +1727,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "greed_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "orangelantern"
           }
         ]
       }

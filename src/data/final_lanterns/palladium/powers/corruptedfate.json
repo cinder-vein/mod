@@ -1,1461 +1,1342 @@
 {
-    "name": "§6Corrupted §4Fate Bearer",
-    "persistent_data": true,
-    "background": "minecraft:textures/block/red_terracotta.png",
-    "ability_bar_texture": "final_lanterns:textures/gui/ability_barcorrupted.png",
-    "icon": "final_lanterns:textures/icons/slots/corruptedfate.png",
-    "gui_display_type": "tree",
-    "energy_bars": {
-        "corruption": {
-            "max": 2000,
-            "auto_increase_per_tick": 0,
-            "color": "#960018"
-        }
+  "name": "§6Corrupted §4Fate Bearer",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/red_terracotta.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_barcorrupted.png",
+  "icon": "final_lanterns:textures/icons/slots/corruptedfate.png",
+  "gui_display_type": "tree",
+  "energy_bars": {
+    "corruption": {
+      "max": 2000,
+      "auto_increase_per_tick": 0,
+      "color": "#960018"
+    }
+  },
+  "abilities": {
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
     },
-    "abilities": {
-        "enablepls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 21,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "enablepls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 16,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls",
-                        "min": 5,
-                        "max": 21
-                    }
-                ]
-            }
-        },
-        "maskpls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 6,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "maskpls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 5,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "maskpls",
-                        "min": 2,
-                        "max": 6
-                    }
-                ]
-            }
-        },
-        "suitsound": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "first_tick_commands": [
-                "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "toughlungs": {
-            "type": "finallanterns:toughlungs",
-            "icon": {
-                "type": "palladium:item",
-                "item": "minecraft:air",
-                "count": 0
-            },
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:dimension",
-                                "dimension": "minecraft:overworld"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "cosmicspace": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "function final_lanterns:cosmicspace"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "cosmos"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1000,
-                        "max": 1400
-                    }
-                ]
-            }
-        },
-        "adastrascreen": {
-            "type": "palladium:command",
-            "icon": "minecraft:command_block",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "first_tick_commands": ["adastra planets"],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "ad_astra"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1200,
-                        "max": 1500
-                    }
-                ]
-            }
-        },
-        "nightvision": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/bluelantern_shield.png",
-            "list_index": 2,
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "effect give @s minecraft:night_vision 11 1 true"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:night"
-                            },
-                            {
-                                "type": "palladium:brightness_at_position",
-                                "min_brightness": 0,
-                                "max_brightness": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "disableouterlayers": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "right_arm_overlay",
-                "left_arm_overlay",
-                "right_leg_overlay",
-                "left_leg_overlay",
-                "chest_overlay",
-                "cape"
-            ],
-            "affects_first_person": true,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls1",
-                        "min": 1,
-                        "max": 60
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions":[
-                            {
-                                "type": "palladium:accessory_selected",
-                                "accessory_slot": "final_lanterns:corruptedfate",
-                                "accessory": "final_lanterns:corruptedfate/blanksuit"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "objective_checker": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "team add corrupt",
-                "team join corrupt",
-                "team modify corrupt color red"
-            ],
-            "last_tick_commands": [
-                "team leave @s"
-            ],
-            "commands": []
-        },
-        "cape": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:capes/blankcape",
-            "accessory_slot": "final_lanterns:capes",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "greenlantern_mask": { 
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:corruptedfate/suit",
-            "accessory_slot": "final_lanterns:corruptedfate"
-        },
-        "mask": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:corruptedfate/mask",
-            "accessory_slot": "final_lanterns:corruptedfatemasks"
-        },
-        "name": {
-            "type": "palladium:name_change",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "name": {
-                "text": "§4Blood Agent"
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:and",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "armorstore": {
-            "type": "palladium:command",
-            "icon": "minecraft:cookie",
-            "list_index": 2,
-            "title": "armorstore",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": ["pocket save"],
-            "last_tick_commands": ["pocket load"],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "restrict_slots": {
-            "type": "palladium:restrict_slots",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "slots": [
-                "head",
-                "chest",
-                "legs",
-                "feet"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "immunities2": {
-            "type": "palladium:damage_immunity",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "damage_sources": [
-                "minecraft:is_fall",
-                "minecraft:is_explosion",
-                "minecraft:is_drowning",
-                "minecraft:is_fire",
-                "minecraft:is_freezing"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "corruptedfate": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/corruptedfate/suitup.png",
-            "title": "Suitup",
-            "list_index": 4,
-            "bar_color": "blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -1.5
-            ],
-            "description": "With this ring you have been Chosen to Corrupt your Fate.",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:toggle",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "corruption",
-                        "min": 0,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "skilltree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:corruptedfatering",
-            "title": "Skill Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -0.5
-            ],
-            "description": "Corruption based Abilities",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "strengthtree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Tree",
-            "hidden": false,
-            "description": "Strength Upgrades                           Base Strength: 1",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "defensetree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Tree",
-            "hidden": false,
-            "description": "Defense Upgrades                           Base Armor: 6",
-            "hidden_in_bar": false,
-            "gui_position": [
-                1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "flightlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:elytra",
-            "title": "Flight Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "palladium:flight_speed",
-            "amount": 1,
-            "operation": 0,
-            "uuid": "ad9a2979-f36b-40b9-9d30-afe4256045fd",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    }
-                ]
-            }
-        },
-        "hope_trail2": {
-            "type": "palladium:trail",
-            "icon": "minecraft:textures/block/green_wool.png",
-            "title": "null",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "trail": "final_lanterns:corruptiontrail2",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:is_fast_flying"
-                    }
-                ]
-            }
-        },
-        "armorbase": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.armor",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "armorlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "Defense Upgrade 1                           Total: 6 (+14)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 14,
-            "operation": 0,
-            "uuid": "917cd7a1-d0e4-406d-8076-ee1ba2dcf3bb",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "armorlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0.5
-            ],
-            "description": "Defense Upgrade 2                           Total: 6 (+28)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 14,
-            "operation": 0,
-            "uuid": "3b905451-2cc2-4de5-8fc0-b94f4d13f819",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "armorlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heart.png",
-            "title": "Health Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -1.5
-            ],
-            "description": "Health Upgrade 1                          Base Health: 20 (+8)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 8,
-            "operation": 0,
-            "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ]
-            }
-        },
-        "healthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heartgold.png",
-            "title": "Health Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -2
-            ],
-            "description": "Health Upgrade 2                          Base Health: 20 (+16)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 8,
-            "operation": 0,
-            "uuid": "daacd19f-9be6-4280-a02d-016e60cb5a89",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healing_factor": {
-            "type": "palladium:healing",
-            "icon": "final_lanterns:textures/icons/heartdiamond.png",
-            "title": "Natural Healing",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "frequency": 80,
-            "description": "Natural Healing                           Amount: 1Heart/4Second",
-            "amount": 1,
-            "gui_position": [
-                0.5,
-                -2.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel2"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "movementspeed1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_boots",
-            "title": "Movement Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.movement_speed",
-            "amount": 0.02,
-            "operation": 0,
-            "uuid": "735e051a-80d5-48ae-950c-fd77d342709a",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    }
-                ]
-            }
-        },
-        "strengthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0
-            ],
-            "description": "Strength Upgrade 1                              Base Strength: 1 (+4)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 4,
-            "operation": 0,
-            "uuid": "be267032-142e-48c0-9b62-d013232168aa",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "strengthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0.5
-            ],
-            "description": "Strength Upgrade 2                              Base Strength: 1 (+9)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 5,
-            "operation": 0,
-            "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    }
-                ]
-            }
-        },
-        "hopebeam": {
-            "type": "palladium:energy_beam",
-            "title": "Corrupted Beam",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "bar_color": "blue",
-            "icon": "final_lanterns:textures/icons/corruptedfate/corrupted_fate_beam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "corruption",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:corruptedbeam",
-            "gui_position": [
-                0,
-                0
-            ],
-            "description": "Corrupted Beam                              Beam Damage: 10       Effects:     Poison",
-            "damage": 10,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "commands_on_block_hit": ["effect give @e[distance=..1] minecraft:poison 2 1 true"],
-            "commands_on_entity_hit": ["effect give @e[distance=..1] minecraft:poison 2 1 true"],
-            "smelt_blocks": false,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "corruption",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "hopebeam_aim": {
-            "type": "palladium:aim",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "time": 1,
-            "arm": "main_arm",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "hopebeam"
-                    }
-                ]
-            }
-        },
-        "constructcreation": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/corruptedfate/souldebuff.png",
-            "title": "Shattered Soul",
-            "bar_color": "blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": 1,
-            "description": "Give Debuff to the entities in a 5 block radius",
-            "gui_position": [
-                0,
-                0.5
-            ],
-            "first_tick_commands": [
-                "effect give @e[distance=..5] minecraft:weakness 30 1",
-                "effect give @e[distance=..5] minecraft:darkness 30 1",
-                "effect give @e[distance=..5] minecraft:slowness 30 1",
-                "energybar value subtract @s final_lanterns:corruptedfate corruption 1500",
-                "effect clear @s minecraft:weakness",
-                "effect clear @s minecraft:darkness",
-                "effect clear @s minecraft:slowness"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hopebeam"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 25
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "corruption",
-                        "min": 1,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "timestop": {
-            "type": "palladium:command",
-            "title": "Domineering Presence",
-            "bar_color": "blue",
-            "icon": "final_lanterns:textures/icons/corruptedfate/timestop.png",
-            "hidden": false,
-            "gui_position": [
-                0,
-                1
-            ],
-            "hidden_in_bar": false,
-            "list_index": 2 ,
-            "description": "Stop Time to §efreeze all entities §fin a large area.",
-            "commands": [
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "corruptedfate"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "corruptedfate"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "suitsound": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
+    },
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/bluelantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "disableouterlayers": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls1",
+            "min": 1,
+            "max": 60
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:corruptedfate",
+                "accessory": "final_lanterns:corruptedfate/blanksuit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "team add corrupt",
+        "team join corrupt",
+        "team modify corrupt color red"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": []
+    },
+    "cape": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:capes/blankcape",
+      "accessory_slot": "final_lanterns:capes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
+    },
+    "greenlantern_mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:corruptedfate/suit",
+      "accessory_slot": "final_lanterns:corruptedfate"
+    },
+    "mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:corruptedfate/mask",
+      "accessory_slot": "final_lanterns:corruptedfatemasks"
+    },
+    "name": {
+      "type": "palladium:name_change",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "name": {
+        "text": "§4Blood Agent"
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:and",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "corruptedfate"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "armorstore": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "list_index": 2,
+      "title": "armorstore",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "pocket save"
+      ],
+      "last_tick_commands": [
+        "pocket load"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "corruptedfate"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "restrict_slots": {
+      "type": "palladium:restrict_slots",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "slots": [
+        "head",
+        "chest",
+        "legs",
+        "feet"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
+    },
+    "immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing"
+      ],
+      "conditions": {}
+    },
+    "corruptedfate": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/corruptedfate/suitup.png",
+      "title": "Suitup",
+      "list_index": 4,
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "With this ring you have been Chosen to Corrupt your Fate.",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "corruption",
+            "min": 0,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:corruptedfatering",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Corruption based Abilities",
+      "conditions": {}
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "hidden": false,
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "hidden_in_bar": false,
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "ad9a2979-f36b-40b9-9d30-afe4256045fd",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "hope_trail2": {
+      "type": "palladium:trail",
+      "icon": "minecraft:textures/block/green_wool.png",
+      "title": "null",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "trail": "final_lanterns:corruptiontrail2",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "corruptedfate"
+          },
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
+      "conditions": {}
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+14)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 14,
+      "operation": 0,
+      "uuid": "917cd7a1-d0e4-406d-8076-ee1ba2dcf3bb",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+28)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 14,
+      "operation": 0,
+      "uuid": "3b905451-2cc2-4de5-8fc0-b94f4d13f819",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 1                          Base Health: 20 (+8)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+16)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "daacd19f-9be6-4280-a02d-016e60cb5a89",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 80,
+      "description": "Natural Healing                           Amount: 1Heart/4Second",
+      "amount": 1,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.02,
+      "operation": 0,
+      "uuid": "735e051a-80d5-48ae-950c-fd77d342709a",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                              Base Strength: 1 (+4)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "be267032-142e-48c0-9b62-d013232168aa",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                              Base Strength: 1 (+9)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "hopebeam": {
+      "type": "palladium:energy_beam",
+      "title": "Corrupted Beam",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "bar_color": "blue",
+      "icon": "final_lanterns:textures/icons/corruptedfate/corrupted_fate_beam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "corruption",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:corruptedbeam",
+      "gui_position": [
+        0,
+        0
+      ],
+      "description": "Corrupted Beam                              Beam Damage: 10       Effects:     Poison",
+      "damage": 10,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "commands_on_block_hit": [
+        "effect give @e[distance=..1] minecraft:poison 2 1 true"
+      ],
+      "commands_on_entity_hit": [
+        "effect give @e[distance=..1] minecraft:poison 2 1 true"
+      ],
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "corruption",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "hopebeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "hopebeam"
+          }
+        ]
+      }
+    },
+    "constructcreation": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/corruptedfate/souldebuff.png",
+      "title": "Shattered Soul",
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "description": "Give Debuff to the entities in a 5 block radius",
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "first_tick_commands": [
+        "effect give @e[distance=..5] minecraft:weakness 30 1",
+        "effect give @e[distance=..5] minecraft:darkness 30 1",
+        "effect give @e[distance=..5] minecraft:slowness 30 1",
+        "energybar value subtract @s final_lanterns:corruptedfate corruption 1500",
+        "effect clear @s minecraft:weakness",
+        "effect clear @s minecraft:darkness",
+        "effect clear @s minecraft:slowness"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hopebeam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "corruption",
+            "min": 1,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "timestop": {
+      "type": "palladium:command",
+      "title": "Domineering Presence",
+      "bar_color": "blue",
+      "icon": "final_lanterns:textures/icons/corruptedfate/timestop.png",
+      "hidden": false,
+      "gui_position": [
+        0,
+        1
+      ],
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "description": "Stop Time to §efreeze all entities §fin a large area.",
+      "commands": [
         "execute as @e[distance=0.1..10] run effect give @s minecraft:slowness 1 255 true",
         "particle minecraft:enchant ~ ~ ~ 2.5 2.5 2.5 1 10 force @s",
         "energybar value subtract @s final_lanterns:corruptedfate corruption 4"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 30
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:toggle",
-                        "cooldown": 280,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "corruption",
-                        "min": 1,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "inflicthop": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/corruptedfate/immunity.png",
-            "title": "Temporal Stasis",
-            "bar_color": "blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": 3,
-            "gui_position": [
-                0,
-                1.5
-            ],
-            "description": "Use all your energy for 10 seconds of invulnerability",
-            "first_tick_commands": [
-                "effect give @s final_lanterns:corruptedimmortality 10 1 true",
-                "energybar value subtract @s final_lanterns:corruptedfate corruption 4000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 40
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "corruption",
-                        "min": 4000,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 9600,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "otherglowing": {
-            "type": "palladium:entity_glow",
-            "icon": "minecraft:glow_berries",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "mode": "self",
-            "color": "#FFDF00",
-            "distance": 30,
-            "property_key": "null",
-            "property_value": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type":"palladium:is_hovering_or_flying"
-                    }
-                ]
-            }
-        },
-        "outlinefast": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 14,
-            "start_hex": "#FFDF00",
-            "end_hex": "#FFDF00",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 1.5,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_fast_flying"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outline": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 4,
-            "start_hex": "#FFDF00",
-            "end_hex": "#FFDF00",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 0.4,
-            "visibility": 0.2,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:is_under_water"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outlinefast2": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 14,
-            "start_hex": "#880808",
-            "end_hex": "#880808",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 1.5,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_fast_flying"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outline2": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 4,
-            "start_hex": "#880808",
-            "end_hex": "#880808",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 0.4,
-            "visibility": 0.2,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "corruptedfate"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:is_under_water"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "hope_maxlvl2": {
-            "type": "palladium:command",
-            "icon": "kubejs:corruptedfatebattery",
-            "list_index": 2,
-            "title": "Corrupted Fate Max lvl 2",
-            "bar_color": "green",
-            "hidden": false,
-            "description": "Energy Capacity                                                    Total: 2000 (+1000)",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:corruptedfate corruption 3000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_unlocked",
-                                "power": "null",
-                                "ability": "hope_maxlvl3"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "hope_maxlvl3": {
-            "type": "palladium:command",
-            "icon": "kubejs:corruptedfatebattery",
-            "list_index": 2,
-            "title": "Corrupted Fate Max lvl 3",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Energy Capacity                                                    Total: 2000 (+2000)",
-            "gui_position": [
-                -0.5,
-                -2
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:corruptedfate corruption 4000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hope_maxlvl2"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "corruptedfate"
-                    }
-                ]
-            }
-        },
-        "hoperegen": {
-            "type": "palladium:command",
-            "icon": "kubejs:corruptedfatebattery",
-            "list_index": 2,
-            "title": "Corrupted Fate Regen",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:corruptedfate corruption 5"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:has_effect",
-                        "effect": "final_lanterns:hope_enpowerment"
-                    }
-                ]
-            }
-        },
-        "naturalregen": {
-            "type": "palladium:command",
-            "icon": "kubejs:corruptedfatebattery",
-            "list_index": 2,
-            "title": "Natural Corrupted Fate Regeneration",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Energy Regeneration                                                                   2 Energy/Second",
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:corruptedfate corruption 2"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 40
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hope_maxlvl3"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "hopebeam"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "flightstyle": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 0,
-            "operation": 0,
-            "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flightone"
-                    }
-                ]
-            }
-        },
-        "flightstyle2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 1,
-            "operation": 0,
-            "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flighttwo"
-                    }
-                ]
-            }
-        }
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 280,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "corruption",
+            "min": 1,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "inflicthop": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/corruptedfate/immunity.png",
+      "title": "Temporal Stasis",
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "description": "Use all your energy for 10 seconds of invulnerability",
+      "first_tick_commands": [
+        "effect give @s final_lanterns:corruptedimmortality 10 1 true",
+        "energybar value subtract @s final_lanterns:corruptedfate corruption 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "corruption",
+            "min": 4000,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 9600,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "otherglowing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#FFDF00",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#FFDF00",
+      "end_hex": "#FFDF00",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#FFDF00",
+      "end_hex": "#FFDF00",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.4,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "outlinefast2": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#880808",
+      "end_hex": "#880808",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline2": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#880808",
+      "end_hex": "#880808",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.4,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "hope_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "kubejs:corruptedfatebattery",
+      "list_index": 2,
+      "title": "Corrupted Fate Max lvl 2",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Capacity                                                    Total: 2000 (+1000)",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:corruptedfate corruption 3000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "hope_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "hope_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "kubejs:corruptedfatebattery",
+      "list_index": 2,
+      "title": "Corrupted Fate Max lvl 3",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Energy Capacity                                                    Total: 2000 (+2000)",
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:corruptedfate corruption 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hope_maxlvl2"
+          }
+        ]
+      }
+    },
+    "hoperegen": {
+      "type": "palladium:command",
+      "icon": "kubejs:corruptedfatebattery",
+      "list_index": 2,
+      "title": "Corrupted Fate Regen",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:corruptedfate corruption 5"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:hope_enpowerment"
+          }
+        ]
+      }
+    },
+    "naturalregen": {
+      "type": "palladium:command",
+      "icon": "kubejs:corruptedfatebattery",
+      "list_index": 2,
+      "title": "Natural Corrupted Fate Regeneration",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Energy Regeneration                                                                   2 Energy/Second",
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:corruptedfate corruption 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hope_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "hopebeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
     }
+  }
 }

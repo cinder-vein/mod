@@ -13,7 +13,7 @@ Use a Forge **1.20.1** profile (Forge 47.x) with these mods:
 - **Curios**: rings are worn in the *Lantern Ring* slot
 - **KubeJS** (with Rhino)
 
-Then put `dist/final_lanterns-1.1.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
+Then put `dist/final_lanterns-1.2.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
 (`greenlantern-*.jar`) and *A New Corps* jars: Final Lanterns replaces both.
 
 **Coming from Lantern Corps 10:** delete `lantern_commands.js` and `lantern_keys.js` from your game's
@@ -38,6 +38,9 @@ and Starheart rings.
 
 - **Wear a ring in the Lantern Ring slot** (Curios) for its power. Choose its suit, mask and cape in the accessories
   menu.
+- **The ring's abilities work whenever you wear it, suit on or off**: beams, constructs, flight, the skill tree, its
+  armor and health upgrades and protections. The suit button on the ring's bar only changes how you look (the suit,
+  the mask, the transformation and the suit-up sound).
 - **Recharge** at its lantern: right-click the lantern (placed, or held in your hand) to speak the oath.
 - The nine spectrum rings' bars have an **Emotional Spectrum** button (see below).
 - The Lantern Ring slot holds **two rings**: see *Two rings: the Spectrum Bond*.
@@ -273,6 +276,7 @@ The jar is built from `src/`, which is generated: don't edit it by hand.
   - `tools/hardlight.py`: the hard-light constructs;
   - `tools/spectrum.py`: the Spectrum Bond (two rings) and its merged suits;
   - `tools/check.py`: the *lantern check*;
+  - `tools/suit_free.py`: lets every ring's abilities work without its suit;
   - `tools/entity_models/`: the entities' models;
   - `tools/common.py`: the nine corps and how they map onto A New Corps' rings.
 - `python3 tools/build.py` validates and packages the jar. `tools/lint_commands.py` syntax-checks every command (needs

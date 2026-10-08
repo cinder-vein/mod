@@ -28,13 +28,14 @@ import hardlight
 import hosts
 import icons
 import spectrum
+import suit_free
 import systems
 from common import CORPS, HOSTILE_PREY, NOT_CREATURES, NS
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 BASE = ROOT / "base"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 MERGED = {f"assets/{NS}/lang/en_us.json", "data/minecraft/tags/functions/load.json",
           "data/minecraft/tags/functions/tick.json", "pack.mcmeta"}
 PATCHED = set()  # A New Corps files deliberately rewritten (see patch_base)
@@ -118,7 +119,14 @@ def patch_base(lang):
             "bar_color": "white", "hidden": True, "hidden_in_bar": False, "list_index": index,
             "first_tick_commands": [f"function {NS}:emotion/menu"], "commands": [], "last_tick_commands": [],
             "conditions": {"enabling": [{"type": "palladium:action", "cooldown": 20, "key_type": "key_bind"}]}}
+        suit_free.free_from_suit(power, f"{NS}:{data['power']}")
         patch(rel, spectrum.patch_ring(c, power))
+    # Every other A New Corps ring too: its abilities work while it's worn, suit or no suit (the suit is just a look)
+    ours = {data["power"] for data in CORPS.values()}
+    for path in sorted((BASE / f"data/{NS}/palladium/powers").glob("*.json")):
+        power = json.loads(path.read_text(encoding="utf-8"))
+        if path.stem not in ours and power.get("energy_bars") and suit_free.free_from_suit(power, f"{NS}:{path.stem}"):
+            patch(f"data/{NS}/palladium/powers/{path.name}", power)
     lang[f"ability.{NS}.emotional_spectrum"] = "Emotional Spectrum"
     lang[f"ability.{NS}.emotional_spectrum.description"] = "Your emotions, what raised them, and their quests."
     # Orange had no ring-forging animation of its own (the hosts' Forge Ring uses one per color)

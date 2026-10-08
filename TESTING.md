@@ -1,4 +1,4 @@
-# In-game test checklist (Final Lanterns 1.1)
+# In-game test checklist (Final Lanterns 1.2)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change. Install the mods listed in the README first (Palladium, GeckoLib,
@@ -32,6 +32,8 @@ GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jar
 ## 4. Rings (A New Corps) with our additions
 - [ ] Accept a ring offer (`/lantern offer <you> green`): the ring is bound to you (*Bound to &lt;you&gt;*) and its
       lantern comes with it.
+- [ ] With the suit **off**, the ring still works: fire the beam, open the construct wheel, fly, and buy skill-tree
+      nodes. Toggling the suit only changes your look (suit, mask, transformation, sound).
 - [ ] Wear it in the **Lantern Ring** slot: the A New Corps Willpower power appears. Its bar has an **Emotional
       Spectrum** button (second or third page): it opens the menu.
 - [ ] Drop the ring and say *"ring, come to me"*: it flies back. Put it in a chest, walk away and call it: a new ring

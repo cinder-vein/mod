@@ -123,11 +123,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ]
       }
@@ -557,15 +552,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "yellowlantern": {
       "type": "palladium:dummy",
@@ -612,20 +599,7 @@
         -0.5
       ],
       "description": "Fear Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -665,15 +639,7 @@
       "amount": 1.5,
       "operation": 0,
       "uuid": "7c2e98f2-562c-42ce-85b1-0086a9f9e05d",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "defensetree": {
       "type": "palladium:dummy",
@@ -804,11 +770,6 @@
       "uuid": "5b68a200-0481-40ec-a74b-336f78f03092",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1120,11 +1081,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1183,11 +1139,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ],
         "enabling": [
@@ -1251,11 +1202,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1316,11 +1262,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1379,11 +1320,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreation"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ],
         "enabling": [
@@ -1466,11 +1402,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:is_hovering_or_flying"
           }
         ]
@@ -1493,26 +1424,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "yellowlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1535,18 +1449,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "yellowlantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1589,11 +1491,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1634,13 +1531,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "fear_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ]
       }
@@ -1800,11 +1690,6 @@
             "ability": "constructcreation"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1879,11 +1764,6 @@
             "ability": "inflict_fear"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 30
           }
@@ -1923,11 +1803,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "ringconstruction"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ]
       }
@@ -1963,11 +1838,6 @@
             "energy_bar": "fear",
             "min": 4000,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "yellowlantern"
           }
         ]
       }

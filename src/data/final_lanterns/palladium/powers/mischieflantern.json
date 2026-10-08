@@ -1,1459 +1,1338 @@
 {
-    "name": "§eMischievous Ring Bearer",
-    "persistent_data": true,
-    "background": "minecraft:textures/block/yellow_concrete.png",
-    "icon": "final_lanterns:textures/icons/slots/mischief.png",
-    "ability_bar_texture": "final_lanterns:textures/gui/ability_barmischief.png",
-    "gui_display_type": "tree",
-    "energy_bars": {
-        "mischief": {
-            "max": 2000,
-            "auto_increase_per_tick": 0,
-            "color": "#FFF2E5"
-        }
-    },
-    "abilities": {
-        "toughlungs": {
-            "type": "finallanterns:toughlungs",
-            "icon": {
-                "type": "palladium:item",
-                "item": "minecraft:air",
-                "count": 0
-            },
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:dimension",
-                                "dimension": "minecraft:overworld"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "piethrow": {
-            "type": "palladium:projectile",
-            "entity_type": "palladium:custom_projectile",
-            "title": "Pie Throw",
-            "icon": "final_lanterns:textures/icons/mischief/pie_throw.png",
-            "list_index": 1,
-            "velocity": 1.5,
-            "hidden": true,
-            "hidden_in_bar": true,
-            "entity_data": {
-                "Damage": 10,
-                "Gravity": 0.03,
-                "Appearances": [
-                    {
-                        "Type": "item",
-                        "Item": "final_lanterns:pie"
-                    }
-                ]
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "pieremove"
-                    }
-                ]
-            }
-        },
-        "pieremove": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/mischief/pie_throw.png",
-            "title": "Pie Throw",
-            "list_index": 1,
-            "gui_position": [
-                0,
-                0.5
-            ],
-            "bar_color": "blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "You must have a the item in your mainhand to use this ability.",
-            "first_tick_commands": [
-                "clear @s final_lanterns:pie 1"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "key_type": "left_click",
-                        "needs_empty_hand": false
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "final_lanterns:pie"
-                        },
-                        "slot": "mainhand"
-                    }
-                ]
-            }
-        },
-        "cookiethrow": {
-            "type": "palladium:projectile",
-            "entity_type": "palladium:custom_projectile",
-            "title": "Cookie Throw",
-            "icon": "minecraft:cookie",
-            "list_index": 1,
-            "velocity": 1.5,
-            "hidden": true,
-            "hidden_in_bar": true,
-            "entity_data": {
-                "Damage": 10,
-                "Gravity": 0.03,
-                "Appearances": [
-                    {
-                        "Type": "item",
-                        "Item": "minecraft:cookie"
-                    }
-                ]
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "cookieremove"
-                    }
-                ]
-            }
-        },
-        "cookieremove": {
-            "type": "palladium:command",
-            "icon": "minecraft:cookie",
-            "title": "Cookie Throw",
-            "list_index": 1,
-            "gui_position": [
-                0,
-                0.5
-            ],
-            "bar_color": "blue",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "description": "You must have a the item in your mainhand to use this ability.",
-            "first_tick_commands": [
-                "clear @s minecraft:cookie 1"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "key_type": "left_click",
-                        "needs_empty_hand": false
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "minecraft:cookie"
-                        },
-                        "slot": "mainhand"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "mischiefshield": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/mischief/card.png",
-            "title": "Card Shield",
-            "list_index": 3,
-            "gui_position": [
-                0,
-                1.5
-            ],
-            "bar_color": "blue",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "You must have a empty Offhand to use this ability.",
-            "first_tick_commands": [
-                "item replace entity @s weapon.offhand with final_lanterns:mischiefshield{CustomTag:mischief}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischiefbeam"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_unlocked",
-                                "ability": "magicswap"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    },
-                    {
-                        "type": "palladium:empty_slot",
-                        "slot": "offhand"
-                    }
-                ]
-            }
-        },
-        "clear_constructs_mischief": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:bigolfist",
-            "title": "clearconstructs",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 3,
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "magicswap": {
-            "type": "palladium:command",
-            "hidden": false,
-            "icon": "final_lanterns:textures/icons/mischief/swap.png",
-            "hidden_in_bar": false,
-            "title": "Place Swap",
-            "list_index": 2,
-            "description": "Swap Places with the entity you are looking                              Distance:        30 Block",
-            "first_tick_commands": [
-                "mobswap"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 50,
-                        "key_type": "key_bind"
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischiefbeam"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "cosmicspace": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "function final_lanterns:cosmicspace"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "cosmos"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1000,
-                        "max": 1400
-                    }
-                ]
-            }
-        },
-        "adastrascreen": {
-            "type": "palladium:command",
-            "icon": "minecraft:command_block",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "first_tick_commands": [
-                "adastra planets"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "ad_astra"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1200,
-                        "max": 1500
-                    }
-                ]
-            }
-        },
-        "nightvision": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
-            "list_index": 2,
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "team add mischief",
-                "team join mischief",
-                "team modify mischief color dark_aqua"
-            ],
-            "last_tick_commands": [
-                "team leave @s"
-            ],
-            "commands": [
-                "effect give @s minecraft:night_vision 11 1 true"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:night"
-                            },
-                            {
-                                "type": "palladium:brightness_at_position",
-                                "min_brightness": 0,
-                                "max_brightness": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "mischieflantern_objective_checker": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "scoreboard objectives add Lantern.Mastery.Amount dummy",
-                "execute if entity @s[advancements={lanterncorps:mischieflantern=false}] run advancement grant @s only lanterncorps:mischieflantern",
-                "scoreboard objectives add starheart dummy"
-            ],
-            "last_tick_commands": [],
-            "commands": []
-        },
-        "disableouterlayerscape": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "cape"
-            ],
-            "affects_first_person": true,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "disableouterlayers": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "right_arm_overlay",
-                "left_arm_overlay",
-                "right_leg_overlay",
-                "left_leg_overlay",
-                "chest_overlay"
-            ],
-            "affects_first_person": true,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls1",
-                        "min": 1,
-                        "max": 60
-                    }
-                ]
-            }
-        },
-        "otherglowing": {
-            "type": "palladium:entity_glow",
-            "icon": "minecraft:glow_berries",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "mode": "self",
-            "color": "#240038",
-            "distance": 30,
-            "property_key": "null",
-            "property_value": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:is_hovering_or_flying"
-                    }
-                ]
-            }
-        },
-        "cape": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:capes/blankcape",
-            "accessory_slot": "final_lanterns:capes",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "greenlantern_accessory": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:mischieflantern/mischiefsuit",
-            "accessory_slot": "final_lanterns:mischieflantern"
-        },
-        "greenlantern_mask": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:mischieflantern/defaultmask",
-            "accessory_slot": "final_lanterns:mischieflanternmasks"
-        },
-        "greenlantern_name": {
-            "type": "palladium:name_change",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "name": {
-                "text": "§e§lMischievous Lantern"
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:and",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "armorstore": {
-            "type": "palladium:command",
-            "icon": "minecraft:cookie",
-            "list_index": 2,
-            "title": "armorstore",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": ["pocket save"],
-            "last_tick_commands": ["pocket load"],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "greenlantern_restrict_slots": {
-            "type": "palladium:restrict_slots",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "slots": [
-                "head",
-                "chest",
-                "legs",
-                "feet"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "armorstore"
-                    }
-                ]
-            }
-        },
-        "greenlantern_immunities2": {
-            "type": "palladium:damage_immunity",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "damage_sources": [
-                "minecraft:is_fall",
-                "minecraft:is_explosion",
-                "minecraft:is_drowning",
-                "minecraft:is_fire",
-                "minecraft:is_freezing",
-                "final_lanterns:oxygen"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "mischieflantern": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/slots/mischief.png",
-            "title": "Mischievous Ring Bearer",
-            "list_index": 4,
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -1.5
-            ],
-            "description": "With this ring you have been Chosen to become Mischievous, just think of them like Space Clowns.",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:toggle",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "mischief",
-                        "min": 0,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "enablepls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 21,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "enablepls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 16,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls",
-                        "min": 5,
-                        "max": 21
-                    }
-                ]
-            }
-        },
-        "maskpls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 6,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "maskpls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 5,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "maskpls",
-                        "min": 2,
-                        "max": 6
-                    }
-                ]
-            }
-        },
-        "suitsound": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "first_tick_commands": [
-                "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "skilltree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:mischiefring",
-            "title": "Skill Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -0.5
-            ],
-            "description": "Mischief based Abilities",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "strengthtree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "description": "Strength Upgrades                           Base Strength: 1",
-            "title": "Strength Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                -1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "defensetree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Tree",
-            "hidden": false,
-            "description": "Defense Upgrades                           Base Armor: 6",
-            "hidden_in_bar": false,
-            "gui_position": [
-                1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "flightlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:elytra",
-            "title": "Flight Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "palladium:flight_speed",
-            "amount": 1.5,
-            "operation": 0,
-            "uuid": "e6d59e54-74a5-4314-b067-2ce9edf01d99",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "armorbase": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.armor",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "53596a54-1b24-4e88-b0bd-ba0badef2619",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "armorlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "Defense Upgrade 1                           Total: 6 (+6)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "6e43c64c-8bbc-4d53-ba14-16120d3f219f",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "armorlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0.5
-            ],
-            "description": "Defense Upgrade 2                           Total: 6 (+18)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 12,
-            "operation": 0,
-            "uuid": "762e33ab-9920-434e-9a63-05657052792c",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "armorlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heart.png",
-            "title": "Health Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -1.5
-            ],
-            "description": "Health Upgrade 1                          Base Health: 20 (+6)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ]
-            }
-        },
-        "healthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heartgold.png",
-            "title": "Health Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -2
-            ],
-            "description": "Health Upgrade 2                          Base Health: 20 (+12)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "daacd19f-9be6-4280-a02d-016e60cb5a89",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healing_factor": {
-            "type": "palladium:healing",
-            "icon": "final_lanterns:textures/icons/heartdiamond.png",
-            "title": "Natural Healing",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "description": "Natural Healing                           Amount: 1Heart/4Second",
-            "list_index": -1,
-            "frequency": 80,
-            "amount": 1,
-            "gui_position": [
-                0.5,
-                -2.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel2"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "movementspeed1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_boots",
-            "title": "Movement Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                -2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.movement_speed",
-            "amount": 0.02,
-            "operation": 0,
-            "uuid": "69826753-c370-424e-b318-f2cbb9718207",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    }
-                ]
-            }
-        },
-        "mischiefbeam": {
-            "type": "palladium:energy_beam",
-            "title": "Mischief Beam",
-            "hidden": false,
-            "description": "Mischievous beam that applies random effects to its target",
-            "hidden_in_bar": false,
-            "bar_color": "green",
-            "icon": "final_lanterns:textures/icons/mischief/beam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "mischief",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:mischiefbeam",
-            "gui_position": [
-                0,
-                0
-            ],
-            "damage": 0,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "smelt_blocks": false,
-            "commands_on_block_hit": [
-                "randomeffect"
-            ],
-            "commands_on_entity_hit": [
-                "randomeffect"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "mischief",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "mischiefbeam_aim": {
-            "type": "palladium:aim",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "time": 1,
-            "arm": "main_arm",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischiefbeam"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischiefbeamhope"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "strengthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0
-            ],
-            "description": "Strength Upgrade 1                           Base Strength: 1 (+5)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 5,
-            "operation": 0,
-            "uuid": "e9642050-bce1-4f5a-9c99-f8d804089fe3",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "strengthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0.5
-            ],
-            "description": "Strength Upgrade 2                           Base Strength: 1 (+13)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 8,
-            "operation": 0,
-            "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    }
-                ]
-            }
-        },
-        "outlinefast": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 14,
-            "start_hex": "#6d0058",
-            "end_hex": "#240038",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 1.5,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_fast_flying"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outline": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 4,
-            "start_hex": "#6d0058",
-            "end_hex": "#240038",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 0.8,
-            "visibility": 0.2,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischieflantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:is_under_water"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "mischief_maxlvl2": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:mischiefstaff",
-            "list_index": 2,
-            "title": "Mischief Max lvl 2",
-            "description": "Energy Capacity                                     Total: 2000 (+1000)",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:mischieflantern mischief 3000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_unlocked",
-                                "power": "null",
-                                "ability": "mischief_maxlvl3"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "mischief_maxlvl3": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:mischiefstaff",
-            "list_index": 2,
-            "title": "Mischief Max lvl 3",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Energy Capacity                                     Total: 2000 (+2000)",
-            "gui_position": [
-                -0.5,
-                -2
-            ],
-            "first_tick_commands": [
-                "energybar max set @s final_lanterns:mischieflantern mischief 4000"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischief_maxlvl2"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "mischieflantern"
-                    }
-                ]
-            }
-        },
-        "naturalregen1": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:mischiefstaff",
-            "list_index": 2,
-            "title": "Natural Mischief Regeneration",
-            "bar_color": "green",
-            "hidden": false,
-            "description": "Energy Regeneration                                                               2 Energy/Second",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:mischieflantern mischief 2"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 40
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "mischief_maxlvl3"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "mischiefbeam"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "flightstyle": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 0,
-            "operation": 0,
-            "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flightone"
-                    }
-                ]
-            }
-        },
-        "flightstyle2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 1,
-            "operation": 0,
-            "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flighttwo"
-                    }
-                ]
-            }
-        }
+  "name": "§eMischievous Ring Bearer",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/yellow_concrete.png",
+  "icon": "final_lanterns:textures/icons/slots/mischief.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_barmischief.png",
+  "gui_display_type": "tree",
+  "energy_bars": {
+    "mischief": {
+      "max": 2000,
+      "auto_increase_per_tick": 0,
+      "color": "#FFF2E5"
     }
+  },
+  "abilities": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "piethrow": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Pie Throw",
+      "icon": "final_lanterns:textures/icons/mischief/pie_throw.png",
+      "list_index": 1,
+      "velocity": 1.5,
+      "hidden": true,
+      "hidden_in_bar": true,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Appearances": [
+          {
+            "Type": "item",
+            "Item": "final_lanterns:pie"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "pieremove"
+          }
+        ]
+      }
+    },
+    "pieremove": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/mischief/pie_throw.png",
+      "title": "Pie Throw",
+      "list_index": 1,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "You must have a the item in your mainhand to use this ability.",
+      "first_tick_commands": [
+        "clear @s final_lanterns:pie 1"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "left_click",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:pie"
+            },
+            "slot": "mainhand"
+          }
+        ]
+      }
+    },
+    "cookiethrow": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Cookie Throw",
+      "icon": "minecraft:cookie",
+      "list_index": 1,
+      "velocity": 1.5,
+      "hidden": true,
+      "hidden_in_bar": true,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Appearances": [
+          {
+            "Type": "item",
+            "Item": "minecraft:cookie"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "cookieremove"
+          }
+        ]
+      }
+    },
+    "cookieremove": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "title": "Cookie Throw",
+      "list_index": 1,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "bar_color": "blue",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "description": "You must have a the item in your mainhand to use this ability.",
+      "first_tick_commands": [
+        "clear @s minecraft:cookie 1"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "left_click",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "minecraft:cookie"
+            },
+            "slot": "mainhand"
+          }
+        ]
+      }
+    },
+    "mischiefshield": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/mischief/card.png",
+      "title": "Card Shield",
+      "list_index": 3,
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "You must have a empty Offhand to use this ability.",
+      "first_tick_commands": [
+        "item replace entity @s weapon.offhand with final_lanterns:mischiefshield{CustomTag:mischief}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischiefbeam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "ability": "magicswap"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:empty_slot",
+            "slot": "offhand"
+          }
+        ]
+      }
+    },
+    "clear_constructs_mischief": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:bigolfist",
+      "title": "clearconstructs",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 3,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:false"
+          }
+        ]
+      }
+    },
+    "magicswap": {
+      "type": "palladium:command",
+      "hidden": false,
+      "icon": "final_lanterns:textures/icons/mischief/swap.png",
+      "hidden_in_bar": false,
+      "title": "Place Swap",
+      "list_index": 2,
+      "description": "Swap Places with the entity you are looking                              Distance:        30 Block",
+      "first_tick_commands": [
+        "mobswap"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 50,
+            "key_type": "key_bind"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischiefbeam"
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "team add mischief",
+        "team join mischief",
+        "team modify mischief color dark_aqua"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "mischieflantern_objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "scoreboard objectives add Lantern.Mastery.Amount dummy",
+        "execute if entity @s[advancements={lanterncorps:mischieflantern=false}] run advancement grant @s only lanterncorps:mischieflantern",
+        "scoreboard objectives add starheart dummy"
+      ],
+      "last_tick_commands": [],
+      "commands": []
+    },
+    "disableouterlayerscape": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
+    },
+    "disableouterlayers": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls1",
+            "min": 1,
+            "max": 60
+          }
+        ]
+      }
+    },
+    "otherglowing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#240038",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "cape": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:capes/blankcape",
+      "accessory_slot": "final_lanterns:capes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
+    },
+    "greenlantern_accessory": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:mischieflantern/mischiefsuit",
+      "accessory_slot": "final_lanterns:mischieflantern"
+    },
+    "greenlantern_mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:mischieflantern/defaultmask",
+      "accessory_slot": "final_lanterns:mischieflanternmasks"
+    },
+    "greenlantern_name": {
+      "type": "palladium:name_change",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "name": {
+        "text": "§e§lMischievous Lantern"
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:and",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "mischieflantern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "armorstore": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "list_index": 2,
+      "title": "armorstore",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "pocket save"
+      ],
+      "last_tick_commands": [
+        "pocket load"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "mischieflantern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "greenlantern_restrict_slots": {
+      "type": "palladium:restrict_slots",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "slots": [
+        "head",
+        "chest",
+        "legs",
+        "feet"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "armorstore"
+          }
+        ]
+      }
+    },
+    "greenlantern_immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {}
+    },
+    "mischieflantern": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/mischief.png",
+      "title": "Mischievous Ring Bearer",
+      "list_index": 4,
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "With this ring you have been Chosen to become Mischievous, just think of them like Space Clowns.",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "mischief",
+            "min": 0,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "mischieflantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "mischieflantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "suitsound": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:mischiefring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Mischief based Abilities",
+      "conditions": {}
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "title": "Strength Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "hidden_in_bar": false,
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "e6d59e54-74a5-4314-b067-2ce9edf01d99",
+      "conditions": {}
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "53596a54-1b24-4e88-b0bd-ba0badef2619",
+      "conditions": {}
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+6)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "6e43c64c-8bbc-4d53-ba14-16120d3f219f",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+18)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 12,
+      "operation": 0,
+      "uuid": "762e33ab-9920-434e-9a63-05657052792c",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 1                          Base Health: 20 (+6)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+12)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "daacd19f-9be6-4280-a02d-016e60cb5a89",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "description": "Natural Healing                           Amount: 1Heart/4Second",
+      "list_index": -1,
+      "frequency": 80,
+      "amount": 1,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.02,
+      "operation": 0,
+      "uuid": "69826753-c370-424e-b318-f2cbb9718207",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "mischiefbeam": {
+      "type": "palladium:energy_beam",
+      "title": "Mischief Beam",
+      "hidden": false,
+      "description": "Mischievous beam that applies random effects to its target",
+      "hidden_in_bar": false,
+      "bar_color": "green",
+      "icon": "final_lanterns:textures/icons/mischief/beam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "mischief",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:mischiefbeam",
+      "gui_position": [
+        0,
+        0
+      ],
+      "damage": 0,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "commands_on_block_hit": [
+        "randomeffect"
+      ],
+      "commands_on_entity_hit": [
+        "randomeffect"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "mischief",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "mischiefbeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "mischiefbeam"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "mischiefbeamhope"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                           Base Strength: 1 (+5)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "e9642050-bce1-4f5a-9c99-f8d804089fe3",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                           Base Strength: 1 (+13)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "5e7c8e6e-00be-4ed6-93e3-931487006516",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#6d0058",
+      "end_hex": "#240038",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#6d0058",
+      "end_hex": "#240038",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "mischief_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:mischiefstaff",
+      "list_index": 2,
+      "title": "Mischief Max lvl 2",
+      "description": "Energy Capacity                                     Total: 2000 (+1000)",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:mischieflantern mischief 3000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "mischief_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "mischief_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:mischiefstaff",
+      "list_index": 2,
+      "title": "Mischief Max lvl 3",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Energy Capacity                                     Total: 2000 (+2000)",
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:mischieflantern mischief 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischief_maxlvl2"
+          }
+        ]
+      }
+    },
+    "naturalregen1": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:mischiefstaff",
+      "list_index": 2,
+      "title": "Natural Mischief Regeneration",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Regeneration                                                               2 Energy/Second",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:mischieflantern mischief 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischief_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "mischiefbeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
+    }
+  }
 }

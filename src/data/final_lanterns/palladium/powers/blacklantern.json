@@ -123,11 +123,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
           }
         ]
       }
@@ -460,15 +455,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "blacklantern": {
       "type": "palladium:dummy",
@@ -515,20 +502,7 @@
         -0.5
       ],
       "description": "Death Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "blacklantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -614,15 +588,7 @@
       "amount": 15,
       "operation": 0,
       "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "blacklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -705,11 +671,6 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "blacklantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1013,26 +974,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "blacklantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1055,11 +999,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
-          },
-          {
             "type": "palladium:is_hovering_or_flying"
           }
         ]
@@ -1080,15 +1019,7 @@
       "distance": 30,
       "property_key": "null",
       "property_value": "null",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorload": {
       "type": "palladium:command",
@@ -1107,20 +1038,7 @@
         "tag @s add grave.armour.add"
       ],
       "commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "blacklantern"
-              }
-            ]
-          }
-        ]
-      }
+      "conditions": {}
     },
     "armorstore": {
       "type": "palladium:command",
@@ -1174,18 +1092,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "blacklantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1227,11 +1133,6 @@
         ],
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "blacklantern"
-          },
-          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1271,13 +1172,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "death_maxlvl2"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "blacklantern"
           }
         ]
       }

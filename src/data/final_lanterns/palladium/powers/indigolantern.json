@@ -211,11 +211,6 @@
                 "max_brightness": 5
               }
             ]
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ]
       }
@@ -490,15 +485,7 @@
         "minecraft:is_freezing",
         "final_lanterns:oxygen"
       ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "indigolantern": {
       "type": "palladium:dummy",
@@ -545,20 +532,7 @@
         -0.5
       ],
       "description": "Compassion Ring based Abilities",
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "indigolantern"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
-          }
-        ]
-      }
+      "conditions": {}
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -737,11 +711,6 @@
       "uuid": "fc75289b-27e4-4f01-9173-221b18bad0be",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "indigolantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1077,11 +1046,6 @@
             "ability": "waypointset"
           },
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
-          },
-          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 30
           }
@@ -1121,11 +1085,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "ringconstruction"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           },
           {
             "type": "palladium:not",
@@ -1250,11 +1209,6 @@
             "energy_bar": "compassion",
             "min": 4000,
             "max": 4000
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           },
           {
             "type": "palladium:not",
@@ -1528,11 +1482,6 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
-          },
-          {
             "type": "palladium:is_hovering_or_flying"
           }
         ]
@@ -1555,26 +1504,9 @@
       "particle_type": "smoke",
       "particle_size": 1.5,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "indigolantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:is_fast_flying"
-              }
-            ]
+            "type": "palladium:is_fast_flying"
           }
         ]
       }
@@ -1597,18 +1529,6 @@
       "particle_size": 0.8,
       "visibility": 0.2,
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:or",
-            "conditions": [
-              {
-                "type": "palladium:ability_enabled",
-                "power": "null",
-                "ability": "indigolantern"
-              }
-            ]
-          }
-        ],
         "enabling": [
           {
             "type": "palladium:or",
@@ -1637,11 +1557,6 @@
       "description": "Concentrate and Create different Items with your Ring when holding another Lanterns Battery in your Offhand.",
       "conditions": {
         "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
-          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 15
@@ -1751,11 +1666,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationgreen"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -1792,11 +1702,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationgreen"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -1833,11 +1738,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationgreen"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -1874,11 +1774,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationgreen"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -1915,11 +1810,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationgreen"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2034,11 +1924,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationblue"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2075,11 +1960,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationblue"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2116,11 +1996,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationblue"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2157,11 +2032,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationblue"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2236,11 +2106,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationblue"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2317,11 +2182,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationviolet"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2359,11 +2219,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationviolet"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2400,11 +2255,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationviolet"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2441,11 +2291,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationviolet"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2482,11 +2327,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationviolet"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2600,11 +2440,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationyellow"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2641,11 +2476,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationyellow"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2729,11 +2559,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationyellow"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2770,11 +2595,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationyellow"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2914,11 +2734,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationred"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2955,11 +2770,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationred"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -2996,11 +2806,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationred"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3037,11 +2842,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationred"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3078,11 +2878,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationred"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3248,11 +3043,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationorange"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3289,11 +3079,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationorange"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3330,11 +3115,6 @@
             "type": "palladium:ability_unlocked",
             "power": "null",
             "ability": "constructcreationorange"
-          },
-          {
-            "type": "palladium:ability_enabled",
-            "power": "null",
-            "ability": "indigolantern"
           }
         ],
         "enabling": [
@@ -3477,11 +3257,6 @@
           }
         ],
         "enabling": [
-          {
-            "type": "palladium:ability_unlocked",
-            "power": "null",
-            "ability": "indigolantern"
-          },
           {
             "type": "palladium:not",
             "conditions": [

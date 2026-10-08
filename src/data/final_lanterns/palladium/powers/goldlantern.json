@@ -1,2435 +1,2277 @@
 {
-    "name": "§6Righteousness Ring Bearer",
-    "persistent_data": true,
-    "background": "minecraft:textures/block/gold_block.png",
-    "ability_bar_texture": "final_lanterns:textures/gui/ability_bargold.png",
-    "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
-    "gui_display_type": "tree",
-    "energy_bars": {
-        "justice": {
-        "max": 2000,
-            "auto_increase_per_tick": 0,
-            "color": "#9f6e1a"
-        }
-    },
-    "abilities": {
-        "toughlungs": {
-            "type": "finallanterns:toughlungs",
-            "icon": {
-                "type": "palladium:item",
-                "item": "minecraft:air",
-                "count": 0
-            },
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:dimension",
-                                "dimension": "minecraft:overworld"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "cosmicspace": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "function final_lanterns:cosmicspace"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "cosmos"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1000,
-                        "max": 1400
-                    }
-                ]
-            }
-        },
-        "adastrascreen": {
-            "type": "palladium:command",
-            "icon": "minecraft:command_block",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "first_tick_commands": ["adastra planets"],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:mod_loaded",
-                        "mod_id": "ad_astra"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "finallanterns:get_y",
-                        "min": 1200,
-                        "max": 1500
-                    }
-                ]
-            }
-        },
-        "enablepls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 21,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "enablepls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 16,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls",
-                        "min": 5,
-                        "max": 21
-                    }
-                ]
-            }
-        },
-        "maskpls": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 6,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "maskpls1": {
-            "type": "palladium:animation_timer",
-            "hidden_in_bar": false,
-            "start_value": 0,
-            "max_value": 5,
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "maskpls",
-                        "min": 2,
-                        "max": 6
-                    }
-                ]
-            }
-        },
-        "suitsound": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "first_tick_commands": [
-                "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "indigolantern"
-                    }
-                ]
-            }
-        },
-        "nightvision": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
-            "list_index": 2,
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-            ],
-            "last_tick_commands": [],
-            "commands": [
-                "effect give @s minecraft:night_vision 11 1 true"
-            ],
-            "conditions": {
-              "unlocking": [
-                {
-                    "type": "palladium:or",
-                    "conditions": [
-                        {
-                            "type": "palladium:night"
-                        },
-                        {
-                            "type": "palladium:brightness_at_position",
-                            "min_brightness": 0,
-                            "max_brightness": 5
-                        }
-                    ]
-                },
-                {
-                    "type": "palladium:ability_enabled",
-                    "power": "null",
-                    "ability": "goldlantern"
-                }
-              ]
-            }
-        },
-        "objective_checker": {
-            "type": "palladium:command",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "first_tick_commands": [
-                "team add righteousness",
-                "team join righteousness",
-                "team modify righteousness color gold",
-              "execute if entity @s[advancements={lanterncorps:goldlantern=false}] run advancement grant @s only lanterncorps:goldlantern"
-            ],
-            "last_tick_commands": ["team leave @s"],
-            "commands": []
-        },
-        "disableouterlayers": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "right_arm_overlay",
-                "left_arm_overlay",
-                "right_leg_overlay",
-                "left_leg_overlay",
-                "chest_overlay",
-                "cape"
-            ],
-            "affects_first_person": true,
-            "conditions": {
-                "enabling":[
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "enablepls1",
-                        "min": 1,
-                        "max": 60
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions":[
-                            {
-                                "type": "palladium:accessory_selected",
-                                "accessory_slot": "final_lanterns:goldlantern",
-                                "accessory": "final_lanterns:goldlanterns/blanksuit"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "headouterlayer": {
-            "type": "palladium:hide_body_part",
-            "icon": "minecraft:blaze_rod",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "body_parts": [
-                "head_overlay"
-            ],
-            "affects_first_person": false,
-            "conditions": {
-                "enabling":[
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:accessory_selected",
-                                "accessory_slot": "final_lanterns:goldlantern",
-                                "accessory": "final_lanterns:goldlanterns/simonbaz"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:animation_timer_ability",
-                        "ability": "maskpls1",
-                        "min": 1,
-                        "max": 60
-                    }
-                ]
-            }
-        },
-        "cape": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:capes/blankcape",
-            "accessory_slot": "final_lanterns:capes",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "accessory": {
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:goldlanterns/kalalour",
-            "accessory_slot": "final_lanterns:goldlantern"
-        },
-        "mask": { 
-            "type": "palladium:render_layer_by_accessory_slot",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "default_layer": "final_lanterns:goldlanterns/masks/kalalour",
-            "accessory_slot": "final_lanterns:goldlanternmasks"
-        },
-        "name": {
-            "type": "palladium:name_change",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "name": {
-                "text": "§6Gold Lantern"
-            },
-            "conditions": {
-                "enabling": [
-                    {
-                    "type": "palladium:and",
-                    "conditions": [
-                        {
-                            "type": "palladium:ability_enabled",
-                            "power": "null",
-                            "ability": "goldlantern"
-                        },
-                        {
-                            "type": "palladium:or",
-                            "conditions": [
-                                {
-                                    "type": "palladium:not",
-                                    "conditions": [
-                                      {
-                                        "type": "palladium:accessory_selected",
-                                        "accessory_slot": "final_lanterns:greenlanternmasks",
-                                        "accessory": "final_lanterns:greenlanterns/masks/blankmask"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "palladium:accessory_selected",
-                                    "accessory_slot": "final_lanterns:bluelanternmasks",
-                                    "accessory": "final_lanterns:bluelanterns/masks/cruzmask"
-                                },
-                                {
-                                    "type": "palladium:accessory_selected",
-                                    "accessory_slot": "final_lanterns:bluelanternmasks",
-                                    "accessory": "final_lanterns:bluelanterns/masks/eldermask"
-                                },
-                                {
-                                    "type": "palladium:accessory_selected",
-                                    "accessory_slot": "final_lanterns:bluelanternmasks",
-                                    "accessory": "final_lanterns:bluelanterns/masks/raynermask"
-                                },
-                                {
-                                    "type": "palladium:accessory_selected",
-                                    "accessory_slot": "final_lanterns:bluelanternmasks",
-                                    "accessory": "final_lanterns:bluelanterns/masks/youngjusticemask"
-                                }
-                            ]
-                        }
-                    ]
-                    }
-                ]
-            }
-        },
-        "armorstore": {
-            "type": "palladium:command",
-            "icon": "minecraft:cookie",
-            "list_index": 2,
-            "title": "armorstore",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -1.5
-            ],
-            "first_tick_commands": ["pocket save"],
-            "last_tick_commands": ["pocket load"],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "goldlantern"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "restrict_slots": {
-            "type": "palladium:restrict_slots",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "slots": [
-                "head",
-                "chest",
-                "legs",
-                "feet"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "armorstore"
-                    }
-                ]
-            }
-        },
-        "immunities2": {
-            "type": "palladium:damage_immunity",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "damage_sources": [
-                "minecraft:is_fall",
-                "minecraft:is_explosion",
-                "minecraft:is_drowning",
-                "minecraft:is_fire",
-                "minecraft:is_freezing",
-                "final_lanterns:oxygen"
-            ],
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "goldlantern": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
-            "title": "Righteousness Ring Bearer",
-            "list_index": 4,
-            "bar_color": "orange",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -1.5
-                ],
-            "description": "With this ring you have been Chosen to become a Gold Lantern.",
-            "conditions": {
-                "enabling":[
-                    {
-                        "type": "palladium:toggle",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 0,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "skilltree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:goldlanternring",
-            "title": "Skill Tree",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "gui_position": [
-                0,
-                -0.5
-            ],
-            "description": "Gold Ring based Abilities",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "strengthtree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Tree",
-            "hidden": false,
-            "description": "Strength Upgrades                           Base Strength: 1",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "defensetree": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Tree",
-            "hidden": false,
-            "description": "Defense Upgrades                           Base Armor: 6",
-            "hidden_in_bar": false,
-            "gui_position": [
-                1,
-                -0.5
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ]
-            }
-        },
-        "flightlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:elytra",
-            "title": "Flight Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "palladium:flight_speed",
-            "amount": 1.5,
-            "operation": 0,
-            "uuid": "2782c195-cbef-49af-b2ff-72339eb21774",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    }
-                ]
-            }
-        },
-        "armorbase": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.armor",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "830733f7-e94b-4648-a48c-b900b1b3ae4a",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    }
-                ]
-            }
-        },
-        "armorlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0
-            ],
-            "description": "Defense Upgrade 1                           Total: 6 (+14)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 14,
-            "operation": 0,
-            "uuid": "fbd645ce-2ec9-4dfa-a7bd-b850a3a4a379",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "defensetree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "armorlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/defense.png",
-            "title": "Defense Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                1,
-                0.5
-            ],
-            "description": "Defense Upgrade 2                           Total: 6 (+30)",
-            "attribute": "minecraft:generic.armor",
-            "amount": 16,
-            "operation": 0,
-            "uuid": "32561762-fe8a-43d1-9696-d693f028c406",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "armorlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heart.png",
-            "title": "Health Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -1.5
-                ],
-            "description": "Health Upgrade 1                          Base Health: 20 (+6)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "a596c1dd-383d-4030-85d0-8e31cc376ff5",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ]
-            }
-        },
-        "healthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/heartgold.png",
-            "title": "Health Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                0.5,
-                -2
-                ],
-            "description": "Health Upgrade 2                          Base Health: 20 (+12)",
-            "attribute": "minecraft:generic.max_health",
-            "amount": 6,
-            "operation": 0,
-            "uuid": "350a3ca8-a37d-4dfc-a3ab-54c72507131c",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel1"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "healing_factor": {
-            "type": "palladium:healing",
-            "icon": "final_lanterns:textures/icons/heartdiamond.png",
-            "title": "Natural Healing",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "frequency": 60,
-            "description": "Natural Healing                           Amount: 1Heart/3Second",
-            "amount": 1,
-            "gui_position": [
-                0.5,
-                -2.5
-                ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "healthlevel2"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "movementspeed1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_boots",
-            "title": "Movement Speed Level 1",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                -2,
-                -1
-            ],
-            "description": "null",
-            "attribute": "minecraft:generic.movement_speed",
-            "amount": 0.03,
-            "operation": 0,
-            "uuid": "e57d5801-7b12-4e56-a869-36cb233189c7",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    }
-                ]
-            }
-        },
-        "strengthlevel1": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 1",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0
-            ],
-            "description": "Strength Upgrade 1                              Base Strength: 1 (+8)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 8,
-            "operation": 0,
-            "uuid": "eccf30d2-3da0-4f92-9ed0-9bbb774ec4c0",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "strengthtree"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "strengthlevel2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "final_lanterns:textures/icons/strength.png",
-            "title": "Strength Level 2",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": [
-                -1,
-                0.5
-                ],
-            "description": "Strength Upgrade 2                              Base Strength: 1 (+15)",
-            "attribute": "minecraft:generic.attack_damage",
-            "amount": 7,
-            "operation": 0,
-            "uuid": "60021b02-c4dc-476f-a991-f94d914ad305",
-            "conditions": {
-            "unlocking": [
-                    {
-                    "type": "palladium:ability_unlocked",
-                    "power": "null",
-                    "ability": "strengthlevel1"
-                    },
-                    {
-                    "type": "palladium:experience_level_buyable",
-                    "xp_level": 20
-                    }
-                ]
-            }
-        },
-        "hopebeam": {
-            "type": "palladium:energy_beam",
-            "title": "Judgement Beam",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "bar_color": "orange",
-            "description": "Judgement Beam        Beam Damage: 12",
-            "icon": "final_lanterns:textures/icons/gold/beam.png",
-            "list_index": 0,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 5
-            },
-            "energy_beam": "final_lanterns:goldlanternbeam",
-            "gui_position": [
-                0,
-                0
-            ],
-            "damage": 12,
-            "max_distance": 20,
-            "speed": 1,
-            "set_on_fire_seconds": 0,
-            "cause_fire": false,
-            "smelt_blocks": false,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "skilltree"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 120,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 5,
-                        "max": 4000
-                    }
-                ]
-            }
-        },
-        "hopebeam_aim": {
-            "type": "palladium:aim",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "time": 1,
-            "arm": "main_arm",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "hopebeam"
-                    }
-                ]
-            }
-        },
-        "goldwheel": {
-            "type": "palladium:ability_wheel",
-            "icon": "final_lanterns:textures/icons/slots/goldlantern3.png",
-            "title": "Righteousness Constructs",
-            "bar_color": "yellow",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": 1,
-            "gui_position": "null",
-            "description": "null",
-            "abilities": [
-                "constructcreation_greatsword",
-                "constructcreation_spear",
-                "constructcreation_fist",
-                "constructcreation_pickaxe",
-                "constructcreation_axe",
-                "goldshield"
-            ],
-            "texture": "null",
-            "disable_mouse_scrolling": false,
-            "disable_center_icon": false,
-            "conditions": {
-                "enabling":[
-                    {
-                        "type": "palladium:held",
-                        "cooldown": 0,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false
-                    }
-                ],
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    }
-                ]
-            }
-        },
-        "constructcreation": {
-            "type": "palladium:dummy",
-            "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
-            "title": "Construct Creation",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "gui_position": [
-                0,
-                0.5
-            ],
-            "description": "Concentrate and Create different Items with your Ring.",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hopebeam"
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 15
-                    }
-                ]
-            }
-        },
-        "constructcreation_greatsword": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:greatswordgold",
-            "title": "Great Sword",
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 5,
-            "gui_position": [
-                0.5,
-                1
-            ],
-            "first_tick_commands": [
-                    "give @s final_lanterns:greatswordgold{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:or",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:greatswordgold"
-                                        },
-                                        "slot": "mainhand"
-                                    },
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:greatswordgold"
-                                        },
-                                        "slot": "offhand"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 30,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": true,
-                            "allow_scrolling_when_crouching": true
-                        }
-                ]
-            }
-        },
-        "constructcreation_spear": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:speargold",
-            "title": "Spear",
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 6,
-            "gui_position": [
-                0.5,
-                1.5
-            ],
-            "first_tick_commands": [
-                    "give @s final_lanterns:speargold{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 30,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": true,
-                            "allow_scrolling_when_crouching": true
-                        }
-                ]
-            }
-        },
-        "constructcreation_fist": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:battleaxegold",
-            "title": "Battle Axe",
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 7,
-            "gui_position": [
-                0.5,
-                2
-            ],
-            "first_tick_commands": [
-                    "give @s final_lanterns:battleaxegold{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 30,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": true,
-                            "allow_scrolling_when_crouching": true
-                        }
-                ]
-            }
-        },
-        "constructcreation_pickaxe": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:pickaxegold",
-            "title": "Pickaxe",
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 8,
-            "gui_position": [
-                0.5,
-                2.5
-            ],
-            "first_tick_commands": [
-                    "give @s final_lanterns:pickaxegold{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:or",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:pickaxegold"
-                                        },
-                                        "slot": "mainhand"
-                                    },
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:pickaxegold"
-                                        },
-                                        "slot": "offhand"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 30,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": true,
-                            "allow_scrolling_when_crouching": true
-                        }
-                ]
-            }
-        },
-        "constructcreation_axe": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:axegold",
-            "title": "Axe",
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": 9,
-            "gui_position": [
-                0.5,
-                3
-            ],
-            "first_tick_commands": [
-                    "give @s final_lanterns:axegold{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "constructcreation"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:or",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:axegold"
-                                        },
-                                        "slot": "mainhand"
-                                    },
-                                    {
-                                        "type": "palladium:item_in_slot",
-                                        "item": {
-                                            "item": "final_lanterns:axegold"
-                                        },
-                                        "slot": "offhand"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 30,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": true,
-                            "allow_scrolling_when_crouching": true
-                        }
-                ]
-            }
-        },
-        "goldshield": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:goldshield",
-            "title": "Justice Shield",
-            "list_index": 1,
-            "gui_position": [
-                0,
-                2
-            ],
-            "bar_color": "orange",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "description": "You must have a empty Offhand to use this ability.",
-            "first_tick_commands": [
-              "item replace entity @s weapon.offhand with final_lanterns:goldshield{CustomTag:gold}"
-            ],
-            "last_tick_commands": [],
-            "commands": [
-            ],
-            "conditions": {
-              "unlocking": [
-                {
-                    "type": "palladium:ability_enabled",
-                    "power": "null",
-                    "ability": "goldlantern"
-                }
-                ],
-              "enabling": [
-                {
-                    "type": "palladium:action",
-                    "cooldown": 30,
-                    "key_type": "key_bind",
-                    "needs_empty_hand": false,
-                    "allow_scrolling_when_crouching": true
-                },
-                {
-                    "type": "palladium:empty_slot",
-                    "slot": "offhand"
-                }
-              ]
-            }
-        },
-        "transfusion_unlock": {
-            "type": "palladium:dummy",
-            "icon": "minecraft:gold_ingot",
-            "title": "Gold Ingot Transfusion",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "description": "You are now able to Transform Logs and Stone into Gold",
-            "gui_position": [
-                0,
-                1
-            ],
-            "conditions": {
-                "unlocking": [
-                {
-                    "type": "palladium:experience_level_buyable",
-                    "xp_level": 25
-                },
-                {
-                    "type": "palladium:ability_enabled",
-                    "power": "null",
-                    "ability": "goldlantern"
-                },
-                {
-                    "type": "palladium:ability_unlocked",
-                    "power": "null",
-                    "ability": "hopebeam"
-                }
-                ]
-            }
-        },
-        "transfusion_wood_gold": {
-            "type": "palladium:command",
-            "icon": "minecraft:gold_ingot",
-            "title": "Gold Ingot Transfusion",
-            "bar_color": "orange",
-            "hidden": true,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 200
-            },
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                3
-            ],
-            "first_tick_commands": [
-                    "clear @s #minecraft:logs 1",
-                    "give @s minecraft:gold_ingot"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:oak_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:spruce_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:birch_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:jungle_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:acacia_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:dark_oak_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:mangrove_log"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "minecraft:cherry_log"
-                                },
-                                "slot": "mainhand"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_stone_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_water"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_lava"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_apple"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 1000,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "transfusion_stone_gold": {
-            "type": "palladium:command",
-            "icon": "minecraft:gold_ingot",
-            "title": "Gold Ingot Transfusion",
-            "bar_color": "orange",
-            "hidden": true,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 200
-            },
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                3
-            ],
-            "first_tick_commands": [
-                    "clear @s minecraft:stone 1",
-                    "give @s minecraft:gold_ingot"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "minecraft:stone"
-                        },
-                        "slot": "mainhand"
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_wood_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_water"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_lava"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_apple"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 1000,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "transfusion_unlock_liquid": {
-            "type": "palladium:dummy",
-            "icon": "minecraft:water_bucket",
-            "title": "Liquid Transfusion",
-            "bar_color": "light_gray",
-            "hidden": false,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                -0.5,
-                1
-            ],
-            "description": "Transform Water into Lava and vise versa",
-            "conditions": {
-                "unlocking": [
-                {
-                    "type": "palladium:experience_level_buyable",
-                    "xp_level": 25
-                },
-                {
-                    "type": "palladium:ability_enabled",
-                    "power": "null",
-                    "ability": "goldlantern"
-                },
-                {
-                    "type": "palladium:ability_unlocked",
-                    "power": "null",
-                    "ability": "transfusion_unlock"
-                }
-                ]
-            }
-        },
-        "transfusion_water": {
-            "type": "palladium:command",
-            "icon": "minecraft:water_bucket",
-            "title": "Lava Transfusion",
-            "bar_color": "orange",
-            "hidden": true,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 200
-            },
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                3
-            ],
-            "first_tick_commands": [
-                    "clear @s minecraft:lava_bucket 1",
-                    "give @s minecraft:water_bucket"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "minecraft:lava_bucket"
-                        },
-                        "slot": "mainhand"
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_wood_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_stone_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_lava"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_apple"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 1500,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "transfusion_lava": {
-            "type": "palladium:command",
-            "icon": "minecraft:lava_bucket",
-            "title": "Water Transfusion",
-            "bar_color": "orange",
-            "hidden": true,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 200
-            },
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                3
-            ],
-            "first_tick_commands": [
-                    "clear @s minecraft:water_bucket 1",
-                    "give @s minecraft:lava_bucket"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "minecraft:water_bucket"
-                        },
-                        "slot": "mainhand"
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_wood_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_stone_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_water"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_apple"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 1500,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "transfusion_apple": {
-            "type": "palladium:command",
-            "icon": "minecraft:golden_apple",
-            "title": "Apple Transfusion",
-            "bar_color": "orange",
-            "hidden": true,
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 200
-            },
-            "hidden_in_bar": false,
-            "list_index": 2,
-            "gui_position": [
-                0,
-                3
-            ],
-            "first_tick_commands": [
-                    "clear @s minecraft:apple 1",
-                    "give @s minecraft:golden_apple"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:item_in_slot",
-                        "item": {
-                            "item": "minecraft:apple"
-                        },
-                        "slot": "mainhand"
-                    },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_wood_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_stone_gold"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_lava"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "palladium:not",
-                                "conditions": [
-                                    {
-                                        "type": "palladium:ability_unlocked",
-                                        "power": "null",
-                                        "ability": "transfusion_water"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 1500,
-                        "max": 4000
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:action",
-                        "cooldown": 30,
-                        "key_type": "key_bind",
-                        "needs_empty_hand": false,
-                        "allow_scrolling_when_crouching": true
-                    }
-                ]
-            }
-        },
-        "ring_transfusion": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:goldlanternring",
-            "title": "Ring Transfusion",
-            "bar_color": "orange",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "You are able to Modify the Structure of a Lantern Ring and reform it into a Gold Lantern Ring",
-            "energy_bar_usage": {
-                "energy_bar": "justice",
-                "amount": 4000
-            },
-            "list_index": 3,
-            "gui_position": [
-                0,
-                1.5
-            ],
-            "first_tick_commands": [
-                    "item replace entity @s weapon.mainhand with air",
-                    "give @s final_lanterns:goldlanternring"
-            ],
-            "last_tick_commands": [
-            ],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "transfusion_unlock"
-                    },
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:energy_bar",
-                        "power": "null",
-                        "energy_bar": "justice",
-                        "min": 4000,
-                        "max": 4000
-                    },
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 30
-                    }
-                ],
-                "enabling": [
-                        {
-                            "type": "palladium:action",
-                            "cooldown": 260,
-                            "key_type": "key_bind",
-                            "needs_empty_hand": false,
-                            "allow_scrolling_when_crouching": true
-                        },
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:greenlanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:yellowlanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:bluelanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:redlanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:orangelanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:pinklanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:indigolanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:starheartring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:sorrowlanternring"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:sworddjinn"
-                                },
-                                "slot": "mainhand"
-                            },
-                            {
-                                "type": "palladium:item_in_slot",
-                                "item": {
-                                    "item": "final_lanterns:pridelanternring"
-                                },
-                                "slot": "mainhand"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "otherglowing": {
-            "type": "palladium:entity_glow",
-            "icon": "minecraft:glow_berries",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "mode": "self",
-            "color": "#ffbf00",
-            "distance": 30,
-            "property_key": "null",
-            "property_value": "null",
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type":"palladium:is_hovering_or_flying"
-                    }
-                ]
-            }
-        },
-        "outlinefast": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 14,
-            "start_hex": "#ffbf00",
-            "end_hex": "#ffdc73",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 1.5,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "goldlantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_fast_flying"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "outline": {
-            "type": "gravecore:particle_aura",
-            "icon": "minecraft:amethyst_shard",
-            "title": "null",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": false,
-            "list_index": -1,
-            "gui_position": "null",
-            "description": "null",
-            "count": 4,
-            "start_hex": "#ffbf00",
-            "end_hex": "#bf9b30",
-            "aura_type": "aura",
-            "particle_type": "smoke",
-            "particle_size": 0.4,
-            "visibility": 0.2,
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "goldlantern"
-                            }
-                        ]
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:or",
-                        "conditions": [
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:is_under_water"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "hope_maxlvl2": {
-            "type": "palladium:command",
-            "icon": "kubejs:goldlanternbattery",
-            "list_index": 2,
-            "title": "Righteousness Max lvl 2",
-            "bar_color": "green",
-            "hidden": false,
-            "description": "Energy Capacity                                                       Total: 2000 (+1000)",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -1.5
-                ],
-            "first_tick_commands": [
-              "energybar max set @s final_lanterns:goldlantern justice 3000"
-            ],
-            "last_tick_commands": [],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 10
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    },
-                    {
-                        "type": "palladium:not",
-                        "conditions": [
-                            {
-                                "type": "palladium:ability_unlocked",
-                                "power": "null",
-                                "ability": "hope_maxlvl3"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "hope_maxlvl3": {
-            "type": "palladium:command",
-            "icon": "kubejs:goldlanternbattery",
-            "list_index": 2,
-            "title": "Righteousness Max lvl 3",
-            "bar_color": "green",
-            "hidden": false,
-            "description": "Energy Capacity                                                       Total: 2000 (+2000)",
-            "hidden_in_bar": false,
-            "gui_position": [
-                -0.5,
-                -2
-                ],
-            "first_tick_commands": [
-              "energybar max set @s final_lanterns:goldlantern justice 4000"
-            ],
-            "last_tick_commands": [],
-            "commands": [
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 20
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hope_maxlvl2"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:ability_enabled",
-                        "power": "null",
-                        "ability": "goldlantern"
-                    }
-                ]
-            }
-        },
-        "hoperegen": {
-            "type": "palladium:command",
-            "icon": "final_lanterns:greenlanternbattery",
-            "list_index": 2,
-            "title": "Hope Regen",
-            "bar_color": "green",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "gui_position": [
-                -0.5,
-                -2.5
-            ],
-            "first_tick_commands": [],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:goldlantern justice 5"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:has_effect",
-                        "effect": "final_lanterns:hope_enpowerment"
-                    }
-                ]
-            }
-        },
-        "naturalregen": {
-            "type": "palladium:command",
-            "icon": "kubejs:goldlanternbattery",
-            "list_index": 2,
-            "title": "Natural Righteousness Regeneration",
-            "bar_color": "green",
-            "hidden": false,
-            "hidden_in_bar": false,
-            "description": "Energy Regeneration                                                                   2 Energy/Second",
-            "gui_position": [
-                -0.5,
-                -2.5
-                ],
-            "first_tick_commands": [
-            ],
-            "last_tick_commands": [],
-            "commands": [
-                "energybar value add @s final_lanterns:goldlantern justice 2"
-            ],
-            "conditions": {
-                "unlocking": [
-                    {
-                        "type": "palladium:experience_level_buyable",
-                        "xp_level": 40
-                    },
-                    {
-                        "type": "palladium:ability_unlocked",
-                        "power": "null",
-                        "ability": "hope_maxlvl3"
-                    }
-                ],
-                "enabling": [
-                    {
-                        "type": "palladium:not",
-                        "conditions":[
-                            {
-                                "type": "palladium:is_hovering_or_flying"
-                            },
-                            {
-                                "type": "palladium:ability_enabled",
-                                "power": "null",
-                                "ability": "hopebeam"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        "flightstyle": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 0,
-            "operation": 0,
-            "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flightone"
-                    }
-                ]
-            }
-        },
-        "flightstyle2": {
-            "type": "palladium:attribute_modifier",
-            "icon": "minecraft:iron_sword",
-            "title": "Enhanced Strength lvl 3",
-            "bar_color": "light_gray",
-            "hidden": true,
-            "hidden_in_bar": true,
-            "list_index": -1,
-            "gui_position": [
-                0,
-                4
-            ],
-            "attribute": "palladium:heroic_flight_type",
-            "amount": 1,
-            "operation": 0,
-            "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
-            "conditions": {
-                "enabling": [
-                    {
-                        "type": "palladium:accessory_selected",
-                        "accessory_slot": "final_lanterns:flightstyle",
-                        "accessory": "final_lanterns:flightstyles/flighttwo"
-                    }
-                ]
-            }
-        }
+  "name": "§6Righteousness Ring Bearer",
+  "persistent_data": true,
+  "background": "minecraft:textures/block/gold_block.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_bargold.png",
+  "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
+  "gui_display_type": "tree",
+  "energy_bars": {
+    "justice": {
+      "max": 2000,
+      "auto_increase_per_tick": 0,
+      "color": "#9f6e1a"
     }
+  },
+  "abilities": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "goldlantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "goldlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "goldlantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "goldlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "suitsound": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "first_tick_commands": [
+        "playsound final_lanterns:suitup master @s ~ ~ ~ 0.5"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "team add righteousness",
+        "team join righteousness",
+        "team modify righteousness color gold",
+        "execute if entity @s[advancements={lanterncorps:goldlantern=false}] run advancement grant @s only lanterncorps:goldlantern"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": []
+    },
+    "disableouterlayers": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "right_arm_overlay",
+        "left_arm_overlay",
+        "right_leg_overlay",
+        "left_leg_overlay",
+        "chest_overlay",
+        "cape"
+      ],
+      "affects_first_person": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls1",
+            "min": 1,
+            "max": 60
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:goldlantern",
+                "accessory": "final_lanterns:goldlanterns/blanksuit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "headouterlayer": {
+      "type": "palladium:hide_body_part",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "body_parts": [
+        "head_overlay"
+      ],
+      "affects_first_person": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:accessory_selected",
+                "accessory_slot": "final_lanterns:goldlantern",
+                "accessory": "final_lanterns:goldlanterns/simonbaz"
+              }
+            ]
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls1",
+            "min": 1,
+            "max": 60
+          }
+        ]
+      }
+    },
+    "cape": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:capes/blankcape",
+      "accessory_slot": "final_lanterns:capes",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "goldlantern"
+          }
+        ]
+      }
+    },
+    "accessory": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:goldlanterns/kalalour",
+      "accessory_slot": "final_lanterns:goldlantern"
+    },
+    "mask": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "default_layer": "final_lanterns:goldlanterns/masks/kalalour",
+      "accessory_slot": "final_lanterns:goldlanternmasks"
+    },
+    "name": {
+      "type": "palladium:name_change",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "name": {
+        "text": "§6Gold Lantern"
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:and",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "goldlantern"
+              },
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:not",
+                    "conditions": [
+                      {
+                        "type": "palladium:accessory_selected",
+                        "accessory_slot": "final_lanterns:greenlanternmasks",
+                        "accessory": "final_lanterns:greenlanterns/masks/blankmask"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "palladium:accessory_selected",
+                    "accessory_slot": "final_lanterns:bluelanternmasks",
+                    "accessory": "final_lanterns:bluelanterns/masks/cruzmask"
+                  },
+                  {
+                    "type": "palladium:accessory_selected",
+                    "accessory_slot": "final_lanterns:bluelanternmasks",
+                    "accessory": "final_lanterns:bluelanterns/masks/eldermask"
+                  },
+                  {
+                    "type": "palladium:accessory_selected",
+                    "accessory_slot": "final_lanterns:bluelanternmasks",
+                    "accessory": "final_lanterns:bluelanterns/masks/raynermask"
+                  },
+                  {
+                    "type": "palladium:accessory_selected",
+                    "accessory_slot": "final_lanterns:bluelanternmasks",
+                    "accessory": "final_lanterns:bluelanterns/masks/youngjusticemask"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "armorstore": {
+      "type": "palladium:command",
+      "icon": "minecraft:cookie",
+      "list_index": 2,
+      "title": "armorstore",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "pocket save"
+      ],
+      "last_tick_commands": [
+        "pocket load"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "goldlantern"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "restrict_slots": {
+      "type": "palladium:restrict_slots",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "slots": [
+        "head",
+        "chest",
+        "legs",
+        "feet"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "armorstore"
+          }
+        ]
+      }
+    },
+    "immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {}
+    },
+    "goldlantern": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
+      "title": "Righteousness Ring Bearer",
+      "list_index": 4,
+      "bar_color": "orange",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
+      "description": "With this ring you have been Chosen to become a Gold Lantern.",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 0,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:goldlanternring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Gold Ring based Abilities",
+      "conditions": {}
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "hidden": false,
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "hidden_in_bar": false,
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "2782c195-cbef-49af-b2ff-72339eb21774",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "830733f7-e94b-4648-a48c-b900b1b3ae4a",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+14)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 14,
+      "operation": 0,
+      "uuid": "fbd645ce-2ec9-4dfa-a7bd-b850a3a4a379",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+30)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 16,
+      "operation": 0,
+      "uuid": "32561762-fe8a-43d1-9696-d693f028c406",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 1                          Base Health: 20 (+6)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "a596c1dd-383d-4030-85d0-8e31cc376ff5",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+12)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "350a3ca8-a37d-4dfc-a3ab-54c72507131c",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 60,
+      "description": "Natural Healing                           Amount: 1Heart/3Second",
+      "amount": 1,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.03,
+      "operation": 0,
+      "uuid": "e57d5801-7b12-4e56-a869-36cb233189c7",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                              Base Strength: 1 (+8)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "eccf30d2-3da0-4f92-9ed0-9bbb774ec4c0",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                              Base Strength: 1 (+15)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "60021b02-c4dc-476f-a991-f94d914ad305",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "hopebeam": {
+      "type": "palladium:energy_beam",
+      "title": "Judgement Beam",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "bar_color": "orange",
+      "description": "Judgement Beam        Beam Damage: 12",
+      "icon": "final_lanterns:textures/icons/gold/beam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:goldlanternbeam",
+      "gui_position": [
+        0,
+        0
+      ],
+      "damage": 12,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 5,
+            "max": 4000
+          }
+        ]
+      }
+    },
+    "hopebeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "hopebeam"
+          }
+        ]
+      }
+    },
+    "goldwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/goldlantern3.png",
+      "title": "Righteousness Constructs",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": "null",
+      "description": "null",
+      "abilities": [
+        "constructcreation_greatsword",
+        "constructcreation_spear",
+        "constructcreation_fist",
+        "constructcreation_pickaxe",
+        "constructcreation_axe",
+        "goldshield"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ]
+      }
+    },
+    "constructcreation": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/goldlantern1.png",
+      "title": "Construct Creation",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "description": "Concentrate and Create different Items with your Ring.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hopebeam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "constructcreation_greatsword": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greatswordgold",
+      "title": "Great Sword",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:greatswordgold{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:greatswordgold"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:greatswordgold"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_spear": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:speargold",
+      "title": "Spear",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        0.5,
+        1.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:speargold{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_fist": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:battleaxegold",
+      "title": "Battle Axe",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        0.5,
+        2
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:battleaxegold{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_pickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxegold",
+      "title": "Pickaxe",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        0.5,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxegold{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:pickaxegold"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:pickaxegold"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_axe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axegold",
+      "title": "Axe",
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        0.5,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axegold{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:axegold"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:axegold"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "goldshield": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:goldshield",
+      "title": "Justice Shield",
+      "list_index": 1,
+      "gui_position": [
+        0,
+        2
+      ],
+      "bar_color": "orange",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "description": "You must have a empty Offhand to use this ability.",
+      "first_tick_commands": [
+        "item replace entity @s weapon.offhand with final_lanterns:goldshield{CustomTag:gold}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:empty_slot",
+            "slot": "offhand"
+          }
+        ]
+      }
+    },
+    "transfusion_unlock": {
+      "type": "palladium:dummy",
+      "icon": "minecraft:gold_ingot",
+      "title": "Gold Ingot Transfusion",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "description": "You are now able to Transform Logs and Stone into Gold",
+      "gui_position": [
+        0,
+        1
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hopebeam"
+          }
+        ]
+      }
+    },
+    "transfusion_wood_gold": {
+      "type": "palladium:command",
+      "icon": "minecraft:gold_ingot",
+      "title": "Gold Ingot Transfusion",
+      "bar_color": "orange",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 200
+      },
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        3
+      ],
+      "first_tick_commands": [
+        "clear @s #minecraft:logs 1",
+        "give @s minecraft:gold_ingot"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:oak_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:spruce_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:birch_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:jungle_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:acacia_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:dark_oak_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:mangrove_log"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "minecraft:cherry_log"
+                },
+                "slot": "mainhand"
+              }
+            ]
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_stone_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_water"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_lava"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_apple"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 1000,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "transfusion_stone_gold": {
+      "type": "palladium:command",
+      "icon": "minecraft:gold_ingot",
+      "title": "Gold Ingot Transfusion",
+      "bar_color": "orange",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 200
+      },
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        3
+      ],
+      "first_tick_commands": [
+        "clear @s minecraft:stone 1",
+        "give @s minecraft:gold_ingot"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "minecraft:stone"
+            },
+            "slot": "mainhand"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_wood_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_water"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_lava"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_apple"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 1000,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "transfusion_unlock_liquid": {
+      "type": "palladium:dummy",
+      "icon": "minecraft:water_bucket",
+      "title": "Liquid Transfusion",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -0.5,
+        1
+      ],
+      "description": "Transform Water into Lava and vise versa",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          }
+        ]
+      }
+    },
+    "transfusion_water": {
+      "type": "palladium:command",
+      "icon": "minecraft:water_bucket",
+      "title": "Lava Transfusion",
+      "bar_color": "orange",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 200
+      },
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        3
+      ],
+      "first_tick_commands": [
+        "clear @s minecraft:lava_bucket 1",
+        "give @s minecraft:water_bucket"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "minecraft:lava_bucket"
+            },
+            "slot": "mainhand"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_wood_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_stone_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_lava"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_apple"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 1500,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "transfusion_lava": {
+      "type": "palladium:command",
+      "icon": "minecraft:lava_bucket",
+      "title": "Water Transfusion",
+      "bar_color": "orange",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 200
+      },
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        3
+      ],
+      "first_tick_commands": [
+        "clear @s minecraft:water_bucket 1",
+        "give @s minecraft:lava_bucket"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "minecraft:water_bucket"
+            },
+            "slot": "mainhand"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_wood_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_stone_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_water"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_apple"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 1500,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "transfusion_apple": {
+      "type": "palladium:command",
+      "icon": "minecraft:golden_apple",
+      "title": "Apple Transfusion",
+      "bar_color": "orange",
+      "hidden": true,
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 200
+      },
+      "hidden_in_bar": false,
+      "list_index": 2,
+      "gui_position": [
+        0,
+        3
+      ],
+      "first_tick_commands": [
+        "clear @s minecraft:apple 1",
+        "give @s minecraft:golden_apple"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "minecraft:apple"
+            },
+            "slot": "mainhand"
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_wood_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_stone_gold"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_lava"
+                  }
+                ]
+              },
+              {
+                "type": "palladium:not",
+                "conditions": [
+                  {
+                    "type": "palladium:ability_unlocked",
+                    "power": "null",
+                    "ability": "transfusion_water"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 1500,
+            "max": 4000
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "ring_transfusion": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:goldlanternring",
+      "title": "Ring Transfusion",
+      "bar_color": "orange",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "You are able to Modify the Structure of a Lantern Ring and reform it into a Gold Lantern Ring",
+      "energy_bar_usage": {
+        "energy_bar": "justice",
+        "amount": 4000
+      },
+      "list_index": 3,
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "first_tick_commands": [
+        "item replace entity @s weapon.mainhand with air",
+        "give @s final_lanterns:goldlanternring"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "transfusion_unlock"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "justice",
+            "min": 4000,
+            "max": 4000
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 260,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:greenlanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:yellowlanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:bluelanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:redlanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:orangelanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:pinklanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:indigolanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:starheartring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:sorrowlanternring"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:sworddjinn"
+                },
+                "slot": "mainhand"
+              },
+              {
+                "type": "palladium:item_in_slot",
+                "item": {
+                  "item": "final_lanterns:pridelanternring"
+                },
+                "slot": "mainhand"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "otherglowing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#ffbf00",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#ffbf00",
+      "end_hex": "#ffdc73",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#ffbf00",
+      "end_hex": "#bf9b30",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.4,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "hope_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "kubejs:goldlanternbattery",
+      "list_index": 2,
+      "title": "Righteousness Max lvl 2",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Capacity                                                       Total: 2000 (+1000)",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:goldlantern justice 3000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "hope_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "hope_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "kubejs:goldlanternbattery",
+      "list_index": 2,
+      "title": "Righteousness Max lvl 3",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Capacity                                                       Total: 2000 (+2000)",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:goldlantern justice 4000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hope_maxlvl2"
+          }
+        ]
+      }
+    },
+    "hoperegen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greenlanternbattery",
+      "list_index": 2,
+      "title": "Hope Regen",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:goldlantern justice 5"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:hope_enpowerment"
+          }
+        ]
+      }
+    },
+    "naturalregen": {
+      "type": "palladium:command",
+      "icon": "kubejs:goldlanternbattery",
+      "list_index": 2,
+      "title": "Natural Righteousness Regeneration",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "description": "Energy Regeneration                                                                   2 Energy/Second",
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:goldlantern justice 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "hope_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "hopebeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "a4873d69-75c7-49e2-ac12-29d04da31322",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "b0bde68d-ac88-4d47-a86d-2d44e34551f3",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
+    }
+  }
 }
