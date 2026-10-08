@@ -631,7 +631,15 @@
         -0.5
       ],
       "description": "Love Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "pinklantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -803,6 +811,11 @@
       "conditions": {
         "unlocking": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "pinklantern"
+          },
+          {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
           }
@@ -885,7 +898,15 @@
       "amount": 0.02,
       "operation": 0,
       "uuid": "01b610a1-570c-4918-b434-ed94c2a7ea71",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "pinklantern"
+          }
+        ]
+      }
     },
     "strengthlevel1": {
       "type": "palladium:attribute_modifier",
@@ -1747,6 +1768,11 @@
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "pinklantern"
           }
         ],
         "enabling": [
@@ -2021,6 +2047,35 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_right": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:pinklanterns/pinklanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:has_tag",
+              "tag": "gl_p2_violet"
+            }
+          ]
+        }
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/violet",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_violet"
+        }
       }
     }
   }

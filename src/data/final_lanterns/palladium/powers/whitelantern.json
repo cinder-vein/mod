@@ -626,7 +626,15 @@
         -0.5
       ],
       "description": "Life Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "whitelantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -819,6 +827,11 @@
       "uuid": "fc75289b-27e4-4f01-9173-221b18bad0be",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "whitelantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1861,6 +1874,11 @@
       "description": "Concentrate and Access other spectrums and use their abilities",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "whitelantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 15
@@ -4737,6 +4755,11 @@
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "whitelantern"
           }
         ],
         "enabling": [
@@ -6162,6 +6185,35 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_right": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:whitelanterns/whitelanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:has_tag",
+              "tag": "gl_p2_white"
+            }
+          ]
+        }
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/white",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_white"
+        }
       }
     }
   }

@@ -583,7 +583,15 @@
         -0.5
       ],
       "description": "Hope Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "bluelantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -671,7 +679,15 @@
       "amount": 6,
       "operation": 0,
       "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "bluelantern"
+          }
+        ]
+      }
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -754,6 +770,11 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "bluelantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1675,6 +1696,11 @@
         ],
         "enabling": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "bluelantern"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -1945,6 +1971,35 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_right": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:bluelanterns/bluelanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:has_tag",
+              "tag": "gl_p2_blue"
+            }
+          ]
+        }
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/blue",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_blue"
+        }
       }
     }
   }

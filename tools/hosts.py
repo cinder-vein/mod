@@ -1,31 +1,33 @@
 """Host powers for the emotional spectrum entities: final_lanterns:host_<entity> (see entities.py for how hosting works).
 
-A host needs no ring. Their power refills on its own, always, and faster than any ring's (BASE_REGEN a tick; A New
-Corps' rings regenerate 2 at best, or 5 while empowered by hope). The power has its own skill tree:
+A host needs no ring. Their power is a copy of the entity's corps' A New Corps ring power (trees.clone_ring): the
+same skill tree, bar texture and background, and every ability the ring has, working without a ring and stronger
+(a bigger bar that refills on its own, faster than any ring's, and beams half again as strong). Beside the ring's tree
+the entity adds two branches:
 
-- the body: Vitality, Might, Flight and the entity's own passive;
-- its three abilities and its ultimate;
-- its light, borrowed from that corps' A New Corps ring: the ring's beam, a construct wheel of that corps' construct
-  weapons (plus the entity's world constructs) and Forge Ring, which forges a new ring of its color;
-- its bond with the rings of its color: Empower Ring fills the ring of the bearer you look at, and Living Lantern
-  makes you a lantern: bearers near you recharge, and sneaking beside you recites their oath for a full charge;
-- its reserves: Deep Reserves and Wellspring.
+- its power (right): its own passive, three abilities and its ultimate;
+- its light (left): Empower Ring fills the ring of the bearer you look at, Living Lantern makes you a lantern
+  (bearers near you recharge, and sneaking beside you recites their oath for a full charge), Forge Ring forges a new
+  ring of its color, and Hard Light is a second construct wheel with the entity's own weapons and shapes.
 
-The host wears the entity's own suit (A New Corps' suit of its best-known host) and its aura; Mortal Form hides it.
+The suit node is the entity's: its key shows the entity's suit (A New Corps' suit of its best-known host) and aura.
 """
 import copy
-import hashlib
 import json
+import re
 from pathlib import Path
 
 import entities
 import icons
+import trees
 from common import CORPS, HOSTILE, NS, TARGETS, burst, dust, hexcolor, sound, tellraw
 
 BASE = Path(__file__).resolve().parent.parent / "base"
 BAR = "entity_power"
-BASE_MAX, RESERVES_MAX = 4000, 6000
-BASE_REGEN, WELLSPRING_REGEN = 3, 3  # per tick; Wellspring adds its own on top
+HOST_MAX = 3000    # a ring's bar holds 2000
+MAX_SCALE = 1.5    # the ring tree's charge nodes (3000 and 4000 for a ring) hold half again as much
+BEAM_SCALE = 1.5   # the ring's beam, fed by the entity, is half again as strong
+BASE_REGEN = 3     # per tick, always (A New Corps' rings: 2 at best, after Natural Regeneration)
 EMPOWER_COST, EMPOWER_GIVE = 400, 1000      # Empower Ring: host power spent, ring charge given
 LANTERN_TRICKLE, LANTERN_COST = 100, 1      # Living Lantern: charge a second to bearers within 8; cost a tick
 OATH_GIVE, OATH_COST, OATH_COOLDOWN = 4000, 800, 30  # reciting the oath beside a Living Lantern host
@@ -182,16 +184,6 @@ class Power:
 
     def hidden(self, key, ability):
         self.abilities[key] = {**ability, "hidden": True, "hidden_in_bar": True}
-
-    def node(self, key, name, desc, icon, pos, parents, xp):
-        """A skill-tree node bought with XP levels in the powers menu."""
-        self.abilities[key] = {
-            "type": "palladium:dummy", "title": self.tr(key, name),
-            "description": self.tr(key + ".description", desc + f" Costs {xp} XP levels."),
-            "icon": icon, "hidden_in_bar": True, "gui_position": list(pos),
-            "conditions": {"unlocking": [*(unlocked(p) for p in parents),
-                                         {"type": "palladium:experience_level_buyable", "xp_level": xp}]},
-        }
 
     def bar(self, key, ability, name, icon, index, node=None, cost=0, desc=None):
         """An ability on the ability bar (hidden from the skill tree, which shows its node instead)."""
@@ -459,101 +451,80 @@ def host_kits(e):
                   *raise_dead, sound("minecraft:entity.wither.spawn", 0.8)]))])
 
 
-def retarget(ability, corps, key):
-    """An A New Corps ring ability made to run on the host's power: its energy bar becomes the host's, and the
-    conditions that only make sense inside that ring's power (its other abilities, its effects) are dropped."""
-    ring_bar = CORPS[corps]["bar"]
-    ability.pop("gui_position", None)
-    if "energy_bar_usage" in ability:
-        ability["energy_bar_usage"] = {**ability["energy_bar_usage"], "energy_bar": BAR}
-
-    def keep(cond):
-        t = cond.get("type")
-        if t in ("palladium:ability_unlocked", "palladium:ability_enabled", "palladium:has_effect",
-                 "palladium:objective_score", "palladium:animation_timer_ability"):
-            return None
-        if t in ("palladium:not", "palladium:or", "palladium:and"):
-            inner = [c for c in (keep(c) for c in cond.get("conditions", [])) if c]
-            return {**cond, "conditions": inner} if inner else None
-        if t == "palladium:energy_bar":
-            return {"type": "palladium:energy_bar", "energy_bar": BAR, "min": cond.get("min", 1)}
-        return cond
-
-    conds = {}
-    for kind, value in ability.get("conditions", {}).items():
-        value = value if isinstance(value, list) else [value]
-        kept = [c for c in (keep(c) for c in value) if c]
-        if kept:
-            conds[kind] = kept
-    ability["conditions"] = conds
-    for field in ("first_tick_commands", "commands", "last_tick_commands", "commands_on_block_hit",
-                  "commands_on_entity_hit"):
-        if field in ability:
-            ability[field] = [c.replace(f"{NS}:{CORPS[corps]['power']} {ring_bar}", f"{NS}:host_{key} {BAR}")
-                              for c in ability[field]]
-    return ability
-
-
 def host_power(e):
+    """The host's power: a copy of its corps' A New Corps ring power (the same tree, bar texture and background, every
+    ring ability, all working without a ring), made stronger, with the entity's own branches beside it."""
     k = Power(e)
     key, rgb, name, corps = e.key, e.rgb, e.name, e.corps
-    ring_name = CORPS[corps]["name"]
+    pid, bar, ring_name = f"{NS}:host_{key}", CORPS[corps]["bar"], CORPS[corps]["name"]
+    power, root = trees.clone_ring(corps, pid)
+    trees.raise_caps(power)
+    ab = k.abilities = power["abilities"]
     hunt = f" Beware: {name} hunts its hosts down and sometimes takes control of you." if e.kind == "hunt" else ""
-    k.abilities["host_root"] = {
-        "type": "palladium:dummy", "title": k.tr("host_root", name),
-        "description": k.tr("host_root.description",
-                            f"You host {name}, {e.title}. Its power is yours, no ring needed, and it refills on its "
-                            f"own, always. Grow it here with XP levels. Give it up with Release or by saying \"I "
-                            f"release you\". Another player can draw it out of you by sneaking with a corps' lantern "
-                            f"and staring at you for five seconds. After you lose it, no entity will choose you for "
-                            f"an hour." + hunt),
-        "icon": HOST_ICON[key], "hidden_in_bar": True, "gui_position": [0, 0]}
 
+    # --- the suit node is the entity: its key shows its suit, like a ring's
+    ab[root].update({
+        "title": k.tr("host_root", name),
+        "description": k.tr("host_root.description",
+                            f"You host {name}, {e.title}. Everything the {ring_name} ring does is yours, stronger, "
+                            f"no ring needed, and its light refills on its own. Toggle this to wear {name}'s form. "
+                            f"Give it up with Release or by saying \"I release you\". Another player can draw it out "
+                            f"of you by sneaking with a corps' lantern and staring at you for five seconds. After you "
+                            f"lose it, no entity will choose you for an hour." + hunt)})
+
+    # --- stronger than the ring: a bigger bar that refills on its own, and beams half again as strong
+    bars = power["energy_bars"]
+    bars[bar] = {**bars[bar], "max": HOST_MAX, "auto_increase_per_tick": BASE_REGEN}
+    max_set = re.compile(rf"^(energybar max set @s {re.escape(pid)} {bar} )(\d+)$")
+    for a in ab.values():
+        for field in ("first_tick_commands", "commands", "last_tick_commands"):
+            if field in a:
+                a[field] = [max_set.sub(lambda m: m[1] + str(int(int(m[2]) * MAX_SCALE)), c) for c in a[field] or []]
+        if a.get("type") == "palladium:energy_beam" and isinstance(a.get("damage"), (int, float)):
+            a["damage"] = round(a["damage"] * BEAM_SCALE)
+            if isinstance(a.get("description"), str):
+                a["description"] = re.sub(r"Damage: (\d+)", lambda m: f"Damage: {round(int(m[1]) * BEAM_SCALE)}",
+                                          a["description"])
+
+    # --- the host's body, form and aura (its form shows while the entity node is on)
     def attr(akey, attribute, amount, conds=None):
         k.hidden(akey, {"type": "palladium:attribute_modifier", "attribute": attribute, "amount": amount, "operation": 0,
-                        "uuid": "6c7afe00-1a2b-4c3d-8e4f-" + hashlib.md5(f"{key}.{akey}".encode()).hexdigest()[:12],
+                        "uuid": trees.uuid_for(f"{pid}.{akey}"),
                         **({"conditions": {"unlocking": one(conds)}} if conds else {})})
 
-    # --- the body, always: hearts, armor, the entity's aura and its suit
     attr("host_health", "minecraft:generic.max_health", 20)
     attr("host_armor", "minecraft:generic.armor", 6)
     attr("host_toughness", "minecraft:generic.armor_toughness", 4)
     light = hexcolor(rgb if corps != "black" else (150, 155, 170))
+    form = trees.enabled(root)
     k.hidden("host_aura", {"type": "gravecore:particle_aura", "count": 3, "start_hex": light,
                            "end_hex": hexcolor(tuple(min(255, int(v * 1.3)) for v in rgb)), "aura_type": "aura",
-                           "particle_type": "smoke", "particle_size": 0.8, "visibility": 0.25})
+                           "particle_type": "smoke", "particle_size": 0.8, "visibility": 0.25,
+                           "conditions": {"enabling": form}})
     k.hidden("host_glow", {"type": "palladium:entity_glow", "mode": "self", "color": light,
-                           "conditions": {"enabling": [unlocked("skill_flight"), {"type": "palladium:is_flying"}]}})
-    form = NOT(enabled("mortal_form"))
+                           "conditions": {"enabling": [form, {"type": "palladium:is_flying"}]}})
     k.hidden("host_suit", {"type": "palladium:render_layer", "render_layer": f"{NS}:hosts/{key}",
                            "conditions": {"enabling": form}})
     k.hidden("host_suit_skin", {"type": "palladium:hide_body_part", "body_parts": [
         "right_arm_overlay", "left_arm_overlay", "right_leg_overlay", "left_leg_overlay", "chest_overlay",
         "head_overlay"], "affects_first_person": True, "conditions": {"enabling": form}})
     # the entity is an endless source: its power is full whenever it comes to you (or you log back in)
-    k.hidden("host_fill", {**command(first=[f"energybar value add @s {NS}:host_{key} {BAR} 100000"])})
+    k.hidden("host_fill", {**command(first=[f"energybar value add @s {pid} {bar} 100000"])})
 
-    # --- skill tree: the body (left), the abilities (middle), the light, the bond and the reserves (right)
-    k.node("skill_vitality_1", "Vitality I", "+10 hearts.", "minecraft:golden_apple", (-3, 1), ["host_root"], 8)
-    k.node("skill_vitality_2", "Vitality II", "Another +10 hearts.", "minecraft:enchanted_golden_apple", (-3, 2),
-           ["skill_vitality_1"], 16)
-    attr("vitality_1", "minecraft:generic.max_health", 20, [unlocked("skill_vitality_1")])
-    attr("vitality_2", "minecraft:generic.max_health", 20, [unlocked("skill_vitality_2")])
-    k.node("skill_might_1", "Might I", "+4 attack and punch damage.", "minecraft:iron_sword", (-2, 1), ["host_root"], 8)
-    k.node("skill_might_2", "Might II", "Another +4 attack and punch damage.", "minecraft:netherite_sword", (-2, 2),
-           ["skill_might_1"], 16)
-    for n in (1, 2):
-        attr(f"might_{n}", "minecraft:generic.attack_damage", 4, [unlocked(f"skill_might_{n}")])
-        attr(f"might_{n}_fists", "palladium:punch_damage", 4, [unlocked(f"skill_might_{n}")])
-    k.node("skill_flight", "Flight", f"Fly on {name}'s power.", "minecraft:feather", (-1, 1), ["host_root"], 5)
-    attr("flight", "palladium:flight_speed", 1.0, [unlocked("skill_flight")])
-    attr("flight_flexibility", "palladium:flight_flexibility", 5, [unlocked("skill_flight")])
-    attr("heroic_flight", "palladium:heroic_flight_type", 1, [unlocked("skill_flight")])
+    lo, hi = trees.occupied(power)
+    right, left = hi + trees.STEP, lo - trees.STEP
+    index = iter(range(trees.free_index(power), 100))
 
+    # --- the entity's branch (right of the ring's tree): its passive, three abilities and its ultimate
     passive, abilities = host_kits(e)
     pname, pdesc, picon, pabilities = passive
-    k.node("skill_passive", pname, pdesc, picon, (-1, 2), ["skill_flight"], 10)
-    for pkey, pjson in pabilities.items():  # every part of the passive needs its node
+    ab["entity_tree"] = trees.node(k.tr("entity_tree", f"{name}'s Power"),
+                                   k.tr("entity_tree.description", f"What {name} adds to the {ring_name} ring's "
+                                        "light: its own nature and abilities."),
+                                   HOST_ICON[key], (right, -0.5), ["skilltree"])
+    ab["skill_passive"] = trees.node(k.tr("skill_passive", pname), k.tr("skill_passive.description", pdesc),
+                                     picon, (right, 0), ["entity_tree"], 10)
+    for pkey, pjson in pabilities.items():  # every part of the passive comes with its node
         conds = dict(pjson.get("conditions", {}))
         own = conds.get("unlocking")
         own = [] if own is None else (own if isinstance(own, list) else [own])
@@ -571,42 +542,48 @@ def host_power(e):
         k.pulse("deaths_touch_pulse", "deaths_touch", 40, [
             f"effect give {OTHERS.format(r=6)} minecraft:wither 3 0 true",
             "particle minecraft:soul ~ ~1 ~ 3 1 3 0.01 20 force"])
-
-    # the entity's own abilities: a chain down the middle; slots 3-5 and the ultimate on 6
-    parent = "host_root"
+    parent = "skill_passive"
     for n, (akey, aname, adesc, glyph, item, cost, cooldown, payload) in enumerate(abilities):
         ultimate = n == 3
-        xp = (5, 10, 15, 30)[n]
-        k.node(f"skill_{akey}", aname, adesc, item, (0, 1 + n), [parent], xp)
-        parent = f"skill_{akey}"
         if isinstance(payload, list):
             payload = {**command(first=payload), "conditions": {"enabling": action(cooldown)}}
         elif cooldown and "conditions" not in payload:
             payload = {**payload, "conditions": {"enabling": action(cooldown)}}
-        k.bar(akey, payload, aname, k.glyph(glyph, item), (2, 3, 4, 5)[n], node=f"skill_{akey}", cost=cost,
-              desc=("Ultimate: " if ultimate and not adesc.startswith("Ultimate") else "") + adesc
-              + f" Costs {cost} power" + ("" if cooldown else " a tick") + ".")
+        payload = spend(payload, cost)
+        desc = (("Ultimate: " if ultimate and not adesc.startswith("Ultimate") else "") + adesc
+                + f" Costs {cost} {CORPS[corps]['emotion'].lower()}" + ("" if cooldown else " a tick") + ".")
+        ab[akey] = trees.node(k.tr(akey, aname), k.tr(akey + ".description", desc), k.glyph(glyph, item),
+                              (right, 0.5 * (n + 1)), [parent], (15, 20, 25, 35)[n], payload, next(index))
+        parent = akey
 
-    # --- the light of its corps: beam, construct wheel, Forge Ring
-    beam = retarget(anc_ability(corps, CORPS[corps]["beam"]), corps, key)
-    beam_icon = beam.get("icon", HOST_ICON[key])
-    k.node("skill_beam", f"{ring_name} Beam", f"Hold to fire the {ring_name} ring's beam, fed by {name}.", beam_icon,
-           (1, 1), ["host_root"], 5)
-    beam.pop("title", None)
-    beam.pop("description", None)
-    enabling = beam["conditions"].setdefault("enabling", [])
-    if not any(c.get("type") == "palladium:held" for c in enabling):
-        enabling.insert(0, held())
-    k.bar("beam", beam, f"{name}'s Beam", beam_icon, 0, node="skill_beam",
-          desc=f"Hold: the {ring_name} beam, {beam.get('damage', 0)} damage.")
-    k.hidden("beam_aim", {"type": "palladium:aim", "time": 1, "arm": "main_arm",
-                          "conditions": {"enabling": enabled("beam")}})
-    wheel_icon = f"{NS}:textures/icons/slots/{CORPS[corps]['power']}3.png"
-    if not (BASE / f"assets/{NS}/textures/icons/slots/{CORPS[corps]['power']}3.png").exists():
-        wheel_icon = f"{NS}:{WHEEL_ITEMS[key][0][0]}"
-    k.node("skill_constructs", "Constructs", f"Hold the construct key and pick a construct of {name}'s light: "
-           + ", ".join(i[1] for i in WHEEL_ITEMS[key]) + "".join(f", {w[1]}" for w in WHEEL_WORLD.get(key, [])) + ".",
-           wheel_icon, (1, 2), ["skill_beam"], 10)
+    # --- its light (left of the ring's tree): Empower Ring, Living Lantern, Forge Ring and its hard-light shapes
+    battery, ring = CORPS[corps]["battery"], f"{NS}:{CORPS[corps]['ring']}"
+    ab["light_tree"] = trees.node(k.tr("light_tree", f"{name}'s Light"),
+                                  k.tr("light_tree.description", f"{name} is a source of {ring_name} light: it fills "
+                                       "the rings of its color, forges new ones, and shapes more than any ring can."),
+                                  battery, (left, -0.5), ["skilltree"])
+    ab["empower_ring"] = trees.node(
+        k.tr("empower_ring", "Empower Ring"),
+        k.tr("empower_ring.description", f"Look at a {ring_name} ring bearer within 24 blocks: +{EMPOWER_GIVE} charge "
+             f"to their ring for {EMPOWER_COST} of yours."), battery, (left, 0), ["light_tree"], 10,
+        {**command(first=[f"function {NS}:host/{key}/empower"]),
+         "conditions": {"enabling": [action(60), charge(EMPOWER_COST)]}}, next(index))
+    ab["living_lantern"] = trees.node(
+        k.tr("living_lantern", "Living Lantern"),
+        k.tr("living_lantern.description", f"Toggle: become a living {ring_name} lantern. {ring_name} rings within 8 "
+             f"blocks recharge (+{LANTERN_TRICKLE} a second), and a bearer who sneaks beside you recites their oath for "
+             f"a full charge ({OATH_COST} of yours, once every {OATH_COOLDOWN} seconds each). Costs "
+             f"{LANTERN_COST * 20} a second."), k.glyph("hope_aura", ring), (left, 0.5), ["empower_ring"], 15,
+        {**command(first=["tag @s add gl_living_lantern"], last=["tag @s remove gl_living_lantern"]),
+         "energy_bar_usage": usage(LANTERN_COST), "conditions": {"enabling": [toggle(), charge(LANTERN_COST)]}},
+        next(index))
+    ab["forge_ring"] = trees.node(
+        k.tr("forge_ring", "Forge Ring"),
+        k.tr("forge_ring.description", f"Forge a new {ring_name} ring from {name}'s light, for someone worthy, no "
+             f"lantern needed. Costs {FORGE_COST}; once every {FORGE_COOLDOWN // 1200} minutes."), ring, (left, 1),
+        ["living_lantern"], 25,
+        spend({**command(first=[f"function {NS}:host/{key}/forge"]),
+               "conditions": {"enabling": action(FORGE_COOLDOWN)}}, FORGE_COST), next(index))
     children = []
     for n, item in enumerate(WHEEL_ITEMS[key]):
         iid, iname, offhand = item[0], item[1], len(item) > 2
@@ -616,77 +593,53 @@ def host_power(e):
         enabling = [key_action(30, empty_hand=not offhand)]
         if offhand:
             enabling.append({"type": "palladium:empty_slot", "slot": "offhand"})
-        ck = f"construct_{n}"
+        ck = f"hard_light_{n}"
         children.append(ck)
         k.hidden(ck, {**command(first=[give, sound("minecraft:block.beacon.power_select", 1.8)]),
-                      "title": k.tr(ck, iname), "icon": f"{NS}:{iid}", "list_index": 1,
-                      "conditions": {"unlocking": unlocked("skill_constructs"), "enabling": enabling}})
+                      "title": k.tr(ck, iname), "icon": f"{NS}:{iid}",
+                      "conditions": {"unlocking": unlocked("hard_light"), "enabling": enabling}})
     for n, (path, wname, cost, icon) in enumerate(WHEEL_WORLD.get(key, [])):
-        ck = f"world_construct_{n}"
+        ck = f"hard_shape_{n}"
         children.append(ck)
         k.hidden(ck, {**command(first=["tag @s add gl_user", f"function {NS}:host_cx/{path}", "tag @s remove gl_user"]),
-                      "title": k.tr(ck, wname), "icon": icon, "list_index": 1, "energy_bar_usage": usage(cost),
-                      "conditions": {"unlocking": [unlocked("skill_constructs"), charge(cost)],
-                                     "enabling": [key_action(60)]}})
-    k.bar("constructs", {"type": "palladium:ability_wheel", "abilities": children, "texture": "null",
-                         "disable_mouse_scrolling": False, "conditions": {"enabling": [held()]}},
-          "Constructs", wheel_icon, 1, node="skill_constructs")
-    ring = f"{NS}:{CORPS[corps]['ring']}"
-    k.node("skill_forge", "Forge Ring", f"Forge a new {ring_name} ring from {name}'s light, for someone worthy. Costs "
-           f"{FORGE_COST} power; once every {FORGE_COOLDOWN // 1200} minutes.", ring, (1, 3), ["skill_constructs"], 25)
-    k.bar("forge_ring", {**command(first=[f"function {NS}:host/{key}/forge"]),
-                         "conditions": {"enabling": action(FORGE_COOLDOWN)}},
-          "Forge Ring", ring, 8, node="skill_forge", cost=FORGE_COST,
-          desc=f"Forge a new {ring_name} ring. Costs {FORGE_COST} power.")
+                      "title": k.tr(ck, wname), "icon": icon, "energy_bar_usage": usage(cost),
+                      "conditions": {"unlocking": unlocked("hard_light"),
+                                     "enabling": [key_action(60), charge(cost)]}})
+    shapes = "".join(f", {w[1]}" for w in WHEEL_WORLD.get(key, []))
+    ab["hard_light"] = trees.node(
+        k.tr("hard_light", "Hard Light"),
+        k.tr("hard_light.description", f"Hold: a second construct wheel, shaped by {name}: "
+             + ", ".join(i[1] for i in WHEEL_ITEMS[key]) + shapes + "."),
+        k.glyph("constructs", f"{NS}:{WHEEL_ITEMS[key][0][0]}"), (left, 1.5), ["forge_ring"], 20,
+        {"type": "palladium:ability_wheel", "abilities": children, "texture": "null", "disable_mouse_scrolling": False,
+         "conditions": {"enabling": [held()]}}, next(index))
 
-    # --- its bond with the rings of its color
-    battery = CORPS[corps]["battery"]
-    k.node("skill_empower", "Empower Ring", f"Pour {name}'s light into the {ring_name} ring of the bearer you look at "
-           f"(within 24 blocks): +{EMPOWER_GIVE} charge for {EMPOWER_COST} power.", battery, (2, 1), ["host_root"], 8)
-    k.bar("empower_ring", {**command(first=[f"function {NS}:host/{key}/empower"]),
-                           "conditions": {"unlocking": charge(EMPOWER_COST), "enabling": action(60)}},
-          "Empower Ring", battery, 6, node="skill_empower",
-          desc=f"Look at a {ring_name} ring bearer: +{EMPOWER_GIVE} charge to their ring.")
-    k.node("skill_lantern", "Living Lantern", f"Toggle: become a living {ring_name} lantern. {ring_name} rings within 8 "
-           f"blocks recharge (+{LANTERN_TRICKLE} a second), and a bearer who sneaks beside you recites their oath for a "
-           f"full charge ({OATH_COST} power, once every {OATH_COOLDOWN} seconds each).", ring, (2, 2), ["skill_empower"],
-           15)
-    k.bar("living_lantern", {**command(first=["tag @s add gl_living_lantern"], last=["tag @s remove gl_living_lantern"]),
-                             "energy_bar_usage": usage(LANTERN_COST), "conditions": {"enabling": toggle()}},
-          "Living Lantern", k.glyph("hope_aura", ring), 7, node="skill_lantern", cost=LANTERN_COST,
-          desc=f"Toggle: {ring_name} rings near you recharge. Costs {LANTERN_COST * 20} power a second.")
-
-    # --- its reserves
-    k.node("skill_reserves", "Deep Reserves", f"Your power holds {RESERVES_MAX} instead of {BASE_MAX}.",
-           "minecraft:glowstone", (3, 1), ["host_root"], 8)
-    k.node("skill_wellspring", "Wellspring", "Your power refills twice as fast.", "minecraft:beacon", (3, 2),
-           ["skill_reserves"], 16)
-    k.hidden("reserves_apply", {**command(first=[f"scoreboard objectives add glhmax_{key} dummy",
-                                                 f"scoreboard players set @s glhmax_{key} {RESERVES_MAX}"]),
-                                "conditions": {"unlocking": unlocked("skill_reserves")}})
-    k.hidden("wellspring_regen", {"type": "palladium:dummy", "energy_bar_usage": usage(-WELLSPRING_REGEN),
-                                  "conditions": {"unlocking": unlocked("skill_wellspring")}})
-
-    # --- always there: Release, the Emotional Spectrum menu, Mortal Form
+    # --- always on the bar: Release and the Emotional Spectrum menu
     k.bar("release", {**command(first=[f"function {NS}:entity/release_ask"]), "conditions": {"enabling": action(40)}},
-          f"Release {name}", k.glyph("revoke", "minecraft:barrier"), 9,
+          f"Release {name}", k.glyph("revoke", "minecraft:barrier"), next(index),
           desc=f"Give {name} up. No entity will choose you for an hour afterwards.")
     k.bar("emotions", {**command(first=[f"function {NS}:emotion/menu"]), "conditions": {"enabling": action(20)}},
-          "Emotional Spectrum", k.glyph("emotional_sight", "minecraft:nether_star"), 10,
+          "Emotional Spectrum", k.glyph("emotional_sight", "minecraft:nether_star"), next(index),
           desc="Your emotions, what raised them, and their quests.")
-    k.bar("mortal_form", {**command(), "conditions": {"enabling": toggle()}}, "Mortal Form",
-          k.glyph("suit_up", "minecraft:leather_chestplate"), 11, desc=f"Toggle: hide {name}'s form (its suit).")
 
-    power = {
-        "name": {"translate": f"power.{NS}.host_{key}"}, "icon": HOST_ICON[key],
-        "background": "minecraft:textures/block/black_concrete.png", "gui_display_type": "tree",
-        "primary_color": hexcolor(rgb), "secondary_color": hexcolor(tuple(int(v * 0.4) for v in rgb)),
-        "persistent_data": True,
-        "energy_bars": {BAR: {"max": {"type": "score", "objective": f"glhmax_{key}", "fallback": BASE_MAX},
-                              "auto_increase_per_tick": BASE_REGEN, "color": hexcolor(rgb)}},
-        "abilities": k.abilities,
-    }
+    power.update({"name": {"translate": f"power.{NS}.host_{key}"}, "icon": HOST_ICON[key], "persistent_data": True})
+    # everything we added spends the ring's bar (the kits were written against BAR)
+    power = json.loads(json.dumps(power).replace(f'"energy_bar": "{BAR}"', f'"energy_bar": "{bar}"'))
     return power, k.lang
+
+
+def spend(payload, cost):
+    """An ability that spends `cost` of the host's bar: needs that much to start, and pays it (once for an action,
+    every tick for a held or toggled one)."""
+    if not cost:
+        return payload
+    payload = copy.deepcopy(payload)
+    conds = payload.setdefault("conditions", {})
+    enabling = conds.get("enabling", [])
+    enabling = enabling if isinstance(enabling, list) else [enabling]
+    conds["enabling"] = enabling + [charge(cost)]
+    payload.setdefault("energy_bar_usage", usage(cost))
+    return payload
 
 
 def suit_layer(key):
@@ -701,6 +654,13 @@ def suit_layer(key):
         cape_json = json.loads((BASE / f"assets/{NS}/palladium/render_layers/{cape}.json").read_text(encoding="utf-8"))
         layers += cape_json["layers"]
     return {"type": "palladium:compound", "layers": layers}
+
+
+TAGS = {}  # item tags the functions use: path under tags/items -> items
+
+
+def write_tag(path, items):
+    TAGS[path] = items
 
 
 def functions():
@@ -721,7 +681,7 @@ def functions():
         fn[f"host/{key}/empower"] = ray + [
             "execute if score #hit gl_tmp matches 0 run title @s actionbar " + json.dumps(
                 {"text": f"Look at a {data['name']} ring bearer to empower their ring.", "color": "gray"}),
-            f"execute if score #hit gl_tmp matches 1 run energybar value subtract @s {NS}:host_{key} {BAR} {EMPOWER_COST}",
+            f"execute if score #hit gl_tmp matches 1 run energybar value subtract @s {NS}:host_{key} {bar} {EMPOWER_COST}",
             f"execute if score #hit gl_tmp matches 1 anchored eyes run particle minecraft:dust {dust(fx, 1.5)} "
             "^ ^ ^1 0.2 0.2 0.2 0 30 force",
             "tag @s remove gl_user"]
@@ -748,7 +708,7 @@ def functions():
         fn[f"host/{key}/oath"] = oath_lines + [  # as a bearer beside the living lantern
             f"energybar value add @s {power} {bar} {OATH_GIVE}",
             f"scoreboard players set @s gl_lcd {OATH_COOLDOWN}",
-            f"energybar value subtract @a[tag=gl_lantern_host,limit=1] {NS}:host_{key} {BAR} {OATH_COST}",
+            f"energybar value subtract @a[tag=gl_lantern_host,limit=1] {NS}:host_{key} {bar} {OATH_COST}",
             burst(fx, 2.0, "0.6 1 0.6", 120), sound("minecraft:block.beacon.activate", 1.4),
         ]
         second.append(f"execute as @a[tag=gl_living_lantern,tag=gl_host_{key}] at @s run "
@@ -759,6 +719,13 @@ def functions():
                                                         {"text": f" forges a new {data['name']} ring from {e.name}'s "
                                                                  "light!", "color": "white"}]),
         ]
+        # on release, the ring constructs the host made go too (unless they also wear a ring of that color)
+        clear = []
+        for tag, items in sorted(trees.ring_constructs(corps).items()):
+            write_tag(f"host_constructs/{key}_{tag}", sorted(items))
+            clear.append(f"execute unless entity @s[tag=gl_{trees.COLOR_CORPS[tag]}] run "
+                         f"clear @s #{NS}:host_constructs/{key}_{tag}{{CustomTag:\"{tag}\"}}")
+        fn[f"host/{key}/release_clear"] = clear or ["# nothing to clear"]
     second += ["scoreboard players add @a gl_lcd 0", "scoreboard players remove @a[scores={gl_lcd=1..}] gl_lcd 1",
                "tag @a[tag=gl_living_lantern,tag=!gl_host] remove gl_living_lantern"]
     return fn, ["scoreboard objectives add gl_lcd dummy"], second
@@ -775,4 +742,6 @@ def assets(write, lang):
         write(f"assets/{NS}/palladium/render_layers/hosts/{e.key}.json", suit_layer(e.key))
         items.update(f"{NS}:{i[0]}" for i in WHEEL_ITEMS[e.key])
     write(f"data/{NS}/tags/items/host_constructs.json", {"replace": False, "values": sorted(items)})
+    for path, values in TAGS.items():
+        write(f"data/{NS}/tags/items/{path}.json", {"replace": False, "values": values})
     return sorted(items)

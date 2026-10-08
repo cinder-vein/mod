@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "final_lanterns:axe_willpower",
+    "final_lanterns:bat_willpower",
+    "final_lanterns:katana_willpower",
+    "final_lanterns:pickaxe_willpower",
+    "final_lanterns:spear_willpower"
+  ]
+}

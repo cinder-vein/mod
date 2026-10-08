@@ -13,7 +13,7 @@ Use a Forge **1.20.1** profile (Forge 47.x) with these mods:
 - **Curios**: rings are worn in the *Lantern Ring* slot
 - **KubeJS** (with Rhino)
 
-Then put `dist/final_lanterns-1.3.1-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
+Then put `dist/final_lanterns-1.4.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
 (`greenlantern-*.jar`) and *A New Corps* jars: Final Lanterns replaces both.
 
 **Coming from Lantern Corps 10:** delete `lantern_commands.js` and `lantern_keys.js` from your game's
@@ -73,6 +73,22 @@ Final Lanterns adds these to the nine spectrum rings:
   - With KubeJS: `/ring recall [corps]`, and looser wordings in chat (*"come back blue ring"*).
   - A ring lying anywhere in a loaded area, in any dimension, flies back to you. One in your ender chest comes out at
     your feet. Anywhere else (a chest, an unloaded area), a new ring forms on you and the one left behind goes dark.
+
+## Skill trees (1.4)
+
+The Spectrum Bond and every entity host now use A New Corps' own tree layout, bar textures and backgrounds:
+
+- **A host's tree is its corps' ring tree** (Ion: the Willpower tree, Parallax: Fear, and so on), with every ring
+  ability working without a ring and stronger: a 3000 bar that refills on its own, charge upgrades half again as big,
+  beams half again as strong. Its suit node is the entity: toggle it to wear the entity's form. Beside the ring's
+  tree, two branches: **<Entity>'s Power** (right: its passive, three abilities and ultimate) and **<Entity>'s Light**
+  (left: Empower Ring, Living Lantern, Forge Ring and Hard Light, a second construct wheel with the entity's own
+  weapons and shapes).
+- **The Spectrum Bond's tree** follows the same layout, with a spectrum ability bar: Twin Beam, Twin Constructs,
+  Prismatic Shield, Spectrum Fusion (and Mastery) and Spectrum Overload down the middle, Twin Strength on the left,
+  Twin Guard and Spectrum Flight on the right, Dual Vitality and Spectrum Healing above right, Shared Light, Twin
+  Lanterns and Resonance above left.
+- **Two rings, two hands:** the second ring (in corps order) is drawn on the left hand.
 
 ## Two rings: the Spectrum Bond
 

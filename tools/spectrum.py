@@ -16,6 +16,7 @@ and bar; the bond adds one more bar, a skill tree about wielding two lights, and
 
 The first of the two rings in common.CORPS order is the right-hand ring (gl_p1_<corps>), the other the left (gl_p2_).
 """
+import colorsys
 import hashlib
 import json
 import math
@@ -25,10 +26,15 @@ from PIL import Image
 
 import entities
 import hosts
+import trees
 from common import CORPS, NS, TARGETS, burst, hexcolor, sound, tellraw
 
 BASE = Path(__file__).resolve().parent.parent / "base"
 BOND = f"{NS}:spectrum_bond"
+# the bond's look, in A New Corps' style: a spectrum version of its ability bar, a prismatic tree background and icon
+BAR_TEXTURE = f"{NS}:textures/gui/ability_barspectrum.png"
+BACKGROUND = f"{NS}:textures/gui/spectrum_tree.png"
+ICON_TEXTURE = f"{NS}:textures/icons/slots/spectrum_bond.png"
 ORDER = list(CORPS)
 RGB = (235, 240, 255)  # the bond's own color: every light at once
 COSTS = {"fusion": 125, "fusion_mastered": 75, "overload": 400}
@@ -138,32 +144,49 @@ def construct_items():
     return {e.corps: hosts.WHEEL_ITEMS[e.key] for e in entities.ENTITIES}
 
 
-DUAL_NODES = [  # key, name, description, icon (an item, or glyph:<name>), position, parent, XP levels
+ICON = f"{NS}:textures/icons/"  # A New Corps' tree icons
+# A New Corps' tree layout (half steps around the root): the bond's skills down the middle, strength on the left,
+# defense on the right, vitality above right, the two lights' harmony above left.
+DUAL_NODES = [  # key, name, description, icon (an item or texture, or glyph:<name>), position, parent, XP levels
+    ("bond_skills", "Skill Tree", "What two rings can do together.", "glyph:fusion", (0, -0.5), "bond_root", None),
     ("twin_beam", "Twin Beam", "Hold to fire both rings' beams at once, one from each hand. Each ring pays for its own.",
-     "glyph:twin_beam", (-1, 1), "bond_root", 5),
+     "glyph:twin_beam", (0, 0), "bond_skills", 5),
     ("twin_constructs", "Twin Constructs", "One construct wheel with both corps' construct weapons.",
-     "glyph:constructs", (-1, 2), "twin_beam", 10),
+     "glyph:constructs", (0, 0.5), "twin_beam", 15),
     ("prismatic", "Prismatic Shield", "Toggle: Resistance II and a shield of both colors. Each ring pays 1 charge a "
-     "tick.", "glyph:prismatic", (-1, 3), "twin_constructs", 12),
+     "tick.", "glyph:prismatic", (0, 1), "twin_constructs", 20),
     ("fusion", "Spectrum Fusion", "Fuse both emotions in one burst around you: every pair of corps has its own fusion. "
-     f"Costs {COSTS['fusion']} charge from each ring, every 30 seconds.", "glyph:fusion", (1, 1), "bond_root", 8),
+     f"Costs {COSTS['fusion']} charge from each ring, every 30 seconds.", "glyph:fusion", (0, 1.5), "prismatic", 20),
     ("fusion_mastery", "Fusion Mastery", f"Spectrum Fusion recharges in 15 seconds and costs {COSTS['fusion_mastered']} "
-     "from each ring.", "minecraft:nether_star", (1, 2), "fusion", 15),
+     "from each ring.", "minecraft:nether_star", (0.5, 1.5), "fusion", 25),
     ("overload", "Spectrum Overload", f"Ultimate: unleash both rings at once. Everything within {OVERLOAD_RADIUS} blocks "
      "takes heavy damage and is thrown into the air, and you gain Strength II, Resistance II and Speed II for 15 "
-     f"seconds. Costs {COSTS['overload']} charge from each ring, once a minute.", "glyph:overload", (1, 3),
-     "fusion_mastery", 30),
+     f"seconds. Costs {COSTS['overload']} charge from each ring, once a minute.", "glyph:overload", (0, 2),
+     "fusion", 30),
+    ("twin_might", "Strength Tree", "Two lights behind every blow.", ICON + "strength.png", (-1, -0.5), "bond_skills",
+     None),
+    ("twin_strength", "Twin Strength I", "+3 attack and punch damage.", ICON + "strength.png", (-1, 0), "twin_might",
+     15),
+    ("twin_strength_2", "Twin Strength II", "Another +3 attack and punch damage.", ICON + "strength.png", (-1, 0.5),
+     "twin_strength", 20),
+    ("twin_guard", "Defense Tree", "Two lights between you and harm.", ICON + "defense.png", (1, -0.5), "bond_skills",
+     None),
+    ("twin_guard_1", "Twin Guard I", "+4 armor and +2 armor toughness.", ICON + "defense.png", (1, 0), "twin_guard", 15),
+    ("twin_guard_2", "Twin Guard II", "Another +4 armor and +2 armor toughness.", ICON + "defense.png", (1, 0.5),
+     "twin_guard_1", 15),
+    ("spectrum_flight", "Spectrum Flight", "Fly faster on two lights (with either ring's flight).", ICON + "flight.png",
+     (1, 1), "twin_guard_2", 15),
+    ("dual_vitality", "Dual Vitality I", "+10 hearts.", ICON + "heart.png", (0.5, -1.5), "bond_root", 10),
+    ("dual_vitality_2", "Dual Vitality II", "Another +10 hearts.", ICON + "heartgold.png", (0.5, -2), "dual_vitality",
+     15),
+    ("spectrum_healing", "Spectrum Healing", "Both lights mend you: a heart every 4 seconds.", ICON + "heartdiamond.png",
+     (0.5, -2.5), "dual_vitality_2", 15),
     ("shared_light", "Shared Light", f"Every second, up to {SHARED_FLOW} charge flows from the fuller ring into the "
-     "emptier one.", "minecraft:glowstone_dust", (-3, 1), "bond_root", 5),
+     "emptier one.", "minecraft:glowstone_dust", (-0.5, -1.5), "bond_root", 10),
     ("twin_lanterns", "Twin Lanterns", "Recharging either ring at its lantern fills both rings.", "minecraft:lantern",
-     (-3, 2), "shared_light", 10),
+     (-0.5, -2), "shared_light", 20),
     ("resonance", "Resonance", f"The two lights feed each other: both rings regain {RESONANCE * 20} charge a second.",
-     "minecraft:amethyst_shard", (-3, 3), "twin_lanterns", 15),
-    ("dual_vitality", "Dual Vitality", "+10 hearts.", "minecraft:golden_apple", (3, 1), "bond_root", 8),
-    ("twin_strength", "Twin Strength", "+3 attack and punch damage.", "minecraft:netherite_sword", (3, 2),
-     "dual_vitality", 12),
-    ("spectrum_flight", "Spectrum Flight", "Fly faster on two lights (with either ring's flight).", "minecraft:elytra",
-     (3, 3), "twin_strength", 12),
+     "minecraft:amethyst_shard", (-0.5, -2.5), "twin_lanterns", 40),
 ]
 TAGGED_NODES = ["shared_light", "twin_lanterns"]  # skills the datapack carries out (tagged gl_dn_<node>)
 
@@ -196,21 +219,17 @@ def power_json(lang):
         if desc:
             abilities[key]["description"] = tr(key.split("__")[0] + ".description", desc)
 
-    abilities["bond_root"] = {
-        "type": "palladium:dummy", "title": tr("bond_root", "Spectrum Bond"),
-        "description": tr("bond_root.description", "Two rings, two emotions, one light. While you wear two spectrum "
-                          "rings, the Spectrum Bond adds this bar and this skill tree; each ring keeps its own. Choose "
-                          "a merged suit in the accessories menu (Spectrum Suit)."),
-        "icon": "minecraft:nether_star", "hidden_in_bar": True, "gui_position": [0, 0]}
+    abilities["bond_root"] = trees.node(
+        tr("bond_root", "Spectrum Bond"),
+        tr("bond_root.description", "Two rings, two emotions, one light. While you wear two spectrum rings, the "
+           "Spectrum Bond adds this bar and this skill tree; each ring keeps its own. Choose a merged suit in the "
+           "accessories menu (Spectrum Suit)."), ICON_TEXTURE, (0, -1.5), [])
     for key, name, desc, icon, pos, parent, xp in DUAL_NODES:
         if icon.startswith("glyph:"):
             icon = glyph(icon[6:], "minecraft:nether_star")
-        abilities[f"skill_{key}"] = {
-            "type": "palladium:dummy", "title": tr(key, name), "description": tr(key + ".description",
-                                                                                  desc + f" Costs {xp} XP levels."),
-            "icon": icon, "hidden_in_bar": True, "gui_position": list(pos),
-            "conditions": {"unlocking": [unlocked(parent if parent == "bond_root" else f"skill_{parent}"),
-                                         {"type": "palladium:experience_level_buyable", "xp_level": xp}]}}
+        abilities[f"skill_{key}"] = trees.node(
+            tr(key, name), tr(key + ".description", desc + (f" Costs {xp} XP levels." if xp else "")), icon, pos,
+            [parent if parent == "bond_root" else f"skill_{parent}"], xp)
     for key in TAGGED_NODES:
         hidden(f"tag_{key}", {**hosts.command(every=[f"tag @s add gl_dn_{key}"]),
                               "conditions": {"unlocking": unlocked(f"skill_{key}")}})
@@ -302,10 +321,16 @@ def power_json(lang):
                      "uuid": "6c7abead-1a2b-4c3d-8e4f-" + hashlib.md5(f"bond.{key}".encode()).hexdigest()[:12],
                      "conditions": {"unlocking": unlocked(f"skill_{node}")}})
 
-    attr("dual_vitality", "minecraft:generic.max_health", 20, "dual_vitality")
-    attr("twin_strength", "minecraft:generic.attack_damage", 3, "twin_strength")
-    attr("twin_strength_fists", "palladium:punch_damage", 3, "twin_strength")
+    for n in ("", "_2"):
+        attr(f"dual_vitality{n}", "minecraft:generic.max_health", 20, f"dual_vitality{n}")
+        attr(f"twin_strength{n}", "minecraft:generic.attack_damage", 3, f"twin_strength{n}")
+        attr(f"twin_strength{n}_fists", "palladium:punch_damage", 3, f"twin_strength{n}")
+    for n in ("1", "2"):
+        attr(f"twin_guard_{n}", "minecraft:generic.armor", 4, f"twin_guard_{n}")
+        attr(f"twin_guard_{n}_toughness", "minecraft:generic.armor_toughness", 2, f"twin_guard_{n}")
     attr("spectrum_flight", "palladium:flight_speed", 0.5, "spectrum_flight")
+    hidden("spectrum_healing", {"type": "palladium:healing", "frequency": 80, "amount": 1,
+                                "conditions": {"unlocking": unlocked("skill_spectrum_healing")}})
 
     # --- the Emotional Spectrum menu, and the merged suit
     bar("emotions", {**hosts.command(first=[f"function {NS}:emotion/menu"]), "conditions": {"enabling": hosts.action(20)}},
@@ -318,10 +343,9 @@ def power_json(lang):
     hidden("spectrum_suit_skin", {"type": "palladium:hide_body_part", "body_parts": [
         "right_arm_overlay", "left_arm_overlay", "right_leg_overlay", "left_leg_overlay", "chest_overlay",
         "head_overlay"], "affects_first_person": True, "conditions": {"enabling": [either_suit, merged_suit()]}})
-    return {"name": {"translate": f"power.{NS}.spectrum_bond"}, "icon": "minecraft:nether_star",
-            "background": "minecraft:textures/block/white_concrete.png", "gui_display_type": "tree",
-            "primary_color": hexcolor(RGB), "secondary_color": "#3A3D46", "persistent_data": True,
-            "abilities": abilities}
+    return {"name": {"translate": f"power.{NS}.spectrum_bond"}, "icon": ICON_TEXTURE, "background": BACKGROUND,
+            "ability_bar_texture": BAR_TEXTURE, "gui_display_type": "tree", "primary_color": hexcolor(RGB),
+            "secondary_color": "#3A3D46", "persistent_data": True, "abilities": abilities}
 
 
 def merged_suit():
@@ -358,6 +382,50 @@ def patch_ring(c, power):
             enabling = conds.get("enabling", [])
             enabling = enabling if isinstance(enabling, list) else [enabling]
             conds["enabling"] = enabling + [NOT(merged_suit())]
+    return power
+
+
+# --- which hand each ring is on ------------------------------------------------------------------------
+# A ring item draws itself through its Curios render layer, which knows the item but not its slot, so both rings
+# landed on the right hand. Each ring's power draws it instead: on the right hand, or on the left while it is the
+# second ring (gl_p2_<corps>, set by the datapack every tick; Palladium checks it on the server and tells clients).
+
+def right_layer(c):
+    """The A New Corps render layer that draws corps c's ring on the right hand."""
+    item = json.loads((BASE / f"addon/{NS}/items/{CORPS[c]['ring']}.json").read_text(encoding="utf-8"))
+    return (item.get("render_layers") or {}).get("curios:lantern_rings", [f"{NS}:greenlanternring"])[0]
+
+
+def left_layer(c):
+    return f"{NS}:fl_left/{c}"
+
+
+def left_ring(c):
+    """(render layer json, texture rel path, image) for corps c's ring on the left hand: the same model (it has a
+    cube on each arm), with the ring painted on the left arm's cube instead of the right's."""
+    ns, _, path = right_layer(c).partition(":")
+    layer = json.loads((BASE / f"assets/{ns}/palladium/render_layers/{path}.json").read_text(encoding="utf-8"))
+    tns, _, tpath = layer["texture"].partition(":")
+    img = Image.open(BASE / f"assets/{tns}/{tpath}").convert("RGBA")
+    unit = img.width // 16  # the model's texture is 16 units wide; the right cube's faces are at (0, 0), the left's at (0, 2)
+    out = Image.new("RGBA", img.size)
+    out.paste(img.crop((0, 0, 4 * unit, 2 * unit)), (0, 2 * unit))
+    rel = f"textures/models/skins/fl_left/{c}ring.png"
+    return {**layer, "texture": f"{NS}:{rel}"}, f"assets/{NS}/{rel}", out
+
+
+def hand_rings(c, power):
+    abilities = power["abilities"]
+    second = {"type": "palladium:has_tag", "tag": f"gl_p2_{c}"}
+    if "ringrender" in abilities:  # the Willpower ring draws its ring (style picked in the accessories) itself
+        conds = abilities["ringrender"].setdefault("conditions", {})
+        enabling = conds.get("enabling", [])
+        conds["enabling"] = (enabling if isinstance(enabling, list) else [enabling]) + [NOT(second)]
+    else:
+        abilities["fl_ring_right"] = {"type": "palladium:render_layer", "render_layer": right_layer(c), "hidden": True,
+                                      "hidden_in_bar": True, "conditions": {"enabling": NOT(second)}}
+    abilities["fl_ring_left"] = {"type": "palladium:render_layer", "render_layer": left_layer(c), "hidden": True,
+                                 "hidden_in_bar": True, "conditions": {"enabling": second}}
     return power
 
 
@@ -445,9 +513,49 @@ def slot_icon():
     return img
 
 
+def spectrum(img, axis):
+    """An A New Corps texture with every colored pixel's hue running through the spectrum (red to violet) along
+    `axis` ("x" or "y"); greys and black stay."""
+    img = img.convert("RGBA")
+    px = img.load()
+    left, top, right, bottom = img.getbbox() or (0, 0, *img.size)
+    span = max(1, (bottom - top) if axis == "y" else (right - left))
+    for y in range(top, bottom):
+        for x in range(left, right):
+            r, g, b, a = px[x, y]
+            if not a:
+                continue
+            _, sat, val = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if sat < 0.2:
+                continue
+            hue = 0.83 * ((y - top) if axis == "y" else (x - left)) / span
+            px[x, y] = (*(round(v * 255) for v in colorsys.hsv_to_rgb(hue, sat, val)), a)
+    return img
+
+
+def tree_background():
+    """A 16x16 tile for the bond's tree: deep slate with faint spectrum diagonals (it tiles seamlessly)."""
+    img = Image.new("RGBA", (16, 16))
+    for y in range(16):
+        for x in range(16):
+            hue = ((x + y) % 16) / 16
+            val = 0.22 + 0.04 * ((x * 7 + y * 3) % 5 == 0)
+            img.putpixel((x, y), (*(round(v * 255) for v in colorsys.hsv_to_rgb(hue, 0.45, val)), 255))
+    return img
+
+
 def assets(write, save, lang):
     """The bond's power, its merged suits and their accessory slot, and the left-hand beams."""
+    gui = BASE / f"assets/{NS}/textures"
+    save(spectrum(Image.open(gui / "gui/ability_bar.png"), "y"), f"assets/{NS}/textures/gui/ability_barspectrum.png")
+    save(tree_background(), f"assets/{NS}/textures/gui/spectrum_tree.png")
+    save(spectrum(Image.open(gui / "icons/slots/greenlantern1.png"), "x"),
+         f"assets/{NS}/textures/icons/slots/spectrum_bond.png")
     write(f"data/{NS}/palladium/powers/spectrum_bond.json", power_json(lang))
+    for c in ORDER:
+        layer, rel, img = left_ring(c)
+        save(img, rel)
+        write(f"assets/{NS}/palladium/render_layers/fl_left/{c}.json", layer)
     lang[f"power.{NS}.spectrum_bond"] = "Spectrum Bond"
     for beam_id, data in LEFT_BEAMS.items():
         write(f"assets/{NS}/palladium/energy_beams/{beam_id.partition(':')[2]}.json", data)

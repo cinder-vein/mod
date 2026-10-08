@@ -505,7 +505,15 @@
         -0.5
       ],
       "description": "Gold Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "goldlantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -684,6 +692,11 @@
       "uuid": "a596c1dd-383d-4030-85d0-8e31cc376ff5",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "goldlantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10

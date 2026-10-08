@@ -424,7 +424,15 @@
         -0.5
       ],
       "description": "Pride Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -603,6 +611,11 @@
       "uuid": "5885efbf-fc92-4dda-b8c7-2542359e65ba",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "greenlantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10

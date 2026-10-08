@@ -548,7 +548,15 @@
         -0.5
       ],
       "description": "Balance Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "balancelantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -636,7 +644,15 @@
       "amount": 10,
       "operation": 0,
       "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "balancelantern"
+          }
+        ]
+      }
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -1220,6 +1236,11 @@
           }
         ],
         "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "balancelantern"
+          },
           {
             "type": "palladium:not",
             "conditions": [

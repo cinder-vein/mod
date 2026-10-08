@@ -25,6 +25,6 @@ execute if score #hit gl_tmp matches 0 anchored eyes positioned ^ ^ ^22 position
 execute if score #hit gl_tmp matches 0 anchored eyes positioned ^ ^ ^23 positioned ~ ~-0.9 ~ as @a[tag=gl_red,tag=!gl_user,distance=..1.4,limit=1,sort=nearest] at @s run function final_lanterns:host/butcher/empower_hit
 execute if score #hit gl_tmp matches 0 anchored eyes positioned ^ ^ ^24 positioned ~ ~-0.9 ~ as @a[tag=gl_red,tag=!gl_user,distance=..1.4,limit=1,sort=nearest] at @s run function final_lanterns:host/butcher/empower_hit
 execute if score #hit gl_tmp matches 0 run title @s actionbar {"text": "Look at a Red Lantern ring bearer to empower their ring.", "color": "gray"}
-execute if score #hit gl_tmp matches 1 run energybar value subtract @s final_lanterns:host_butcher entity_power 400
+execute if score #hit gl_tmp matches 1 run energybar value subtract @s final_lanterns:host_butcher rage 400
 execute if score #hit gl_tmp matches 1 anchored eyes run particle minecraft:dust 0.86 0.12 0.14 1.5 ^ ^ ^1 0.2 0.2 0.2 0 30 force
 tag @s remove gl_user

@@ -140,8 +140,8 @@ def _checks():
         uuids = {}
         bars = power.get("energy_bars", {})
         check_lang(power, where)
-        if isinstance(power.get("icon"), str):
-            check_ref("item", power["icon"], where)
+        if isinstance(power.get("icon"), str):  # an item id, or a texture path ending in .png
+            check_ref("texture" if power["icon"].endswith(".png") else "item", power["icon"], where)
         for name, ab in abilities.items():
             w = f"{where}/{name}"
             if isinstance(ab.get("icon"), str):  # an item id, or a texture path ending in .png
@@ -323,7 +323,18 @@ def package():
 if __name__ == "__main__":
     inherited = set(validate(BASE)) if BASE.exists() else set()
     found = validate()
-    new = [e for e in found if e not in inherited]
+    # host powers are copies of ring powers: problems in what they copied are the ring's
+    import entities
+    from common import CORPS
+    hosts = {f"host_{e.key}": CORPS[e.corps]["power"] for e in entities.ENTITIES}
+
+    def norm(e):
+        for host, ring in hosts.items():
+            e = e.replace(f"power {host}/", f"power {ring}/").replace(f"{NS}:{host}", f"{NS}:{ring}")
+        return e
+
+    inherited = {norm(e) for e in inherited}
+    new = [e for e in found if norm(e) not in inherited]
     if inherited:
         print(f"({len(inherited)} problems inherited from A New Corps in base/, not counted)")
     if new:

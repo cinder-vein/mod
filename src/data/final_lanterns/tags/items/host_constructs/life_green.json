@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "final_lanterns:axe_willpower",
+    "final_lanterns:bat_willpower",
+    "final_lanterns:battleaxe_willpower",
+    "final_lanterns:greatsword_willpower",
+    "final_lanterns:greenlongsword",
+    "final_lanterns:hammer_willpower",
+    "final_lanterns:katana_willpower",
+    "final_lanterns:pickaxe_willpower",
+    "final_lanterns:scythe_willpower",
+    "final_lanterns:shield",
+    "final_lanterns:spear_willpower"
+  ]
+}

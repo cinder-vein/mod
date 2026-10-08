@@ -35,7 +35,7 @@ from common import CORPS, HOSTILE_PREY, NOT_CREATURES, NS
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 BASE = ROOT / "base"
-VERSION = "1.3.1"
+VERSION = "1.4.0"
 MERGED = {f"assets/{NS}/lang/en_us.json", "data/minecraft/tags/functions/load.json",
           "data/minecraft/tags/functions/tick.json", "pack.mcmeta"}
 PATCHED = set()  # A New Corps files deliberately rewritten (see patch_base)
@@ -120,7 +120,12 @@ def patch_base(lang):
             "first_tick_commands": [f"function {NS}:emotion/menu"], "commands": [], "last_tick_commands": [],
             "conditions": {"enabling": [{"type": "palladium:action", "cooldown": 20, "key_type": "key_bind"}]}}
         suit_free.free_from_suit(power, f"{NS}:{data['power']}")
-        patch(rel, spectrum.patch_ring(c, power))
+        patch(rel, spectrum.hand_rings(c, spectrum.patch_ring(c, power)))
+        # the ring item no longer draws itself in the Lantern Ring slot: its power does, on the right hand or the left
+        item_rel = f"addon/{NS}/items/{data['ring']}.json"
+        item = base_json(item_rel)
+        if (item.get("render_layers") or {}).pop("curios:lantern_rings", None):
+            patch(item_rel, item)
     # Every other A New Corps ring too: its abilities work while it's worn, suit or no suit (the suit is just a look)
     ours = {data["power"] for data in CORPS.values()}
     for path in sorted((BASE / f"data/{NS}/palladium/powers").glob("*.json")):

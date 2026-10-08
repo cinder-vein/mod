@@ -433,7 +433,15 @@
         -0.5
       ],
       "description": "Corruption based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -545,7 +553,15 @@
       "amount": 6,
       "operation": 0,
       "uuid": "8ddf91e0-f640-4225-a88c-b6487d69d4f3",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "corruptedfate"
+          }
+        ]
+      }
     },
     "armorlevel1": {
       "type": "palladium:attribute_modifier",
@@ -628,6 +644,11 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "corruptedfate"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1168,6 +1189,11 @@
           }
         ],
         "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "corruptedfate"
+          },
           {
             "type": "palladium:not",
             "conditions": [

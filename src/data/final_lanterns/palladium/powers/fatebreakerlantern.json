@@ -485,7 +485,15 @@
         -0.5
       ],
       "description": "Djinn Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fatebreaker"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -664,6 +672,11 @@
       "uuid": "77bb8d50-e80f-47f2-b708-fbc748caa5da",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fatebreaker"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10

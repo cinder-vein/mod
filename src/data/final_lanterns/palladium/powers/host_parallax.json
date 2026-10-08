@@ -2,45 +2,1770 @@
   "name": {
     "translate": "power.final_lanterns.host_parallax"
   },
-  "icon": "minecraft:spider_eye",
-  "background": "minecraft:textures/block/black_concrete.png",
-  "gui_display_type": "tree",
-  "primary_color": "#F5CD1E",
-  "secondary_color": "#62520C",
   "persistent_data": true,
+  "background": "minecraft:textures/block/yellow_concrete.png",
+  "icon": "minecraft:spider_eye",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_baryellow.png",
+  "gui_display_type": "tree",
   "energy_bars": {
-    "entity_power": {
-      "max": {
-        "type": "score",
-        "objective": "glhmax_parallax",
-        "fallback": 4000
-      },
+    "fear": {
+      "max": 3000,
       "auto_increase_per_tick": 3,
-      "color": "#F5CD1E"
+      "color": "#cba827"
     }
   },
   "abilities": {
-    "host_root": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/greenlantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "yellowlantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "yellowlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "yellowlantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "yellowlantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "scoreboard objectives add Lantern.Mastery.Amount dummy",
+        "team add fear",
+        "team join fear",
+        "team modify fear color yellow"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": []
+    },
+    "immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {}
+    },
+    "yellowlantern": {
       "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/yellowlantern1.png",
       "title": {
         "translate": "ability.final_lanterns.host_parallax.host_root"
       },
+      "list_index": 4,
+      "bar_color": "yellow",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
       "description": {
         "translate": "ability.final_lanterns.host_parallax.host_root.description"
       },
-      "icon": "minecraft:spider_eye",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "fear",
+            "min": 0,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:yellowlanternring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Fear Ring based Abilities",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          }
+        ]
+      }
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "hidden": false,
+      "description": "Strength Upgrades                           Base Strength: 1",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "bd259b3c-300f-a1a1-3263-2b77727d1ad6",
+      "conditions": {}
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "description": "Defense Upgrades                           Base Armor: 6",
+      "hidden_in_bar": false,
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 6,
+      "operation": 0,
+      "uuid": "5832c2ab-adec-5988-1dbd-4468d81849f7",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "Defense Upgrade 1                           Total: 6 (+14)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 14,
+      "operation": 0,
+      "uuid": "49e2c34e-ade4-31b5-7807-e1468f9cc961",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "Defense Upgrade 2                           Total: 6 (+28)",
+      "attribute": "minecraft:generic.armor",
+      "amount": 14,
+      "operation": 0,
+      "uuid": "93fe9ab3-3a2d-c727-8f13-95a91025936a",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+7)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "35b93dd2-2e6e-9436-971b-33c11ee0c431",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "Health Upgrade 2                          Base Health: 20 (+14)",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "7a821109-8eda-9436-69f9-6dbef0c744aa",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
       "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 80,
+      "description": "Natural Healing                           Amount: 1Heart/4Second",
+      "amount": 1,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.02,
+      "operation": 0,
+      "uuid": "6e096230-e279-1326-5377-709fa3e69b3c",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "Strength Upgrade 1                              Base Strength: 1 (+8)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 8,
+      "operation": 0,
+      "uuid": "40feddd8-4676-7caf-0ba0-858fcf2203e6",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "Strength Upgrade 2                              Base Strength: 1 (+15)",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 7,
+      "operation": 0,
+      "uuid": "1450f126-c151-079c-6fbd-0e166c008a38",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "fearbeam": {
+      "type": "palladium:energy_beam",
+      "title": "Fear Beam",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "bar_color": "yellow",
+      "icon": "final_lanterns:textures/icons/yellowlanterns/yellowlanternbeam.png",
+      "list_index": 0,
+      "description": "Fear Beam                        Damage: 18",
+      "energy_beam": "final_lanterns:yellowlanternbeam",
+      "energy_bar_usage": {
+        "energy_bar": "fear",
+        "amount": 5
+      },
       "gui_position": [
         0,
         0
-      ]
+      ],
+      "damage": 18,
+      "max_distance": 20,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "fear",
+            "min": 5,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "fearbeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "fearbeam"
+          }
+        ]
+      }
+    },
+    "yellowwheel": {
+      "type": "palladium:ability_wheel",
+      "icon": "final_lanterns:textures/icons/slots/yellowlantern3.png",
+      "title": "Fear Constructs",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 1,
+      "gui_position": [
+        0,
+        1
+      ],
+      "description": "null",
+      "abilities": [
+        "constructcreation_scythe",
+        "constructcreation_claws",
+        "constructcreation_pickaxe",
+        "fearshield",
+        "constructcreation_axe"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "disable_center_icon": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ]
+      }
+    },
+    "constructcreation": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/yellowlantern3.png",
+      "title": "Construct Creation",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "gui_position": [
+        0,
+        0.5
+      ],
+      "description": "Concentrate and Create different Items with your Ring.",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fearbeam"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "constructcreation_scythe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:scytheyellow",
+      "title": "Scythe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 5,
+      "gui_position": [
+        0.5,
+        1
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:scytheyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:scytheyellow"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:scytheyellow"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_claws": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:clawsyellow",
+      "title": "Claws",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 6,
+      "gui_position": [
+        0.5,
+        1.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:clawsyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "drain_ebergy": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value subtract @s final_lanterns:host_parallax fear 5"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_on_cooldown",
+            "power": "null",
+            "ability": "constructcreation_skull"
+          }
+        ]
+      }
+    },
+    "constructcreation_pickaxe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:pickaxeyellow",
+      "title": "Pickaxe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 8,
+      "gui_position": [
+        0.5,
+        2.5
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxeyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:pickaxeyellow"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:pickaxeyellow"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "constructcreation_axe": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:axeyellow",
+      "title": "Axe",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 9,
+      "gui_position": [
+        0.5,
+        3
+      ],
+      "first_tick_commands": [
+        "give @s final_lanterns:axeyellow{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:or",
+                "conditions": [
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:axeyellow"
+                    },
+                    "slot": "mainhand"
+                  },
+                  {
+                    "type": "palladium:item_in_slot",
+                    "item": {
+                      "item": "final_lanterns:axeyellow"
+                    },
+                    "slot": "offhand"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "fearshield": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:yellowshield",
+      "title": "Fear Shield",
+      "list_index": 1,
+      "gui_position": [
+        0,
+        2
+      ],
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "item replace entity @s weapon.offhand with final_lanterns:yellowshield{CustomTag:yellow}"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:empty_slot",
+            "slot": "offhand"
+          }
+        ]
+      }
+    },
+    "constructcreation_skull": {
+      "type": "palladium:projectile",
+      "icon": "final_lanterns:skullyellow",
+      "title": "Fear Skull",
+      "bar_color": "yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 7,
+      "gui_position": [
+        0.5,
+        2
+      ],
+      "description": "null",
+      "entity_type": "palladium:custom_projectile",
+      "entity_data": {
+        "Appearances": [
+          {
+            "Type": "item",
+            "Item": "final_lanterns:skullyellow"
+          }
+        ]
+      },
+      "inaccuracy": 0,
+      "velocity": 1.5,
+      "swinging_arm": "main_arm",
+      "damage_from_player": false,
+      "ignore_player_movement": false,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:item_in_slot",
+            "item": {
+              "item": "final_lanterns:scytheyellow"
+            },
+            "slot": "mainhand"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 15,
+            "key_type": "right_click",
+            "needs_empty_hand": false
+          }
+        ]
+      }
+    },
+    "otherglowing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#ffea00",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#FFE135",
+      "end_hex": "#ffea00",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#FFE135",
+      "end_hex": "#ffea00",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fear_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:yellowlanternbattery",
+      "list_index": 2,
+      "title": "Fear Max lvl 2",
+      "bar_color": "green",
+      "description": "Energy Capacity                               Total: 2000 (+1000)",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:host_parallax fear 4500"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "fear_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fear_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:yellowlanternbattery",
+      "list_index": 2,
+      "title": "Fear Max lvl 3",
+      "description": "Energy Capacity                               Total: 2000 (+2000)",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:host_parallax fear 6000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fear_maxlvl2"
+          }
+        ]
+      }
+    },
+    "naturalregen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:yellowlanternbattery",
+      "list_index": 2,
+      "title": "Natural Fear Regeneration",
+      "bar_color": "green",
+      "hidden": false,
+      "description": "Energy Regeneration                                                         2 Energy/Second",
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:host_parallax fear 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fear_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "fearbeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "673dce6c-2572-96ca-7738-0a7aa9958b1f",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "4ecf5dd4-2fa1-11d0-2827-f9eea4814f68",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
+    },
+    "hoperegen": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:greenlanternbattery",
+      "list_index": 2,
+      "title": "Hope Regen",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value subtract @s final_lanterns:host_parallax fear 4"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:has_effect",
+            "effect": "final_lanterns:hope_enpowerment"
+          }
+        ]
+      }
+    },
+    "inflict_fear": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/slots/yellowlantern1.png",
+      "title": "Inflict Fear",
+      "bar_color": "yellow",
+      "description": "Inflict fear to others for 10 second making them hear things that doesn't exist",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        1
+      ],
+      "list_index": 2,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "execute as @s[distance=..5,palladium.power=final_lanterns:host_parallax] run energybar value subtract @p final_lanterns:host_parallax fear 1",
+        "effect give @e[distance=..5] final_lanterns:fear 10 4 true",
+        "effect clear @s minecraft:darkness",
+        "effect clear @s minecraft:nausea",
+        "effect clear @s final_lanterns:fear"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "constructcreation"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_on_cooldown",
+                "power": "null",
+                "ability": "inflict_fear"
+              }
+            ]
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "cooldown": 120,
+            "ticks": 60,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      }
+    },
+    "inflict_fear_bar": {
+      "type": "palladium:command",
+      "list_index": 2,
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value subtract @s final_lanterns:host_parallax fear 8"
+      ],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "inflict_fear"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "fear",
+            "min": 0,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "ringconstruction": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:yellowlanternring",
+      "title": "Ring Construction",
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "description": "This final ability allows you to create a duplicate of your current ring at the cost of all your fear. Once used, the ability becomes locked. Note: You must have Fear Max lvl 3",
+      "gui_position": [
+        0,
+        1.5
+      ],
+      "list_index": 3,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "inflict_fear"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 30
+          }
+        ]
+      }
+    },
+    "not_enough_fear": {
+      "type": "palladium:command",
+      "title": "Not Enough Fear",
+      "icon": "final_lanterns:yellowlanternring",
+      "first_tick_commands": [
+        "playsound minecraft:block.note_block.didgeridoo ambient @s ~ ~ ~ 1 0.5",
+        "title @s actionbar [\"\",{\"text\":\"Not enough fear!\",\"color\":\"red\",\"bold\":true}]"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": 3,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 20,
+            "key_type": "key_bind"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "fear",
+            "min": 0,
+            "max": 1000000
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          }
+        ]
+      }
+    },
+    "ring_construction": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:yellowlanternring",
+      "title": "Ring Construction",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "bar_color": "yellow",
+      "list_index": 3,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "cooldown": 12000,
+            "ticks": 50,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "fear",
+            "min": 4000,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "ring_conjure_timer": {
+      "type": "palladium:animation_timer",
+      "icon": "final_lanterns:yellowlanternring",
+      "title": "Ring Construction",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 3,
+      "start_value": 0,
+      "max_value": 50,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_construction"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          }
+        ]
+      }
+    },
+    "ring_conjure_start": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "execute as @s anchored eyes positioned ^ ^ ^3 run function final_lanterns:yellowlanternconstruction"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 5,
+            "max": 5
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          }
+        ]
+      }
+    },
+    "ring_conjure_anim": {
+      "type": "palladium:animation_timer",
+      "title": "Hand Anim",
+      "icon": "final_lanterns:yellowlanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": 4,
+      "start_value": 0,
+      "max_value": 10,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "show_both_arms": {
+      "type": "palladium:show_both_arms",
+      "hidden": true,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_prevent_movement": {
+      "type": "palladium:attribute_modifier",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "0d844044-c690-1baf-8bba-9df210efc0e7",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_prevent_jump": {
+      "type": "palladium:attribute_modifier",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "attribute": "palladium:jump_power",
+      "amount": -1000,
+      "operation": 0,
+      "uuid": "6644ecff-94b0-00fb-af34-284ac69b4d01",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 1,
+            "max": 49
+          }
+        ]
+      }
+    },
+    "ring_conjure_end": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "energybar value subtract @s final_lanterns:host_parallax fear 4000",
+        "ability lock @s final_lanterns:host_parallax ringconstruction"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "ring_conjure_timer",
+            "min": 50,
+            "max": 50
+          },
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "ring_conjure_timer"
+          }
+        ]
+      }
+    },
+    "mastered_timer": {
+      "type": "palladium:animation_timer",
+      "icon": "minecraft:blaze_rod",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "start_value": 0,
+      "max_value": 25,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "ringconstruction"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healing_factor"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel2"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel2"
+          }
+        ]
+      }
+    },
+    "mastered_grant": {
+      "type": "palladium:command",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_integer_property",
+            "power": "null",
+            "ability": "mastered_timer",
+            "property": "value",
+            "min": 25,
+            "max": 25
+          }
+        ]
+      }
     },
     "host_health": {
       "type": "palladium:attribute_modifier",
       "attribute": "minecraft:generic.max_health",
       "amount": 20,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d44c1120bbc2",
+      "uuid": "911d3ce2-8ebe-5081-adca-9a45e0d13ba9",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -49,7 +1774,7 @@
       "attribute": "minecraft:generic.armor",
       "amount": 6,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-f0dfe51934ea",
+      "uuid": "50ac95f6-3021-d609-9a67-af6568d7de9b",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -58,7 +1783,7 @@
       "attribute": "minecraft:generic.armor_toughness",
       "amount": 4,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-425e7877ca70",
+      "uuid": "44a990e9-a69b-5b59-bfe1-8432001dcdd0",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -71,6 +1796,13 @@
       "particle_type": "smoke",
       "particle_size": 0.8,
       "visibility": 0.25,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "yellowlantern"
+        }
+      },
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -81,8 +1813,9 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_flight"
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "yellowlantern"
           },
           {
             "type": "palladium:is_flying"
@@ -97,13 +1830,9 @@
       "render_layer": "final_lanterns:hosts/parallax",
       "conditions": {
         "enabling": {
-          "type": "palladium:not",
-          "conditions": [
-            {
-              "type": "palladium:ability_enabled",
-              "ability": "mortal_form"
-            }
-          ]
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "yellowlantern"
         }
       },
       "hidden": true,
@@ -122,13 +1851,9 @@
       "affects_first_person": true,
       "conditions": {
         "enabling": {
-          "type": "palladium:not",
-          "conditions": [
-            {
-              "type": "palladium:ability_enabled",
-              "ability": "mortal_form"
-            }
-          ]
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "yellowlantern"
         }
       },
       "hidden": true,
@@ -137,285 +1862,53 @@
     "host_fill": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "energybar value add @s final_lanterns:host_parallax entity_power 100000"
+        "energybar value add @s final_lanterns:host_parallax fear 100000"
       ],
       "commands": [],
       "last_tick_commands": [],
       "hidden": true,
       "hidden_in_bar": true
     },
-    "skill_vitality_1": {
+    "entity_tree": {
       "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_vitality_1"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_vitality_1.description"
-      },
-      "icon": "minecraft:golden_apple",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -3,
-        1
-      ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
+            "power": "null",
+            "ability": "skilltree"
           }
         ]
-      }
-    },
-    "skill_vitality_2": {
-      "type": "palladium:dummy",
+      },
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_vitality_2"
+        "translate": "ability.final_lanterns.host_parallax.entity_tree"
       },
       "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_vitality_2.description"
+        "translate": "ability.final_lanterns.host_parallax.entity_tree.description"
       },
-      "icon": "minecraft:enchanted_golden_apple",
-      "hidden_in_bar": true,
+      "icon": "minecraft:spider_eye",
       "gui_position": [
-        -3,
-        2
+        1.5,
+        -0.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_vitality_1"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "vitality_1": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.max_health",
-      "amount": 20,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-c693b27aca3a",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_vitality_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "vitality_2": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.max_health",
-      "amount": 20,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-79f7558d4976",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_vitality_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_might_1": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_might_1"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_might_1.description"
-      },
-      "icon": "minecraft:iron_sword",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -2,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
-          }
-        ]
-      }
-    },
-    "skill_might_2": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_might_2"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_might_2.description"
-      },
-      "icon": "minecraft:netherite_sword",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -2,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_might_1"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "might_1": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-d10e0dbf138f",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_1_fists": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:punch_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-9e730de0746e",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_2": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-0240905fa35d",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_2_fists": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:punch_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-f16b1775ec93",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_flight": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_flight"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_flight.description"
-      },
-      "icon": "minecraft:feather",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -1,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
-          }
-        ]
-      }
-    },
-    "flight": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:flight_speed",
-      "amount": 1.0,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-e144f6f3ed28",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "flight_flexibility": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:flight_flexibility",
-      "amount": 5,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-3ab9122de884",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "heroic_flight": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:heroic_flight_type",
-      "amount": 1,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-2789d21c27ed",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
+      "hidden": false,
       "hidden_in_bar": true
     },
     "skill_passive": {
       "type": "palladium:dummy",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "entity_tree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      },
       "title": {
         "translate": "ability.final_lanterns.host_parallax.skill_passive"
       },
@@ -423,23 +1916,12 @@
         "translate": "ability.final_lanterns.host_parallax.skill_passive.description"
       },
       "icon": "minecraft:spider_eye",
-      "hidden_in_bar": true,
       "gui_position": [
-        -1,
-        2
+        1.5,
+        0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_flight"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": true
     },
     "feeds_on_fear": {
       "type": "palladium:command",
@@ -462,33 +1944,6 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "skill_fear_gaze": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_gaze"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_gaze.description"
-      },
-      "icon": "minecraft:ender_eye",
-      "hidden_in_bar": true,
-      "gui_position": [
-        0,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
-          }
-        ]
-      }
-    },
     "fear_gaze": {
       "type": "palladium:command",
       "first_tick_commands": [
@@ -504,64 +1959,48 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 100
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fear_gaze"
+            "type": "palladium:action",
+            "cooldown": 100
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "fear",
             "min": 80
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skill_passive"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "fear",
         "amount": 80
       },
       "title": {
         "translate": "ability.final_lanterns.host_parallax.fear_gaze"
       },
-      "icon": "final_lanterns:textures/gui/ability/inflict_fear_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 2,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.fear_gaze.description"
-      }
-    },
-    "skill_fear_spikes": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_spikes"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_spikes.description"
-      },
-      "icon": "minecraft:pointed_dripstone",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/inflict_fear_parallax.png",
       "gui_position": [
-        0,
-        2
+        1.5,
+        0.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fear_gaze"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 5,
+      "bar_color": "white"
     },
     "fear_spikes": {
       "type": "palladium:command",
@@ -573,64 +2012,48 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 160
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fear_spikes"
+            "type": "palladium:action",
+            "cooldown": 160
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "fear",
             "min": 150
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fear_gaze"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "fear",
         "amount": 150
       },
       "title": {
         "translate": "ability.final_lanterns.host_parallax.fear_spikes"
       },
-      "icon": "final_lanterns:textures/gui/ability/nightmare_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 3,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.fear_spikes.description"
-      }
-    },
-    "skill_terror": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_terror"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_terror.description"
-      },
-      "icon": "minecraft:wither_rose",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/nightmare_parallax.png",
       "gui_position": [
-        0,
-        3
+        1.5,
+        1.0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fear_spikes"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 15
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 6,
+      "bar_color": "white"
     },
     "terror": {
       "type": "palladium:command",
@@ -646,64 +2069,48 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 120
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_terror"
+            "type": "palladium:action",
+            "cooldown": 120
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "fear",
             "min": 100
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "fear_spikes"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "fear",
         "amount": 100
       },
       "title": {
         "translate": "ability.final_lanterns.host_parallax.terror"
       },
-      "icon": "final_lanterns:textures/gui/ability/inflict_fear_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 4,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.terror.description"
-      }
-    },
-    "skill_fear_incarnate": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_incarnate"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_fear_incarnate.description"
-      },
-      "icon": "minecraft:sculk_shrieker",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/inflict_fear_parallax.png",
       "gui_position": [
-        0,
-        4
+        1.5,
+        1.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_terror"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 30
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 7,
+      "bar_color": "white"
     },
     "fear_incarnate": {
       "type": "palladium:command",
@@ -721,150 +2128,225 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 1200
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_fear_incarnate"
+            "type": "palladium:action",
+            "cooldown": 1200
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "fear",
             "min": 600
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "terror"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 35
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "fear",
         "amount": 600
       },
       "title": {
         "translate": "ability.final_lanterns.host_parallax.fear_incarnate"
       },
-      "icon": "final_lanterns:textures/gui/ability/overload_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 5,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.fear_incarnate.description"
-      }
-    },
-    "skill_beam": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_beam"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_beam.description"
-      },
-      "icon": "final_lanterns:textures/icons/yellowlanterns/yellowlanternbeam.png",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/overload_parallax.png",
       "gui_position": [
-        1,
-        1
+        1.5,
+        2.0
       ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 8,
+      "bar_color": "white"
+    },
+    "light_tree": {
+      "type": "palladium:dummy",
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
+            "power": "null",
+            "ability": "skilltree"
           }
         ]
-      }
-    },
-    "beam": {
-      "type": "palladium:energy_beam",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "bar_color": "white",
-      "icon": "final_lanterns:textures/icons/yellowlanterns/yellowlanternbeam.png",
-      "list_index": 0,
-      "energy_beam": "final_lanterns:yellowlanternbeam",
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 5
       },
-      "damage": 12,
-      "max_distance": 20,
-      "speed": 1,
-      "set_on_fire_seconds": 0,
-      "cause_fire": false,
-      "smelt_blocks": false,
+      "title": {
+        "translate": "ability.final_lanterns.host_parallax.light_tree"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_parallax.light_tree.description"
+      },
+      "icon": "kubejs:yellowlanternbattery",
+      "gui_position": [
+        -1.5,
+        -0.5
+      ],
+      "hidden": false,
+      "hidden_in_bar": true
+    },
+    "empower_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/parallax/empower"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:held",
-            "cooldown": 120,
-            "key_type": "key_bind",
-            "needs_empty_hand": false
+            "type": "palladium:action",
+            "cooldown": 60
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 5
+            "energy_bar": "fear",
+            "min": 400
           }
         ],
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_beam"
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.beam"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.beam.description"
-      }
-    },
-    "beam_aim": {
-      "type": "palladium:aim",
-      "time": 1,
-      "arm": "main_arm",
-      "conditions": {
-        "enabling": {
-          "type": "palladium:ability_enabled",
-          "ability": "beam"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_constructs": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_constructs"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_constructs.description"
-      },
-      "icon": "final_lanterns:textures/icons/slots/yellowlantern3.png",
-      "hidden_in_bar": true,
-      "gui_position": [
-        1,
-        2
-      ],
-      "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "skill_beam"
+            "power": "null",
+            "ability": "light_tree"
           },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
           }
         ]
-      }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_parallax.empower_ring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_parallax.empower_ring.description"
+      },
+      "icon": "kubejs:yellowlanternbattery",
+      "gui_position": [
+        -1.5,
+        0
+      ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 9,
+      "bar_color": "white"
     },
-    "construct_0": {
+    "living_lantern": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_living_lantern"
+      ],
+      "commands": [],
+      "last_tick_commands": [
+        "tag @s remove gl_living_lantern"
+      ],
+      "energy_bar_usage": {
+        "energy_bar": "fear",
+        "amount": 1
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "fear",
+            "min": 1
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "empower_ring"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_parallax.living_lantern"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_parallax.living_lantern.description"
+      },
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_parallax.png",
+      "gui_position": [
+        -1.5,
+        0.5
+      ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "bar_color": "white"
+    },
+    "forge_ring": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "function final_lanterns:host/parallax/forge"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 6000
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "fear",
+            "min": 3000
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "living_lantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "fear",
+        "amount": 3000
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_parallax.forge_ring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_parallax.forge_ring.description"
+      },
+      "icon": "final_lanterns:yellowlanternring",
+      "gui_position": [
+        -1.5,
+        1
+      ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 11,
+      "bar_color": "white"
+    },
+    "hard_light_0": {
       "type": "palladium:command",
       "first_tick_commands": [
         "give @s final_lanterns:scytheyellow{CustomTag:yellow,fl_host:1b} 1",
@@ -873,14 +2355,13 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.construct_0"
+        "translate": "ability.final_lanterns.host_parallax.hard_light_0"
       },
       "icon": "final_lanterns:scytheyellow",
-      "list_index": 1,
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
+          "ability": "hard_light"
         },
         "enabling": [
           {
@@ -895,7 +2376,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_1": {
+    "hard_light_1": {
       "type": "palladium:command",
       "first_tick_commands": [
         "give @s final_lanterns:clawsyellow{CustomTag:yellow,fl_host:1b} 1",
@@ -904,14 +2385,13 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.construct_1"
+        "translate": "ability.final_lanterns.host_parallax.hard_light_1"
       },
       "icon": "final_lanterns:clawsyellow",
-      "list_index": 1,
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
+          "ability": "hard_light"
         },
         "enabling": [
           {
@@ -926,7 +2406,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_2": {
+    "hard_light_2": {
       "type": "palladium:command",
       "first_tick_commands": [
         "give @s final_lanterns:axeyellow{CustomTag:yellow,fl_host:1b} 1",
@@ -935,14 +2415,13 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.construct_2"
+        "translate": "ability.final_lanterns.host_parallax.hard_light_2"
       },
       "icon": "final_lanterns:axeyellow",
-      "list_index": 1,
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
+          "ability": "hard_light"
         },
         "enabling": [
           {
@@ -957,7 +2436,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_3": {
+    "hard_light_3": {
       "type": "palladium:command",
       "first_tick_commands": [
         "give @s final_lanterns:pickaxeyellow{CustomTag:yellow,fl_host:1b} 1",
@@ -966,14 +2445,13 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.construct_3"
+        "translate": "ability.final_lanterns.host_parallax.hard_light_3"
       },
       "icon": "final_lanterns:pickaxeyellow",
-      "list_index": 1,
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
+          "ability": "hard_light"
         },
         "enabling": [
           {
@@ -988,7 +2466,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "construct_4": {
+    "hard_light_4": {
       "type": "palladium:command",
       "first_tick_commands": [
         "item replace entity @s weapon.offhand with final_lanterns:yellowshield{CustomTag:yellow,fl_host:1b}",
@@ -997,14 +2475,13 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.construct_4"
+        "translate": "ability.final_lanterns.host_parallax.hard_light_4"
       },
       "icon": "final_lanterns:yellowshield",
-      "list_index": 1,
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
+          "ability": "hard_light"
         },
         "enabling": [
           {
@@ -1023,7 +2500,7 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "world_construct_0": {
+    "hard_shape_0": {
       "type": "palladium:command",
       "first_tick_commands": [
         "tag @s add gl_user",
@@ -1033,26 +2510,18 @@
       "commands": [],
       "last_tick_commands": [],
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.world_construct_0"
+        "translate": "ability.final_lanterns.host_parallax.hard_shape_0"
       },
       "icon": "minecraft:pointed_dripstone",
-      "list_index": 1,
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "fear",
         "amount": 150
       },
       "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 150
-          }
-        ],
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
         "enabling": [
           {
             "type": "palladium:action",
@@ -1060,21 +2529,26 @@
             "key_type": "key_bind",
             "needs_empty_hand": false,
             "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "fear",
+            "min": 150
           }
         ]
       },
       "hidden": true,
       "hidden_in_bar": true
     },
-    "constructs": {
+    "hard_light": {
       "type": "palladium:ability_wheel",
       "abilities": [
-        "construct_0",
-        "construct_1",
-        "construct_2",
-        "construct_3",
-        "construct_4",
-        "world_construct_0"
+        "hard_light_0",
+        "hard_light_1",
+        "hard_light_2",
+        "hard_light_3",
+        "hard_light_4",
+        "hard_shape_0"
       ],
       "texture": "null",
       "disable_mouse_scrolling": false,
@@ -1084,303 +2558,33 @@
             "type": "palladium:held"
           }
         ],
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        }
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "forge_ring"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
       },
       "title": {
-        "translate": "ability.final_lanterns.host_parallax.constructs"
+        "translate": "ability.final_lanterns.host_parallax.hard_light"
       },
-      "icon": "final_lanterns:textures/icons/slots/yellowlantern3.png",
-      "bar_color": "white",
-      "hidden": true,
+      "description": {
+        "translate": "ability.final_lanterns.host_parallax.hard_light.description"
+      },
+      "icon": "final_lanterns:textures/gui/ability/constructs_parallax.png",
+      "gui_position": [
+        -1.5,
+        1.5
+      ],
+      "hidden": false,
       "hidden_in_bar": false,
-      "list_index": 1
-    },
-    "skill_forge": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_forge"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_forge.description"
-      },
-      "icon": "final_lanterns:yellowlanternring",
-      "hidden_in_bar": true,
-      "gui_position": [
-        1,
-        3
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 25
-          }
-        ]
-      }
-    },
-    "forge_ring": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "function final_lanterns:host/parallax/forge"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 6000
-        },
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_forge"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 3000
-          }
-        ]
-      },
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 3000
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.forge_ring"
-      },
-      "icon": "final_lanterns:yellowlanternring",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 8,
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.forge_ring.description"
-      }
-    },
-    "skill_empower": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_empower"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_empower.description"
-      },
-      "icon": "kubejs:yellowlanternbattery",
-      "hidden_in_bar": true,
-      "gui_position": [
-        2,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
-          }
-        ]
-      }
-    },
-    "empower_ring": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "function final_lanterns:host/parallax/empower"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_empower"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 400
-          }
-        ],
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 60
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.empower_ring"
-      },
-      "icon": "kubejs:yellowlanternbattery",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 6,
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.empower_ring.description"
-      }
-    },
-    "skill_lantern": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_lantern"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_lantern.description"
-      },
-      "icon": "final_lanterns:yellowlanternring",
-      "hidden_in_bar": true,
-      "gui_position": [
-        2,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_empower"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 15
-          }
-        ]
-      }
-    },
-    "living_lantern": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "tag @s add gl_living_lantern"
-      ],
-      "commands": [],
-      "last_tick_commands": [
-        "tag @s remove gl_living_lantern"
-      ],
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 1
-      },
-      "conditions": {
-        "enabling": {
-          "type": "palladium:toggle"
-        },
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_lantern"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 1
-          }
-        ]
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.living_lantern"
-      },
-      "icon": "final_lanterns:textures/gui/ability/hope_aura_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 7,
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.living_lantern.description"
-      }
-    },
-    "skill_reserves": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_reserves"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_reserves.description"
-      },
-      "icon": "minecraft:glowstone",
-      "hidden_in_bar": true,
-      "gui_position": [
-        3,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
-          }
-        ]
-      }
-    },
-    "skill_wellspring": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.skill_wellspring"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.skill_wellspring.description"
-      },
-      "icon": "minecraft:beacon",
-      "hidden_in_bar": true,
-      "gui_position": [
-        3,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_reserves"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "reserves_apply": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "scoreboard objectives add glhmax_parallax dummy",
-        "scoreboard players set @s glhmax_parallax 6000"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_reserves"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "wellspring_regen": {
-      "type": "palladium:dummy",
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": -3
-      },
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_wellspring"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
+      "list_index": 12,
+      "bar_color": "white"
     },
     "release": {
       "type": "palladium:command",
@@ -1402,7 +2606,7 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 9,
+      "list_index": 13,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.release.description"
       }
@@ -1427,31 +2631,9 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 10,
+      "list_index": 14,
       "description": {
         "translate": "ability.final_lanterns.host_parallax.emotions.description"
-      }
-    },
-    "mortal_form": {
-      "type": "palladium:command",
-      "first_tick_commands": [],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "enabling": {
-          "type": "palladium:toggle"
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_parallax.mortal_form"
-      },
-      "icon": "final_lanterns:textures/gui/ability/suit_up_parallax.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 11,
-      "description": {
-        "translate": "ability.final_lanterns.host_parallax.mortal_form.description"
       }
     }
   }

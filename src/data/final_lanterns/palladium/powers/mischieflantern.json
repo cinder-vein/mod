@@ -708,7 +708,15 @@
         -0.5
       ],
       "description": "Mischief based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischieflantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -871,6 +879,11 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischieflantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1190,6 +1203,11 @@
           }
         ],
         "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "mischieflantern"
+          },
           {
             "type": "palladium:not",
             "conditions": [

@@ -1,8 +1,14 @@
 {
-    "type": "palladium:default",
-    "max_stack_size": 1,
-    "rarity": "rare",
-    "is_fire_resistant": true,
-    "render_layers": {"curios:lantern_rings": ["final_lanterns:redlanterns/redlanternring"],"trinkets:hand/ring": ["final_lanterns:redlanterns/redlanternring"]},
-    "tooltip": ["Death on Removal"]
+  "type": "palladium:default",
+  "max_stack_size": 1,
+  "rarity": "rare",
+  "is_fire_resistant": true,
+  "render_layers": {
+    "trinkets:hand/ring": [
+      "final_lanterns:redlanterns/redlanternring"
+    ]
+  },
+  "tooltip": [
+    "Death on Removal"
+  ]
 }

@@ -520,7 +520,15 @@
         -0.5
       ],
       "description": "Sorrow Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "lantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -699,6 +707,11 @@
       "uuid": "f5e2a9a6-e00a-43cf-b35b-9606fec6cf17",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "lantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10

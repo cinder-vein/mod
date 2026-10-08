@@ -532,7 +532,15 @@
         -0.5
       ],
       "description": "Compassion Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -711,6 +719,11 @@
       "uuid": "fc75289b-27e4-4f01-9173-221b18bad0be",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -3258,6 +3271,11 @@
         ],
         "enabling": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "indigolantern"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -3708,6 +3726,35 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_right": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:indigolantern/indigolanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:has_tag",
+              "tag": "gl_p2_indigo"
+            }
+          ]
+        }
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/indigo",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_indigo"
+        }
       }
     }
   }

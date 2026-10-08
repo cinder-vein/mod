@@ -599,7 +599,15 @@
         -0.5
       ],
       "description": "Fear Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -770,6 +778,11 @@
       "uuid": "5b68a200-0481-40ec-a74b-336f78f03092",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -1491,6 +1504,11 @@
         ],
         "enabling": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "yellowlantern"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -2105,6 +2123,35 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_right": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:yellowlanterns/yellowlanternring",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:not",
+          "conditions": [
+            {
+              "type": "palladium:has_tag",
+              "tag": "gl_p2_yellow"
+            }
+          ]
+        }
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/yellow",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_yellow"
+        }
       }
     }
   }

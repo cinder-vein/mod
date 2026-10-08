@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "final_lanterns:greatswordred",
+    "final_lanterns:red_battleaxe",
+    "final_lanterns:red_claw",
+    "final_lanterns:red_hammer",
+    "final_lanterns:red_trident"
+  ]
+}

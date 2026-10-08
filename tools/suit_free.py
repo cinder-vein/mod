@@ -45,7 +45,9 @@ def simplify(cond, toggles, power_id):
     if not isinstance(cond, dict):
         return cond
     t = cond.get("type")
-    if (t in ("palladium:ability_enabled", "palladium:ability_unlocked") and cond.get("ability") in toggles
+    # "the suit is on" is always true now; "the suit node is unlocked" was always true anyway (it only needs the bar)
+    # and stays, so the tree keeps its lines from the suit node
+    if (t == "palladium:ability_enabled" and cond.get("ability") in toggles
             and cond.get("power") in (None, "null", power_id)):
         return TRUE
     if t in ("palladium:not", "palladium:or", "palladium:and"):

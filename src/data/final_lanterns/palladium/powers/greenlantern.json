@@ -393,7 +393,20 @@
       "hidden": true,
       "hidden_in_bar": true,
       "default_layer": "final_lanterns:greenlanternring",
-      "accessory_slot": "final_lanterns:rings"
+      "accessory_slot": "final_lanterns:rings",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:has_tag",
+                "tag": "gl_p2_green"
+              }
+            ]
+          }
+        ]
+      }
     },
     "greenlantern_accessory": {
       "type": "palladium:render_layer_by_accessory_slot",
@@ -1029,7 +1042,15 @@
         -0.5
       ],
       "description": "Willpower Ring based Abilities",
-      "conditions": {}
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "greenlantern"
+          }
+        ]
+      }
     },
     "strengthtree": {
       "type": "palladium:dummy",
@@ -1192,6 +1213,11 @@
       "uuid": "26435cad-8e5f-4635-9bb2-87f5367ea12d",
       "conditions": {
         "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "greenlantern"
+          },
           {
             "type": "palladium:experience_level_buyable",
             "xp_level": 10
@@ -2360,6 +2386,11 @@
         ],
         "enabling": [
           {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "greenlantern"
+          },
+          {
             "type": "palladium:not",
             "conditions": [
               {
@@ -3101,6 +3132,18 @@
             "key_type": "key_bind"
           }
         ]
+      }
+    },
+    "fl_ring_left": {
+      "type": "palladium:render_layer",
+      "render_layer": "final_lanterns:fl_left/green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:has_tag",
+          "tag": "gl_p2_green"
+        }
       }
     }
   }

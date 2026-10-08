@@ -374,7 +374,8 @@ def generate(sizes):
         ]
         fn[f"entity/{k}/strip"] = [f"superpower remove {NS}:host_{k} @s", f"tag @s remove gl_host_{k}",
                                    "tag @s remove gl_host", f"scoreboard players set @s gl_ehcd {HOST_COOLDOWN}",
-                                   f"clear @s #{NS}:host_constructs{{fl_host:1b}}", "tag @s remove gl_living_lantern"]
+                                   f"clear @s #{NS}:host_constructs{{fl_host:1b}}", f"function {NS}:host/{k}/release_clear",
+                                   "tag @s remove gl_living_lantern"]
         corps = CORPS[e.corps]
         fn[f"entity/{k}/near_ring"] = [  # as a bearer of the entity's color near it
             f"energybar value add @s {NS}:{corps['power']} {corps['bar']} {NEAR_CHARGE}",

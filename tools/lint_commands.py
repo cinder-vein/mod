@@ -110,8 +110,20 @@ def lint(src):
 def main():
     _, inherited = lint(BASE) if BASE.exists() else (0, [])
     count, found = lint(ROOT / "src")
-    known = {re.sub(r":\d+:", ":", e) for e in inherited}  # line numbers may shift in patched files
-    new = [e for e in found if re.sub(r":\d+:", ":", e) not in known]
+    # host powers are copies of ring powers: their copied commands' problems are the ring's
+    sys.path.insert(0, str(ROOT / "tools"))
+    import entities
+    from common import CORPS
+    hosts = {f"host_{e.key}": CORPS[e.corps]["power"] for e in entities.ENTITIES}
+
+    def norm(e):
+        e = re.sub(r":\d+:", ":", e)
+        for host, ring in hosts.items():
+            e = e.replace(f"{NS}:{host}", f"{NS}:{ring}").replace(f"{host}/", f"{ring}/")
+        return e
+
+    known = {norm(e) for e in inherited}  # line numbers may shift in patched files
+    new = [e for e in found if norm(e) not in known]
     print(f"Checked {count} commands ({len(inherited)} problems inherited from A New Corps, not counted)")
     if new:
         print(f"{len(new)} problem(s):")

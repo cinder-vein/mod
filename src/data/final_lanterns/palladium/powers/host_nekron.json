@@ -2,45 +2,1106 @@
   "name": {
     "translate": "power.final_lanterns.host_nekron"
   },
-  "icon": "minecraft:wither_skeleton_skull",
-  "background": "minecraft:textures/block/black_concrete.png",
-  "gui_display_type": "tree",
-  "primary_color": "#969BAA",
-  "secondary_color": "#3C3E44",
   "persistent_data": true,
+  "background": "minecraft:textures/block/black_concrete.png",
+  "ability_bar_texture": "final_lanterns:textures/gui/ability_barblack.png",
+  "icon": "minecraft:wither_skeleton_skull",
+  "gui_display_type": "tree",
   "energy_bars": {
-    "entity_power": {
-      "max": {
-        "type": "score",
-        "objective": "glhmax_nekron",
-        "fallback": 4000
-      },
+    "death": {
+      "max": 3000,
       "auto_increase_per_tick": 3,
-      "color": "#969BAA"
+      "color": "#000000"
     }
   },
   "abilities": {
-    "host_root": {
+    "toughlungs": {
+      "type": "finallanterns:toughlungs",
+      "icon": {
+        "type": "palladium:item",
+        "item": "minecraft:air",
+        "count": 0
+      },
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:dimension",
+                "dimension": "minecraft:overworld"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cosmicspace": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "function final_lanterns:cosmicspace"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "cosmos"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1000,
+            "max": 1400
+          }
+        ]
+      }
+    },
+    "adastrascreen": {
+      "type": "palladium:command",
+      "icon": "minecraft:command_block",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "first_tick_commands": [
+        "adastra planets"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:mod_loaded",
+            "mod_id": "ad_astra"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "finallanterns:get_y",
+            "min": 1200,
+            "max": 1500
+          }
+        ]
+      }
+    },
+    "nightvision": {
+      "type": "palladium:command",
+      "icon": "final_lanterns:textures/icons/bluelantern_shield.png",
+      "list_index": 2,
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "effect give @s minecraft:night_vision 11 1 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:night"
+              },
+              {
+                "type": "palladium:brightness_at_position",
+                "min_brightness": 0,
+                "max_brightness": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "enablepls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 21,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "blacklantern"
+          }
+        ]
+      }
+    },
+    "enablepls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 16,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "blacklantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "enablepls",
+            "min": 5,
+            "max": 21
+          }
+        ]
+      }
+    },
+    "maskpls": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 6,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "blacklantern"
+          }
+        ]
+      }
+    },
+    "maskpls1": {
+      "type": "palladium:animation_timer",
+      "hidden_in_bar": false,
+      "start_value": 0,
+      "max_value": 5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "blacklantern"
+          },
+          {
+            "type": "palladium:animation_timer_ability",
+            "ability": "maskpls",
+            "min": 2,
+            "max": 6
+          }
+        ]
+      }
+    },
+    "objective_checker": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "team add necro_army",
+        "team modify necro_army friendlyFire false",
+        "team join necro_army @s",
+        "scoreboard objectives add Blacklantern.Death.Amount dummy",
+        "scoreboard objectives add Blacklantern.Death.Amount.Max dummy",
+        "scoreboard players set @s Blacklantern.Death.Amount.Max 1"
+      ],
+      "last_tick_commands": [
+        "team leave @s"
+      ],
+      "commands": [
+        "function final_lanterns:blacklanternpassive"
+      ]
+    },
+    "immunities2": {
+      "type": "palladium:damage_immunity",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "damage_sources": [
+        "minecraft:is_fall",
+        "minecraft:is_explosion",
+        "minecraft:is_drowning",
+        "minecraft:is_fire",
+        "minecraft:is_freezing",
+        "final_lanterns:oxygen"
+      ],
+      "conditions": {}
+    },
+    "blacklantern": {
       "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/slots/blacklantern1.png",
       "title": {
         "translate": "ability.final_lanterns.host_nekron.host_root"
       },
+      "list_index": 4,
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -1.5
+      ],
       "description": {
         "translate": "ability.final_lanterns.host_nekron.host_root.description"
       },
-      "icon": "minecraft:wither_skeleton_skull",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 0,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "death",
+            "min": 0,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "skilltree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:blacklanternring",
+      "title": "Skill Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -0.5
+      ],
+      "description": "Death Ring based Abilities",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "blacklantern"
+          }
+        ]
+      }
+    },
+    "strengthtree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "defensetree": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Tree",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        1,
+        -0.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ]
+      }
+    },
+    "flightlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:elytra",
+      "title": "Flight Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "palladium:flight_speed",
+      "amount": 1.5,
+      "operation": 0,
+      "uuid": "2737a66c-b57d-3519-3cd9-a07449122d13",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          }
+        ]
+      }
+    },
+    "armorbase": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 15,
+      "operation": 0,
+      "uuid": "8cc47e55-1020-1887-399f-28a8e31661cd",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "blacklantern"
+          }
+        ]
+      }
+    },
+    "armorlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 10,
+      "operation": 0,
+      "uuid": "2cfc9376-000f-2dcd-ecf3-aa202d163316",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "defensetree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "armorlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 15,
+      "operation": 0,
+      "uuid": "73d5ad0e-1589-4841-246d-d619fd281439",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heart.png",
+      "title": "Health Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -1.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "5ee09b14-664f-f8b7-1477-397e1570b71e",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "blacklantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      }
+    },
+    "healthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/heartgold.png",
+      "title": "Health Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        0.5,
+        -2
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.max_health",
+      "amount": 20,
+      "operation": 0,
+      "uuid": "a7845d42-e27a-b59a-eb6d-4a3a02a81034",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "healing_factor": {
+      "type": "palladium:healing",
+      "icon": "final_lanterns:textures/icons/heartdiamond.png",
+      "title": "Natural Healing",
+      "hidden": false,
       "hidden_in_bar": true,
+      "list_index": -1,
+      "frequency": 40,
+      "amount": 4,
+      "gui_position": [
+        0.5,
+        -2.5
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "movementspeed1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_boots",
+      "title": "Movement Speed Level 1",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -2,
+        -1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.3,
+      "operation": 0,
+      "uuid": "837a3382-0cf3-eac9-3055-d4eae3f188ce",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          }
+        ]
+      }
+    },
+    "armorlevel3": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/defense.png",
+      "title": "Defense Level 3",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        1,
+        1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.armor",
+      "amount": 23,
+      "operation": 0,
+      "uuid": "ae882064-312a-241f-453c-54bf2d8abe93",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "armorlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "strengthlevel1": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 1",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 5,
+      "operation": 0,
+      "uuid": "322cbb94-7c15-d02c-44ec-7c35f6fa7b21",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthtree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
+          }
+        ]
+      }
+    },
+    "strengthlevel2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 2",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        0.5
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 9,
+      "operation": 0,
+      "uuid": "4b8a5223-5cce-e3cf-5671-a420c466909c",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel1"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "strengthlevel3": {
+      "type": "palladium:attribute_modifier",
+      "icon": "final_lanterns:textures/icons/strength.png",
+      "title": "Strength Level 3",
+      "bar_color": "light_gray",
+      "hidden": false,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        -1,
+        1
+      ],
+      "description": "null",
+      "attribute": "minecraft:generic.attack_damage",
+      "amount": 11,
+      "operation": 0,
+      "uuid": "d6e47f2f-a0a6-f592-4c0d-59f4bac8e295",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "strengthlevel2"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      }
+    },
+    "deathbeam": {
+      "type": "palladium:energy_beam",
+      "title": "Death Beam",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "bar_color": "blue",
+      "icon": "final_lanterns:textures/icons/black/blacklanternbeam.png",
+      "list_index": 0,
+      "energy_bar_usage": {
+        "energy_bar": "death",
+        "amount": 5
+      },
+      "energy_beam": "final_lanterns:blacklanternbeam",
       "gui_position": [
         0,
         0
-      ]
+      ],
+      "damage": 15,
+      "max_distance": 30,
+      "speed": 1,
+      "set_on_fire_seconds": 0,
+      "cause_fire": false,
+      "smelt_blocks": false,
+      "commands_on_block_hit": [
+        "effect give @e[distance=..1] minecraft:wither 3 2 true"
+      ],
+      "commands_on_entity_hit": [
+        "effect give @e[distance=..1] minecraft:wither 3 2 true"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skilltree"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 120,
+            "key_type": "key_bind",
+            "needs_empty_hand": false
+          },
+          {
+            "type": "palladium:energy_bar",
+            "power": "null",
+            "energy_bar": "death",
+            "min": 5,
+            "max": 1000000
+          }
+        ]
+      }
+    },
+    "deathbeam_aim": {
+      "type": "palladium:aim",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "time": 1,
+      "arm": "main_arm",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "deathbeam"
+          }
+        ]
+      }
+    },
+    "outlinefast": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 14,
+      "start_hex": "#050301",
+      "end_hex": "#050301",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 1.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:is_fast_flying"
+          }
+        ]
+      }
+    },
+    "otherglowing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "self",
+      "color": "#000000",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:is_hovering_or_flying"
+          }
+        ]
+      }
+    },
+    "otherglow2ing": {
+      "type": "palladium:entity_glow",
+      "icon": "minecraft:glow_berries",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "mode": "others",
+      "color": "null",
+      "distance": 30,
+      "property_key": "null",
+      "property_value": "null",
+      "conditions": {}
+    },
+    "armorload": {
+      "type": "palladium:command",
+      "icon": "kubejs:blacklanternbattery",
+      "list_index": 2,
+      "title": "Death Max lvl 2",
+      "bar_color": "green",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [
+        "tag @s add grave.armour.add"
+      ],
+      "commands": [],
+      "conditions": {}
+    },
+    "outline": {
+      "type": "gravecore:particle_aura",
+      "icon": "minecraft:amethyst_shard",
+      "title": "null",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": false,
+      "list_index": -1,
+      "gui_position": "null",
+      "description": "null",
+      "count": 4,
+      "start_hex": "#050301",
+      "end_hex": "#050301",
+      "aura_type": "aura",
+      "particle_type": "smoke",
+      "particle_size": 0.8,
+      "visibility": 0.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:is_under_water"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "death_maxlvl2": {
+      "type": "palladium:command",
+      "icon": "kubejs:blacklanternbattery",
+      "list_index": 2,
+      "title": "Death Max lvl 2",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -1.5
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:host_nekron death 4500"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "blacklantern"
+          },
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:ability_unlocked",
+                "power": "null",
+                "ability": "death_maxlvl3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "death_maxlvl3": {
+      "type": "palladium:command",
+      "icon": "kubejs:blacklanternbattery",
+      "list_index": 2,
+      "title": "Death Max lvl 3",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2
+      ],
+      "first_tick_commands": [
+        "energybar max set @s final_lanterns:host_nekron death 6000"
+      ],
+      "last_tick_commands": [],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "death_maxlvl2"
+          }
+        ]
+      }
+    },
+    "cheat_death_scoreboard": {
+      "type": "palladium:command",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "first_tick_commands": [
+        "execute if score @s Blacklantern.Death.Amount matches 1 run scoreboard players set @s Blacklantern.Death.Amount 0"
+      ],
+      "last_tick_commands": [
+        "ability lock @s final_lanterns:host_nekron cheat_death"
+      ],
+      "commands": [],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "cheat_death"
+          }
+        ]
+      }
+    },
+    "cheat_death": {
+      "type": "palladium:dummy",
+      "icon": "final_lanterns:textures/icons/black/death.png",
+      "title": "Cheat the Death",
+      "list_index": 4,
+      "bar_color": "blue",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        0,
+        -3
+      ],
+      "description": "Grants you an additional life making you cheat death (/kill)",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 70
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "healing_factor"
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "naturalregen"
+          }
+        ]
+      }
+    },
+    "naturalregen": {
+      "type": "palladium:command",
+      "icon": "kubejs:blacklanternbattery",
+      "list_index": 2,
+      "title": "Natural Death Energy Gathering",
+      "bar_color": "green",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "gui_position": [
+        -0.5,
+        -2.5
+      ],
+      "first_tick_commands": [],
+      "last_tick_commands": [],
+      "commands": [
+        "energybar value add @s final_lanterns:host_nekron death 2"
+      ],
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 40
+          },
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "death_maxlvl3"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:not",
+            "conditions": [
+              {
+                "type": "palladium:is_hovering_or_flying"
+              },
+              {
+                "type": "palladium:ability_enabled",
+                "power": "null",
+                "ability": "deathbeam"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "flightstyle": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 0,
+      "operation": 0,
+      "uuid": "d100464a-7161-e6d7-2d55-6aab0f3b031b",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flightone"
+          }
+        ]
+      }
+    },
+    "flightstyle2": {
+      "type": "palladium:attribute_modifier",
+      "icon": "minecraft:iron_sword",
+      "title": "Enhanced Strength lvl 3",
+      "bar_color": "light_gray",
+      "hidden": true,
+      "hidden_in_bar": true,
+      "list_index": -1,
+      "gui_position": [
+        0,
+        4
+      ],
+      "attribute": "palladium:heroic_flight_type",
+      "amount": 1,
+      "operation": 0,
+      "uuid": "5c036bf7-2f6a-1878-30c8-c66c32750f60",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "final_lanterns:flightstyle",
+            "accessory": "final_lanterns:flightstyles/flighttwo"
+          }
+        ]
+      }
     },
     "host_health": {
       "type": "palladium:attribute_modifier",
       "attribute": "minecraft:generic.max_health",
       "amount": 20,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-e529d39beb7f",
+      "uuid": "3eed5ad0-b316-39bb-10d4-47f40e21c1fe",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -49,7 +1110,7 @@
       "attribute": "minecraft:generic.armor",
       "amount": 6,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-6f21651c1e83",
+      "uuid": "2c0935e1-1861-7bd8-cb0b-954e9bb06b77",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -58,7 +1119,7 @@
       "attribute": "minecraft:generic.armor_toughness",
       "amount": 4,
       "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-8c4374f73314",
+      "uuid": "943b8fa2-c471-696c-bc2c-a1b591e69d9d",
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -71,6 +1132,13 @@
       "particle_type": "smoke",
       "particle_size": 0.8,
       "visibility": 0.25,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "blacklantern"
+        }
+      },
       "hidden": true,
       "hidden_in_bar": true
     },
@@ -81,8 +1149,9 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_flight"
+            "type": "palladium:ability_enabled",
+            "power": "null",
+            "ability": "blacklantern"
           },
           {
             "type": "palladium:is_flying"
@@ -97,13 +1166,9 @@
       "render_layer": "final_lanterns:hosts/nekron",
       "conditions": {
         "enabling": {
-          "type": "palladium:not",
-          "conditions": [
-            {
-              "type": "palladium:ability_enabled",
-              "ability": "mortal_form"
-            }
-          ]
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "blacklantern"
         }
       },
       "hidden": true,
@@ -122,13 +1187,9 @@
       "affects_first_person": true,
       "conditions": {
         "enabling": {
-          "type": "palladium:not",
-          "conditions": [
-            {
-              "type": "palladium:ability_enabled",
-              "ability": "mortal_form"
-            }
-          ]
+          "type": "palladium:ability_enabled",
+          "power": "null",
+          "ability": "blacklantern"
         }
       },
       "hidden": true,
@@ -137,285 +1198,53 @@
     "host_fill": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "energybar value add @s final_lanterns:host_nekron entity_power 100000"
+        "energybar value add @s final_lanterns:host_nekron death 100000"
       ],
       "commands": [],
       "last_tick_commands": [],
       "hidden": true,
       "hidden_in_bar": true
     },
-    "skill_vitality_1": {
+    "entity_tree": {
       "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_vitality_1"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_vitality_1.description"
-      },
-      "icon": "minecraft:golden_apple",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -3,
-        1
-      ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
+            "power": "null",
+            "ability": "skilltree"
           }
         ]
-      }
-    },
-    "skill_vitality_2": {
-      "type": "palladium:dummy",
+      },
       "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_vitality_2"
+        "translate": "ability.final_lanterns.host_nekron.entity_tree"
       },
       "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_vitality_2.description"
+        "translate": "ability.final_lanterns.host_nekron.entity_tree.description"
       },
-      "icon": "minecraft:enchanted_golden_apple",
-      "hidden_in_bar": true,
+      "icon": "minecraft:wither_skeleton_skull",
       "gui_position": [
-        -3,
-        2
+        1.5,
+        -0.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_vitality_1"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "vitality_1": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.max_health",
-      "amount": 20,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-5f9ed4045f08",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_vitality_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "vitality_2": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.max_health",
-      "amount": 20,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-093a2f512a3c",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_vitality_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_might_1": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_might_1"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_might_1.description"
-      },
-      "icon": "minecraft:iron_sword",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -2,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
-          }
-        ]
-      }
-    },
-    "skill_might_2": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_might_2"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_might_2.description"
-      },
-      "icon": "minecraft:netherite_sword",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -2,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_might_1"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "might_1": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-b4cde4c2deaf",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_1_fists": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:punch_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-22afd5e3f15a",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_1"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_2": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-cc2bf0a1f46c",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "might_2_fists": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:punch_damage",
-      "amount": 4,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-934edf022ffa",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_might_2"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_flight": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_flight"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_flight.description"
-      },
-      "icon": "minecraft:feather",
-      "hidden_in_bar": true,
-      "gui_position": [
-        -1,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
-          }
-        ]
-      }
-    },
-    "flight": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:flight_speed",
-      "amount": 1.0,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-dea72977ef2d",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "flight_flexibility": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:flight_flexibility",
-      "amount": 5,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-5cd5fd51954d",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "heroic_flight": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:heroic_flight_type",
-      "amount": 1,
-      "operation": 0,
-      "uuid": "6c7afe00-1a2b-4c3d-8e4f-53260c88b43e",
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_flight"
-        }
-      },
-      "hidden": true,
+      "hidden": false,
       "hidden_in_bar": true
     },
     "skill_passive": {
       "type": "palladium:dummy",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "entity_tree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
+      },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.skill_passive"
       },
@@ -423,23 +1252,12 @@
         "translate": "ability.final_lanterns.host_nekron.skill_passive.description"
       },
       "icon": "minecraft:rotten_flesh",
-      "hidden_in_bar": true,
       "gui_position": [
-        -1,
-        2
+        1.5,
+        0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_flight"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": true
     },
     "deathless": {
       "type": "palladium:command",
@@ -489,33 +1307,6 @@
       "hidden": true,
       "hidden_in_bar": true
     },
-    "skill_black_hand": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_black_hand"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_black_hand.description"
-      },
-      "icon": "minecraft:wither_skeleton_skull",
-      "hidden_in_bar": true,
-      "gui_position": [
-        0,
-        1
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
-          }
-        ]
-      }
-    },
     "black_hand": {
       "type": "palladium:command",
       "first_tick_commands": [
@@ -526,64 +1317,48 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 120
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_black_hand"
+            "type": "palladium:action",
+            "cooldown": 120
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 150
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "skill_passive"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "death",
         "amount": 150
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.black_hand"
       },
-      "icon": "final_lanterns:textures/gui/ability/heart_rip_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 2,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.black_hand.description"
-      }
-    },
-    "skill_raise_dead": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_raise_dead"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_raise_dead.description"
-      },
-      "icon": "minecraft:zombie_head",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/heart_rip_nekron.png",
       "gui_position": [
-        0,
-        2
+        1.5,
+        0.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_black_hand"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 5,
+      "bar_color": "white"
     },
     "raise_dead": {
       "type": "palladium:command",
@@ -604,64 +1379,48 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 1200
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_raise_dead"
+            "type": "palladium:action",
+            "cooldown": 1200
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 300
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "black_hand"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "death",
         "amount": 300
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.raise_dead"
       },
-      "icon": "final_lanterns:textures/gui/ability/raise_dead_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 3,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.raise_dead.description"
-      }
-    },
-    "skill_deaths_touch": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_deaths_touch"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_deaths_touch.description"
-      },
-      "icon": "minecraft:wither_rose",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/raise_dead_nekron.png",
       "gui_position": [
-        0,
-        3
+        1.5,
+        1.0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_raise_dead"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 15
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 6,
+      "bar_color": "white"
     },
     "deaths_touch": {
       "type": "palladium:command",
@@ -669,63 +1428,47 @@
       "commands": [],
       "last_tick_commands": [],
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "death",
         "amount": 1
       },
       "conditions": {
-        "enabling": {
-          "type": "palladium:toggle"
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_deaths_touch"
+            "type": "palladium:toggle"
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 1
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "raise_dead"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
           }
         ]
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.deaths_touch"
       },
-      "icon": "final_lanterns:textures/gui/ability/death_aura_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 4,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.deaths_touch.description"
-      }
-    },
-    "skill_blackest_night": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_blackest_night"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_blackest_night.description"
-      },
-      "icon": "minecraft:sculk_catalyst",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/death_aura_nekron.png",
       "gui_position": [
-        0,
-        4
+        1.5,
+        1.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_deaths_touch"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 30
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 7,
+      "bar_color": "white"
     },
     "blackest_night": {
       "type": "palladium:command",
@@ -752,522 +1495,73 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 1200
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_blackest_night"
+            "type": "palladium:action",
+            "cooldown": 1200
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 600
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "deaths_touch"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 35
           }
         ]
       },
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "death",
         "amount": 600
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.blackest_night"
       },
-      "icon": "final_lanterns:textures/gui/ability/overload_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 5,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.blackest_night.description"
-      }
-    },
-    "skill_beam": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_beam"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_beam.description"
-      },
-      "icon": "final_lanterns:textures/icons/black/blacklanternbeam.png",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/overload_nekron.png",
       "gui_position": [
-        1,
-        1
+        1.5,
+        2.0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 5
-          }
-        ]
-      }
-    },
-    "beam": {
-      "type": "palladium:energy_beam",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "bar_color": "white",
-      "icon": "final_lanterns:textures/icons/black/blacklanternbeam.png",
-      "list_index": 0,
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 5
-      },
-      "energy_beam": "final_lanterns:blacklanternbeam",
-      "damage": 10,
-      "max_distance": 30,
-      "speed": 1,
-      "set_on_fire_seconds": 0,
-      "cause_fire": false,
-      "smelt_blocks": false,
-      "commands_on_block_hit": [
-        "effect give @e[distance=..1] minecraft:wither 3 2 true"
-      ],
-      "commands_on_entity_hit": [
-        "effect give @e[distance=..1] minecraft:wither 3 2 true"
-      ],
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:held",
-            "cooldown": 120,
-            "key_type": "key_bind",
-            "needs_empty_hand": false
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 5
-          }
-        ],
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_beam"
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.beam"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.beam.description"
-      }
-    },
-    "beam_aim": {
-      "type": "palladium:aim",
-      "time": 1,
-      "arm": "main_arm",
-      "conditions": {
-        "enabling": {
-          "type": "palladium:ability_enabled",
-          "ability": "beam"
-        }
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "skill_constructs": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_constructs"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_constructs.description"
-      },
-      "icon": "final_lanterns:scythebalance",
-      "hidden_in_bar": true,
-      "gui_position": [
-        1,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_beam"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 10
-          }
-        ]
-      }
-    },
-    "construct_0": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "give @s final_lanterns:scythebalance{CustomTag:black,fl_host:1b} 1",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.construct_0"
-      },
-      "icon": "final_lanterns:scythebalance",
-      "list_index": 1,
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        },
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 30,
-            "key_type": "key_bind",
-            "needs_empty_hand": true,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_1": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "give @s final_lanterns:spearbalance{CustomTag:black,fl_host:1b} 1",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.construct_1"
-      },
-      "icon": "final_lanterns:spearbalance",
-      "list_index": 1,
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        },
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 30,
-            "key_type": "key_bind",
-            "needs_empty_hand": true,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_2": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "give @s final_lanterns:axebalance{CustomTag:black,fl_host:1b} 1",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.construct_2"
-      },
-      "icon": "final_lanterns:axebalance",
-      "list_index": 1,
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        },
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 30,
-            "key_type": "key_bind",
-            "needs_empty_hand": true,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_3": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "give @s final_lanterns:pickaxebalance{CustomTag:black,fl_host:1b} 1",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.construct_3"
-      },
-      "icon": "final_lanterns:pickaxebalance",
-      "list_index": 1,
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        },
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 30,
-            "key_type": "key_bind",
-            "needs_empty_hand": true,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "construct_4": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "give @s final_lanterns:bostaffbalance{CustomTag:black,fl_host:1b} 1",
-        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.construct_4"
-      },
-      "icon": "final_lanterns:bostaffbalance",
-      "list_index": 1,
-      "conditions": {
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        },
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 30,
-            "key_type": "key_bind",
-            "needs_empty_hand": true,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "world_construct_0": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "tag @s add gl_user",
-        "function final_lanterns:host_cx/black/cage",
-        "tag @s remove gl_user"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.world_construct_0"
-      },
-      "icon": "minecraft:iron_bars",
-      "list_index": 1,
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 150
-      },
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 150
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 60,
-            "key_type": "key_bind",
-            "needs_empty_hand": false,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "world_construct_1": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "tag @s add gl_user",
-        "function final_lanterns:host_cx/black/spikes",
-        "tag @s remove gl_user"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.world_construct_1"
-      },
-      "icon": "minecraft:bone",
-      "list_index": 1,
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 150
-      },
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 150
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:action",
-            "cooldown": 60,
-            "key_type": "key_bind",
-            "needs_empty_hand": false,
-            "allow_scrolling_when_crouching": true
-          }
-        ]
-      },
-      "hidden": true,
-      "hidden_in_bar": true
-    },
-    "constructs": {
-      "type": "palladium:ability_wheel",
-      "abilities": [
-        "construct_0",
-        "construct_1",
-        "construct_2",
-        "construct_3",
-        "construct_4",
-        "world_construct_0",
-        "world_construct_1"
-      ],
-      "texture": "null",
-      "disable_mouse_scrolling": false,
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:held"
-          }
-        ],
-        "unlocking": {
-          "type": "palladium:ability_unlocked",
-          "ability": "skill_constructs"
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.constructs"
-      },
-      "icon": "final_lanterns:scythebalance",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 1
-    },
-    "skill_forge": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_forge"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_forge.description"
-      },
-      "icon": "final_lanterns:blacklanternring",
-      "hidden_in_bar": true,
-      "gui_position": [
-        1,
-        3
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_constructs"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 25
-          }
-        ]
-      }
-    },
-    "forge_ring": {
-      "type": "palladium:command",
-      "first_tick_commands": [
-        "function final_lanterns:host/nekron/forge"
-      ],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 6000
-        },
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_forge"
-          },
-          {
-            "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
-            "min": 3000
-          }
-        ]
-      },
-      "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": 3000
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.forge_ring"
-      },
-      "icon": "final_lanterns:blacklanternring",
-      "bar_color": "white",
-      "hidden": true,
+      "hidden": false,
       "hidden_in_bar": false,
       "list_index": 8,
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.forge_ring.description"
-      }
+      "bar_color": "white"
     },
-    "skill_empower": {
+    "light_tree": {
       "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_empower"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_empower.description"
-      },
-      "icon": "kubejs:blacklanternbattery",
-      "hidden_in_bar": true,
-      "gui_position": [
-        2,
-        1
-      ],
       "conditions": {
         "unlocking": [
           {
             "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
+            "power": "null",
+            "ability": "skilltree"
           }
         ]
-      }
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.light_tree"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_nekron.light_tree.description"
+      },
+      "icon": "kubejs:blacklanternbattery",
+      "gui_position": [
+        -1.5,
+        -0.5
+      ],
+      "hidden": false,
+      "hidden_in_bar": true
     },
     "empower_ring": {
       "type": "palladium:command",
@@ -1277,60 +1571,44 @@
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_empower"
+            "type": "palladium:action",
+            "cooldown": 60
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 400
           }
         ],
-        "enabling": {
-          "type": "palladium:action",
-          "cooldown": 60
-        }
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "light_tree"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 10
+          }
+        ]
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.empower_ring"
       },
-      "icon": "kubejs:blacklanternbattery",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 6,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.empower_ring.description"
-      }
-    },
-    "skill_lantern": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_lantern"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_lantern.description"
-      },
-      "icon": "final_lanterns:blacklanternring",
-      "hidden_in_bar": true,
+      "icon": "kubejs:blacklanternbattery",
       "gui_position": [
-        2,
-        2
+        -1.5,
+        0
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_empower"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 15
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 9,
+      "bar_color": "white"
     },
     "living_lantern": {
       "type": "palladium:command",
@@ -1342,122 +1620,375 @@
         "tag @s remove gl_living_lantern"
       ],
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
+        "energy_bar": "death",
         "amount": 1
       },
       "conditions": {
-        "enabling": {
-          "type": "palladium:toggle"
-        },
-        "unlocking": [
+        "enabling": [
           {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_lantern"
+            "type": "palladium:toggle"
           },
           {
             "type": "palladium:energy_bar",
-            "energy_bar": "entity_power",
+            "energy_bar": "death",
             "min": 1
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "empower_ring"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 15
           }
         ]
       },
       "title": {
         "translate": "ability.final_lanterns.host_nekron.living_lantern"
       },
-      "icon": "final_lanterns:textures/gui/ability/hope_aura_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 7,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.living_lantern.description"
-      }
-    },
-    "skill_reserves": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_reserves"
       },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_reserves.description"
-      },
-      "icon": "minecraft:glowstone",
-      "hidden_in_bar": true,
+      "icon": "final_lanterns:textures/gui/ability/hope_aura_nekron.png",
       "gui_position": [
-        3,
-        1
+        -1.5,
+        0.5
       ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "host_root"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 8
-          }
-        ]
-      }
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 10,
+      "bar_color": "white"
     },
-    "skill_wellspring": {
-      "type": "palladium:dummy",
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.skill_wellspring"
-      },
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.skill_wellspring.description"
-      },
-      "icon": "minecraft:beacon",
-      "hidden_in_bar": true,
-      "gui_position": [
-        3,
-        2
-      ],
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_unlocked",
-            "ability": "skill_reserves"
-          },
-          {
-            "type": "palladium:experience_level_buyable",
-            "xp_level": 16
-          }
-        ]
-      }
-    },
-    "reserves_apply": {
+    "forge_ring": {
       "type": "palladium:command",
       "first_tick_commands": [
-        "scoreboard objectives add glhmax_nekron dummy",
-        "scoreboard players set @s glhmax_nekron 6000"
+        "function final_lanterns:host/nekron/forge"
       ],
       "commands": [],
       "last_tick_commands": [],
       "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 6000
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "death",
+            "min": 3000
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "living_lantern"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 25
+          }
+        ]
+      },
+      "energy_bar_usage": {
+        "energy_bar": "death",
+        "amount": 3000
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.forge_ring"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_nekron.forge_ring.description"
+      },
+      "icon": "final_lanterns:blacklanternring",
+      "gui_position": [
+        -1.5,
+        1
+      ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 11,
+      "bar_color": "white"
+    },
+    "hard_light_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:scythebalance{CustomTag:black,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light_0"
+      },
+      "icon": "final_lanterns:scythebalance",
+      "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_reserves"
-        }
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
     },
-    "wellspring_regen": {
-      "type": "palladium:dummy",
+    "hard_light_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:spearbalance{CustomTag:black,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light_1"
+      },
+      "icon": "final_lanterns:spearbalance",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "hard_light_2": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:axebalance{CustomTag:black,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light_2"
+      },
+      "icon": "final_lanterns:axebalance",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "hard_light_3": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:pickaxebalance{CustomTag:black,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light_3"
+      },
+      "icon": "final_lanterns:pickaxebalance",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "hard_light_4": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "give @s final_lanterns:bostaffbalance{CustomTag:black,fl_host:1b} 1",
+        "playsound minecraft:block.beacon.power_select player @a[distance=..24] ~ ~ ~ 1 1.8"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light_4"
+      },
+      "icon": "final_lanterns:bostaffbalance",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 30,
+            "key_type": "key_bind",
+            "needs_empty_hand": true,
+            "allow_scrolling_when_crouching": true
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "hard_shape_0": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "function final_lanterns:host_cx/black/cage",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_shape_0"
+      },
+      "icon": "minecraft:iron_bars",
       "energy_bar_usage": {
-        "energy_bar": "entity_power",
-        "amount": -3
+        "energy_bar": "death",
+        "amount": 150
       },
       "conditions": {
         "unlocking": {
           "type": "palladium:ability_unlocked",
-          "ability": "skill_wellspring"
-        }
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 60,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "death",
+            "min": 150
+          }
+        ]
       },
       "hidden": true,
       "hidden_in_bar": true
+    },
+    "hard_shape_1": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "tag @s add gl_user",
+        "function final_lanterns:host_cx/black/spikes",
+        "tag @s remove gl_user"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_shape_1"
+      },
+      "icon": "minecraft:bone",
+      "energy_bar_usage": {
+        "energy_bar": "death",
+        "amount": 150
+      },
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:ability_unlocked",
+          "ability": "hard_light"
+        },
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 60,
+            "key_type": "key_bind",
+            "needs_empty_hand": false,
+            "allow_scrolling_when_crouching": true
+          },
+          {
+            "type": "palladium:energy_bar",
+            "energy_bar": "death",
+            "min": 150
+          }
+        ]
+      },
+      "hidden": true,
+      "hidden_in_bar": true
+    },
+    "hard_light": {
+      "type": "palladium:ability_wheel",
+      "abilities": [
+        "hard_light_0",
+        "hard_light_1",
+        "hard_light_2",
+        "hard_light_3",
+        "hard_light_4",
+        "hard_shape_0",
+        "hard_shape_1"
+      ],
+      "texture": "null",
+      "disable_mouse_scrolling": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held"
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:ability_unlocked",
+            "power": "null",
+            "ability": "forge_ring"
+          },
+          {
+            "type": "palladium:experience_level_buyable",
+            "xp_level": 20
+          }
+        ]
+      },
+      "title": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light"
+      },
+      "description": {
+        "translate": "ability.final_lanterns.host_nekron.hard_light.description"
+      },
+      "icon": "final_lanterns:textures/gui/ability/constructs_nekron.png",
+      "gui_position": [
+        -1.5,
+        1.5
+      ],
+      "hidden": false,
+      "hidden_in_bar": false,
+      "list_index": 12,
+      "bar_color": "white"
     },
     "release": {
       "type": "palladium:command",
@@ -1479,7 +2010,7 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 9,
+      "list_index": 13,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.release.description"
       }
@@ -1504,31 +2035,9 @@
       "bar_color": "white",
       "hidden": true,
       "hidden_in_bar": false,
-      "list_index": 10,
+      "list_index": 14,
       "description": {
         "translate": "ability.final_lanterns.host_nekron.emotions.description"
-      }
-    },
-    "mortal_form": {
-      "type": "palladium:command",
-      "first_tick_commands": [],
-      "commands": [],
-      "last_tick_commands": [],
-      "conditions": {
-        "enabling": {
-          "type": "palladium:toggle"
-        }
-      },
-      "title": {
-        "translate": "ability.final_lanterns.host_nekron.mortal_form"
-      },
-      "icon": "final_lanterns:textures/gui/ability/suit_up_nekron.png",
-      "bar_color": "white",
-      "hidden": true,
-      "hidden_in_bar": false,
-      "list_index": 11,
-      "description": {
-        "translate": "ability.final_lanterns.host_nekron.mortal_form.description"
       }
     }
   }

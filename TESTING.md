@@ -1,4 +1,4 @@
-# In-game test checklist (Final Lanterns 1.3.1)
+# In-game test checklist (Final Lanterns 1.4)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change. Install the mods listed in the README first (Palladium, GeckoLib,
@@ -76,6 +76,13 @@ Buy the nodes in the host's skill tree (`/xp add @s 300 levels`).
       Carol Ferris, Indigo-1, White Lantern, Black Lantern). **Mortal Form** (page 3) hides it.
 - [ ] **A free entity near your ring:** with Ion out in the world (summoned, not hosted), a green bearer within 24
       blocks sees *"Ion is near: your ring drinks its light."* and recharges.
+
+## 6b. Skill trees (1.4)
+- [ ] Host Ion (`/lantern entity host <you> ion`): its tab in the powers menu is the Willpower tree (lime background,
+      green bar), with *Ion's Power* on the right and *Ion's Light* on the left. Every node opens and can be bought.
+- [ ] Toggle the Ion node: Ion's suit and aura appear; toggle again: they go.
+- [ ] Wear two rings: the Spectrum Bond tab has the same layout, a spectrum bar and a prismatic background; the
+      second ring is on your left hand.
 
 ## 7. Two rings: the Spectrum Bond
 - [ ] The Lantern Ring slot (Curios) has **two** slots, and `/trigger gl_check` says *Lantern Ring slots: 2*.
