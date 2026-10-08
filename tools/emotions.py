@@ -136,7 +136,11 @@ def generate():
                        {"text": "[See your emotions]", "color": "aqua",
                         "clickEvent": {"action": "run_command", "value": "/trigger gl_emotions set 1"},
                         "hoverEvent": {"action": "show_text", "contents": "Open your Emotional Spectrum"}},
-                       {"text": "  (or say \"emotions\" in chat)", "color": "dark_gray"}])]
+                       {"text": "  (or say \"emotions\" in chat)  ", "color": "dark_gray"},
+                       {"text": "[Lantern check]", "color": "dark_aqua",
+                        "clickEvent": {"action": "run_command", "value": "/trigger gl_check"},
+                        "hoverEvent": {"action": "show_text",
+                                       "contents": "What's working, and how close each ring is to choosing you"}}])]
     fn["emotion/reroll"] = [*[f"scoreboard players operation @s gl_e_{e} -= @s gl_tr_{e}_start" for e in EMOTIONS],
                             f"function {NS}:emotion/roll"]
     # before anything else reads a new player's emotions (the Black Lantern ring looks for empty ones)

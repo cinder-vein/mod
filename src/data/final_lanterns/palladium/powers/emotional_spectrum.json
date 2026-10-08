@@ -29,6 +29,16 @@
         }
       }
     },
+    "fl_marker": {
+      "type": "palladium:command",
+      "first_tick_commands": [],
+      "commands": [
+        "scoreboard players set @s gl_spirit 3"
+      ],
+      "last_tick_commands": [],
+      "hidden": true,
+      "hidden_in_bar": true
+    },
     "chat_0": {
       "type": "palladium:command",
       "first_tick_commands": [

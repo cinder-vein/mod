@@ -5,6 +5,10 @@
       "required": false
     },
     {
+      "id": "final_lanterns:fl/check_load",
+      "required": false
+    },
+    {
       "id": "final_lanterns:fl/load",
       "required": false
     }

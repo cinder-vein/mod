@@ -13,7 +13,7 @@ tellraw @s [{"text":"/lantern reset <player> | show <player> | enable | disable"
 tellraw @s [{"text":"/lantern entity status | reset | on | off  -  function final_lanterns:entity/admin/status (reset, on, off)","color":"gray"}]
 tellraw @s [{"text":"/lantern entity summon <entity>  -  function final_lanterns:entity/admin/summon/<entity>: it appears in front of you","color":"gray"}]
 tellraw @s [{"text":"/lantern entity host <player> <entity>  -  execute as <player> run function final_lanterns:entity/admin/host/<entity>","color":"gray"}]
-tellraw @s [{"text":"/lantern check, or say \"lantern check\"  -  function final_lanterns:check: what works, and why no ring has come","color":"gray"}]
+tellraw @s [{"text":"/trigger gl_check (anyone), /lantern check, or say \"lantern check\"  -  function final_lanterns:check: what works, and why no ring has come","color":"gray"}]
 tellraw @s [{"text":"/lantern blackfloor <n>  -  the Black Lantern ring comes when 4+ spectrum emotions are below n (default 11000)","color":"gray"}]
 tellraw @s [{"text":"/lantern reroll <player>  -  roll their starting emotions again (10 000-15 000 each)","color":"gray"}]
 tellraw @s [{"text":"corps: green, yellow, red, orange, blue, violet, indigo, white, black","color":"gray"}]

@@ -48,40 +48,66 @@ ServerEvents.commandRegistry(event => {
   const perPlayer = (name, fn) => Commands.literal(name).then(
     Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => asPlayer(ctx, fn)))
 
-  event.register(Commands.literal('lantern')
-    .requires(src => src.hasPermission(2))
-    .executes(ctx => runSelf(ctx, 'final_lanterns:admin/help'))
-    .then(perCorps('give', 'admin/give'))
-    .then(perCorps('unbound', 'admin/give_unbound'))
-    .then(perCorps('battery', 'admin/battery'))
-    .then(perCorps('leader', 'admin/leader'))
-    .then(perCorps('unleader', 'admin/unleader'))
-    .then(perCorps('remove', 'admin/remove'))
-    .then(perCorps('offer', 'admin/offer'))
-    .then(perPlayer('removeall', 'admin/remove_all'))
-    .then(perPlayer('unbind', 'admin/unbind'))
-    .then(perPlayer('reset', 'admin/reset_emotions'))
-    .then(perPlayer('cooldowns', 'admin/reset_cooldowns'))
-    .then(perPlayer('show', 'admin/show'))
-    .then(Commands.literal('emotion').then(Commands.argument('player', Arguments.PLAYER.create(event))
-      .then(Commands.argument('emotion', Arguments.WORD.create(event))
-        .suggests((ctx, builder) => { EMOTIONS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
-        .then(Commands.literal('set').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
-          run(ctx, `scoreboard players set ${playerName(ctx)} gl_e_${Arguments.WORD.getResult(ctx, 'emotion')} ${Arguments.INTEGER.getResult(ctx, 'amount')}`))))
-        .then(Commands.literal('add').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
-          run(ctx, `scoreboard players add ${playerName(ctx)} gl_e_${Arguments.WORD.getResult(ctx, 'emotion')} ${Arguments.INTEGER.getResult(ctx, 'amount')}`)))))))
-    .then(Commands.literal('threshold').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
-      run(ctx, `scoreboard players set #threshold gl_cfg ${Arguments.INTEGER.getResult(ctx, 'amount')}`))))
-    .then(Commands.literal('blackfloor').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
-      run(ctx, `scoreboard players set #black_floor gl_cfg ${Math.max(1, Arguments.INTEGER.getResult(ctx, 'amount'))}`))))
-    .then(perPlayer('reroll', 'emotion/reroll'))
-    .then(Commands.literal('entity')
-      .then(Commands.literal('status').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/status')))
-      .then(Commands.literal('reset').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/reset')))
-      .then(Commands.literal('on').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/on')))
-      .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/off')))
-      .then(Commands.literal('host').then(Commands.argument('player', Arguments.PLAYER.create(event))
-        .then(Commands.argument('entity', Arguments.WORD.create(event))
+  // The check is for everyone (it only tells you about yourself); the rest of /lantern is for admins (level 2).
+  const runCheck = (ctx) => {
+    const server = ctx.source.server
+    server.runCommandSilent('scoreboard players set #kubejs gl_cfg 1')
+    const player = ctx.source.player
+    const done = server.runCommandSilent(player
+      ? `execute as ${player.getStringUUID()} at @s run function final_lanterns:check` : 'function final_lanterns:check')
+    if (!done) {
+      ctx.source.sendFailure(Text.of('The Final Lanterns check did not run: the datapack in the Final Lanterns jar ' +
+        'is not loaded. Try /trigger gl_check, and look in logs/latest.log for final_lanterns errors.'))
+      return 0
+    }
+    return 1
+  }
+  const admin = (node) => node.requires(src => src.hasPermission(2))
+  const lantern = Commands.literal('lantern')
+    .executes(ctx => ctx.source.hasPermission(2) ? runSelf(ctx, 'final_lanterns:admin/help') : runCheck(ctx))
+    .then(Commands.literal('check').executes(ctx => runCheck(ctx)))
+  const adminCommands = [
+    perCorps('give', 'admin/give'),
+    perCorps('unbound', 'admin/give_unbound'),
+    perCorps('battery', 'admin/battery'),
+    perCorps('leader', 'admin/leader'),
+    perCorps('unleader', 'admin/unleader'),
+    perCorps('remove', 'admin/remove'),
+    perCorps('offer', 'admin/offer'),
+    perPlayer('removeall', 'admin/remove_all'),
+    perPlayer('unbind', 'admin/unbind'),
+    perPlayer('reset', 'admin/reset_emotions'),
+    perPlayer('cooldowns', 'admin/reset_cooldowns'),
+    perPlayer('show', 'admin/show'),
+    Commands.literal('emotion').then(Commands.argument('player', Arguments.PLAYER.create(event))
+        .then(Commands.argument('emotion', Arguments.WORD.create(event))
+          .suggests((ctx, builder) => { EMOTIONS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
+          .then(Commands.literal('set').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
+            run(ctx, `scoreboard players set ${playerName(ctx)} gl_e_${Arguments.WORD.getResult(ctx, 'emotion')} ${Arguments.INTEGER.getResult(ctx, 'amount')}`))))
+          .then(Commands.literal('add').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
+            run(ctx, `scoreboard players add ${playerName(ctx)} gl_e_${Arguments.WORD.getResult(ctx, 'emotion')} ${Arguments.INTEGER.getResult(ctx, 'amount')}`)))))),
+    Commands.literal('threshold').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
+        run(ctx, `scoreboard players set #threshold gl_cfg ${Arguments.INTEGER.getResult(ctx, 'amount')}`))),
+    Commands.literal('blackfloor').then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx =>
+        run(ctx, `scoreboard players set #black_floor gl_cfg ${Math.max(1, Arguments.INTEGER.getResult(ctx, 'amount'))}`))),
+    perPlayer('reroll', 'emotion/reroll'),
+    Commands.literal('entity')
+        .then(Commands.literal('status').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/status')))
+        .then(Commands.literal('reset').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/reset')))
+        .then(Commands.literal('on').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/on')))
+        .then(Commands.literal('off').executes(ctx => runSelf(ctx, 'final_lanterns:entity/admin/off')))
+        .then(Commands.literal('host').then(Commands.argument('player', Arguments.PLAYER.create(event))
+          .then(Commands.argument('entity', Arguments.WORD.create(event))
+            .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
+            .executes(ctx => {
+              const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
+              if (ENTITY_KEYS.indexOf(key) < 0) {
+                ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
+                return 0
+              }
+              return asPlayer(ctx, `entity/admin/host/${key}`)
+            }))))
+        .then(Commands.literal('summon').then(Commands.argument('entity', Arguments.WORD.create(event))
           .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
           .executes(ctx => {
             const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
@@ -89,22 +115,13 @@ ServerEvents.commandRegistry(event => {
               ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
               return 0
             }
-            return asPlayer(ctx, `entity/admin/host/${key}`)
-          }))))
-      .then(Commands.literal('summon').then(Commands.argument('entity', Arguments.WORD.create(event))
-        .suggests((ctx, builder) => { ENTITY_KEYS.forEach(e => builder.suggest(e)); return builder.buildFuture() })
-        .executes(ctx => {
-          const key = String(Arguments.WORD.getResult(ctx, 'entity')).toLowerCase()
-          if (ENTITY_KEYS.indexOf(key) < 0) {
-            ctx.source.sendFailure(Text.of(`Unknown entity '${key}'. Use one of: ${ENTITY_KEYS.join(', ')}`))
-            return 0
-          }
-          return runSelf(ctx, `final_lanterns:entity/admin/summon/${key}`)
-        }))))
-    .then(Commands.literal('check').executes(ctx => runSelf(ctx, 'final_lanterns:check')))
-    .then(Commands.literal('enable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/enable')))
-    .then(Commands.literal('disable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/disable')))
-  )
+            return runSelf(ctx, `final_lanterns:entity/admin/summon/${key}`)
+          }))),
+    Commands.literal('enable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/enable')),
+    Commands.literal('disable').executes(ctx => runSelf(ctx, 'final_lanterns:admin/disable'))
+  ]
+  adminCommands.forEach(node => lantern.then(admin(node)))
+  event.register(lantern)
 
   // /ring recall [corps]: anyone can call their own rings back (no permission needed)
   const recall = (ctx, corps) => {

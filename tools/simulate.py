@@ -19,6 +19,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 NS = "final_lanterns"
 EYES = 1.62
+CURIOS_PATH = 'ForgeCaps."curios:inventory".Curios[{Identifier:"lantern_rings"}].StacksHandler.Stacks'
+RING_CORPS = {f"{NS}:{item}": c for c, item in (
+    ("green", "greenlanternring"), ("yellow", "yellowlanternring"), ("red", "redlanternring"),
+    ("orange", "orangelanternring"), ("blue", "bluelanternring"), ("violet", "pinklanternring"),
+    ("indigo", "indigolanternring"), ("white", "whitelanternring"), ("black", "blacklanternring"))}
 
 
 class Entity:
@@ -31,6 +36,8 @@ class Entity:
         self.pos, self.rot, self.dim, self.gamemode = list(pos), [0.0, 0.0], dim, gamemode
         self.alive, self.powers, self.vehicle, self.passengers, self.sneaking = True, set(), None, [], False
         self.health = 20.0
+        self.rings = []  # lantern ring items worn in the Curios slot (ids), for players
+        self.ring_slots = 2
 
     @property
     def is_player(self):
@@ -172,9 +179,24 @@ class Sim:
         except CommandError:
             return 0
 
+    def palladium(self):
+        """What Palladium does each tick that the datapack reads: a worn ring's power runs its marker (fl_marker),
+        and the Emotional Spectrum power (given by `superpower add`) runs its own."""
+        for e in self.entities:
+            if not e.is_player:
+                continue
+            for item in e.rings:
+                c = RING_CORPS.get(item)
+                if c and f"gl_t_{c}" in self.objectives:
+                    e.tags.add(f"gl_{c}")
+                    self.set_score(e.holder, f"gl_t_{c}", 3)
+            if f"{NS}:emotional_spectrum" in e.powers and "gl_spirit" in self.objectives:
+                self.set_score(e.holder, "gl_spirit", 3)
+
     def tick(self, n=1, only_ours=True):
         for _ in range(n):
             self.tick_no += 1
+            self.palladium()
             for fid in self.tag_values("minecraft:tick"):
                 if only_ours and not fid.startswith(f"{NS}:fl/"):
                     continue
@@ -389,6 +411,10 @@ class Sim:
             targets = self.select(t[3], ctx) if t[2] == "entity" else []
             if targets and len(t) > 4 and t[4] == "Health":
                 return int(targets[0].health)
+            if targets and len(t) > 4 and t[4].startswith(CURIOS_PATH) and t[4].endswith(".Size"):
+                if not targets[0].ring_slots:
+                    raise CommandError("no Lantern Ring slot")
+                return targets[0].ring_slots
             return 0
         if head == "data" and t[1] == "merge" and t[2] == "entity":
             m = re.search(r"Health:([0-9.]+)f?", t[4]) if len(t) > 4 else None
@@ -555,7 +581,12 @@ class Sim:
                     ctxs = [c for c in ctxs if want]  # every block is air here
                     i += 5
                 elif kind == "data":
-                    ctxs = [c for c in ctxs if not want]
+                    if t[i + 2] == "entity" and t[i + 4].startswith(CURIOS_PATH):
+                        m = re.search(r'Items\[\{id:"([^"]+)"\}\]$', t[i + 4])
+                        ctxs = [c for c in ctxs if any(bool(m) and m[1] in e.rings
+                                                       for e in self.select(t[i + 3], c)) == want]
+                    else:
+                        ctxs = [c for c in ctxs if not want]
                     i += 5 if t[i + 2] in ("entity", "storage", "block") else 4
                 else:
                     raise CommandError(f"unknown execute if {kind}")
@@ -731,8 +762,64 @@ def scenario_boss(key, emotion):
     return f"gl_host_{key}" in steve.tags, f"{key}: boss came, worn down, host={f'gl_host_{key}' in steve.tags}"
 
 
+def scenario_bond():
+    """Two rings worn: the Spectrum Bond forms (its power, the actionbar); one taken off: it fades."""
+    sim = Sim()
+    steve = sim.add_player("Steve")
+    sim.load()
+    sim.tick(30)
+    steve.rings = [f"{NS}:greenlanternring", f"{NS}:yellowlanternring"]
+    t0 = sim.tick_no
+    sim.tick(25)
+    bonded = "gl_dual" in steve.tags and f"{NS}:spectrum_bond" in steve.powers and said(sim, "Steve", "Willpower", t0)
+    steve.rings = [f"{NS}:greenlanternring"]
+    sim.tick(25)
+    faded = "gl_dual" not in steve.tags and f"{NS}:spectrum_bond" not in steve.powers
+    return bool(bonded) and faded, f"Spectrum Bond with green + yellow: bonded={bool(bonded)}, faded after one={faded}"
+
+
+def scenario_check():
+    """/trigger gl_check (any player) runs the check: everything running, two slots, both rings on, the bond."""
+    sim = Sim()
+    steve = sim.add_player("Steve")
+    sim.load()
+    sim.tick(60)
+    sim.set_score("#kubejs", "gl_cfg", 1)  # what the KubeJS script does when a player logs in
+    steve.rings = [f"{NS}:greenlanternring", f"{NS}:yellowlanternring"]
+    sim.tick(5)
+    t0 = sim.tick_no
+    sim.set_score("Steve", "gl_check", 1)  # what /trigger gl_check does once the datapack has enabled it
+    sim.tick(1)
+    want = ["Final Lanterns check", "The datapack is running.", "Chat phrases work", "Lantern Ring slots: ",
+            "Green Lantern ring: worn, its power is on.", "Sinestro Corps ring: worn, its power is on.",
+            "Spectrum Bond: on", "willpower ", "Ion: free: comes to the first player whose willpower reaches"]
+    missing = [w for w in want if not said(sim, "Steve", w, t0)]
+    wrong = [m[3][:60] for m in said(sim, "Steve", "✘", t0)]
+    reset = sim.score("Steve", "gl_check") == 0
+    return not missing and not wrong and reset, (
+        f"/trigger gl_check: {len(said(sim, 'Steve', '', t0))} lines" + (f", missing {missing}" if missing else "")
+        + (f", unexpected problems {wrong}" if wrong else "") + ("" if reset else ", trigger not reset"))
+
+
+def scenario_check_broken():
+    """When a main function failed to load, the check still answers and names it; one slot is reported."""
+    sim = Sim()
+    del sim.functions[f"{NS}:second"]
+    steve = sim.add_player("Steve")
+    steve.ring_slots = 1
+    sim.load()
+    sim.tick(60)
+    t0 = sim.tick_no
+    sim.set_score("Steve", "gl_check", 1)
+    sim.tick(1)
+    named = said(sim, "Steve", "once-a-second function isn't running", t0)
+    slot = said(sim, "Steve", "only one Lantern Ring slot", t0)
+    return bool(named and slot), f"check with second missing and one ring slot: names second={bool(named)}, " \
+                                 f"reports one slot={bool(slot)}"
+
+
 def main():
-    results = [scenario_join(), scenario_offer("survival"), scenario_offer("creative"), scenario_black(),
+    results = [scenario_bond(), scenario_check(), scenario_check_broken(), scenario_join(), scenario_offer("survival"), scenario_offer("creative"), scenario_black(),
                scenario_quiet_join(), scenario_entity("ion", "will"), scenario_entity("adara", "hope"),
                scenario_entity("proselyte", "compassion"),
                scenario_entity("parallax", "fear", value=17000, wait=30 * 20),

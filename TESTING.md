@@ -1,4 +1,4 @@
-# In-game test checklist (Final Lanterns 1.3)
+# In-game test checklist (Final Lanterns 1.3.1)
 
 Use a creative test world with cheats on, plus a second account or a friend for the multiplayer checks.
 `/reload` re-runs the datapack after any change. Install the mods listed in the README first (Palladium, GeckoLib,
@@ -7,8 +7,11 @@ GraveCore, Curios, KubeJS), and remove the old Lantern Corps and A New Corps jar
 ## 1. Loading
 - [ ] Coming from Lantern Corps 10: `lantern_commands.js` and `lantern_keys.js` are gone from the game's
       `kubejs/server_scripts` and `kubejs/client_scripts` folders.
-- [ ] Say **lantern check** in chat: every line is a ✔ (datapack running, KubeJS commands loaded). The corps lines
-      show your emotion against the threshold.
+- [ ] Type **`/trigger gl_check`** (works for any player, cheats or not): every line is a ✔ (datapack running, chat
+      phrases, KubeJS commands loaded, *Lantern Ring slots: 2*). The corps lines show your emotion against the
+      threshold, and each free entity says what brings it and your own number. Saying **lantern check** and
+      `/lantern check` (also without op) show the same.
+- [ ] Any ✘ names what's wrong (for a function that didn't load, the name to search for in `logs/latest.log`).
 - [ ] The game starts with Final Lanterns in the mods list (*"Based on A New Corps"* in its description).
 - [ ] `logs/latest.log` has no errors about `final_lanterns` functions failing to load.
 - [ ] `logs/kubejs/server.log` says *"[Final Lanterns] KubeJS script loaded"*. If not, copy
@@ -75,7 +78,10 @@ Buy the nodes in the host's skill tree (`/xp add @s 300 levels`).
       blocks sees *"Ion is near: your ring drinks its light."* and recharges.
 
 ## 7. Two rings: the Spectrum Bond
-- [ ] The Lantern Ring slot (Curios) has **two** slots.
+- [ ] The Lantern Ring slot (Curios) has **two** slots, and `/trigger gl_check` says *Lantern Ring slots: 2*.
+- [ ] Put an unbound ring from the creative menu straight into the slot: it pops out with *"A ring has to bind to you
+      before you can wear it..."*, lands back in your inventory and binds; put it on again.
+- [ ] With both rings on, `/trigger gl_check` lists both as *worn, its power is on* and *Spectrum Bond: on*.
 - [ ] Wear a green and a yellow ring: the actionbar says *Spectrum Bond: Willpower + Fear* and a **Spectrum Bond**
       bar and skill tree appear (each ring keeps its own). Take one off: *"The Spectrum Bond fades."*
 - [ ] Buy the nodes (`/xp add @s 300 levels`). **Twin Beam** (hold): a green beam from the right hand and a yellow one

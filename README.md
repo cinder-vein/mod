@@ -13,21 +13,31 @@ Use a Forge **1.20.1** profile (Forge 47.x) with these mods:
 - **Curios**: rings are worn in the *Lantern Ring* slot
 - **KubeJS** (with Rhino)
 
-Then put `dist/final_lanterns-1.3.0-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
+Then put `dist/final_lanterns-1.3.1-forge-1.20.1.jar` in the `mods` folder. Remove the old *Lantern Corps*
 (`greenlantern-*.jar`) and *A New Corps* jars: Final Lanterns replaces both.
 
 **Coming from Lantern Corps 10:** delete `lantern_commands.js` and `lantern_keys.js` from your game's
 `kubejs/server_scripts` and `kubejs/client_scripts` folders. Those old copies call the old `greenlantern` functions,
 so `/lantern` and `/ring` silently do nothing while they're there.
 
-**Check it works:** say ***lantern check*** in chat (or `/function final_lanterns:check`). It says whether the
-datapack is running, whether the KubeJS commands are loaded, and for each corps how close you are to its ring (or why it
-won't come yet).
+**Check it works:** type **`/trigger gl_check`** (any player, cheats or not), or say ***lantern check*** in chat, or
+`/lantern check`. It goes through every part and marks each ✔ or ✘:
+
+- whether the datapack's setup, tick and once-a-second functions loaded and are running (when one didn't, it names it,
+  so you can find the error in `logs/latest.log`);
+- whether you have the Emotional Spectrum power (chat phrases) and whether the KubeJS commands are loaded;
+- how many **Lantern Ring slots** you have (two), which rings you're wearing, whether each one's power is on, and
+  whether the Spectrum Bond is on;
+- for each corps, how close you are to its ring (or why it won't come yet);
+- for each entity, where it is, or what brings it and your own number.
+
+If something doesn't work, run it and send what it says, with `logs/latest.log`.
 
 Palladium loads the mod's KubeJS script (`/lantern`, `/ring`, `/emotions`) from the jar. If the check says it isn't
 loaded, copy `kubejs/server_scripts/lantern_commands.js` from this repository into your game's `kubejs/server_scripts`
 folder and restart. Everything also works without it: through chat, `/trigger`, and `/function` for admins (see Admin
-commands).
+commands). In a world without cheats, only `/trigger` and chat work for you; open it to LAN with cheats on (or use a
+cheats world) to try the admin commands.
 
 ## The rings
 
@@ -68,6 +78,11 @@ Final Lanterns adds these to the nine spectrum rings:
 
 Wear two of the nine spectrum rings (both Lantern Ring slots) and they bond. Each ring keeps its own power and bar; the
 **Spectrum Bond** adds a bar and a skill tree of its own (powers menu), and merged suits.
+
+**Putting on the second ring:** open your inventory's Curios tab; the *Lantern Ring* slot has two places. Both rings
+must be bound to you, so carry a new ring in your inventory for a moment first (a ring straight from the creative menu
+pops back out and binds, then put it on again). The actionbar says *Spectrum Bond: Willpower + Fear*. `/trigger
+gl_check` shows your slots, which rings it sees on you, and whether the bond is on.
 
 - **The bar:**
   - **Twin Beam** (hold): both rings' beams at once, the first ring's from your right hand, the second's from your
@@ -259,7 +274,7 @@ With KubeJS: `/lantern` (operators only). Without it, run the matching function,
 | `/lantern entity status\|reset\|on\|off` | where each entity is; free them all; let them appear or not |
 | `/lantern entity summon <entity>` | a free entity appears in front of you, and chat says who it chooses (ion, parallax, butcher, ophidian, adara, predator, proselyte, life, nekron) |
 | `/lantern entity host <player> <entity>` | make the player its host now, skipping its emotion check and the one-hour wait |
-| `/lantern check` | the same as saying *lantern check*: what works, and why no ring has come |
+| `/lantern check` | **anyone:** the same as `/trigger gl_check` or saying *lantern check*: what works, and why no ring or entity has come |
 
 - **Emotion names:** will, fear, rage, greed, hope, love, compassion, death.
 - **Corps names:** green, yellow, red, orange, blue, violet, indigo, white, black.
@@ -285,4 +300,6 @@ The jar is built from `src/`, which is generated: don't edit it by hand.
 - `python3 tools/simulate.py` runs the generated datapack in a small simulator and checks that ring offers, the Black
   Lantern offer and every kind of entity arrival actually happen.
 - `python3 tools/build.py` validates and packages the jar. `tools/lint_commands.py` syntax-checks every command (needs
-  the `mecha` package). Both count problems already present in A New Corps separately and fail only on new ones.
+  the `mecha` package). `tools/check_refs.py <mcmeta-1.20.1-registries>` checks that every item, block, entity,
+  effect and particle a command names exists (Minecraft drops a whole function when one doesn't). They count problems
+  already present in A New Corps separately and fail only on new ones.

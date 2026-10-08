@@ -11,6 +11,10 @@
     {
       "id": "final_lanterns:fl/tick",
       "required": false
+    },
+    {
+      "id": "final_lanterns:fl/check_tick",
+      "required": false
     }
   ]
 }

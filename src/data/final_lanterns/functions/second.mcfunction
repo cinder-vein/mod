@@ -1,3 +1,4 @@
+scoreboard players add #seconds gl_cfg 1
 scoreboard players set #second gl_cfg 0
 execute if score #enabled gl_cfg matches 1 as @a run function final_lanterns:emotion/feed
 execute if score #enabled gl_cfg matches 1 run function final_lanterns:offer/scan
@@ -108,4 +109,4 @@ execute as @a[tag=gl_dual,tag=gl_dn_twin_lanterns] run function final_lanterns:b
 tag @a remove gl_dn_shared_light
 tag @a remove gl_dn_twin_lanterns
 tag @a[tag=gl_prism,tag=!gl_dual] remove gl_prism
-superpower add final_lanterns:emotional_spectrum @a
+function final_lanterns:fl/spirit

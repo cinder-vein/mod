@@ -24,7 +24,7 @@ hour (gl_ehcd, in seconds). A free entity strengthens the rings of its own color
 import json
 
 from common import CORPS, NS, actionbar, burst, hexcolor, sound, tellraw
-from systems import EMOTION_OF, SPECTRUM
+from systems import EMOTION_NAME, EMOTION_OF, SPECTRUM
 
 RING_COLOR = {"green": (46, 200, 70), "yellow": (245, 205, 30), "red": (220, 30, 35), "orange": (250, 130, 20),
               "blue": (40, 130, 255), "violet": (215, 55, 220), "indigo": (105, 60, 230), "white": (235, 242, 250),
@@ -90,6 +90,19 @@ def emotion_cond(e, pct):
     if e.emotion == "life":
         return " ".join(f"if score @s gl_e_{EMOTION_OF[c]} >= #req{pct} gl_ent" for c in SPECTRUM)
     return f"if score @s gl_e_{e.emotion} >= #req{pct} gl_ent"
+
+
+def dormant(e):
+    """The status line of an entity waiting for someone: what brings it, and the viewer's own number."""
+    need = {"score": {"name": f"#req{APPEAR[e.kind]}", "objective": "gl_ent"}, "color": "white"}
+    if e.emotion == "life":
+        return [{"text": "free: comes to the first player with all seven spectrum emotions at ", "color": "gray"},
+                need, {"text": ".", "color": "gray"}]
+    feeling = "closeness to death" if e.emotion == "death" else EMOTION_NAME[e.emotion]
+    return [{"text": f"free: comes to the first player whose {feeling} reaches ", "color": "gray"},
+            need, {"text": " (yours: ", "color": "gray"},
+            {"score": {"name": "@s", "objective": f"gl_e_{e.emotion}"}, "color": "white"},
+            {"text": ").", "color": "gray"}]
 
 
 def emotion_ok(e, pct):
@@ -695,7 +708,11 @@ def generate(sizes):
     for e in ENTITIES:
         name = {"text": f" {e.name}: ", "color": e.color}
         status += [
-            f"execute if score #state_{e.key} gl_ent matches 0 run " + tellraw("@s", ["", name, {"text": "free (dormant)", "color": "gray"}]),
+            f"execute if score #state_{e.key} gl_ent matches 0 run " + tellraw("@s", ["", name, *dormant(e)]),
+            f"execute if score #state_{e.key} gl_ent matches 0 if score @s gl_edc_{e.key} matches 1.. run "
+            + tellraw("@s", ["", {"text": "   you turned it away; it won't come to you for another ", "color": "gray"},
+                             {"score": {"name": "@s", "objective": f"gl_edc_{e.key}"}, "color": "white"},
+                             {"text": " s", "color": "gray"}]),
             f"execute if score #state_{e.key} gl_ent matches 1 run " + tellraw("@s", ["", name, {"text": "out in the world", "color": "gray"}]),
             f"execute if score #state_{e.key} gl_ent matches 2 run " + tellraw("@s", ["", name, {"text": "hosted by ", "color": "gray"},
                                                                                        {"selector": f"@a[tag=gl_host_{e.key}]"},

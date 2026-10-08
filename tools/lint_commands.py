@@ -72,7 +72,12 @@ def lint(src):
 
     functions = {str(p.relative_to(SRC / "data" / NS / "functions"))[:-len(".mcfunction")]
                  for p in (SRC / "data" / NS / "functions").rglob("*.mcfunction")}
+    tag = SRC / "data" / "minecraft" / "tags" / "functions" / "load.json"
+    loaders = [v["id"] if isinstance(v, dict) else v for v in json.loads(tag.read_text())["values"]] if tag.exists() else []
     load = "".join(p.read_text() for p in (SRC / "data" / NS / "functions").glob("**/load.mcfunction"))
+    load += "".join((SRC / "data" / ns / "functions" / f"{path}.mcfunction").read_text()
+                    for ns, _, path in (v.partition(":") for v in loaders)
+                    if (SRC / "data" / ns / "functions" / f"{path}.mcfunction").exists())
     objectives = set(re.findall(r"scoreboard objectives add (\S+)", load))
     obj_patterns = [
         r"scoreboard players (?:set|add|remove|reset|enable|get) \S+ (\S+)",
